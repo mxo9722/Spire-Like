@@ -107,7 +107,7 @@ public class CardView : MonoBehaviour
         }
     }
 
-    public IEnumerator ActivateBurnVFX()
+    public IEnumerator ActivateExhaustVFX()
     {
         float startStopTime = 0.1f;
         float burnLength = _burnVFX.main.duration;
@@ -120,12 +120,16 @@ public class CardView : MonoBehaviour
 
         yield return new WaitForSeconds(startStopTime);
 
-        Tweener burnTweener = _burnVFX.transform.DOMove(_bottomOfCardTransform.position-new Vector3(0,1,0), burnLength - startStopTime*2);
-        _maskTransform.DOMove(_bottomOfCardTransform.position, burnLength - startStopTime*2);
-        _maskTransform.DOScaleY(0, burnLength - startStopTime * 2);
+        float destroyTime = burnLength - (startStopTime * 2);
+
+        Tweener burnTweener = _burnVFX.transform.DOMove(_bottomOfCardTransform.position-new Vector3(0,1,0), destroyTime);
+        _maskTransform.DOMove(_bottomOfCardTransform.position, destroyTime);
+        _maskTransform.DOScaleY(0, destroyTime);
 
         yield return burnTweener.WaitForCompletion();
 
         yield return new WaitForSeconds(startStopTime);
+        
+        Destroy(gameObject);
     }
 }

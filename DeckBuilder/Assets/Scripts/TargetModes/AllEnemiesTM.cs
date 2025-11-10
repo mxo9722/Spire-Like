@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class AllEnemiesTM : TargetMode
 {
-    public override List<CombatantView> GetTargets()
+    public override List<CombatantView> GetTargets(TargetModeContext targetModeContext)
     {
-        return new(EnemySystem.Instance.Enemies);
+        return new(BoardSystem.Instance.BoardView.GetAllEnemies());
     }
 }

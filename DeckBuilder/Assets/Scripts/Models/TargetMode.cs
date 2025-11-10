@@ -4,5 +4,5 @@ using UnityEngine;
 [System.Serializable]
 public abstract class TargetMode
 {
-    public abstract List<CombatantView> GetTargets();
+    public abstract List<CombatantView> GetTargets(TargetModeContext targetModeContext);
 }

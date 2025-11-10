@@ -14,4 +14,69 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Image>k__BackingField: {fileID: 21300000, guid: f0fee025b89b14742ba986407333116f, type: 3}
   <Health>k__BackingField: 20
-  <AttackPower>k__BackingField: 10
+  <ActionPattern>k__BackingField:
+  - <Name>k__BackingField: Flail
+    <Symbol>k__BackingField: 0
+    <SecondarySymbols>k__BackingField: 
+    <Weight>k__BackingField: 3
+    <Priority>k__BackingField: 1
+    <ConsecutiveMax>k__BackingField: 2
+    <Conditions>k__BackingField: []
+    <Effects>k__BackingField:
+    - <TargetMode>k__BackingField:
+        rid: 1228494412662964312
+      <Effect>k__BackingField:
+        rid: 1228494412662964313
+  - <Name>k__BackingField: Block
+    <Symbol>k__BackingField: 3
+    <SecondarySymbols>k__BackingField: 
+    <Weight>k__BackingField: 1
+    <Priority>k__BackingField: 1
+    <ConsecutiveMax>k__BackingField: 1
+    <Conditions>k__BackingField: []
+    <Effects>k__BackingField:
+    - <TargetMode>k__BackingField:
+        rid: 1228494412662964314
+      <Effect>k__BackingField:
+        rid: 1228494412662964315
+  - <Name>k__BackingField: Move
+    <Symbol>k__BackingField: 4
+    <SecondarySymbols>k__BackingField: 
+    <Weight>k__BackingField: 1
+    <Priority>k__BackingField: 1
+    <ConsecutiveMax>k__BackingField: 1
+    <Conditions>k__BackingField:
+    - rid: 1228494460240003163
+    <Effects>k__BackingField:
+    - <TargetMode>k__BackingField:
+        rid: 1228494460240003161
+      <Effect>k__BackingField:
+        rid: 1228494460240003162
+  references:
+    version: 2
+    RefIds:
+    - rid: 1228494412662964312
+      type: {class: HeroInCurrentLaneTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1228494412662964313
+      type: {class: AttackHeroEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <Damage>k__BackingField: 10
+    - rid: 1228494412662964314
+      type: {class: CasterTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1228494412662964315
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _statusEffectType: 0
+        _stackCount: 7
+    - rid: 1228494460240003161
+      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1228494460240003162
+      type: {class: MoveTowardTargetEffect, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1228494460240003163
+      type: {class: InHeroLaneCondition, ns: , asm: Assembly-CSharp}
+      data:
+        Invert: 1

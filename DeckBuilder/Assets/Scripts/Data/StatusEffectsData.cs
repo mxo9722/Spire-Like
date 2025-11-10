@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "StatusEffectsData", menuName = "Scriptable Objects/StatusEffectsData")]
+[CreateAssetMenu(fileName = "StatusEffectsData", menuName = "Data/StatusEffectsData")]
 public class StatusEffectsData : ScriptableObject
 {
     [SerializedDictionary("Status Effect Type", "Properties")]
@@ -18,7 +18,7 @@ public class StatusEffectsData : ScriptableObject
         {
             if (!Map.ContainsKey(key))
             {
-                Map.TryAdd(key, default(StatusEffectInfo));
+                Map.TryAdd(key, new StatusEffectInfo());
             }
         }
     }

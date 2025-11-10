@@ -5,7 +5,7 @@ public class OnEnemyAttackCondition : PerkCondition
 {
     public override bool SubConditionIsMet(GameAction gameAction)
     {
-        return gameAction is AttackHeroGA;
+        return gameAction is AttackHeroGA attackHeroGA && attackHeroGA.Targets.IndexOf(HeroSystem.Instance.HeroView) != -1;
     }
 
     public override void SubscribeCondition(Action<GameAction> reaction)

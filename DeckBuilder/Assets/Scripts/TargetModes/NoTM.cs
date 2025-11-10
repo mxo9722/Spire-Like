@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class NoTM : TargetMode
 {
-    public override List<CombatantView> GetTargets()
+    public override List<CombatantView> GetTargets(TargetModeContext targetModeContext)
     {
         return null;
     }

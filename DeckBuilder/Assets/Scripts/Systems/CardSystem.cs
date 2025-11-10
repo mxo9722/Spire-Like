@@ -9,6 +9,7 @@ public class CardSystem : Singleton<CardSystem>
     [SerializeField] private HandView _handView;
     [SerializeField] private CardPileView _drawPileView;
     [SerializeField] private CardPileView _discardPileView;
+    [SerializeField] private CardPileView _exhaustedPileView;
 
     private List<Card> _drawPile = new();
     private List<Card> _discardPile = new();
@@ -20,6 +21,7 @@ public class CardSystem : Singleton<CardSystem>
     {
         _drawPileView.SetUp(_drawPile);
         _discardPileView.SetUp(_discardPile);
+        _exhaustedPileView.SetUp(_exhaustPile);
 
         ActionSystem.AttachPerformer<DrawCardsGA>(DrawCardsPerformer);
         ActionSystem.AttachPerformer<DiscardAllCardsGA>(DiscardAllCardsPerformer);
@@ -100,10 +102,13 @@ public class CardSystem : Singleton<CardSystem>
             ActionSystem.Instance.AddReaction(performEffectsGA);
         }
 
+        HeroView heroView = HeroSystem.Instance.HeroView;
+        TargetModeContext targetModeContext = new(heroView);
+
         //Perform effects
         foreach (AutoTargetEffect effectWrapper in playCardGA.card.OtherEffects)
         {
-            List<CombatantView> targets = effectWrapper.TargetMode.GetTargets();
+            List<CombatantView> targets = effectWrapper.TargetMode.GetTargets(targetModeContext);
             PerformEffectsGA performEffectsGA = new PerformEffectsGA(effectWrapper.Effect, targets);
             ActionSystem.Instance.AddReaction(performEffectsGA);
         }
@@ -122,9 +127,10 @@ public class CardSystem : Singleton<CardSystem>
 
         yield return moveCardTweener.WaitForCompletion();
 
-        yield return exhaustCardGA.CardView.ActivateBurnVFX();
+        yield return exhaustCardGA.CardView.ActivateExhaustVFX();
 
         _exhaustPile.Add(exhaustCardGA.CardView.Card);
+        UpdateUI();
     }
 
     private IEnumerator DrawCard()
@@ -176,5 +182,6 @@ public class CardSystem : Singleton<CardSystem>
     {
         _drawPileView.UpdateUI();
         _discardPileView.UpdateUI();
+        _exhaustedPileView.UpdateUI();
     }
 }

@@ -5,13 +5,16 @@ public class CardPileView : MonoBehaviour
 {
 
     [SerializeField] private TMPro.TMP_Text _count;
+    [SerializeField] private GameObject _wrapper;
     [SerializeField] private bool _hideOrder = false;
+    [SerializeField] private bool _hideWhenEmpty = false;
 
     private List<Card> _cards;
 
     public void SetUp(List<Card> drawPile)
     {
         _cards = drawPile;
+        UpdateUI();
     }
 
     private void OnMouseEnter()
@@ -36,6 +39,11 @@ public class CardPileView : MonoBehaviour
     public void UpdateUI()
     {
         _count.text = _cards.Count.ToString();
+
+        if(_hideWhenEmpty) 
+        {
+            _wrapper.SetActive(_cards.Count > 0);
+        }
 
         if(CardCollectionSystem.Instance.Opened && CardCollectionSystem.Instance.Cards == _cards)
         {

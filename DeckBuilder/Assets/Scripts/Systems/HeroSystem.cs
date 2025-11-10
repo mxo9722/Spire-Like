@@ -18,7 +18,7 @@ public class HeroSystem : Singleton<HeroSystem>
 
     public void Setup(HeroData heroData)
     {
-        HeroView.Setup(heroData);
+        HeroView = BoardSystem.Instance.BoardView.CreateHero(heroData, 1);
     }
 
     private void EnemyTurnPreReaction(EnemyTurnGA enemyTurnGA)
@@ -36,6 +36,12 @@ public class HeroSystem : Singleton<HeroSystem>
             ApplyBurnGA applyBurnGA = new(burnStack, HeroView);
             ActionSystem.Instance.AddReaction(applyBurnGA);
         }
+
+        //RedistributeEnemiesGA redistributeEnemiesGA = new RedistributeEnemiesGA();
+        //ActionSystem.Instance.AddReaction(redistributeEnemiesGA);
+
+        CompressBoardGA compressBoardGA = new();
+        ActionSystem.Instance.AddReaction(compressBoardGA);
 
         DrawCardsGA drawCardsGA = new(5);
         ActionSystem.Instance.AddReaction(drawCardsGA);

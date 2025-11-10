@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62bf69310631aa94896652d3f8be392c, type: 3}
   m_Name: Fire Storm
   m_EditorClassIdentifier: 
-  _description: 'Apply 3 burn to all enemies.
+  _description: 'Apply 5 burn to all enemies.
 
     Exhaust.'
   <Mana>k__BackingField: 2
@@ -41,4 +41,4 @@ MonoBehaviour:
       type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
       data:
         _statusEffectType: 1
-        _stackCount: 3
+        _stackCount: 5

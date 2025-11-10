@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44e1e12fcfa7f344eb74622d76826f15, type: 3}
+  m_Name: EnemyActionSymbolData
+  m_EditorClassIdentifier: 
+  Map:
+    _serializedList:
+    - Key: 0
+      Value: {fileID: 21300000, guid: 1f2805b85186c8f40a5ad6694bc53245, type: 3}
+    - Key: 1
+      Value: {fileID: 21300000, guid: 7121d67097a5a2b44b9d2b2b62a099b1, type: 3}
+    - Key: 2
+      Value: {fileID: 21300000, guid: cfc4c0b31b660544f8f1747c6d6359dd, type: 3}
+    - Key: 3
+      Value: {fileID: 21300000, guid: 7a879c578ca567842b71f284faeba24b, type: 3}
+    - Key: 4
+      Value: {fileID: 21300000, guid: 4db3255eb7321ab49888050a62dde775, type: 3}
+    - Key: 5
+      Value: {fileID: 0}
+    - Key: 6
+      Value: {fileID: 21300000, guid: e28e09ba5ffef5348843fd5392484a4b, type: 3}

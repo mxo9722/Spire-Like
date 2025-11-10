@@ -1,0 +1,72 @@
+using AYellowpaper.SerializedCollections;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class BoardSystem : Singleton<BoardSystem>
+{
+    [field: SerializeField] public BoardView BoardView { get; private set; }
+
+    private void OnEnable()
+    {
+        ActionSystem.AttachPerformer<RedistributeEnemiesGA>(RedistributeEnemiesPerformer);
+        ActionSystem.AttachPerformer<CompressBoardGA>(CompressBoardPerformer);
+        ActionSystem.AttachPerformer<RemoveLaneGA>(RemoveLanePerformer);
+        ActionSystem.AttachPerformer<MoveEnemyGA>(MoveEnemyPerformer);
+        ActionSystem.AttachPerformer<MoveHeroGA>(MoveHeroPerformer);
+    }
+
+    private void OnDisable()
+    {
+        ActionSystem.DetachPerformer<RedistributeEnemiesGA>();
+        ActionSystem.DetachPerformer<CompressBoardGA>();
+        ActionSystem.DetachPerformer<RemoveLaneGA>();
+        ActionSystem.DetachPerformer<MoveEnemyGA>();
+        ActionSystem.DetachPerformer<MoveHeroGA>();
+    }
+
+    private IEnumerator RedistributeEnemiesPerformer(RedistributeEnemiesGA updateBoardGA)
+    {
+        yield return BoardView.RedistributeEnemies();
+    }
+    
+    private IEnumerator CompressBoardPerformer(CompressBoardGA compressBoardGA)
+    {
+        yield return BoardView.CompressBoard();
+    }
+    
+    private IEnumerator RemoveLanePerformer(RemoveLaneGA removeLaneGA)
+    {
+        yield return BoardView.RemoveLane(removeLaneGA.LaneView, 0.15f);
+    }
+
+    private IEnumerator MoveEnemyPerformer(MoveEnemyGA moveEnemyGA)
+    {
+        yield return BoardView.MoveEnemy(moveEnemyGA, 0.15f);
+    }
+    
+    private IEnumerator MoveHeroPerformer(MoveHeroGA moveHeroGA)
+    {
+        yield return BoardView.MoveHero(moveHeroGA, 0.15f);
+    }
+
+    public LaneView GetCurrentLaneView(CombatantView combatantView)
+    {
+        if (combatantView is HeroView heroView)
+            return BoardView.GetCurrentLaneView(heroView);
+        else if (combatantView is EnemyView enemyView)
+            return BoardView.GetCurrentLaneView(enemyView);
+
+        throw new System.Exception();
+    }
+    
+    public LaneView GetCurrentLaneView(HeroView heroView)
+    {
+        return BoardView.GetCurrentLaneView(heroView);
+    }
+    
+    public LaneView GetCurrentLaneView(EnemyView enemyView)
+    {
+        return BoardView.GetCurrentLaneView(enemyView);
+    }
+}

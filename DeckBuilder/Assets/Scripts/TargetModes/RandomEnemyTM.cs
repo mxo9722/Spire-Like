@@ -3,9 +3,9 @@ using UnityEngine;
 
 public class RandomEnemyTM : TargetMode
 {
-    public override List<CombatantView> GetTargets()
+    public override List<CombatantView> GetTargets(TargetModeContext targetModeContext)
     {
-        List<EnemyView> enemies = EnemySystem.Instance.Enemies;
+        List<EnemyView> enemies = BoardSystem.Instance.BoardView.GetAllEnemies();
 
         if (enemies.Count == 0)
             return new();

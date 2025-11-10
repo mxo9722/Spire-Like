@@ -1,23 +1,43 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
 public class EnemyView : CombatantView
 {
+    [SerializeField] private SpriteRenderer _actionSymbol;
     [SerializeField] private TMP_Text _attackText;
 
-    public int AttackPower { get; set; }
-
+    public EnemyData Data { get; private set; }
+    public EnemyAction CurrentAction { get; private set; } = null;
+    public List<EnemyAction> PreviousActions { get; private set; } = new();
 
     public void Setup(EnemyData enemyData)
     {
-        AttackPower = enemyData.AttackPower;
-        UpdateAttackText();
+        Data = enemyData;
+        UpdateBehaviorIndicator();
         SetupBase(enemyData.Health, enemyData.Image);
     }
 
-    private void UpdateAttackText()
+    public void SetCurrentAction(EnemyAction enemyAction)
     {
-        _attackText.text = "ATK: " + AttackPower;
+        if (CurrentAction != null)
+            PreviousActions.Add(CurrentAction);
+        CurrentAction = enemyAction;
+
+        UpdateBehaviorIndicator();
+    }
+
+    private void UpdateBehaviorIndicator()
+    {
+        if (CurrentAction == null)
+            return;
+
+        _actionSymbol.sprite = EnemySystem.Instance.GetEnemyActionSymbol(CurrentAction.Symbol);
+        _attackText.text = "";
+        if(CurrentAction.Effects[0].Effect is AttackHeroEffect attackHeroEffect)
+        {
+            _attackText.text = attackHeroEffect.Damage.ToString();
+        }
     }
 
     public override void Die()
