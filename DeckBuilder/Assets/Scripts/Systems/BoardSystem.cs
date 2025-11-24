@@ -37,17 +37,17 @@ public class BoardSystem : Singleton<BoardSystem>
     
     private IEnumerator RemoveLanePerformer(RemoveLaneGA removeLaneGA)
     {
-        yield return BoardView.RemoveLane(removeLaneGA.LaneView, 0.15f);
+        yield return BoardView.RemoveLane(removeLaneGA.LaneView, 0.5f);
     }
 
     private IEnumerator MoveEnemyPerformer(MoveEnemyGA moveEnemyGA)
     {
-        yield return BoardView.MoveEnemy(moveEnemyGA, 0.15f);
+        yield return BoardView.MoveEnemy(moveEnemyGA, 0.5f);
     }
     
     private IEnumerator MoveHeroPerformer(MoveHeroGA moveHeroGA)
     {
-        yield return BoardView.MoveHero(moveHeroGA, 0.15f);
+        yield return BoardView.MoveHero(moveHeroGA, 0.5f);
     }
 
     public LaneView GetCurrentLaneView(CombatantView combatantView)
@@ -60,13 +60,7 @@ public class BoardSystem : Singleton<BoardSystem>
         throw new System.Exception();
     }
     
-    public LaneView GetCurrentLaneView(HeroView heroView)
-    {
-        return BoardView.GetCurrentLaneView(heroView);
-    }
-    
-    public LaneView GetCurrentLaneView(EnemyView enemyView)
-    {
-        return BoardView.GetCurrentLaneView(enemyView);
-    }
+    public LaneView GetCurrentLaneView(HeroView heroView) => BoardView.GetCurrentLaneView(heroView);    
+    public LaneView GetCurrentLaneView(EnemyView enemyView) => BoardView.GetCurrentLaneView(enemyView);
+    public List<EnemyView> GetAllEnemies() => BoardView.GetAllEnemies();
 }

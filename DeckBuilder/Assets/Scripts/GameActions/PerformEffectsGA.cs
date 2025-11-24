@@ -1,20 +1,40 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PerformEffectsGA : GameAction
 {
     public Effect Effect { get; set; }
-    public List<CombatantView> Targets { get; set; }
+    public List<CombatantView> CombatantTargets { get; set; } = new();
+    public List<LaneView> LaneTargets { get; set; } = new();
+
+    public PerformEffectsGA(Effect effect)
+    {
+        Effect = effect;
+    }
 
     public PerformEffectsGA(Effect effect, List<CombatantView> targets)
     {
         Effect = effect;
-        Targets = targets == null ? new() : targets;
+        CombatantTargets = targets == null ? new() : targets;
     }
     
     public PerformEffectsGA(Effect effect, CombatantView target)
     {
         Effect = effect;
-        Targets = target == null ? new() : new() { target };
+        CombatantTargets = target == null ? new() : new() { target };
+    }
+    
+    public PerformEffectsGA(Effect effect, List<LaneView> targets)
+    {
+        Effect = effect;
+        LaneTargets = targets == null ? new() : targets;
+
+    }
+    
+    public PerformEffectsGA(Effect effect, LaneView target)
+    {
+        Effect = effect;
+        LaneTargets = target == null ? new() : new() { target };
     }
 }

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5566271095766730551}
   - component: {fileID: 863814301761730385}
+  - component: {fileID: 2508848647540134203}
   m_Layer: 0
   m_Name: HeroView
   m_TagString: Untagged
@@ -48,6 +49,53 @@ MonoBehaviour:
   _healthText: {fileID: 6059462798660690059}
   _spriteRenderer: {fileID: 3457946559073860843}
   _statusEffectsUI: {fileID: 2092989458510580752}
+  _helpBoxesUI: {fileID: 8430266420643578030}
+--- !u!61 &2508848647540134203
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2134024948155771730}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 1.5, y: 1.5}
+  m_EdgeRadius: 0
 --- !u!1001 &536118233919566640
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -56,6 +104,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5566271095766730551}
     m_Modifications:
+    - target: {fileID: 1561129657979256467, guid: e39150cff9e8faa4b8a646dfd6ae19f1, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 2.699997
+      objectReference: {fileID: 0}
     - target: {fileID: 2922190342914772955, guid: e39150cff9e8faa4b8a646dfd6ae19f1, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -104,6 +156,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7944972210511023680, guid: e39150cff9e8faa4b8a646dfd6ae19f1, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -141,3 +197,14 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6558267901325846672, guid: e39150cff9e8faa4b8a646dfd6ae19f1, type: 3}
   m_PrefabInstance: {fileID: 536118233919566640}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8430266420643578030 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8326872129857385374, guid: e39150cff9e8faa4b8a646dfd6ae19f1, type: 3}
+  m_PrefabInstance: {fileID: 536118233919566640}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69bb161c1f02dd54f89e888bc43aa661, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

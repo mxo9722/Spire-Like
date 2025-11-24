@@ -1,13 +1,17 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ApplyBurnGA : GameAction
 {
-    public int BurnDamage { get; private set; }
-    public CombatantView Target { get; private set; }
+    public List<CombatantView> Targets { get; private set; }
     
-    public ApplyBurnGA(int burnDamage, CombatantView target)
+    public ApplyBurnGA(List<CombatantView> targets)
     {
-        BurnDamage = burnDamage;
-        Target = target;
+        Targets = targets;
+    }
+    
+    public ApplyBurnGA(CombatantView target)
+    {
+        Targets = new() { target };
     }
 }

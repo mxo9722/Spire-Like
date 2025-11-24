@@ -15,4 +15,9 @@ public class AddStatusEffectGA : GameAction, IHaveCaster
         Targets = targets;
         Caster = caster;
     }
+
+    public void SetStackCount(int stackCount)
+    {
+        StackCount = stackCount;
+    }
 }

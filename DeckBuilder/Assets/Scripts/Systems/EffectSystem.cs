@@ -15,8 +15,11 @@ public class EffectSystem : MonoBehaviour
 
     private IEnumerator PerformEffectPerformer(PerformEffectsGA performEffectsGA)
     {
-        GameAction effectAction = performEffectsGA.Effect.GetGameAction(performEffectsGA.Targets, HeroSystem.Instance.HeroView);
-        ActionSystem.Instance.AddReaction(effectAction);
+        GameAction effectAction = performEffectsGA.Effect.GetGameAction(HeroSystem.Instance.HeroView, combatantTargets: performEffectsGA.CombatantTargets, laneTargets:performEffectsGA.LaneTargets);
+        if (effectAction != null)
+            ActionSystem.Instance.AddReaction(effectAction);
+        else
+            Debug.LogError("Null GameAction attempted to be applied!");
         yield return null;
     }
 }

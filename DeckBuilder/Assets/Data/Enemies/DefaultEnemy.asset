@@ -12,71 +12,136 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4049c0b1badbe8947a15364491cb1ac9, type: 3}
   m_Name: DefaultEnemy
   m_EditorClassIdentifier: 
-  <Image>k__BackingField: {fileID: 21300000, guid: f0fee025b89b14742ba986407333116f, type: 3}
-  <Health>k__BackingField: 20
+  <Image>k__BackingField: {fileID: 21300000, guid: 840b55da3eba86b40a31dd225fe68759, type: 3}
+  <Health>k__BackingField: 40
   <ActionPattern>k__BackingField:
-  - <Name>k__BackingField: Flail
+  - <Name>k__BackingField: Attack
     <Symbol>k__BackingField: 0
-    <SecondarySymbols>k__BackingField: 
-    <Weight>k__BackingField: 3
+    <TargetIntent>k__BackingField: 1
+    <Weight>k__BackingField: 4
+    <Priority>k__BackingField: 1
+    <ConsecutiveMax>k__BackingField: 3
+    <Conditions>k__BackingField: []
+    <Effects>k__BackingField:
+    - rid: 1228494508162809985
+  - <Name>k__BackingField: Block
+    <Symbol>k__BackingField: 3
+    <TargetIntent>k__BackingField: 0
+    <Weight>k__BackingField: 1
     <Priority>k__BackingField: 1
     <ConsecutiveMax>k__BackingField: 2
     <Conditions>k__BackingField: []
     <Effects>k__BackingField:
-    - <TargetMode>k__BackingField:
-        rid: 1228494412662964312
-      <Effect>k__BackingField:
-        rid: 1228494412662964313
-  - <Name>k__BackingField: Block
-    <Symbol>k__BackingField: 3
-    <SecondarySymbols>k__BackingField: 
+    - rid: 1228494508162809988
+  - <Name>k__BackingField: Disarm
+    <Symbol>k__BackingField: 2
+    <TargetIntent>k__BackingField: 1
     <Weight>k__BackingField: 1
     <Priority>k__BackingField: 1
-    <ConsecutiveMax>k__BackingField: 1
+    <ConsecutiveMax>k__BackingField: 2
     <Conditions>k__BackingField: []
     <Effects>k__BackingField:
-    - <TargetMode>k__BackingField:
-        rid: 1228494412662964314
-      <Effect>k__BackingField:
-        rid: 1228494412662964315
+    - rid: 1228494548405584055
   - <Name>k__BackingField: Move
     <Symbol>k__BackingField: 4
-    <SecondarySymbols>k__BackingField: 
+    <TargetIntent>k__BackingField: 0
     <Weight>k__BackingField: 1
     <Priority>k__BackingField: 1
     <ConsecutiveMax>k__BackingField: 1
     <Conditions>k__BackingField:
-    - rid: 1228494460240003163
+    - rid: 1228494508162810018
     <Effects>k__BackingField:
-    - <TargetMode>k__BackingField:
-        rid: 1228494460240003161
-      <Effect>k__BackingField:
-        rid: 1228494460240003162
+    - rid: 1228494508162810019
+  - <Name>k__BackingField: Reload
+    <Symbol>k__BackingField: 1
+    <TargetIntent>k__BackingField: 0
+    <Weight>k__BackingField: 1
+    <Priority>k__BackingField: 1
+    <ConsecutiveMax>k__BackingField: 1
+    <Conditions>k__BackingField:
+    - rid: 1228494548405584059
+    <Effects>k__BackingField:
+    - rid: 1228494548405584060
   references:
     version: 2
     RefIds:
-    - rid: 1228494412662964312
-      type: {class: HeroInCurrentLaneTM, ns: , asm: Assembly-CSharp}
+    - rid: 1228494508162809985
+      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 1228494508162809986
+        _combatantEffect:
+          rid: 1228494508162809987
+    - rid: 1228494508162809986
+      type: {class: HeroInCurrentLaneCTM, ns: , asm: Assembly-CSharp}
       data: 
-    - rid: 1228494412662964313
+    - rid: 1228494508162809987
       type: {class: AttackHeroEffect, ns: , asm: Assembly-CSharp}
       data:
-        <Damage>k__BackingField: 10
-    - rid: 1228494412662964314
-      type: {class: CasterTM, ns: , asm: Assembly-CSharp}
+        <Damage>k__BackingField: 5
+    - rid: 1228494508162809988
+      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 1228494508162809989
+        _combatantEffect:
+          rid: 1228494508162809990
+    - rid: 1228494508162809989
+      type: {class: CasterCTM, ns: , asm: Assembly-CSharp}
       data: 
-    - rid: 1228494412662964315
+    - rid: 1228494508162809990
       type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
       data:
         _statusEffectType: 0
         _stackCount: 7
-    - rid: 1228494460240003161
-      type: {class: HeroTM, ns: , asm: Assembly-CSharp}
-      data: 
-    - rid: 1228494460240003162
-      type: {class: MoveTowardTargetEffect, ns: , asm: Assembly-CSharp}
-      data: 
-    - rid: 1228494460240003163
+    - rid: 1228494508162810018
       type: {class: InHeroLaneCondition, ns: , asm: Assembly-CSharp}
       data:
         Invert: 1
+    - rid: 1228494508162810019
+      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 1228494508162810020
+        _combatantEffect:
+          rid: 1228494508162810021
+    - rid: 1228494508162810020
+      type: {class: HeroCTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1228494508162810021
+      type: {class: MoveTowardCombatantEffect, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1228494548405584055
+      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 1228494548405584057
+        _combatantEffect:
+          rid: 1228494548405584058
+    - rid: 1228494548405584057
+      type: {class: HeroInCurrentLaneCTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1228494548405584058
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _statusEffectType: 6
+        _stackCount: 1
+    - rid: 1228494548405584059
+      type: {class: InHeroLaneCondition, ns: , asm: Assembly-CSharp}
+      data:
+        Invert: 1
+    - rid: 1228494548405584060
+      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 1228494548405584061
+        _combatantEffect:
+          rid: 1228494548405584062
+    - rid: 1228494548405584061
+      type: {class: CasterCTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1228494548405584062
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _statusEffectType: 4
+        _stackCount: 1

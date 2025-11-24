@@ -8,7 +8,7 @@ using UnityEngine;
 
 public class EnemySystem : Singleton<EnemySystem>
 {
-    [field: SerializeField] public EnemyActionSymbolData EnemyActionSymbolData { get; private set; }
+    [field: SerializeField] public EnemyActionData EnemyActionSymbolData { get; private set; }
 
     private BoardView _boardView;
 
@@ -16,6 +16,7 @@ public class EnemySystem : Singleton<EnemySystem>
     {
         ActionSystem.AttachPerformer<EnemyTurnGA>(EnemyTurnPerformer);
         ActionSystem.AttachPerformer<DetermineEnemyBehaviorGA>(DetermineEnemyBehaviorPerformer);
+        ActionSystem.AttachPerformer<HideEnemyPreviewGA>(HideEnemyPreviewPerformer);
         ActionSystem.AttachPerformer<AttackHeroGA>(AttackHeroPerformer);
         ActionSystem.AttachPerformer<MultiAttackHeroGA>(MultiAttackHeroPerformer);
         ActionSystem.AttachPerformer<KillEnemyGA>(KillEnemyPerformer);
@@ -24,6 +25,8 @@ public class EnemySystem : Singleton<EnemySystem>
     void OnDisable()
     {
         ActionSystem.DetachPerformer<EnemyTurnGA>();
+        ActionSystem.DetachPerformer<DetermineEnemyBehaviorGA>();
+        ActionSystem.DetachPerformer<HideEnemyPreviewGA>();
         ActionSystem.DetachPerformer<AttackHeroGA>();
         ActionSystem.DetachPerformer<MultiAttackHeroGA>();
         ActionSystem.DetachPerformer<KillEnemyGA>();
@@ -32,6 +35,9 @@ public class EnemySystem : Singleton<EnemySystem>
     public void Setup(List<EnemyData> laneData, int index)
     {
         _boardView = BoardSystem.Instance.BoardView;
+
+        if (laneData == null)
+            return;
 
         foreach (EnemyData enemyData in laneData)
         {
@@ -43,25 +49,30 @@ public class EnemySystem : Singleton<EnemySystem>
     {
         List<EnemyView> allEnemyViews = _boardView.GetAllEnemies();
 
+        List<CombatantView> burnEnemies = new(allEnemyViews);
+        burnEnemies = burnEnemies.FindAll(e => e.GetStatusEffectStacks(StatusEffectType.BURN) > 0);
+
+        ApplyBurnGA applyBurnGA = new(burnEnemies);
+        ActionSystem.Instance.AddReaction(applyBurnGA);
+
+        allEnemyViews = _boardView.GetAllEnemies();
+
         foreach (EnemyView enemyView in allEnemyViews)
         {
-            int burnStack = enemyView.GetStatusEffectStacks(StatusEffectType.BURN);
+            TargetModeContext targetModeContext = TargetModeContext.CreateEnemyTMC(enemyView);
 
-            if (burnStack > 0)
+            HideEnemyPreviewGA hideEnemyPreviewGA = new(enemyView);
+            ActionSystem.Instance.AddReaction(hideEnemyPreviewGA);
+
+            foreach (AutoCombatantTargetEffect effect in enemyView.CurrentAction.Effects)
             {
-                ApplyBurnGA applyBurnGA = new(burnStack, enemyView);
-                ActionSystem.Instance.AddReaction(applyBurnGA);
-            }
-
-            TargetModeContext targetModeContext = new(enemyView);
-
-            foreach (AutoTargetEffect effect in enemyView.CurrentAction.Effects)
-            {
-                GameAction gameAction = effect.Effect.GetGameAction(effect.TargetMode.GetTargets(targetModeContext), enemyView);
-
+                GameAction gameAction = effect.Effect.GetGameAction(enemyView, combatantTargets:effect.TargetMode.GetTargets(targetModeContext));
                 ActionSystem.Instance.AddReaction(gameAction);
             }
         }
+
+        CompressBoardGA compressBoardGA = new();
+        ActionSystem.Instance.AddReaction(compressBoardGA);
 
         foreach (EnemyView enemyView in allEnemyViews)
         {
@@ -82,6 +93,13 @@ public class EnemySystem : Singleton<EnemySystem>
         yield return null;
     }
 
+    private IEnumerator HideEnemyPreviewPerformer(HideEnemyPreviewGA hideEnemyPreviewGA)
+    {
+        if(hideEnemyPreviewGA.EnemyView.CurrentHealth > 0)
+            hideEnemyPreviewGA.EnemyView.SetCurrentAction(null);
+        yield return null;
+    }
+
     private IEnumerator AttackHeroPerformer(AttackHeroGA attackHeroGA)
     {
         if (attackHeroGA.Attacker.CurrentHealth == 0 || attackHeroGA.Targets.Count == 0)
@@ -89,16 +107,19 @@ public class EnemySystem : Singleton<EnemySystem>
         else
         {
             EnemyView attacker = attackHeroGA.Attacker;
+
+            yield return attacker.WaitForTweensComplete();
+
             Tween tween = attacker.transform.DOMoveX(attacker.transform.position.x - 1.0f, 0.15f);
             yield return tween.WaitForCompletion();
             tween = attacker.transform.DOMoveX(attacker.transform.position.x + 1.0f, 0.25f);
+
             DealDamageGA dealDamageGA = new(attackHeroGA.Damage, attackHeroGA.Targets, attacker);
+            
             ActionSystem.Instance.AddReaction(dealDamageGA);
             yield return tween.WaitForCompletion();
         }
     }
-
-
 
     private IEnumerator MultiAttackHeroPerformer(MultiAttackHeroGA arg)
     {
@@ -113,11 +134,40 @@ public class EnemySystem : Singleton<EnemySystem>
     private IEnumerator KillEnemyPerformer(KillEnemyGA killEnemyGA)
     {
         yield return _boardView.RemoveEnemy(killEnemyGA.EnemyView);
+
+        if(BoardSystem.Instance.GetAllEnemies().Count == 0)
+        {
+            MatchEndSystem.Instance.EndCombat();
+        }
     }
 
-    public Sprite GetEnemyActionSymbol(EnemyActionSymbolType enemyActionSymbolType)
+    public Sprite GetEnemyActionSymbol(EnemyActionType enemyActionSymbolType)
     {
-        return EnemyActionSymbolData.Map[enemyActionSymbolType];
+        return EnemyActionSymbolData.EnemyActionTypes[enemyActionSymbolType].Sprite;
+    }
+
+    public Sprite GetEnemyTargetSymbol(EnemyTargetTypes enemyActionSymbolType)
+    {
+        return EnemyActionSymbolData.EnemyTargetTypes[enemyActionSymbolType].Sprite;
+    }
+    
+    public string GetEnemyActionDescription(EnemyActionType enemyActionSymbolType)
+    {
+        return EnemyActionSymbolData.EnemyActionTypes[enemyActionSymbolType].Text;
+    }
+
+    public string GetEnemyTargetDescription(EnemyTargetTypes enemyActionSymbolType)
+    {
+        return EnemyActionSymbolData.EnemyTargetTypes[enemyActionSymbolType].Text;
+    }
+
+    public void UpdateEnemiesBehaviorUI()
+    {
+        List<EnemyView> enemies = BoardSystem.Instance.BoardView.GetAllEnemies();
+        foreach(EnemyView enemyView in enemies)
+        {
+            enemyView.UpdateBehaviorIndicator();
+        }
     }
 
     public static void DetermineEnemyBehaviour(EnemyView enemyView)
@@ -126,11 +176,21 @@ public class EnemySystem : Singleton<EnemySystem>
 
         List<EnemyAction> validPattern = new();
         float validWeight = 0;
+        int highPriority = 0;
 
         foreach (EnemyAction enemyAction in fullPattern)
         {
-            if (IsEnemyActionValid(enemyAction, enemyView))
+            int priority = enemyAction.Priority;
+
+            if (IsEnemyActionValid(enemyAction, enemyView) && priority >= highPriority)
             {
+                if(highPriority < priority)
+                {
+                    validPattern.Clear();
+                    validWeight = 0;
+                    highPriority = priority;
+                }
+
                 validPattern.Add(enemyAction);
                 validWeight += enemyAction.Weight;
             }

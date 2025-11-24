@@ -1,16 +1,22 @@
 using System;
 using UnityEngine;
 
+public enum StatusEffectModification
+{
+    NONE,
+    REMOVE_ALL,
+    REMOVE_ONE
+}
+
 [Serializable]
 public class StatusEffectInfo
 {
-    [SerializeField] private string _name;
-    public string Name { get => _name; }
-    [SerializeField] private Sprite _sprite;
-    public Sprite Sprite { get => _sprite; }
-
-    [TextArea(2,4)]
-    [SerializeField] private string _description;
-    public string Description { get => _description; }
+    [field: SerializeField] public string Name { get; private set; }
+    [field: SerializeField] public Sprite Sprite { get; private set; }
+    [field: SerializeField] public bool Stackable { get; private set; } = true;
+    [field: SerializeField] public StatusEffectModification PreTurnModification { get; private set; } = StatusEffectModification.NONE;
+    [field: SerializeField] public StatusEffectModification PostTurnModification { get; private set; } = StatusEffectModification.NONE;
+    [field: SerializeField,TextArea(2, 4)] public string Description { get; private set; }
+    [field: SerializeField,TextArea(2, 4)] public string DescriptionNoStacks { get; private set; }
 
 }

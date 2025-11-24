@@ -23,10 +23,11 @@ public class RNG
                 _seed = Guid.NewGuid().GetHashCode();
             return _seed;
         }
-        set
-        {
-            _seed = value;
-            _random = new Random(_seed);
-        }
+    }
+
+    public static void SetSeed(int seed)
+    {
+        _seed = seed;
+        _random = new Random(Seed);
     }
 }

@@ -48,6 +48,11 @@ public class CardSystem : Singleton<CardSystem>
         _drawPile.Shuffle();
     }
 
+    public void UpdateCardHoverView()
+    {
+        _handView.UpdateCardHoverView();
+    }
+
     private IEnumerator DrawCardsPerformer(DrawCardsGA drawCardsGA)
     {
         int actualAmount = Mathf.Min(drawCardsGA.amount,_drawPile.Count);
@@ -96,21 +101,25 @@ public class CardSystem : Singleton<CardSystem>
         SpendManaGA spendManaGA = new(playCardGA.card.Mana);
         ActionSystem.Instance.AddReaction(spendManaGA);
 
-        if(playCardGA.ManualTarget != null)
+        if(playCardGA.ManualEnemyTarget != null)
         {
-            PerformEffectsGA performEffectsGA = new PerformEffectsGA(playCardGA.card.ManualTargetEffect, playCardGA.ManualTarget);
+            PerformEffectsGA performEffectsGA = new PerformEffectsGA(playCardGA.card.ManualTargetEffect, playCardGA.ManualEnemyTarget);
+            ActionSystem.Instance.AddReaction(performEffectsGA);
+        }
+        else if(playCardGA.ManualLaneTarget != null)
+        {
+            PerformEffectsGA performEffectsGA = new PerformEffectsGA(playCardGA.card.ManualTargetEffect, playCardGA.ManualLaneTarget);
             ActionSystem.Instance.AddReaction(performEffectsGA);
         }
 
         HeroView heroView = HeroSystem.Instance.HeroView;
-        TargetModeContext targetModeContext = new(heroView);
+        TargetModeContext targetModeContext = new(heroView, playCardGA.ManualLaneTarget, playCardGA.ManualEnemyTarget);
 
         //Perform effects
         foreach (AutoTargetEffect effectWrapper in playCardGA.card.OtherEffects)
         {
-            List<CombatantView> targets = effectWrapper.TargetMode.GetTargets(targetModeContext);
-            PerformEffectsGA performEffectsGA = new PerformEffectsGA(effectWrapper.Effect, targets);
-            ActionSystem.Instance.AddReaction(performEffectsGA);
+            GameAction gameAction = effectWrapper.GetGameAction(targetModeContext);
+            ActionSystem.Instance.AddReaction(gameAction);
         }
 
         if (playCardGA.card.ExhuastOnUse)
@@ -183,5 +192,10 @@ public class CardSystem : Singleton<CardSystem>
         _drawPileView.UpdateUI();
         _discardPileView.UpdateUI();
         _exhaustedPileView.UpdateUI();
+    }
+
+    public void UpdateDynamicDescriptions()
+    {
+        _handView.UpdateDynamicDescriptions();
     }
 }

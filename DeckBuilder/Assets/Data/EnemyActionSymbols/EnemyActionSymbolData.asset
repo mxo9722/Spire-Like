@@ -9,22 +9,58 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 44e1e12fcfa7f344eb74622d76826f15, type: 3}
+  m_Script: {fileID: 11500000, guid: 973f5c7aed06f6e49891a71b7e83679a, type: 3}
   m_Name: EnemyActionSymbolData
   m_EditorClassIdentifier: 
-  Map:
+  EnemyActionTypes:
     _serializedList:
     - Key: 0
-      Value: {fileID: 21300000, guid: 1f2805b85186c8f40a5ad6694bc53245, type: 3}
+      Value:
+        <Sprite>k__BackingField: {fileID: 21300000, guid: 1f2805b85186c8f40a5ad6694bc53245, type: 3}
+        <Text>k__BackingField: attack
     - Key: 1
-      Value: {fileID: 21300000, guid: 7121d67097a5a2b44b9d2b2b62a099b1, type: 3}
+      Value:
+        <Sprite>k__BackingField: {fileID: 21300000, guid: 7121d67097a5a2b44b9d2b2b62a099b1, type: 3}
+        <Text>k__BackingField: apply a buff on
     - Key: 2
-      Value: {fileID: 21300000, guid: cfc4c0b31b660544f8f1747c6d6359dd, type: 3}
+      Value:
+        <Sprite>k__BackingField: {fileID: 21300000, guid: cfc4c0b31b660544f8f1747c6d6359dd, type: 3}
+        <Text>k__BackingField: apply a debuff on
     - Key: 3
-      Value: {fileID: 21300000, guid: 7a879c578ca567842b71f284faeba24b, type: 3}
+      Value:
+        <Sprite>k__BackingField: {fileID: 21300000, guid: 7a879c578ca567842b71f284faeba24b, type: 3}
+        <Text>k__BackingField: defend
     - Key: 4
-      Value: {fileID: 21300000, guid: 4db3255eb7321ab49888050a62dde775, type: 3}
+      Value:
+        <Sprite>k__BackingField: {fileID: 21300000, guid: 4db3255eb7321ab49888050a62dde775, type: 3}
+        <Text>k__BackingField: move
     - Key: 5
-      Value: {fileID: 0}
+      Value:
+        <Sprite>k__BackingField: {fileID: 0}
+        <Text>k__BackingField: nothing
     - Key: 6
-      Value: {fileID: 21300000, guid: e28e09ba5ffef5348843fd5392484a4b, type: 3}
+      Value:
+        <Sprite>k__BackingField: {fileID: 21300000, guid: e28e09ba5ffef5348843fd5392484a4b, type: 3}
+        <Text>k__BackingField: someting different
+  EnemyTargetTypes:
+    _serializedList:
+    - Key: 0
+      Value:
+        <Sprite>k__BackingField: {fileID: 0}
+        <Text>k__BackingField: 
+    - Key: 1
+      Value:
+        <Sprite>k__BackingField: {fileID: 0}
+        <Text>k__BackingField: the hero in this lane
+    - Key: 2
+      Value:
+        <Sprite>k__BackingField: {fileID: 21300000, guid: 090e407d1f10e854c82a061f2dc8c635, type: 3}
+        <Text>k__BackingField: the hero
+    - Key: 3
+      Value:
+        <Sprite>k__BackingField: {fileID: 21300000, guid: 03eeeec7081ddba48aa373b34fb7ac06, type: 3}
+        <Text>k__BackingField: all heroes
+    - Key: 4
+      Value:
+        <Sprite>k__BackingField: {fileID: 0}
+        <Text>k__BackingField: themself

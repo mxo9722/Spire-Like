@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CardCollectionSystem : Singleton<CardCollectionSystem>
+public class CardCollectionSystem : PersistentSingleton<CardCollectionSystem>
 {
-    [SerializeField] private CardCollectionUI _cardCollectionUI;
+    private CardCollectionUI _cardCollectionUI => CardCollectionUI.Instance;
 
     public List<Card> Cards { get; private set; } = null;
 

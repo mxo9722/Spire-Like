@@ -1,10 +1,19 @@
-using SerializeReferenceEditor;
-using System;
-using UnityEngine;
+using System.Collections.Generic;
 
 [System.Serializable]
-public class AutoTargetEffect
+public abstract class AutoTargetEffect
 {
-    [field: SerializeReference, SR] public TargetMode TargetMode { get; private set; }
-    [field: SerializeReference, SR] public Effect Effect { get; private set; }
+    public abstract Effect Effect { get; }
+
+    public abstract GameAction GetGameAction(TargetModeContext targetModeContext);
+    public IDynamicEffectText GetDynamicTextEffect()
+    {
+        if (Effect is IDynamicEffectText dynamicEffectText)
+            return dynamicEffectText;
+        return null;
+    }
+
+    public abstract string GetDynamicText(TargetModeContext targetModeContext);
+
+    public abstract List<StatusEffectType> GetAllStatusEffects();
 }

@@ -27,34 +27,6 @@ public class LaneView : MonoBehaviour
     {
         Tween tween = null;
 
-        //for (int x = 0; x < EnemySlots.Count - 1; x++)
-        //{
-        //    Transform pullSlot = EnemySlots[x];
-
-        //    if (pullSlot.childCount > 0)
-        //        continue;
-
-        //    for(int y = x + 1; y < EnemySlots.Count; y++)
-        //    {
-        //        Transform pushSlot = EnemySlots[y];
-
-        //        if(pushSlot.childCount == 1)
-        //        {
-        //            Transform movedChild = pushSlot.GetChild(0);
-        //            movedChild.parent = pullSlot;
-
-        //            List<Tween> tweens = DOTween.TweensByTarget(movedChild);
-
-        //            if(tweens != null)
-        //            foreach (Tween t in tweens)
-        //                yield return t.WaitForCompletion();
-
-        //            tween = movedChild.DOLocalMove(Vector3.zero, duration);
-        //            break;
-        //        }
-        //    }
-        //}
-
         for(int i=0;i<EnemyViews.Count;i++)
         {
             EnemyView enemyView = EnemyViews[i];
@@ -106,6 +78,8 @@ public class LaneView : MonoBehaviour
         if (!EnemyViews.Contains(enemyView))
             yield break;
 
+        yield return enemyView.WaitForTweensComplete();
+
         EnemyViews.Remove(enemyView);
 
         Tween tween = enemyView.transform.DOScale(Vector3.zero, 0.25f);
@@ -139,8 +113,10 @@ public class LaneView : MonoBehaviour
 
         if (heroView != null)
         {
+            yield return heroView.WaitForTweensComplete();
+
             heroView.transform.parent = HeroSlot;
-            yield return heroView.transform.DOLocalMove(Vector3.zero, duration).WaitForCompletion();
+            yield return heroView.transform.DOLocalJump(Vector3.zero, 2, 1, duration).WaitForCompletion();
         }
     }
 }

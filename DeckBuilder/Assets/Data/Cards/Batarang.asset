@@ -12,30 +12,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62bf69310631aa94896652d3f8be392c, type: 3}
   m_Name: Batarang
   m_EditorClassIdentifier: 
-  _description: Deal 10 damage to a random enemy.
+  <Description>k__BackingField: Deal {v0} damage to a random enemy.
   <Mana>k__BackingField: 1
   <ExhuastOnUse>k__BackingField: 0
   <Image>k__BackingField: {fileID: 21300000, guid: dface75351cb6ee41ab5670fd16bae16, type: 3}
+  <ManualTargetType>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
     rid: -2
   <OtherEffects>k__BackingField:
-  - rid: 3796151383156588614
+  - rid: 1228494502818218260
   references:
     version: 2
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 3796151383156588614
-      type: {class: AutoTargetEffect, ns: , asm: Assembly-CSharp}
+    - rid: 1228494502818218260
+      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
       data:
         <TargetMode>k__BackingField:
-          rid: 3796151383156588621
-        <Effect>k__BackingField:
-          rid: 3796151383156588616
-    - rid: 3796151383156588616
+          rid: 1228494502818218320
+        _combatantEffect:
+          rid: 1228494502818218262
+    - rid: 1228494502818218262
       type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
       data:
         _damageAmount: 10
-    - rid: 3796151383156588621
-      type: {class: RandomEnemyTM, ns: , asm: Assembly-CSharp}
-      data: 
+    - rid: 1228494502818218320
+      type: {class: RandomEnemiesCTM, ns: , asm: Assembly-CSharp}
+      data:
+        _enemyCount: 1

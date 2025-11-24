@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CardCollectionUI : MonoBehaviour
+public class CardCollectionUI : Singleton<CardCollectionUI>
 {
     [SerializeField] private Transform _contentTransform;
     [SerializeField] private GameObject _wrapper;

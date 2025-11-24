@@ -21,6 +21,11 @@ public class ManaSystem : Singleton<ManaSystem>
         ActionSystem.UnsubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction, ReactionTiming.POST);
     }
 
+    public void UpdateManaText()
+    {
+        _manaUI.UpdateManaText(_currentMana);
+    }
+
     public bool HasEnoughMana(int mana)
     {
         return _currentMana >= mana;

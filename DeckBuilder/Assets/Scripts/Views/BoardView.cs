@@ -10,6 +10,7 @@ public class BoardView : MonoBehaviour
     [SerializeField] private List<LaneView> _laneViews = new();
     [SerializeField] private Transform _wrapper;
     [SerializeField] private Transform _singleLaneTransform;
+    [SerializeField] private Transform _combatantTargetHoverTransform;
 
     private Vector3 _originalPosition;
     private Vector3 _originalScale;
@@ -88,7 +89,6 @@ public class BoardView : MonoBehaviour
         yield return laneView.RemoveEnemy(enemyView);
     }
 
-
     public IEnumerator RedistributeEnemies()
     {
         List<EnemyView> allEnemyViews = GetAllEnemies();
@@ -148,10 +148,15 @@ public class BoardView : MonoBehaviour
 
         yield return tween1;
         yield return tween2;
+        DynamicTextSystem.Instance.UpdateDynamicValues();
+
     }
-    
+
     public IEnumerator MoveEnemy(MoveEnemyGA moveEnemyGA, float duration, bool pause = false)
     {
+        if (moveEnemyGA.EnemyView.CurrentHealth == 0)
+            yield break;
+
         if (moveEnemyGA.DestinationLane.EnemyViews.Count >= MAX_ENEMY_COUNT)
             yield break;
 
@@ -160,10 +165,7 @@ public class BoardView : MonoBehaviour
         originalLaneView.EnemyViews.Remove(moveEnemyGA.EnemyView);
         moveEnemyGA.DestinationLane.EnemyViews.Add(moveEnemyGA.EnemyView);
 
-        List<Tween> runningTweens = DOTween.TweensById(moveEnemyGA.EnemyView.transform);
-        if (runningTweens != null)
-            foreach (Tween runningTween in runningTweens)
-                yield return runningTween.WaitForCompletion();
+        yield return moveEnemyGA.EnemyView.WaitForTweensComplete();
 
         moveEnemyGA.EnemyView.transform.parent = moveEnemyGA.DestinationLane.FirstAvailableSlot();
         Tween tween = moveEnemyGA.EnemyView.transform.DOLocalMove(Vector3.zero, duration);
@@ -174,46 +176,37 @@ public class BoardView : MonoBehaviour
             yield return tween.WaitForCompletion();
         else
             yield return null;
+
+        DynamicTextSystem.Instance.UpdateDynamicValues();
     }
 
     public IEnumerator CompressBoard()
     {
+        if (!_laneViews.Any())
+            yield break;
+
         int emptyIndex = _laneViews.FindIndex(e => !e.EnemyViews.Any());
 
         if (emptyIndex != -1)
         {
 
-            int middleIndex = _laneViews.FindIndex(e => e.HeroView == HeroSystem.Instance.HeroView);
+            int heroIndex = _laneViews.FindIndex(e => e.HeroView == HeroSystem.Instance.HeroView);
+            float halfIndex = _laneViews.Count / 2.0f;
             RemoveLaneGA removeLaneGA;
 
-            if (emptyIndex <= middleIndex)
+            bool beginPull = false;
+
+            if (heroIndex != _laneViews.Count - 1)
             {
-                for (int i = emptyIndex; i > 0; i--)
-                {
-                    LaneView pushLaneView = _laneViews[i - 1];
-                    LaneView pullLaneView = _laneViews[i];
-
-                    if (!pullLaneView.EnemyViews.Any())
-                    {
-                        foreach (EnemyView enemyView in pushLaneView.EnemyViews)
-                        {
-                            MoveEnemyGA moveEnemyGA = new(pullLaneView, enemyView);
-                            ActionSystem.Instance.AddReaction(moveEnemyGA);
-                        }
-                    }
-                }
-
-                removeLaneGA = new(_laneViews.First());
-
-            }
-            else
-            {
-                for (int i = middleIndex; i < _laneViews.Count - 1; i++)
+                for (int i = heroIndex; i < _laneViews.Count - 1; i++)
                 {
                     LaneView pullLaneView = _laneViews[i];
                     LaneView pushLaneView = _laneViews[i + 1];
 
                     if (!pullLaneView.EnemyViews.Any())
+                        beginPull = true;
+
+                    if (beginPull)
                     {
                         foreach (EnemyView enemyView in pushLaneView.EnemyViews)
                         {
@@ -224,10 +217,34 @@ public class BoardView : MonoBehaviour
                 }
 
                 removeLaneGA = new(_laneViews.Last());
+
+            }
+            else
+            {
+
+                for (int i = heroIndex; i > 0; i--)
+                {
+                    LaneView pullLaneView = _laneViews[i];
+                    LaneView pushLaneView = _laneViews[i - 1];
+
+                    if (!pullLaneView.EnemyViews.Any())
+                        beginPull = true;
+
+                    if (beginPull)
+                    {
+                        foreach (EnemyView enemyView in pushLaneView.EnemyViews)
+                        {
+                            MoveEnemyGA moveEnemyGA = new(pullLaneView, enemyView);
+                            ActionSystem.Instance.AddReaction(moveEnemyGA);
+                        }
+                    }
+                }
+
+                removeLaneGA = new(_laneViews.First());
             }
 
             ActionSystem.Instance.AddReaction(removeLaneGA);
-
+            ActionSystem.Instance.AddReaction(new CompressBoardGA());
 
             //RedistributeEnemiesGA redistributeEnemiesGA = new();
             //ActionSystem.Instance.AddReaction(redistributeEnemiesGA);
@@ -253,7 +270,7 @@ public class BoardView : MonoBehaviour
 
             RemoveLaneGA removeLaneGA = new(laneView);
 
-            if (removeIndex <= middleIndex)
+            if (removeIndex > middleIndex)
             {
                 moveHeroGA = new(_laneViews[removeIndex + 1],heroView);
             }
@@ -262,7 +279,8 @@ public class BoardView : MonoBehaviour
                 moveHeroGA = new(_laneViews[removeIndex - 1], heroView);
             }
 
-            ActionSystem.Instance.AddReaction(moveHeroGA);
+            if(heroView!=null)
+                ActionSystem.Instance.AddReaction(moveHeroGA);
             ActionSystem.Instance.AddReaction(removeLaneGA);
             yield break;
         }
@@ -288,5 +306,13 @@ public class BoardView : MonoBehaviour
 
         Destroy(laneView.gameObject);
         _laneViews.Remove(laneView);
+    }
+
+    public Vector3 GetCombatantHoverPosition()
+    {
+        Vector3 position = new();
+        position.x = _combatantTargetHoverTransform.position.x;
+        position.y = 1.75f;
+        return position;
     }
 }

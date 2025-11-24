@@ -16,26 +16,27 @@ MonoBehaviour:
   <PerkCondition>k__BackingField:
     rid: 904407216073211974
   <AutoTargetEffect>k__BackingField:
-    rid: 904407216073211975
+    rid: 1228494508162810022
   <UseAutoTarget>k__BackingField: 0
   <UseActionCasterAsTarget>k__BackingField: 1
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
     - rid: 904407216073211974
       type: {class: OnEnemyAttackCondition, ns: , asm: Assembly-CSharp}
       data:
         reactionTiming: 1
-    - rid: 904407216073211975
-      type: {class: AutoTargetEffect, ns: , asm: Assembly-CSharp}
+    - rid: 1228494508162810022
+      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
       data:
         <TargetMode>k__BackingField:
-          rid: -2
-        <Effect>k__BackingField:
-          rid: 904407216073211976
-    - rid: 904407216073211976
+          rid: 1228494508162810026
+        _combatantEffect:
+          rid: 1228494508162810025
+    - rid: 1228494508162810025
       type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
       data:
         _damageAmount: 3
+    - rid: 1228494508162810026
+      type: {class: NoCTM, ns: , asm: Assembly-CSharp}
+      data: 

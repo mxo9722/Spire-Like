@@ -16,10 +16,11 @@ MonoBehaviour:
   <Mana>k__BackingField: 0
   <ExhuastOnUse>k__BackingField: 0
   <Image>k__BackingField: {fileID: 21300000, guid: d7e764b34f9a35f4ab1f3f19a0550b5a, type: 3}
+  <ManualTargetType>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
     rid: 1228494274682945607
   <OtherEffects>k__BackingField:
-  - rid: 1228494274682945608
+  - rid: 1228494502818218274
   references:
     version: 2
     RefIds:
@@ -27,17 +28,12 @@ MonoBehaviour:
       type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
       data:
         _damageAmount: 99999
-    - rid: 1228494274682945608
-      type: {class: AutoTargetEffect, ns: , asm: Assembly-CSharp}
+    - rid: 1228494502818218274
+      type: {class: AutoTargetlessEffect, ns: , asm: Assembly-CSharp}
       data:
-        <TargetMode>k__BackingField:
-          rid: 1228494274682945609
-        <Effect>k__BackingField:
-          rid: 1228494274682945610
-    - rid: 1228494274682945609
-      type: {class: NoTM, ns: , asm: Assembly-CSharp}
-      data: 
-    - rid: 1228494274682945610
-      type: {class: DrawCardsEffects, ns: , asm: Assembly-CSharp}
+        _noTargetEffect:
+          rid: 1228494502818218275
+    - rid: 1228494502818218275
+      type: {class: DrawCardsEffect, ns: , asm: Assembly-CSharp}
       data:
         _drawAmount: 1

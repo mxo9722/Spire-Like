@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62bf69310631aa94896652d3f8be392c, type: 3}
   m_Name: Strike
   m_EditorClassIdentifier: 
-  _description: Deal 6 damage.
+  <Description>k__BackingField: Deal {vt} damage.
   <Mana>k__BackingField: 1
   <ExhuastOnUse>k__BackingField: 0
   <Image>k__BackingField: {fileID: 21300000, guid: 5769ff186716f8644854ad74d514b3ba, type: 3}
+  <ManualTargetType>k__BackingField: 0
   <ManualTargetEffect>k__BackingField:
     rid: 3796151383156588620
   <OtherEffects>k__BackingField: []

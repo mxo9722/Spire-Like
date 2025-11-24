@@ -2,6 +2,7 @@ using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using System.Linq;
 using UnityEngine;
 
 public abstract class CombatantView : MonoBehaviour
@@ -9,6 +10,8 @@ public abstract class CombatantView : MonoBehaviour
     [SerializeField] private TMP_Text _healthText;
     [SerializeField] private SpriteRenderer _spriteRenderer;
     [SerializeField] private StatusEffectsUI _statusEffectsUI;
+    [SerializeField] private HelpBoxesUI _helpBoxesUI;
+
     public int MaxHealth { get; private set; }
     public int CurrentHealth { get; private set; }
 
@@ -21,6 +24,27 @@ public abstract class CombatantView : MonoBehaviour
         UpdateHealthText();
     }
 
+    public void OnMouseEnter()
+    {
+        if(!ManualTargetSystem.Instance.IsTargetting)
+            LoadHelpBoxes(_helpBoxesUI);
+    }
+
+    public void OnMouseExit()
+    {
+        _helpBoxesUI.Hide();
+    }
+
+    protected virtual void LoadHelpBoxes(HelpBoxesUI helpBoxesUI)
+    {
+        List<StatusEffectType> allStatusEffects = GetAllActiveStatusEffects();
+
+        foreach (StatusEffectType statusEffect in allStatusEffects)
+        {
+            _helpBoxesUI.AddHelpBoxFromStatusEffect(statusEffect, _statusEffects[statusEffect]);
+        }
+    }
+
     private void UpdateHealthText()
     {
         _healthText.text = "HP: " + CurrentHealth;
@@ -29,16 +53,19 @@ public abstract class CombatantView : MonoBehaviour
     public void Damage(int damageAmount)
     {
         int remainingDamage = damageAmount;
-        int currentArmor = GetStatusEffectStacks(StatusEffectType.ARMOR);
+        int currentArmor = GetStatusEffectStacks(StatusEffectType.BLOCK);
+
+        if (remainingDamage == 0)
+            return;
 
         if (currentArmor >= remainingDamage)
         {
-            RemoveStatusEffect(StatusEffectType.ARMOR, remainingDamage);
+            RemoveStatusEffect(StatusEffectType.BLOCK, remainingDamage);
             remainingDamage = 0;
         }
         else if (currentArmor > 0)
         {
-            RemoveStatusEffect(StatusEffectType.ARMOR, currentArmor);
+            RemoveStatusEffect(StatusEffectType.BLOCK, currentArmor);
             remainingDamage -= currentArmor;
         }
 
@@ -73,7 +100,7 @@ public abstract class CombatantView : MonoBehaviour
 
         _statusEffectsUI.UpdateStatusEffectsUI(type, _statusEffects[type]);
     }
-    
+
     public void RemoveStatusEffect(StatusEffectType type, int stackCount)
     {
         if (_statusEffects.ContainsKey(type))
@@ -82,18 +109,29 @@ public abstract class CombatantView : MonoBehaviour
             if (_statusEffects[type] < 0)
                 _statusEffects[type] = 0;
         }
-        else
-        {
-            _statusEffects.Add(type, stackCount);
-        }
 
         _statusEffectsUI.UpdateStatusEffectsUI(type, _statusEffects[type]);
+    }
+
+    public List<StatusEffectType> GetAllActiveStatusEffects()
+    {
+        List<StatusEffectType> allTypes = new(_statusEffects.Keys);
+
+        return allTypes.FindAll(e => _statusEffects[e] > 0);
     }
 
     public int GetStatusEffectStacks(StatusEffectType statusEffectType)
     {
         if (_statusEffects.ContainsKey(statusEffectType)) return _statusEffects[statusEffectType];
         return 0;
+    }
+
+    public IEnumerator WaitForTweensComplete(){
+
+        List<Tween> tweens = DOTween.TweensByTarget(transform, true);
+        if(tweens != null)
+            foreach (Tween t in tweens)
+                yield return t.WaitForCompletion();
     }
 
     public abstract void Die();

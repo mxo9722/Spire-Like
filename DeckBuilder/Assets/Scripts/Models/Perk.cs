@@ -1,13 +1,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class Perk
 {
     public Sprite Image => _data.Image;
 
     private readonly PerkData _data;
     private readonly PerkCondition _condition;
-    private readonly AutoTargetEffect _effect;
+    private readonly AutoCombatantTargetEffect _effect;
 
     public Perk(PerkData perkData)
     {
@@ -38,12 +39,12 @@ public class Perk
             }
             if (_data.UseAutoTarget)
             {
-                TargetModeContext targetModeContext = new(HeroSystem.Instance.HeroView);
+                TargetModeContext targetModeContext = TargetModeContext.CreateHeroTMC();
 
                 targets.AddRange(_effect.TargetMode.GetTargets(targetModeContext));
             }
 
-            GameAction perkEffectAction = _effect.Effect.GetGameAction(targets, HeroSystem.Instance.HeroView);
+            GameAction perkEffectAction = _effect.Effect.GetGameAction(HeroSystem.Instance.HeroView, combatantTargets:targets);
             ActionSystem.Instance.AddReaction(perkEffectAction);
         }
     }

@@ -1,8 +1,11 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public abstract class TargetMode
+[Serializable]
+public abstract class TargetMode<T>
 {
-    public abstract List<CombatantView> GetTargets(TargetModeContext targetModeContext);
+    public abstract List<T> GetTargets(TargetModeContext targetModeContext);
+    public virtual List<StatusEffectType> GetAllStatusEffects() { return null; }
+
 }

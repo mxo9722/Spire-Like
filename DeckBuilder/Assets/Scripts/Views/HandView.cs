@@ -26,6 +26,14 @@ public class HandView : MonoBehaviour
         return cardView;
     }
 
+    public void UpdateCardHoverView()
+    {
+        foreach(CardView card in _cards)
+        {
+            card.UpdateHoverView();
+        }
+    }
+
     private CardView GetCardView(Card card)
     {
         return _cards.Where(cardView => cardView.Card == card).FirstOrDefault();
@@ -54,5 +62,13 @@ public class HandView : MonoBehaviour
             _cards[i].SetBasePos(newPos, rotation);
         }
         yield return new WaitForSeconds(duration);
+    }
+
+    public void UpdateDynamicDescriptions()
+    {
+        foreach(CardView hand in _cards)
+        {
+            hand.UpdateDynamicDescription(TargetModeContext.CreateHeroTMC());
+        }
     }
 }

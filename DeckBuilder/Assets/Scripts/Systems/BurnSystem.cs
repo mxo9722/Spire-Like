@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class BurnSystem : Singleton<BurnSystem>
@@ -17,10 +18,17 @@ public class BurnSystem : Singleton<BurnSystem>
 
     private IEnumerator ApplyBurnPerformer(ApplyBurnGA applyBurnGA)
     {
-        CombatantView target = applyBurnGA.Target;
-        Instantiate(_burnVFX, target.transform.position, Quaternion.identity);
-        target.Damage(applyBurnGA.BurnDamage);
-        target.RemoveStatusEffect(StatusEffectType.BURN, 1);
+        List<CombatantView> targets = applyBurnGA.Targets;
+
+        foreach (var target in targets)
+        {
+            Instantiate(_burnVFX, target.transform.position, Quaternion.identity);
+
+            int burnStacks = target.GetStatusEffectStacks(StatusEffectType.BURN);
+
+            target.Damage(burnStacks);
+        }
+
         yield return new WaitForSeconds(1f);
     }
 }

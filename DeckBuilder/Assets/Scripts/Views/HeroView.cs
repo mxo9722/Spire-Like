@@ -4,7 +4,7 @@ public class HeroView : CombatantView
 {
     public void Setup(HeroData heroData)
     {
-        SetupBase(heroData.Health, heroData.Image);
+        SetupBase(heroData.StartingMaxHealth, heroData.Image);
 
     }
 

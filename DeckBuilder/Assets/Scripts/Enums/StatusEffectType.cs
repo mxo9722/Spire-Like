@@ -2,6 +2,11 @@ using UnityEngine;
 
 public enum StatusEffectType
 {
-    ARMOR,
-    BURN
+    BLOCK,
+    BURN,
+    DEXTERITY,
+    FRAIL,
+    STRENGTH,
+    VULNERABLE,
+    WEAK
 }
