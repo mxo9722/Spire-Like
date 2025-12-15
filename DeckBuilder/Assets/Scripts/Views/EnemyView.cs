@@ -48,7 +48,7 @@ public class EnemyView : CombatantView
 
             if (CurrentAction.Effects[0].Effect is AttackHeroEffect attackHeroEffect)
             {
-                TargetModeContext targetModeContext = new(this);
+                EffectContext targetModeContext = new(this);
 
                 List<CombatantView> targets = combatantTargetEffect.TargetMode.GetTargets(targetModeContext);
 
@@ -80,7 +80,7 @@ public class EnemyView : CombatantView
 
                 if (combatantTargetEffect.Effect is AttackHeroEffect attackHeroEffect)
                 {
-                    TargetModeContext targetContext = new(this);
+                    EffectContext targetContext = new(this);
 
                     List<CombatantView> targets = combatantTargetEffect.TargetMode.GetTargets(targetContext);
                     helpBoxText = helpBoxText + " for " + DamageSystem.GetDamageFromAttack(attackHeroEffect.Damage, this, targets).ToString() + " damage";

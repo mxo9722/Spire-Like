@@ -5,7 +5,7 @@ using UnityEngine;
 [Serializable]
 public class ManuallySelectedLTM : LaneTargetMode
 {
-    public override List<LaneView> GetTargets(TargetModeContext targetModeContext)
+    public override List<LaneView> GetTargets(EffectContext targetModeContext)
     {
         return new() { targetModeContext.TargetLane };
     }

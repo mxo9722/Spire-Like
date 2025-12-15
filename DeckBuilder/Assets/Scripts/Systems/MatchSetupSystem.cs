@@ -1,29 +1,59 @@
 using AYellowpaper.SerializedCollections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MatchSetUpSystem : MonoBehaviour
+public class MatchSetUpSystem : Singleton<MatchSetUpSystem>
 {
     [SerializeField] private HeroData _heroData;
     [SerializeField] private PerkData _perkData;
 
+    [field: SerializeField] public CombatRoom Room { get; private set; }
+
+    private void OnEnable()
+    {
+        ActionSystem.AttachPerformer<CombatStartGA>(CombatStartPerformer);
+    }
+
+    private void OnDisable()
+    {
+        ActionSystem.DetachPerformer<CombatStartGA>();
+    }
+
     private void Start()
     {
-        HeroSystem.Instance.Setup(_heroData);
+        if (RunSystem.Instance.GetRoom() is CombatRoom combatRoom)
+            Room = combatRoom;
 
-        CombatRoom combatRoom = (CombatRoom) RunSystem.Instance.RunData.Room;
+        if (Room.IsCompleted)
+        {
+            RewardSystem.Instance.DisplayRewards(Room.Rewards, MatchEndSystem.Instance.ReturnToMap);
+        }
+        else
+        {
+            HeroData runHero = RunSystem.Instance.GetHeroData();
 
-        EnemySystem.Instance.Setup(combatRoom.TopRow, 0);
-        EnemySystem.Instance.Setup(combatRoom.MiddleRow, 1);
-        EnemySystem.Instance.Setup(combatRoom.BottomRow, 2);
+            if (runHero != null)
+                _heroData = runHero;
 
-        CardSystem.Instance.SetUp(RunSystem.Instance.RunData.Deck);
-        
-        foreach(Perk perk in RunSystem.Instance.RunData.Perks)
-            PerkSystem.Instance.AddPerk(new Perk(_perkData));
-        
+            HeroSystem.Instance.Setup(_heroData);
+
+            EnemySystem.Instance.Setup(Room.TopRow, 0);
+            EnemySystem.Instance.Setup(Room.MiddleRow, 1);
+            EnemySystem.Instance.Setup(Room.BottomRow, 2);
+
+            CardSystem.Instance.SetUp(RunSystem.Instance.RunData.Deck);
+
+            ManaSystem.Instance.UpdateManaText();
+
+            ActionSystem.Instance.Perform(new CombatStartGA());
+        }
+    }
+
+    private IEnumerator CombatStartPerformer(CombatStartGA combatStartGA)
+    {
         DrawCardsGA drawCardsGA = new(5);
-        ManaSystem.Instance.UpdateManaText();
-        ActionSystem.Instance.Perform(drawCardsGA);
+        ActionSystem.Instance.AddReaction(drawCardsGA);
+        yield return null;
     }
 }

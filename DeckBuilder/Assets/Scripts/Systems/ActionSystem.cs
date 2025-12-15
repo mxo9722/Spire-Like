@@ -11,9 +11,22 @@ public class ActionSystem : Singleton<ActionSystem>
     private static Dictionary<Type, List<Action<GameAction>>> postSubs = new();
     private static Dictionary<Type, Func<GameAction, IEnumerator>> performers = new();
 
+    protected override void Awake()
+    {
+        base.Awake();
+
+        preSubs = new();
+        postSubs = new();
+        performers = new();
+    }
+
     public void Perform(GameAction action, Action OnPerformFinished = null)
     {
-        if (IsPerforming) return;
+        if (IsPerforming || MatchEndSystem.Instance.GameOver)
+        {
+            Debug.Log("action attempted while performing ");
+            return;
+        }
         IsPerforming = true;
         StartCoroutine(Flow(action, () =>
         {
@@ -57,6 +70,9 @@ public class ActionSystem : Singleton<ActionSystem>
 
     private IEnumerator PerformPerformer(GameAction action)
     {
+        if (MatchEndSystem.Instance.GameOver && !action.PerformAfterGameOver)
+            yield break;
+
         Func<GameAction, IEnumerator> performer = performers[action.GetType()];
         yield return performer(action);
     }

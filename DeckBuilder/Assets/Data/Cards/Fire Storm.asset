@@ -12,11 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62bf69310631aa94896652d3f8be392c, type: 3}
   m_Name: Fire Storm
   m_EditorClassIdentifier: 
-  <Description>k__BackingField: Apply 4 burn to all enemies.
+  <Description>k__BackingField: 'Apply 4 burn to all enemies.
+
+    Exhaust.'
   <Mana>k__BackingField: 2
+  <RequiredConditions>k__BackingField: []
   <ExhuastOnUse>k__BackingField: 1
   <Image>k__BackingField: {fileID: 21300000, guid: ff2a7503989264c4d9678d11c8acf745, type: 3}
   <ManualTargetType>k__BackingField: 0
+  <CombatantFilters>k__BackingField: []
+  <LaneFilters>k__BackingField: []
   <ManualTargetEffect>k__BackingField:
     rid: -2
   <OtherEffects>k__BackingField:

@@ -1,30 +1,61 @@
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class ManualTargetSystem : Singleton<ManualTargetSystem>
 {
     public bool IsTargetting { get => _arrowView.gameObject.activeSelf; }
-    
+
     [SerializeField] private ArrowView _arrowView;
     [SerializeField] private LayerMask _enemyTargetLayerMask;
     [SerializeField] private LayerMask _laneTargetLayerMask;
 
-    public ManualTargetType ManualTargetType { get; private set; } = ManualTargetType.ENEMY;
+    public ManualTargetType ManualTargetType { get; private set; } = ManualTargetType.COMBATANT;
 
-    public void StartTargeting(Vector3 startPosition,ManualTargetType manualTargetType)
+    private List<CombatantFilter> _combatantFilters = null;
+    private List<LaneFilter> _laneFilters = null;
+
+
+    public void StartTargeting(Vector3 startPosition, Card card)
     {
         _arrowView.gameObject.SetActive(true);
         _arrowView.SetupArrow(startPosition);
-        ManualTargetType = manualTargetType;
+        ManualTargetType = card.ManualTargetType;
+        _combatantFilters = card.CombatantFilters;
+        _laneFilters = card.LaneFilters;
+
+        List<ConditionalAutoTargetEffect> highlightConditionals = card.OtherEffects.Where(e => e is ConditionalAutoTargetEffect).Select(e => (ConditionalAutoTargetEffect)e).ToList();
+
+        switch (card.ManualTargetType)
+        {
+            case ManualTargetType.COMBATANT:
+
+                TargetPreviewSystem.Instance.SetTargetPreviewsManual<CombatantView, CombatantFilter>(card.CombatantFilters, highlightConditionals);
+
+                break;
+            case ManualTargetType.LANE:
+
+                TargetPreviewSystem.Instance.SetTargetPreviewsManual<LaneView, LaneFilter>(card.LaneFilters, highlightConditionals);
+
+                break;
+        }
     }
 
-    public EnemyView EndEnemyTargeting(Vector3 endPosition)
+    public CombatantView EndEnemyTargeting(Vector3 endPosition)
     {
+        TargetPreviewSystem.Instance.HideTargetPreviews();
+
+        if (!_arrowView.gameObject.activeSelf)
+            return null;
+
         _arrowView.gameObject.SetActive(false);
         RaycastHit2D hit = Physics2D.Raycast(endPosition, Vector3.forward, 10f, _enemyTargetLayerMask);
-        if( hit.collider != null
-            && hit.transform.TryGetComponent(out EnemyView enemyView))
+        if (hit.collider != null
+            && hit.transform.TryGetComponent(out CombatantView target))
         {
-            return enemyView;
+            EffectContext context = EffectContext.CreateHeroEC(target);
+
+            return CombatantIsValid(context, target) ? target : null;
         }
 
         return null;
@@ -32,12 +63,19 @@ public class ManualTargetSystem : Singleton<ManualTargetSystem>
 
     public LaneView EndLaneTargeting(Vector3 endPosition)
     {
+        TargetPreviewSystem.Instance.HideTargetPreviews();
+
+        if (!_arrowView.gameObject.activeSelf)
+            return null;
+
         _arrowView.gameObject.SetActive(false);
         RaycastHit2D hit = Physics2D.Raycast(endPosition, Vector3.forward, 10f, _laneTargetLayerMask);
         if (hit.collider != null
-            && hit.transform.TryGetComponent(out LaneView laneVeiw))
+            && hit.transform.TryGetComponent(out LaneView target))
         {
-            return laneVeiw;
+            EffectContext context = EffectContext.CreateHeroEC(target);
+
+            return LaneIsValid(context, target) ? target : null;
         }
 
         return null;
@@ -49,7 +87,7 @@ public class ManualTargetSystem : Singleton<ManualTargetSystem>
 
         switch (ManualTargetType)
         {
-            case ManualTargetType.ENEMY:
+            case ManualTargetType.COMBATANT:
                 hit = Physics2D.Raycast(endPosition, Vector3.forward, 10f, _enemyTargetLayerMask);
                 break;
             case ManualTargetType.LANE:
@@ -58,5 +96,43 @@ public class ManualTargetSystem : Singleton<ManualTargetSystem>
         }
 
         return hit.collider;
+    }
+
+    public bool CombatantIsValid(EffectContext context, CombatantView target)
+    {
+        return CombatantIsValid(context, target, _combatantFilters);
+    }
+
+    public static bool CombatantIsValid(EffectContext context, CombatantView target, List<CombatantFilter> filters)
+    {
+        if (filters != null)
+        {
+            foreach (CombatantFilter filter in filters)
+            {
+                if (!filter.TestTarget(context, target))
+                    return false;
+            }
+        }
+
+        return true;
+    }
+
+    public bool LaneIsValid(EffectContext context, LaneView target)
+    {
+        return LaneIsValid(context, target, _laneFilters);
+    }
+
+    public static bool LaneIsValid(EffectContext context, LaneView target, List<LaneFilter> filters)
+    {
+        if (filters != null)
+        {
+            foreach (LaneFilter filter in filters)
+            {
+                if (!filter.TestTarget(context, target))
+                    return false;
+            }
+        }
+
+        return true;
     }
 }

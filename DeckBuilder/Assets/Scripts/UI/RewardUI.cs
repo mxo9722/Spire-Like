@@ -7,11 +7,11 @@ public class RewardUI : MonoBehaviour
     [SerializeField] private Image _image;
     [SerializeField] private TMPro.TMP_Text _text;
 
-    private Reward _rewardable;
+    public SetReward Reward { get; private set; }
 
-    public void SetUp(Reward rewardable)
+    public void SetUp(SetReward rewardable)
     {
-        _rewardable = rewardable;
+        Reward = rewardable;
 
         _image.sprite = rewardable.RewardImage;
         _text.text = rewardable.RewardName;
@@ -19,15 +19,16 @@ public class RewardUI : MonoBehaviour
 
     public void CollectReward()
     {
-        if(_rewardable != null)
-            _rewardable.CollectReward();
+        if(Reward != null)
+            Reward.CollectReward();
 
-        CombatRoom combatRoom = (CombatRoom)RunSystem.Instance.GetRoom();
+        Room room = RunSystem.Instance.GetRoom();
 
-        combatRoom.Rewards.Remove(_rewardable);
+        if(room is IHaveRewards rewardsRoom)
+        {
+            rewardsRoom.RemoveReward(Reward);
+        }
 
         RunSystem.Instance.SaveRun();
-
-        Destroy(gameObject);
     }
 }

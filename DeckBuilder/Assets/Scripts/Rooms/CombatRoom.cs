@@ -1,28 +1,47 @@
 using SerializeReferenceEditor;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [Serializable]
-public class CombatRoom : Room
+public class CombatRoom : Room, IHaveRewards
 {
-    [field: SerializeField] public List<EnemyData> TopRow { get; private set; }
-    [field: SerializeField] public List<EnemyData> MiddleRow { get; private set; }
-    [field: SerializeField] public List<EnemyData> BottomRow { get; private set; }
+    [field: SerializeField] public List<EnemyData> TopRow { get; private set; } = new();
+    [field: SerializeField] public List<EnemyData> MiddleRow { get; private set; } = new();
+    [field: SerializeField] public List<EnemyData> BottomRow { get; private set; } = new();
+    [field: SerializeReference, SR] public List<SetReward> Rewards { get; private set; } = new();
 
-    [field: SerializeReference, SR] public List<Reward> Rewards { get; private set; }
+    public int FightIndex { get; private set; } = -1;
 
-    public CombatRoom()
+    public override RoomType RoomType => RoomType.FIGHT;
+
+    public CombatRoom(int level, int row, int seed = 0) : base(level, row, seed)
     {
         TopRow = new();
         MiddleRow = new();
         BottomRow = new();
+
+        Rewards.Add(RewardCreator.Instance.CreateCardPick());
+        Rewards.Add(RewardCreator.Instance.CreateMoney());
     }
 
-    public CombatRoom(List<EnemyData> topRow, List<EnemyData> middleRow = null, List<EnemyData> bottomRow = null)
+    public override void SetUp()
     {
-        TopRow = topRow;
-        MiddleRow = middleRow;
-        BottomRow = bottomRow;
+        List<int> skipList = OriginRooms.Where(n => n.RoomType == RoomType).Select(n => ((CombatRoom)n).FightIndex).ToList();
+        FightIndex = MapSystem.Instance.GetRoomIndex(skipList, RoomType);
+        MapSystem.Instance.SetUpCombatRoom(this, FightIndex);
     }
+
+    public void SetFightIndex(int index)
+    {
+        FightIndex = index;
+    }
+
+    public override void Enter()
+    {
+        MapSystem.Instance.EnterCombat();
+    }
+
+    public void RemoveReward(SetReward reward) => Rewards.Remove(reward);
 }

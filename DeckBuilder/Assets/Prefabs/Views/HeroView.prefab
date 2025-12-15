@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5566271095766730551}
   - component: {fileID: 863814301761730385}
   - component: {fileID: 2508848647540134203}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: HeroView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -48,6 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _healthText: {fileID: 6059462798660690059}
   _spriteRenderer: {fileID: 3457946559073860843}
+  _targetPreviewSR: {fileID: 2571372944303216735}
   _statusEffectsUI: {fileID: 2092989458510580752}
   _helpBoxesUI: {fileID: 8430266420643578030}
 --- !u!61 &2508848647540134203
@@ -112,9 +113,33 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 439d662250248cd4e98187e494a9d50c, type: 3}
+    - target: {fileID: 4068294336217403528, guid: e39150cff9e8faa4b8a646dfd6ae19f1, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4211475508144921977, guid: e39150cff9e8faa4b8a646dfd6ae19f1, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 4269307698685190088, guid: e39150cff9e8faa4b8a646dfd6ae19f1, type: 3}
       propertyPath: m_Name
       value: CombatantView
+      objectReference: {fileID: 0}
+    - target: {fileID: 4269307698685190088, guid: e39150cff9e8faa4b8a646dfd6ae19f1, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4496968104656306842, guid: e39150cff9e8faa4b8a646dfd6ae19f1, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5263568670344185282, guid: e39150cff9e8faa4b8a646dfd6ae19f1, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5748539121743332987, guid: e39150cff9e8faa4b8a646dfd6ae19f1, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 6558267901325846672, guid: e39150cff9e8faa4b8a646dfd6ae19f1, type: 3}
       propertyPath: m_LocalPosition.x
@@ -160,6 +185,10 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9125415827771829147, guid: e39150cff9e8faa4b8a646dfd6ae19f1, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -176,6 +205,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfc20e95b514199479f5255e0e40b0a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!212 &2571372944303216735 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 2657113475588615023, guid: e39150cff9e8faa4b8a646dfd6ae19f1, type: 3}
+  m_PrefabInstance: {fileID: 536118233919566640}
+  m_PrefabAsset: {fileID: 0}
 --- !u!212 &3457946559073860843 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 2922190342914772955, guid: e39150cff9e8faa4b8a646dfd6ae19f1, type: 3}

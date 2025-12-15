@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 
 [System.Serializable]
@@ -5,7 +6,7 @@ public abstract class AutoTargetEffect
 {
     public abstract Effect Effect { get; }
 
-    public abstract GameAction GetGameAction(TargetModeContext targetModeContext);
+    public abstract GameAction GetGameAction(EffectContext targetModeContext);
     public IDynamicEffectText GetDynamicTextEffect()
     {
         if (Effect is IDynamicEffectText dynamicEffectText)
@@ -13,7 +14,10 @@ public abstract class AutoTargetEffect
         return null;
     }
 
-    public abstract string GetDynamicText(TargetModeContext targetModeContext);
+    public abstract bool RequiresUserInput();
+    public abstract IEnumerator WaitForUserInput();
+
+    public abstract string GetDynamicText(EffectContext targetModeContext);
 
     public abstract List<StatusEffectType> GetAllStatusEffects();
 }

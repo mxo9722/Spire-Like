@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class HeroInCurrentLaneCTM : CombatantTargetMode
 {
-    public override List<CombatantView> GetTargets(TargetModeContext targetModeContext)
+    public override List<CombatantView> GetTargets(EffectContext targetModeContext)
     {
         LaneView laneView = null;
 

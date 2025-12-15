@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class StatusEffectSystem : Singleton<StatusEffectSystem>
@@ -14,6 +15,7 @@ public class StatusEffectSystem : Singleton<StatusEffectSystem>
     private void OnEnable()
     {
         ActionSystem.AttachPerformer<AddStatusEffectGA>(AddStatusEffectPerformer);
+        ActionSystem.AttachPerformer<RemoveAllStatusEffectGA>(RemoveAllStatusEffectPerformer);
 
         ActionSystem.SubscribeReaction<AddStatusEffectGA>(PreStatusEffectReaction, ReactionTiming.PRE);
     }
@@ -21,6 +23,7 @@ public class StatusEffectSystem : Singleton<StatusEffectSystem>
     private void OnDisable()
     {
         ActionSystem.DetachPerformer<AddStatusEffectGA>();
+        ActionSystem.DetachPerformer<RemoveAllStatusEffectGA>();
 
         ActionSystem.UnsubscribeReaction<AddStatusEffectGA>(PreStatusEffectReaction, ReactionTiming.PRE);
     }
@@ -66,12 +69,23 @@ public class StatusEffectSystem : Singleton<StatusEffectSystem>
             yield return null;
         }
 
-        DynamicTextSystem.Instance.UpdateDynamicValues();
+        DynamicViewsSystem.Instance.UpdateDynamicValues();
+    }
+
+    private IEnumerator RemoveAllStatusEffectPerformer(RemoveAllStatusEffectGA removeAllStatusEffect)
+    {
+        foreach(CombatantView target in removeAllStatusEffect.Targets)
+        {
+            int stackCount = target.GetStatusEffectStacks(removeAllStatusEffect.StatusEffectType);
+            target.RemoveStatusEffect(removeAllStatusEffect.StatusEffectType,stackCount);
+        }
+
+        yield return null;
     }
 
     private void PreStatusEffectReaction(AddStatusEffectGA addStatusEffectGA)
     {
-        if(addStatusEffectGA.StatusEffectType == StatusEffectType.BLOCK)
+        if (addStatusEffectGA.StatusEffectType == StatusEffectType.BLOCK)
         {
             int stackCount = addStatusEffectGA.StackCount;
 
@@ -83,7 +97,7 @@ public class StatusEffectSystem : Singleton<StatusEffectSystem>
 
                 stackCount = Mathf.Max(0, stackCount);
 
-                if(caster.GetStatusEffectStacks(StatusEffectType.FRAIL) > 0)
+                if (caster.GetStatusEffectStacks(StatusEffectType.FRAIL) > 0)
                     stackCount = Mathf.FloorToInt(FRAIL_MULITPLIER * stackCount);
 
                 addStatusEffectGA.SetStackCount(stackCount);
@@ -95,7 +109,7 @@ public class StatusEffectSystem : Singleton<StatusEffectSystem>
     {
         List<StatusEffectType> activeStatusEffects = combatantView.GetAllActiveStatusEffects();
 
-        foreach (var statusEffectType in activeStatusEffects)
+        foreach (StatusEffectType statusEffectType in activeStatusEffects)
         {
             StatusEffectModification modification = StatusEffectModification.NONE;
 
@@ -124,6 +138,51 @@ public class StatusEffectSystem : Singleton<StatusEffectSystem>
                     addStatusEffectGA = new(statusEffectType, -1, new() { combatantView });
                     ActionSystem.Instance.AddReaction(addStatusEffectGA);
                     break;
+                case StatusEffectModification.APPLY_EFFECT:
+                    GameAction gameAction = _statusEffectData.Map[statusEffectType].Effect.GetGameAction(null, new() { combatantView });
+                    ActionSystem.Instance.AddReaction(gameAction);
+                    break;
+            }
+        }
+    }
+
+    public void PrePostModifyStatusEffect(List<CombatantView> combatantViews, ReactionTiming reactionTiming)
+    {
+        IEnumerable<StatusEffectType> activeStatusEffects = combatantViews.SelectMany(c => c.GetAllActiveStatusEffects()).Distinct();
+
+        foreach (StatusEffectType statusEffectType in activeStatusEffects)
+        {
+            IEnumerable<CombatantView> relevantTargets = combatantViews.Where(c => c.GetStatusEffectStacks(statusEffectType) != 0);
+            StatusEffectModification modification = StatusEffectModification.NONE;
+
+            switch (reactionTiming)
+            {
+                case ReactionTiming.PRE:
+                    modification = _statusEffectData.Map[statusEffectType].PreTurnModification;
+                    break;
+                case ReactionTiming.POST:
+                    modification = _statusEffectData.Map[statusEffectType].PostTurnModification;
+                    break;
+            }
+
+            AddStatusEffectGA addStatusEffectGA;
+
+            switch (modification)
+            {
+                case StatusEffectModification.NONE:
+                    break;
+                case StatusEffectModification.REMOVE_ALL:
+                    RemoveAllStatusEffectGA removeAllStatusEffect = new(statusEffectType, relevantTargets.ToList());
+                    ActionSystem.Instance.AddReaction(removeAllStatusEffect);
+                    break;
+                case StatusEffectModification.REMOVE_ONE:
+                    addStatusEffectGA = new(statusEffectType, -1, relevantTargets.ToList());
+                    ActionSystem.Instance.AddReaction(addStatusEffectGA);
+                    break;
+                case StatusEffectModification.APPLY_EFFECT:
+                    GameAction gameAction = _statusEffectData.Map[statusEffectType].Effect.GetGameAction(null, relevantTargets.ToList());
+                    ActionSystem.Instance.AddReaction(gameAction);
+                    break;
             }
         }
     }
@@ -146,9 +205,9 @@ public class StatusEffectSystem : Singleton<StatusEffectSystem>
 
     private static int ModifiedStackValue(StatusEffectType type, int baseStacks, CombatantView caster, List<CombatantView> targets = null)
     {
-        if(type == StatusEffectType.BLOCK)
+        if (type == StatusEffectType.BLOCK)
         {
-            if(baseStacks > 0)
+            if (baseStacks > 0)
             {
                 baseStacks = Mathf.Max(0, baseStacks + caster.GetStatusEffectStacks(StatusEffectType.DEXTERITY));
 

@@ -4,14 +4,10 @@ using UnityEngine;
 [Serializable]
 public class InHeroLaneCondition : Condition
 {
-    [field: SerializeField] public bool Invert = false;
-
-    public override bool IsConditionMet(ConditionContext conditionalContext)
+    protected override bool IsConditionMet(EffectContext context)
     {
-        LaneView laneView = BoardSystem.Instance.GetCurrentLaneView(conditionalContext.Caster);
+        LaneView laneView = BoardSystem.Instance.GetCurrentLaneView(context.Caster);
 
-        if (Invert)
-            return laneView.HeroView == null;
-        return laneView.HeroView != null;
+        return laneView?.HeroView != null;
     }
 }

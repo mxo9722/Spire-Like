@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Debug Hero
   <Image>k__BackingField: {fileID: 21300000, guid: 439d662250248cd4e98187e494a9d50c, type: 3}
-  <StartingMaxHealth>k__BackingField: 0
+  <StartingMaxHealth>k__BackingField: 9999999
   <StartingDeck>k__BackingField:
   - {fileID: 11400000, guid: 007efdb150e212e429173ed89413691c, type: 2}
   - {fileID: 11400000, guid: 007efdb150e212e429173ed89413691c, type: 2}

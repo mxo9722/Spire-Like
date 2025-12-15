@@ -14,6 +14,14 @@ public class HelpBoxesUI : MonoBehaviour
         LayoutRebuilder.ForceRebuildLayoutImmediate(transform as RectTransform);
     }
 
+    public void Populate(Card card)
+    {
+        List<string> keyWords = card.GetAllKeyWords();
+
+        foreach (string keyWord in keyWords)
+            AddHelpBoxFromKeyWord(keyWord);
+    }
+
     public void AddHelpBoxFromText(string title,string description)
     {
         HelpBoxUI helpBoxUI = Instantiate(_helpBoxPrefab, _wrapper);

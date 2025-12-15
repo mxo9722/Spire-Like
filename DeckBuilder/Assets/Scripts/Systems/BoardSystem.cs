@@ -63,4 +63,17 @@ public class BoardSystem : Singleton<BoardSystem>
     public LaneView GetCurrentLaneView(HeroView heroView) => BoardView.GetCurrentLaneView(heroView);    
     public LaneView GetCurrentLaneView(EnemyView enemyView) => BoardView.GetCurrentLaneView(enemyView);
     public List<EnemyView> GetAllEnemies() => BoardView.GetAllEnemies();
+    public List<CombatantView> GetAllCombatants() => BoardView.GetAllCombatants();
+    public List<LaneView> GetAllLanes() => BoardView.GetAllLanes();
+
+    public List<T> GetAllViews<T>()
+    {
+        if (typeof(T).ToString() == typeof(LaneView).ToString())
+            return GetAllLanes() as List<T>;
+        if (typeof(T).ToString() == typeof(CombatantView).ToString())
+            return GetAllCombatants() as List<T>;
+
+        return new();
+        
+    }
 }

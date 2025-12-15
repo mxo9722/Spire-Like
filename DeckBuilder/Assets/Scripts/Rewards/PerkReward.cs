@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [System.Serializable]
-public class PerkReward : Reward
+public class PerkReward : SetReward
 {
     [SerializeField] private PerkData _perkData;
 
@@ -9,8 +9,16 @@ public class PerkReward : Reward
 
     public override string RewardName => _perkData.name;
 
+    public void SetPerk(PerkData perkData)
+    {
+        _perkData = perkData;
+    }
+
     public override void CollectReward()
     {
-        RunSystem.Instance.AddPerk(_perkData);
+        PerkSystem.Instance.ObtainPerk(_perkData);
+
+        RewardSystem.Instance.RemoveReward(this);
     }
+
 }

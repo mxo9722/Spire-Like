@@ -1,4 +1,5 @@
 using DG.Tweening;
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -9,31 +10,52 @@ public class CardView : MonoBehaviour
     [SerializeField] private TMPro.TMP_Text _description;
     [SerializeField] private TMPro.TMP_Text _mana;
     [SerializeField] private SpriteRenderer _imageSR;
+    [SerializeField] private SpriteRenderer _glowSR;
     [SerializeField] private GameObject _wrapper;
     [SerializeField] private LayerMask _dropLayer;
-    [SerializeField] private SortingGroup _sortingGroup;
     [SerializeField] private Transform _maskTransform;
     [SerializeField] private Transform _bottomOfCardTransform;
+    [SerializeField] private HelpBoxesUI _helpBoxesUI;
     [SerializeField] private ParticleSystem _burnVFX;
+
+    [field: SerializeField] public SortingGroup SortingGroup { get; private set; }
+
 
     private int _originalLayerOrder = 0;
 
     public Card Card { get; private set; }
     public bool Hovering { get; private set; } = false;
+    public Action<CardView> OnButtonPressed;
 
     private Vector3 _dragStartPosition;
     private Quaternion _dragStartRotation;
+    private bool _treatAsButton = false;
 
-    public void Setup(Card card)
+    public void Setup(Card card, bool treatAsButton = false)
     {
         Card = card;
+        _treatAsButton = treatAsButton;
 
-        _originalLayerOrder = _sortingGroup.sortingOrder;
+        _originalLayerOrder = SortingGroup.sortingOrder;
 
         _title.text = card.Title;
-        UpdateDynamicDescription(TargetModeContext.CreateHeroTMC());
-        _mana.text = card.Mana.ToString();
+
+        if (!treatAsButton)
+            UpdateDynamicDescription(EffectContext.CreateHeroEC());
+        else
+            UpdateDynamicDescription();
+
+        if (card.Unplayable)
+            _mana.text = "";
+        else
+            _mana.text = card.Mana.ToString();
+
+        Vector2 prevSize = _imageSR.size;
+
         _imageSR.sprite = card.Image;
+        _imageSR.size = prevSize;
+
+        UpdateGlow();
     }
 
     public void SetBasePos(Vector3 position, Quaternion quat)
@@ -44,67 +66,93 @@ public class CardView : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        if (!Interactions.Instance.PlayerCanHover()) return;
-
-        Hovering = true;
-
-        if (!ManualTargetSystem.Instance.IsTargetting)
+        if (!_treatAsButton)
         {
-            UpdateHoverView();
+            if (!Interactions.Instance.PlayerCanHover()) return;
+
+            Hovering = true;
+
+            if (!ManualTargetSystem.Instance.IsTargetting)
+            {
+                UpdateHoverView();
+            }
+        }
+        else
+        {
+            _helpBoxesUI.Populate(Card);
         }
     }
 
     private void OnMouseExit()
     {
-        if (!Interactions.Instance.PlayerCanHover()) return;
-
-        Hovering = false;
-
-        if (!ManualTargetSystem.Instance.IsTargetting)
+        if (!_treatAsButton)
         {
-            CardViewHoverSystem.Instance.Hide();
-            _wrapper.SetActive(true);
+            if (!Interactions.Instance.PlayerCanHover()) return;
+
+            Hovering = false;
+
+            if (!ManualTargetSystem.Instance.IsTargetting)
+            {
+                CardViewHoverSystem.Instance.Hide();
+                _wrapper.SetActive(true);
+            }
+        }
+        else
+        {
+            _helpBoxesUI.Hide();
         }
     }
 
     private void OnMouseDown()
     {
-        if (!Interactions.Instance.PlayerCanInteract()) return;
+        if (!_treatAsButton && !Interactions.Instance.PlayerCanInteract()) return;
 
-        Cursor.visible = false;
 
-        if (Card.ManualTargetEffect != null)
+        if (!_treatAsButton && IsPlayable())
         {
-            Vector3 origin = transform.position;
-            origin = BoardSystem.Instance.BoardView.GetCombatantHoverPosition();
-            CardViewHoverSystem.Instance.TweenToPosition(origin);
+            Cursor.visible = false;
 
-            ManualTargetSystem.Instance.StartTargeting(origin, Card.ManualTargetType);
+            if (Card.ManualTargetEffect != null)
+            {
+                Vector3 origin = Vector3.zero;
+                origin.y = CardViewHoverSystem.Instance.CardViewHover.transform.position.y;
+                CardViewHoverSystem.Instance.TweenToPosition(origin);
+
+                ManualTargetSystem.Instance.StartTargeting(origin, Card);
+            }
+            else
+            {
+                SortingGroup.sortingOrder = 99;
+
+                Interactions.Instance.playerIsDragging = true;
+                _wrapper.SetActive(true);
+                CardViewHoverSystem.Instance.Hide();
+                //dragStartPosition = transform.position;
+                //dragStartRotation = transform.rotation;
+                transform.rotation = Quaternion.identity;
+                transform.position = MouseUtil.GetMousePositionInWorldSpace(-1);
+            }
         }
-        else
+        else if (_treatAsButton && !CardCollectionSystem.Instance.Opened)
         {
-            _sortingGroup.sortingOrder = 99;
-
-            Interactions.Instance.playerIsDragging = true;
-            _wrapper.SetActive(true);
-            CardViewHoverSystem.Instance.Hide();
-            //dragStartPosition = transform.position;
-            //dragStartRotation = transform.rotation;
-            transform.rotation = Quaternion.identity;
-            transform.position = MouseUtil.GetMousePositionInWorldSpace(-1);
+            OnButtonPressed?.Invoke(this);
         }
     }
 
     private void OnMouseDrag()
     {
+        if (_treatAsButton) return;
         if (!Interactions.Instance.PlayerCanInteract()) return;
         if (Card.ManualTargetEffect != null) return;
+        if (!IsPlayable()) return;
         transform.position = MouseUtil.GetMousePositionInWorldSpace(-1);
 
+        TargetPreviewSystem.Instance.SetTargetPreviews(Card);
     }
 
     private void OnMouseUp()
     {
+        if (_treatAsButton) return;
         if (!Interactions.Instance.PlayerCanInteract()) return;
 
         Cursor.visible = true;
@@ -113,17 +161,17 @@ public class CardView : MonoBehaviour
         {
             switch (Card.ManualTargetType)
             {
-                case ManualTargetType.ENEMY:
-                    EnemyView enemyView = ManualTargetSystem.Instance.EndEnemyTargeting(MouseUtil.GetMousePositionInWorldSpace(-1));
-                    if (enemyView != null && ManaSystem.Instance.HasEnoughMana(Card.Mana))
+                case ManualTargetType.COMBATANT:
+                    CombatantView combatantView = ManualTargetSystem.Instance.EndEnemyTargeting(MouseUtil.GetMousePositionInWorldSpace(-1));
+                    if (combatantView != null && IsPlayable())
                     {
-                        PlayCardGA playCardGA = new PlayCardGA(Card, enemyView);
+                        PlayCardGA playCardGA = new PlayCardGA(Card, combatantView);
                         ActionSystem.Instance.Perform(playCardGA);
                     }
                     break;
                 case ManualTargetType.LANE:
                     LaneView laneView = ManualTargetSystem.Instance.EndLaneTargeting(MouseUtil.GetMousePositionInWorldSpace(-1));
-                    if (laneView != null && ManaSystem.Instance.HasEnoughMana(Card.Mana))
+                    if (laneView != null && IsPlayable())
                     {
                         PlayCardGA playCardGA = new PlayCardGA(Card, laneView);
                         ActionSystem.Instance.Perform(playCardGA);
@@ -136,9 +184,9 @@ public class CardView : MonoBehaviour
 
             CardSystem.Instance.UpdateCardHoverView();
         }
-        else
+        else if (!CardCollectionSystem.Instance.Opened)
         {
-            if (ManaSystem.Instance.HasEnoughMana(Card.Mana) && Physics.Raycast(transform.position, Vector3.forward, out RaycastHit hit, 10f, _dropLayer))
+            if (IsPlayable() && Physics.Raycast(transform.position, Vector3.forward, out RaycastHit hit, 10f, _dropLayer))
             {
                 PlayCardGA playCardGA = new PlayCardGA(Card);
                 ActionSystem.Instance.Perform(playCardGA);
@@ -149,9 +197,10 @@ public class CardView : MonoBehaviour
                 transform.rotation = _dragStartRotation;
             }
 
-            _sortingGroup.sortingOrder = _originalLayerOrder;
+            SortingGroup.sortingOrder = _originalLayerOrder;
 
             Interactions.Instance.playerIsDragging = false;
+            TargetPreviewSystem.Instance.HideTargetPreviews();
         }
     }
 
@@ -160,7 +209,7 @@ public class CardView : MonoBehaviour
         float startStopTime = 0.1f;
         float burnLength = _burnVFX.main.duration;
 
-        _sortingGroup.sortingOrder = 99;
+        SortingGroup.sortingOrder = 99;
 
         _burnVFX.gameObject.SetActive(true);
 
@@ -186,21 +235,82 @@ public class CardView : MonoBehaviour
         if (Hovering)
         {
             _wrapper.SetActive(false);
-            Vector3 pos = new Vector3(transform.position.x, -2.5f, 0);
+            Vector3 pos = new(transform.position.x, -2.5f);
+
+            if (_treatAsButton)
+                pos = new(transform.position.x, transform.position.y);
+
             CardViewHoverSystem.Instance.Show(Card, pos);
         }
     }
 
-    public void UpdateDynamicDescription(TargetModeContext targetModeContext)
+    public void UpdateDynamicDescription(EffectContext context = null)
     {
-        HeroView heroView = HeroSystem.Instance.HeroView;
-
-        if (heroView == null)
+        if (context == null || _treatAsButton)
         {
             _description.text = Card.GetStaticDescription();
-            return;
         }
-
-        _description.text = Card.GetDynamicDescription(targetModeContext);
+        else
+        {
+            _description.text = Card.GetDynamicDescription(context);
+        }
     }
+
+    public void SetSortingOrder(int sortingOrder)
+    {
+        SortingGroup.sortingOrder = sortingOrder;
+        _originalLayerOrder = sortingOrder;
+    }
+
+    public void UpdateGlow()
+    {
+        if (_treatAsButton)
+            return;
+
+        if (IsPlayable())
+        {
+            if (IsHighlighted())
+                SetGlow(CardSystem.Instance.HighlightColor);
+            else
+                SetGlow(CardSystem.Instance.PlayableColor);
+        }
+        else
+        {
+            SetGlow(Color.clear);
+        }
+    }
+
+    public void SetGlow(Color color)
+    {
+        if (_glowSR.color != color)
+        {
+            float duration = 0.5f;
+
+            //To avoid glow transitioning for the hover card
+            if (enabled)
+            {
+                Vector3 punchScale = new(0.05f, 0.05f);
+
+                _glowSR.transform.DOComplete();
+                _glowSR.transform.DOPunchScale(punchScale, duration, 1);
+
+                _glowSR.DOKill();
+                _glowSR.DOColor(color, duration);
+            }
+            else
+            {
+                _glowSR.color = color;
+            }
+        }
+    }
+
+    public void HideGlow()
+    {
+        _glowSR.DOKill();
+        _glowSR.color = Color.clear;
+    }
+
+    public bool IsPlayable(CombatantView caster = null) => Card.IsPlayable();
+    public bool IsHighlighted() => Card.IsHighlighted();
+    public bool IsHighlighted(EffectContext context) => Card.IsHighlighted(context);
 }

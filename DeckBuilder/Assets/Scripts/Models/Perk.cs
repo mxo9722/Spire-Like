@@ -39,7 +39,7 @@ public class Perk
             }
             if (_data.UseAutoTarget)
             {
-                TargetModeContext targetModeContext = TargetModeContext.CreateHeroTMC();
+                EffectContext targetModeContext = EffectContext.CreateHeroEC();
 
                 targets.AddRange(_effect.TargetMode.GetTargets(targetModeContext));
             }

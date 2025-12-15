@@ -3,7 +3,7 @@ using UnityEngine;
 
 public abstract class CombatantTargetEffect : Effect
 {
-    public override GameAction GetGameAction(CombatantView caster, List<CombatantView> combatantTargets = null, List<LaneView> laneTargets = null)
+    public override GameAction GetGameAction(CombatantView caster, List<CombatantView> combatantTargets = null, List<LaneView> laneTargets = null, List<Card> cardTargets = null)
     {
         return GetGameAction(caster, combatantTargets);
     }

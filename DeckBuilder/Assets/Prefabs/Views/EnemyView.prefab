@@ -401,6 +401,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _healthText: {fileID: 3218930479689796145}
   _spriteRenderer: {fileID: 6287413671214339665}
+  _targetPreviewSR: {fileID: 6562628017489031909}
   _statusEffectsUI: {fileID: 7329524461905045162}
   _helpBoxesUI: {fileID: 883316700963318292}
   _actionSymbol: {fileID: 166957992200786304}
@@ -555,6 +556,11 @@ MonoBehaviour:
 --- !u!212 &6287413671214339665 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 2922190342914772955, guid: e39150cff9e8faa4b8a646dfd6ae19f1, type: 3}
+  m_PrefabInstance: {fileID: 9208970399867033994}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &6562628017489031909 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 2657113475588615023, guid: e39150cff9e8faa4b8a646dfd6ae19f1, type: 3}
   m_PrefabInstance: {fileID: 9208970399867033994}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &7329524461905045162 stripped

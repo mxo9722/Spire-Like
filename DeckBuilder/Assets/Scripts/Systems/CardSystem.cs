@@ -11,6 +11,9 @@ public class CardSystem : Singleton<CardSystem>
     [SerializeField] private CardPileView _discardPileView;
     [SerializeField] private CardPileView _exhaustedPileView;
 
+    [field: SerializeField] public Color PlayableColor { get; private set; }
+    [field: SerializeField] public Color HighlightColor { get; private set; }
+
     private List<Card> _drawPile = new();
     private List<Card> _discardPile = new();
     private List<Card> _hand = new();
@@ -23,23 +26,29 @@ public class CardSystem : Singleton<CardSystem>
         _discardPileView.SetUp(_discardPile);
         _exhaustedPileView.SetUp(_exhaustPile);
 
+        ActionSystem.AttachPerformer<AddCardsToHandGA>(AddCardsToHandPerformer);
         ActionSystem.AttachPerformer<DrawCardsGA>(DrawCardsPerformer);
         ActionSystem.AttachPerformer<DiscardAllCardsGA>(DiscardAllCardsPerformer);
-        ActionSystem.AttachPerformer<PlayCardGA>(PlayCardPerformer);
+        ActionSystem.AttachPerformer<DiscardCardsGA>(DiscardCardsPerformer);
+        ActionSystem.AttachPerformer<DiscardCardGA>(DiscardCardPerformer);
         ActionSystem.AttachPerformer<ExhaustCardGA>(ExhaustCardPerformer);
+        ActionSystem.AttachPerformer<PlayCardGA>(PlayCardPerformer);
     }
 
     void OnDisable()
     {
+        ActionSystem.DetachPerformer<AddCardsToHandGA>();
         ActionSystem.DetachPerformer<DrawCardsGA>();
         ActionSystem.DetachPerformer<DiscardAllCardsGA>();
-        ActionSystem.DetachPerformer<PlayCardGA>();
+        ActionSystem.DetachPerformer<DiscardCardsGA>();
+        ActionSystem.DetachPerformer<DiscardCardGA>();
         ActionSystem.DetachPerformer<ExhaustCardGA>();
+        ActionSystem.DetachPerformer<PlayCardGA>();
     }
 
     public void SetUp(List<CardData> deckData)
     {
-        foreach(CardData cardData in deckData)
+        foreach (CardData cardData in deckData)
         {
             Card card = new(cardData);
             _drawPile.Add(card);
@@ -53,16 +62,55 @@ public class CardSystem : Singleton<CardSystem>
         _handView.UpdateCardHoverView();
     }
 
+    private IEnumerator AddCardsToHandPerformer(AddCardsToHandGA addCardsToHandGA)
+    {
+        foreach (Card card in addCardsToHandGA.Cards)
+        {
+            Transform pileView = default;
+
+            if (_drawPile.Contains(card))
+            {
+                pileView = _drawPileView.transform;
+
+                _drawPile.Remove(card);
+                _drawPileView.UpdateUI();
+            }
+            else if (_discardPile.Contains(card))
+            {
+                pileView = _discardPileView.transform;
+
+                _discardPile.Remove(card);
+                _discardPileView.UpdateUI();
+            }
+            else if (_exhaustPile.Contains(card))
+            {
+                pileView = _exhaustedPileView.transform;
+
+                _exhaustPile.Remove(card);
+                _exhaustedPileView.UpdateUI();
+            }
+            else if (_hand.Contains(card))
+            {
+                continue;
+            }
+
+            _hand.Add(card);
+
+            CardView cardView = CardViewCreator.Instance.CreateCardView(card, pileView.position, pileView.rotation);
+            yield return _handView.AddCard(cardView);
+        }
+    }
+
     private IEnumerator DrawCardsPerformer(DrawCardsGA drawCardsGA)
     {
-        int actualAmount = Mathf.Min(drawCardsGA.amount,_drawPile.Count);
+        int actualAmount = Mathf.Min(drawCardsGA.amount, _drawPile.Count);
         int notDrawnAmount = drawCardsGA.amount - actualAmount;
-        for(int i = 0; i < actualAmount; i++)
+        for (int i = 0; i < actualAmount; i++)
         {
             yield return DrawCard();
         }
 
-        if(notDrawnAmount > 0)
+        if (notDrawnAmount > 0)
         {
             yield return RefillDeck();
 
@@ -75,12 +123,31 @@ public class CardSystem : Singleton<CardSystem>
 
     private IEnumerator DiscardAllCardsPerformer(DiscardAllCardsGA discardallCardsGA)
     {
-        foreach (Card card in _hand)
+        DiscardCardsGA discardCardGA = new(new(_hand), discardallCardsGA.ForEndOfTurn);
+        ActionSystem.Instance.AddReaction(discardCardGA);
+
+        yield return null;
+    }
+
+    private IEnumerator DiscardCardsPerformer(DiscardCardsGA discardCardsGA)
+    {
+        foreach (Card card in discardCardsGA.Targets)
         {
             CardView cardView = _handView.RemoveCard(card);
-            yield return DiscardCard(cardView);
+            DiscardCardGA discardCardGA = new(cardView, discardCardsGA.ForEndOfTurn);
+            ActionSystem.Instance.AddReaction(discardCardGA);
+
+            _hand.Remove(card);
         }
-        _hand.Clear();
+
+        yield return null;
+    }
+
+    private IEnumerator DiscardCardPerformer(DiscardCardGA discardCardGA)
+    {
+        CardView cardView = discardCardGA.Target;
+
+        yield return DiscardCard(cardView);
     }
 
     private IEnumerator PlayCardPerformer(PlayCardGA playCardGA)
@@ -101,25 +168,30 @@ public class CardSystem : Singleton<CardSystem>
         SpendManaGA spendManaGA = new(playCardGA.card.Mana);
         ActionSystem.Instance.AddReaction(spendManaGA);
 
-        if(playCardGA.ManualEnemyTarget != null)
+        if (playCardGA.ManualEnemyTarget != null)
         {
             PerformEffectsGA performEffectsGA = new PerformEffectsGA(playCardGA.card.ManualTargetEffect, playCardGA.ManualEnemyTarget);
             ActionSystem.Instance.AddReaction(performEffectsGA);
         }
-        else if(playCardGA.ManualLaneTarget != null)
+        else if (playCardGA.ManualLaneTarget != null)
         {
             PerformEffectsGA performEffectsGA = new PerformEffectsGA(playCardGA.card.ManualTargetEffect, playCardGA.ManualLaneTarget);
             ActionSystem.Instance.AddReaction(performEffectsGA);
         }
 
         HeroView heroView = HeroSystem.Instance.HeroView;
-        TargetModeContext targetModeContext = new(heroView, playCardGA.ManualLaneTarget, playCardGA.ManualEnemyTarget);
+        EffectContext targetModeContext = new(heroView, playCardGA.ManualLaneTarget, playCardGA.ManualEnemyTarget);
 
         //Perform effects
         foreach (AutoTargetEffect effectWrapper in playCardGA.card.OtherEffects)
         {
+            if (effectWrapper.RequiresUserInput())
+                yield return effectWrapper.WaitForUserInput();
+
             GameAction gameAction = effectWrapper.GetGameAction(targetModeContext);
-            ActionSystem.Instance.AddReaction(gameAction);
+
+            if (gameAction != null)
+                ActionSystem.Instance.AddReaction(gameAction);
         }
 
         if (playCardGA.card.ExhuastOnUse)
@@ -151,12 +223,12 @@ public class CardSystem : Singleton<CardSystem>
         CardView cardView = CardViewCreator.Instance.CreateCardView(card, _drawPileView.transform.position, _drawPileView.transform.rotation);
         yield return _handView.AddCard(cardView);
     }
-    
+
     private IEnumerator DiscardCard(CardView cardView)
     {
 
         _discardPile.Add(cardView.Card);
-        cardView.transform.DOScale(Vector3.zero,0.15f);
+        cardView.transform.DOScale(Vector3.zero, 0.15f);
         Tween tween = cardView.transform.DOMove(_discardPileView.transform.position, 0.15f);
         yield return tween.WaitForCompletion();
 
@@ -194,8 +266,13 @@ public class CardSystem : Singleton<CardSystem>
         _exhaustedPileView.UpdateUI();
     }
 
-    public void UpdateDynamicDescriptions()
+    public void UpdateCardViews()
     {
-        _handView.UpdateDynamicDescriptions();
+        _handView.UpdateCardViews();
+    }
+
+    public List<Card> GetDrawPile()
+    {
+        return new(_drawPile);
     }
 }

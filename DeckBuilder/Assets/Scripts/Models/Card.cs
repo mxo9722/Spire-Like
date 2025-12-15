@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
@@ -8,11 +9,17 @@ public class Card
 {
     public string Title => data.name;
     public string Description => data.Description;
+    public bool Unplayable => data.Unplayable;
+    public List<Condition> RequiredConditions => data.RequiredConditions;
+    public List<Condition> HighlightConditions => data.HighlightConditions;
     public Sprite Image => data.Image;
 
     public ManualTargetType ManualTargetType => data.ManualTargetType;
     public Effect ManualTargetEffect => data.ManualTargetEffect;
     public List<AutoTargetEffect> OtherEffects => data.OtherEffects;
+    public List<AutoTargetEffect> TurnEndEffect => data.TurnEndEffects;
+    public List<CombatantFilter> CombatantFilters => data.CombatantFilters;
+    public List<LaneFilter> LaneFilters => data.LaneFilters;
     public bool ExhuastOnUse => data.ExhuastOnUse;
 
     public int Mana { get; private set; }
@@ -57,7 +64,7 @@ public class Card
         return description;
     }
 
-    public string GetDynamicDescription(TargetModeContext targetModeContext)
+    public string GetDynamicDescription(EffectContext targetModeContext)
     {
         string description = Description;
 
@@ -156,5 +163,109 @@ public class Card
         return description;
     }
 
-    private string ToHex(Color c) => $"#{c.r:X2}{c.g:X2}{c.b:X2}";
+    public bool IsPlayable(CombatantView caster = null)
+    {
+        if (Unplayable)
+            return false;
+
+        if (caster == null)
+            caster = HeroSystem.Instance.HeroView;
+
+        if (!ManaSystem.Instance.HasEnoughMana(Mana))
+            return false;
+
+        EffectContext context = new EffectContext(caster);
+
+        if (ManualTargetEffect != null)
+        {
+
+            switch (ManualTargetType)
+            {
+                case ManualTargetType.COMBATANT:
+                    if (CombatantFilters.Count == 0)
+                        break;
+
+                    List<CombatantView> allCombatants = BoardSystem.Instance.GetAllCombatants();
+
+                    if (!allCombatants.Any(c => c.IsValid(context, CombatantFilters)))
+                        return false;
+                    break;
+                case ManualTargetType.LANE:
+                    List<LaneView> allLanes = BoardSystem.Instance.GetAllLanes();
+
+                    if (!allLanes.Any(c => c.IsValid(context, LaneFilters)))
+                        return false;
+                    break;
+            }
+        }
+
+        foreach (Condition condition in RequiredConditions)
+        {
+            if (!condition.TestCondition(context))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+    
+    public bool IsHighlighted()
+    {
+        return IsHighlighted(EffectContext.CreateHeroEC());
+    }
+
+    public bool IsHighlighted(EffectContext context)
+    {
+        CombatantView caster = context.Caster;
+
+        if (caster == null)
+            caster = HeroSystem.Instance.HeroView;
+
+        IEnumerable<ConditionalAutoTargetEffect> conditionals = OtherEffects.Where(e => e is ConditionalAutoTargetEffect).Select(e => (ConditionalAutoTargetEffect)e);
+
+        if (HighlightConditions.Count == 0 && !OtherEffects.Any(e => e is ConditionalAutoTargetEffect))
+            return false;
+
+        foreach (Condition condition in HighlightConditions)
+        {
+            if (!condition.TestCondition(context))
+            {
+                return false;
+            }
+        }
+
+        foreach (ConditionalAutoTargetEffect conditional in conditionals)
+        {
+           if(conditional.ConditionIsMeetable(context, this))
+           {
+                return true;
+           }
+
+            if (conditionals.Last() == conditional)
+                return false;
+        }
+
+        return true;
+    }
+
+    public CombatantView[] AllValidCombatants(EffectContext context)
+    {
+        if (ManualTargetEffect == null || ManualTargetType != ManualTargetType.COMBATANT)
+            return null;
+
+        List<CombatantView> combatants = BoardSystem.Instance.GetAllCombatants();
+
+        return combatants.FindAll(c => c.IsValid(context, CombatantFilters)).ToArray();
+    }
+    
+    public LaneView[] AllValidLanes(EffectContext context)
+    {
+        if (ManualTargetEffect == null || ManualTargetType != ManualTargetType.LANE)
+            return null;
+
+        List<LaneView> lanes = BoardSystem.Instance.GetAllLanes();
+
+        return lanes.FindAll(c => c.IsValid(context, LaneFilters)).ToArray();
+    }
 }

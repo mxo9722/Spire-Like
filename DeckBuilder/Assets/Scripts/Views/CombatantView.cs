@@ -4,29 +4,39 @@ using System.Collections.Generic;
 using TMPro;
 using System.Linq;
 using UnityEngine;
+using System;
 
-public abstract class CombatantView : MonoBehaviour
+public abstract class CombatantView : MonoBehaviour, ITargetPreviewable
 {
     [SerializeField] private TMP_Text _healthText;
     [SerializeField] private SpriteRenderer _spriteRenderer;
+    [SerializeField] private SpriteRenderer _targetPreviewSR;
     [SerializeField] private StatusEffectsUI _statusEffectsUI;
     [SerializeField] private HelpBoxesUI _helpBoxesUI;
 
     public int MaxHealth { get; private set; }
     public int CurrentHealth { get; private set; }
 
+    public bool TargetPreviewActive => _targetPreviewSR.color != Color.clear;
+
     private Dictionary<StatusEffectType, int> _statusEffects = new();
+
+    public Action<int> OnHealthChanged;
+    public Action<int> OnMaxHealthChanged;
 
     protected void SetupBase(int health, Sprite sprite)
     {
         MaxHealth = CurrentHealth = health;
         _spriteRenderer.sprite = sprite;
         UpdateHealthText();
+
+        _targetPreviewSR.transform.DORotate(new(0, 0, 180.0f), 2f, RotateMode.Fast).SetLoops(-1).SetEase(Ease.Linear);
+        HideTargetPreview();
     }
 
     public void OnMouseEnter()
     {
-        if(!ManualTargetSystem.Instance.IsTargetting)
+        if(!ManualTargetSystem.Instance.IsTargetting && !CardCollectionSystem.Instance.Opened)
             LoadHelpBoxes(_helpBoxesUI);
     }
 
@@ -74,7 +84,7 @@ public abstract class CombatantView : MonoBehaviour
         if (CurrentHealth < 0)
             CurrentHealth = 0;
 
-
+        OnHealthChanged?.Invoke(CurrentHealth);
         UpdateHealthText();
 
         if (CurrentHealth == 0)
@@ -132,6 +142,40 @@ public abstract class CombatantView : MonoBehaviour
         if(tweens != null)
             foreach (Tween t in tweens)
                 yield return t.WaitForCompletion();
+    }
+
+
+
+    public void SetHealth(int health)
+    {
+        CurrentHealth = health;
+        OnHealthChanged?.Invoke(CurrentHealth);
+        UpdateHealthText();
+    }
+    
+    public void SetMaxHealth(int maxHealth)
+    {
+        MaxHealth = maxHealth;
+        OnMaxHealthChanged?.Invoke(MaxHealth);
+        UpdateHealthText();
+    }
+
+    public bool IsValid(EffectContext context, List<CombatantFilter> filters)
+    {
+        return !filters.Any(f => !f.TestTarget(context, this));
+    }
+
+    public void SetTargetPreview(Color color)
+    {
+        if (_targetPreviewSR.color == Color.clear)
+        {
+            _targetPreviewSR.color = color;
+        }
+    }
+
+    public void HideTargetPreview()
+    {
+        _targetPreviewSR.color = Color.clear;
     }
 
     public abstract void Die();

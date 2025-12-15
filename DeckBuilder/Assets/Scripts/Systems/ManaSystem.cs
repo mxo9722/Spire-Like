@@ -35,12 +35,14 @@ public class ManaSystem : Singleton<ManaSystem>
     {
         _currentMana -= spendManaGA.Amount;
         _manaUI.UpdateManaText(_currentMana);
+        CardSystem.Instance.UpdateCardViews();
         yield return null;
     }
     private IEnumerator RefillManaPerformer(RefillManaGA refillManaGA)
     {
         _currentMana = MAX_MANA;
         _manaUI.UpdateManaText(_currentMana);
+        CardSystem.Instance.UpdateCardViews();
         yield return null;
     }
 

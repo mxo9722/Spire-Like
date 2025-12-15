@@ -1,16 +1,22 @@
 using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-public class LaneView : MonoBehaviour
+public class LaneView : MonoBehaviour, ITargetPreviewable
 {
     [field: SerializeField] public Transform HeroSlot { get; private set; }
     [field: SerializeField] public List<Transform> EnemySlots { get; private set; }
 
+    [SerializeField] private SpriteRenderer _targetPreviewSR;
+
     public List<EnemyView> EnemyViews { get; private set; } = new();
     public HeroView HeroView { get; private set; } = null;
     public bool Dead { get; private set; } = false;
+
+    public bool TargetPreviewActive => _targetPreviewSR.color != Color.clear;
 
     public Transform FirstAvailableSlot()
     {
@@ -23,7 +29,13 @@ public class LaneView : MonoBehaviour
         return null;
     }
 
-    public IEnumerator SlideEnemiesLeft(float duration,bool pauseForMove = false)
+    public void Start()
+    {
+        _targetPreviewSR.transform.DORotate(new(0, 0, 180.0f), 2f, RotateMode.Fast).SetLoops(-1).SetEase(Ease.Linear);
+        HideTargetPreview();
+    }
+
+    public IEnumerator SlideEnemiesLeft(float duration, bool pauseForMove = false)
     {
         Tween tween = null;
 
@@ -44,7 +56,7 @@ public class LaneView : MonoBehaviour
                         yield return t;
                 }
 
-                tween = enemyView.transform.DOLocalMove(Vector3.zero,duration);
+                tween = enemyView.transform.DOLocalMove(Vector3.zero, duration);
             }
         }
 
@@ -118,5 +130,25 @@ public class LaneView : MonoBehaviour
             heroView.transform.parent = HeroSlot;
             yield return heroView.transform.DOLocalJump(Vector3.zero, 2, 1, duration).WaitForCompletion();
         }
+    }
+
+    public bool Contains(CombatantView combatant)
+    {
+        return HeroView == combatant || EnemyViews.Any(e => e == combatant);
+    }
+
+    public bool IsValid(EffectContext context, List<LaneFilter> filters)
+    {
+        return !filters.Any(f => !f.TestTarget(context, this));
+    }
+
+    public void SetTargetPreview(Color color)
+    {
+        _targetPreviewSR.color = color;
+    }
+
+    public void HideTargetPreview()
+    {
+        _targetPreviewSR.color = Color.clear;
     }
 }

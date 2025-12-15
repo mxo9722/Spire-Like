@@ -1,14 +1,21 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-public class CardCollectionSystem : PersistentSingleton<CardCollectionSystem>
+public class CardCollectionSystem : Singleton<CardCollectionSystem>
 {
-    private CardCollectionUI _cardCollectionUI => CardCollectionUI.Instance;
+    [SerializeField] private CardCollectionUI _cardCollectionUI;
 
     public List<Card> Cards { get; private set; } = null;
 
     public bool Opened => _cardCollectionUI.Opened;
+    public bool WaitingForSelection => _cardCollectionUI.WaitingForSelection;
+
+    public void Display(List<CardData> cardCollection, bool hideOrder)
+    {
+        Display(cardCollection.Select(c => new Card(c)).ToList(), hideOrder);
+    }
 
     public void Display(List<Card> cardCollection, bool hideOrder)
     {
@@ -21,20 +28,29 @@ public class CardCollectionSystem : PersistentSingleton<CardCollectionSystem>
 
         if (hideOrder)
         {
-            List<Card> sortedCardCollection = new(cardCollection);
-            sortedCardCollection.Sort((a, b) => string.Compare(a.Title, b.Title));
-            _cardCollectionUI.SetUp(sortedCardCollection);
-        }
-        else
-        {
-            _cardCollectionUI.SetUp(cardCollection);
+            cardCollection = new(cardCollection);
+            cardCollection.Sort((a, b) => string.Compare(a.Title, b.Title));
         }
 
+        _cardCollectionUI.SetUp(cardCollection);
+    }
 
-        foreach (CardUI cardUI in _cardCollectionUI.CardUIs)
+    public void SelectionDisplay(List<Card> cardCollection, int amount, bool hideOrder)
+    {
+        if (Opened)
         {
-            cardUI.OnClicked.AddListener(() => { OnCardClicked(cardUI.Card); });
+            Close();
         }
+
+        Cards = cardCollection;
+
+        if (hideOrder)
+        {
+            cardCollection = new(cardCollection);
+            cardCollection.Sort((a, b) => string.Compare(a.Title, b.Title));
+        }
+
+        _cardCollectionUI.SetUpSelection(cardCollection, amount);
     }
 
     public void Close()
@@ -49,8 +65,5 @@ public class CardCollectionSystem : PersistentSingleton<CardCollectionSystem>
         _cardCollectionUI.Close();
     }
 
-    private void OnCardClicked(Card card)
-    {
-        //TODO: add some stuff here
-    }
+    public List<Card> GetCardSelections() => _cardCollectionUI.GetCardSelections();
 }

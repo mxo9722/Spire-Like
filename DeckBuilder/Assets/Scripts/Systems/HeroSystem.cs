@@ -1,11 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class HeroSystem : Singleton<HeroSystem>
 {
-    [field: SerializeField] public HeroView HeroView { get; private set; }
+    public HeroView HeroView { get; private set; }
 
     private void OnEnable()
     {
@@ -25,31 +26,23 @@ public class HeroSystem : Singleton<HeroSystem>
         HeroView = BoardSystem.Instance.BoardView.CreateHero(heroData, 1);
     }
 
-
-
     private void EnemyTurnPreReaction(EnemyTurnGA enemyTurnGA)
     {
-        DiscardAllCardsGA discardAllCardsGA = new();
+        DiscardAllCardsGA discardAllCardsGA = new(true);
         ActionSystem.Instance.AddReaction(discardAllCardsGA);
 
         StatusEffectSystem.Instance.PrePostModifyStatusEffect(HeroView, ReactionTiming.POST);
 
         List<EnemyView> enemies = BoardSystem.Instance.BoardView.GetAllEnemies();
 
-        foreach(EnemyView enemyView in enemies)
-        {
-            StatusEffectSystem.Instance.PrePostModifyStatusEffect(enemyView, ReactionTiming.PRE);
-        }
+        StatusEffectSystem.Instance.PrePostModifyStatusEffect(enemies.Select(e => (CombatantView)e).ToList(), ReactionTiming.PRE);
     }
 
     private void EnemyTurnPostReaction(EnemyTurnGA enemyTurnGA)
     {
         List<EnemyView> enemies = BoardSystem.Instance.BoardView.GetAllEnemies();
 
-        foreach (EnemyView enemyView in enemies)
-        {
-            StatusEffectSystem.Instance.PrePostModifyStatusEffect(enemyView, ReactionTiming.POST);
-        }
+        StatusEffectSystem.Instance.PrePostModifyStatusEffect(enemies.Select(e => (CombatantView)e).ToList(), ReactionTiming.POST);
 
         StatusEffectSystem.Instance.PrePostModifyStatusEffect(HeroView, ReactionTiming.PRE);
 
@@ -66,5 +59,25 @@ public class HeroSystem : Singleton<HeroSystem>
 
         DrawCardsGA drawCardsGA = new(5);
         ActionSystem.Instance.AddReaction(drawCardsGA);
+    }
+
+    public int GetHealth()
+    {
+        if(HeroView == null)
+        {
+            return RunSystem.Instance.CurrentHealth;
+        }
+
+        return HeroView.CurrentHealth;
+    }
+    
+    public int GetMaxHealth()
+    {
+        if(HeroView == null)
+        {
+            return RunSystem.Instance.MaxHealth;
+        }
+
+        return HeroView.MaxHealth;
     }
 }

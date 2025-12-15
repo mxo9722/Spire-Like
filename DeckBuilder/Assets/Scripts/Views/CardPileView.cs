@@ -9,7 +9,7 @@ public class CardPileView : MonoBehaviour
     [SerializeField] private bool _hideOrder = false;
     [SerializeField] private bool _hideWhenEmpty = false;
 
-    private List<Card> _cards;
+    protected virtual List<Card> _cards { get; set; }
 
     public void SetUp(List<Card> drawPile)
     {
@@ -17,19 +17,19 @@ public class CardPileView : MonoBehaviour
         UpdateUI();
     }
 
-    private void OnMouseEnter()
+    protected void OnMouseEnter()
     {
         if (!Interactions.Instance.PlayerCanHover()) return;
-        transform.localScale = new Vector3(1.2f,1.2f,1.2f);
+            transform.localScale = new Vector3(1.2f,1.2f,1.2f);
     }
 
-    private void OnMouseExit()
+    protected void OnMouseExit()
     {
         if (!Interactions.Instance.PlayerCanHover()) return;
-        transform.localScale = Vector3.one;
+            transform.localScale = Vector3.one;
     }
 
-    private void OnMouseDown()
+    protected void OnMouseDown()
     {
         if (!Interactions.Instance.PlayerCanHover()) return;
         transform.localScale = Vector3.one;
@@ -38,7 +38,8 @@ public class CardPileView : MonoBehaviour
 
     public void UpdateUI()
     {
-        _count.text = _cards.Count.ToString();
+        if(_count != null)
+            _count.text = _cards.Count.ToString();
 
         if(_hideWhenEmpty) 
         {

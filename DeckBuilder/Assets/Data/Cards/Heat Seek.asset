@@ -1,0 +1,73 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62bf69310631aa94896652d3f8be392c, type: 3}
+  m_Name: Heat Seek
+  m_EditorClassIdentifier: 
+  <Description>k__BackingField: Deal {vt} damage. If the target has any burn apply
+    {v0} weak.
+  <Mana>k__BackingField: 1
+  <RequiredConditions>k__BackingField: []
+  <HighlightConditions>k__BackingField: []
+  <ExhuastOnUse>k__BackingField: 0
+  <Image>k__BackingField: {fileID: 21300000, guid: 9b6ae141954ada14faa3c4df11b657c5, type: 3}
+  <ManualTargetType>k__BackingField: 0
+  <CombatantFilters>k__BackingField: []
+  <LaneFilters>k__BackingField: []
+  <ManualTargetEffect>k__BackingField:
+    rid: 4055347546437190242
+  <OtherEffects>k__BackingField:
+  - rid: 4055347546437190243
+  references:
+    version: 2
+    RefIds:
+    - rid: 4055347546437190242
+      type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _damageAmount: 8
+    - rid: 4055347546437190243
+      type: {class: ConditionalAutoTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _conditions:
+        - rid: 4055347546437190244
+        _successEffect:
+          rid: 4055347546437190247
+    - rid: 4055347546437190244
+      type: {class: AnyTargetQualifiesCondition, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
+        _targetMode:
+          rid: 4055347546437190245
+        _filters:
+        - rid: 4055347546437190246
+    - rid: 4055347546437190245
+      type: {class: ManualTargetCTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 4055347546437190246
+      type: {class: TargHasStatusEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
+        _statusEffectType: 1
+    - rid: 4055347546437190247
+      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 4055347546437190248
+        _combatantEffect:
+          rid: 4055347546437190249
+    - rid: 4055347546437190248
+      type: {class: ManualTargetCTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 4055347546437190249
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _statusEffectType: 6
+        _stackCount: 2

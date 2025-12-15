@@ -17,6 +17,9 @@ MonoBehaviour:
   <ExhuastOnUse>k__BackingField: 0
   <Image>k__BackingField: {fileID: 21300000, guid: 4c18a5f0d1236f54aa1bd1cebfd281a4, type: 3}
   <ManualTargetType>k__BackingField: 1
+  <CombatantFilters>k__BackingField: []
+  <LaneFilters>k__BackingField:
+  - rid: 1228494865696030792
   <ManualTargetEffect>k__BackingField:
     rid: 1228494508162810030
   <OtherEffects>k__BackingField: []
@@ -26,3 +29,7 @@ MonoBehaviour:
     - rid: 1228494508162810030
       type: {class: MoveTowardLaneEffect, ns: , asm: Assembly-CSharp}
       data: 
+    - rid: 1228494865696030792
+      type: {class: CasterInLaneFilter, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 1

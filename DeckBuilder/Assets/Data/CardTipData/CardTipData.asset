@@ -16,6 +16,8 @@ MonoBehaviour:
     _serializedList:
     - Key: BLOCK
       Value: Reduce incoming damage this turn.
+    - Key: EXHAUST
+      Value: Removes the card from your deck for the rest of this combat.
     - Key: BURN
       Value: Burned target loses HP at the beginning of their turn. Burn reduces
         by 1 after.

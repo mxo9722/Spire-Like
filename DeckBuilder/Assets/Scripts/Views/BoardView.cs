@@ -10,7 +10,6 @@ public class BoardView : MonoBehaviour
     [SerializeField] private List<LaneView> _laneViews = new();
     [SerializeField] private Transform _wrapper;
     [SerializeField] private Transform _singleLaneTransform;
-    [SerializeField] private Transform _combatantTargetHoverTransform;
 
     private Vector3 _originalPosition;
     private Vector3 _originalScale;
@@ -43,6 +42,8 @@ public class BoardView : MonoBehaviour
         heroView.transform.parent = laneView.HeroSlot;
         heroView.transform.localScale = Vector3.one;
 
+        if(RunSystem.Instance.CurrentHealth > 0)
+            heroView.SetHealth(RunSystem.Instance.CurrentHealth);
 
         return heroView;
     }
@@ -71,6 +72,22 @@ public class BoardView : MonoBehaviour
 
         return allEnemies;
     }
+
+    public List<CombatantView> GetAllCombatants()
+    {
+        List<CombatantView> allCombatants = new();
+
+        foreach (LaneView laneView in _laneViews)
+        {
+            allCombatants.AddRange(laneView.EnemyViews);
+            if (laneView.HeroView != null)
+                allCombatants.Add(laneView.HeroView);
+        }
+
+        return allCombatants;
+    }
+
+    public List<LaneView> GetAllLanes() => _laneViews;
 
     public LaneView GetCurrentLaneView(EnemyView enemyView)
     {
@@ -148,7 +165,7 @@ public class BoardView : MonoBehaviour
 
         yield return tween1;
         yield return tween2;
-        DynamicTextSystem.Instance.UpdateDynamicValues();
+        DynamicViewsSystem.Instance.UpdateDynamicValues();
 
     }
 
@@ -177,80 +194,100 @@ public class BoardView : MonoBehaviour
         else
             yield return null;
 
-        DynamicTextSystem.Instance.UpdateDynamicValues();
+        DynamicViewsSystem.Instance.UpdateDynamicValues();
     }
 
     public IEnumerator CompressBoard()
     {
-        if (!_laneViews.Any())
+        if (_laneViews.Count == 1)
             yield break;
 
-        int emptyIndex = _laneViews.FindIndex(e => !e.EnemyViews.Any());
+        List<int> emptyIndexes = new();
 
-        if (emptyIndex != -1)
+        int index = -1;
+
+        do
         {
+            index = _laneViews.FindIndex(index + 1, e => !e.EnemyViews.Any());
+            if(index != -1)
+                emptyIndexes.Add(index);
+        } 
+        while (index != -1 && index < _laneViews.Count - 1);
 
-            int heroIndex = _laneViews.FindIndex(e => e.HeroView == HeroSystem.Instance.HeroView);
-            float halfIndex = _laneViews.Count / 2.0f;
-            RemoveLaneGA removeLaneGA;
+        int heroIndex = _laneViews.FindIndex(e => e.HeroView == HeroSystem.Instance.HeroView);
 
-            bool beginPull = false;
-
-            if (heroIndex != _laneViews.Count - 1)
+        foreach (int emptyIndex in emptyIndexes)
+        {
+            if (emptyIndex != -1 && emptyIndex == heroIndex)
             {
-                for (int i = heroIndex; i < _laneViews.Count - 1; i++)
+                RemoveLaneGA removeLaneGA;
+
+                bool beginPull = false;
+
+                if (heroIndex != _laneViews.Count - 1)
                 {
-                    LaneView pullLaneView = _laneViews[i];
-                    LaneView pushLaneView = _laneViews[i + 1];
-
-                    if (!pullLaneView.EnemyViews.Any())
-                        beginPull = true;
-
-                    if (beginPull)
+                    for (int i = heroIndex; i < _laneViews.Count - 1; i++)
                     {
-                        foreach (EnemyView enemyView in pushLaneView.EnemyViews)
+                        LaneView pullLaneView = _laneViews[i];
+                        LaneView pushLaneView = _laneViews[i + 1];
+
+                        if (!pullLaneView.EnemyViews.Any())
+                            beginPull = true;
+
+                        if (beginPull)
                         {
-                            MoveEnemyGA moveEnemyGA = new(pullLaneView, enemyView);
-                            ActionSystem.Instance.AddReaction(moveEnemyGA);
+                            foreach (EnemyView enemyView in pushLaneView.EnemyViews)
+                            {
+                                MoveEnemyGA moveEnemyGA = new(pullLaneView, enemyView);
+                                ActionSystem.Instance.AddReaction(moveEnemyGA);
+                            }
                         }
                     }
+
+                    removeLaneGA = new(_laneViews.Last());
                 }
-
-                removeLaneGA = new(_laneViews.Last());
-
-            }
-            else
-            {
-
-                for (int i = heroIndex; i > 0; i--)
+                else
                 {
-                    LaneView pullLaneView = _laneViews[i];
-                    LaneView pushLaneView = _laneViews[i - 1];
-
-                    if (!pullLaneView.EnemyViews.Any())
-                        beginPull = true;
-
-                    if (beginPull)
+                    for (int i = heroIndex; i > 0; i--)
                     {
-                        foreach (EnemyView enemyView in pushLaneView.EnemyViews)
+                        LaneView pullLaneView = _laneViews[i];
+                        LaneView pushLaneView = _laneViews[i - 1];
+
+                        if (!pullLaneView.EnemyViews.Any())
+                            beginPull = true;
+
+                        if (beginPull)
                         {
-                            MoveEnemyGA moveEnemyGA = new(pullLaneView, enemyView);
-                            ActionSystem.Instance.AddReaction(moveEnemyGA);
+                            foreach (EnemyView enemyView in pushLaneView.EnemyViews)
+                            {
+                                MoveEnemyGA moveEnemyGA = new(pullLaneView, enemyView);
+                                ActionSystem.Instance.AddReaction(moveEnemyGA);
+                            }
                         }
                     }
+
+                    removeLaneGA = new(_laneViews.First());
                 }
 
-                removeLaneGA = new(_laneViews.First());
+                ActionSystem.Instance.AddReaction(removeLaneGA);
+                ActionSystem.Instance.AddReaction(new CompressBoardGA());
+
+                //RedistributeEnemiesGA redistributeEnemiesGA = new();
+                //ActionSystem.Instance.AddReaction(redistributeEnemiesGA);
             }
-
-            ActionSystem.Instance.AddReaction(removeLaneGA);
-            ActionSystem.Instance.AddReaction(new CompressBoardGA());
-
-            //RedistributeEnemiesGA redistributeEnemiesGA = new();
-            //ActionSystem.Instance.AddReaction(redistributeEnemiesGA);
-
-            yield return null;
+            else if (emptyIndex == 0)
+            {
+                ActionSystem.Instance.AddReaction(new RemoveLaneGA(_laneViews.First()));
+                ActionSystem.Instance.AddReaction(new CompressBoardGA());
+            }
+            else if (emptyIndex == _laneViews.Count - 1)
+            {
+                ActionSystem.Instance.AddReaction(new RemoveLaneGA(_laneViews.Last()));
+                ActionSystem.Instance.AddReaction(new CompressBoardGA());
+            }
         }
+
+        yield return null;
     }
 
     public IEnumerator RemoveLane(LaneView laneView, float duration)
@@ -306,13 +343,7 @@ public class BoardView : MonoBehaviour
 
         Destroy(laneView.gameObject);
         _laneViews.Remove(laneView);
-    }
 
-    public Vector3 GetCombatantHoverPosition()
-    {
-        Vector3 position = new();
-        position.x = _combatantTargetHoverTransform.position.x;
-        position.y = 1.75f;
-        return position;
+        yield return null;
     }
 }

@@ -7,7 +7,19 @@ public class RandomEnemiesCTM : CombatantTargetMode
 {
     [SerializeField, Min(1)] private int _enemyCount = 1;
 
-    public override List<CombatantView> GetTargets(TargetModeContext targetModeContext)
+    public override bool IsRandom => true;
+
+    public override List<CombatantView> GetTargets(EffectContext context)
+    {
+        return GetTargets(context, RNG.Random);
+    }
+
+    public override List<CombatantView> GetTargetsTrivial(EffectContext context)
+    {
+        return GetTargets(context, RNG.TrivialRandom);
+    }
+
+    private List<CombatantView> GetTargets(EffectContext targetModeContext, System.Random random)
     {
         List<EnemyView> enemies = BoardSystem.Instance.BoardView.GetAllEnemies();
 
@@ -18,7 +30,7 @@ public class RandomEnemiesCTM : CombatantTargetMode
 
         List<CombatantView> targets = new();
 
-        for(int i = 0; i < _enemyCount; i++)
+        for (int i = 0; i < _enemyCount; i++)
         {
             int index = RNG.Random.Next(enemies.Count);
             EnemyView target = enemies[index];
@@ -27,5 +39,10 @@ public class RandomEnemiesCTM : CombatantTargetMode
         }
 
         return targets;
+    }
+
+    public override List<CombatantView> AllPossibleTargets(EffectContext context, Card card = null)
+    {
+        return new(BoardSystem.Instance.BoardView.GetAllEnemies());
     }
 }

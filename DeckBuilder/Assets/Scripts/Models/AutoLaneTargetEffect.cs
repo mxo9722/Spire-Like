@@ -1,5 +1,6 @@
 using SerializeReferenceEditor;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,14 +15,14 @@ public class AutoLaneTargetEffect : AutoTargetEffect
 
     [field: SerializeReference, SR] private LaneTargetEffect _laneEffect;
 
-    public override GameAction GetGameAction(TargetModeContext targetModeContext)
+    public override GameAction GetGameAction(EffectContext targetModeContext)
     {
         List<LaneView> targets = TargetMode.GetTargets(targetModeContext);
         PerformEffectsGA performEffectsGA = new(Effect, targets);
         return performEffectsGA;
     }
 
-    public override string GetDynamicText(TargetModeContext targetModeContext)
+    public override string GetDynamicText(EffectContext targetModeContext)
     {
         IDynamicEffectText dynamicEffectText = GetDynamicTextEffect();
 
@@ -45,5 +46,16 @@ public class AutoLaneTargetEffect : AutoTargetEffect
             statusEffects.AddRange(oStatusEffects);
 
         return statusEffects;
+    }
+
+    public override bool RequiresUserInput()
+    {
+        return TargetMode is IUserInputTM;
+    }
+
+    public override IEnumerator WaitForUserInput()
+    {
+        if (TargetMode is IUserInputTM userInputTM)
+            yield return userInputTM.WaitForUserInput();
     }
 }

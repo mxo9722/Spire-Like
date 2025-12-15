@@ -13,7 +13,7 @@ TagManager:
   - Water
   - UI
   - DropLayer
-  - EnemyView
+  - CombatantView
   - LaneView
   - 
   - 
@@ -42,8 +42,17 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: CardCollection
+  - name: UI
+    uniqueID: 2845121839
+    locked: 0
+  - name: OverlayMenuLayer
     uniqueID: 3108049653
+    locked: 0
+  - name: OverlayOptions
+    uniqueID: 2115503321
+    locked: 0
+  - name: CardTips
+    uniqueID: 3583022261
     locked: 0
   m_RenderingLayers:
   - Default

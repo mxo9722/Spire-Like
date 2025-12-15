@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class RunSystem : PersistentSingleton<RunSystem>
@@ -9,12 +10,39 @@ public class RunSystem : PersistentSingleton<RunSystem>
     [SerializeField] private bool _debugStartNew = false;
 
     private const string SaveKey = "Run1";
+    public int CurrentHealth => RunData.CurrentHealth;
+    public int MaxHealth => RunData.MaxHealth;
+    public List<CardData> Deck => RunData.Deck;
+    public List<Perk> Perks => RunData.Perks;
+    public List<PerkData> UsedPerks => RunData.UsedPerks;
+
+    private bool _started = false;
 
     protected override void Awake()
     {
         base.Awake();
         if(Instance == this)
             LoadRun();
+    }
+
+    private void Start()
+    {
+        CreditSystem.Instance.OnCreditsChange += RunData.SetCredits;
+        _started = true;
+    }
+
+    private void OnEnable()
+    {
+        if(_started)
+            CreditSystem.Instance.OnCreditsChange += RunData.SetCredits;
+    }
+
+    private void OnDisable()
+    {
+        if (Instance == this)
+        {
+            CreditSystem.Instance.OnCreditsChange -= RunData.SetCredits;
+        }
     }
 
     public void SetUp(RunData runData)
@@ -34,10 +62,8 @@ public class RunSystem : PersistentSingleton<RunSystem>
         }
         else
         {
-            RunData = new(_defaultHeroData);
+            RunData = GenerateNewRun();
         }
-
-        RNG.SetSeed(RunData.RandomSeed);
     }
 
     public void SaveRun()
@@ -48,15 +74,33 @@ public class RunSystem : PersistentSingleton<RunSystem>
         }
     }
 
-    public Room GetRoom()
+    public RunData GenerateNewRun()
     {
-        return RunData.Room;
+        RunData runData = new(_defaultHeroData);
+
+        return runData;
     }
 
-    public void AddPerk(PerkData perk)
+    public void AddPerk(Perk perk)
     {
-        RunData.Perks.Add(new(perk));
+        RunData.Perks.Add(perk);
+        SaveRun();
     }
 
-    public void AddCredit(int amount) => RunData.AddCredits(amount);
+    public void AddCard(Card card)
+    {
+        RunData.Deck.Add(card.data);
+        SaveRun();
+    }
+
+    public void RemoveCard(Card card)
+    {
+        Deck.Remove(card.data);
+        SaveRun();
+    }
+
+    public Room GetRoom() => RunData.Room;
+    public HeroData GetHeroData() => RunData.Hero;
+    public void SetMap(Map map) => RunData.SetMap(map);
+    public void MarkPerkUsed(PerkData perkData) => RunData.MarkPerkDataUsed(perkData);
 }

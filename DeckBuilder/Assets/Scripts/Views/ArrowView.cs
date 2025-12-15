@@ -8,6 +8,8 @@ public class ArrowView : MonoBehaviour
 
     [SerializeField] private Color _defaultColor;
     [SerializeField] private Color _validHoverColor;
+    [SerializeField] private Color _invalidHoverColor;
+    [SerializeField] private Color _highlightHoverColor;
 
     private Vector3 _startPosition;
 
@@ -24,17 +26,50 @@ public class ArrowView : MonoBehaviour
 
         Collider2D target = ManualTargetSystem.Instance.ValidRaycast(MouseUtil.GetMousePositionInWorldSpace(-1));
 
+
+
         if (target != null)
         {
-            color = _validHoverColor;
+            bool isValid = false;
+
             switch (ManualTargetSystem.Instance.ManualTargetType)
             {
-                case ManualTargetType.ENEMY:
-                    CardViewHoverSystem.Instance.UpdateDynamicDescription(targetCombatant: GetComponent<EnemyView>());
+                case ManualTargetType.COMBATANT:
+                    CombatantView combatantView = target.GetComponent<CombatantView>();
+                    isValid = ManualTargetSystem.Instance.CombatantIsValid(EffectContext.CreateHeroEC(combatantView),combatantView);
                     break;
                 case ManualTargetType.LANE:
-                    CardViewHoverSystem.Instance.UpdateDynamicDescription(targetLane: GetComponent<LaneView>());
+                    LaneView laneView = target.GetComponent<LaneView>();
+                    isValid = ManualTargetSystem.Instance.LaneIsValid(EffectContext.CreateHeroEC(laneView), laneView);
                     break;
+            }
+
+            color = isValid ? _validHoverColor : _invalidHoverColor;
+
+            if (isValid)
+            {
+                switch (ManualTargetSystem.Instance.ManualTargetType)
+                {
+                    case ManualTargetType.COMBATANT:
+
+                        CombatantView ct = target.GetComponent<CombatantView>();
+                        CardViewHoverSystem.Instance.UpdateDynamicDescription(ct);
+
+                        if (CardViewHoverSystem.Instance.CardViewHover.IsHighlighted(EffectContext.CreateHeroEC(ct)))
+                            color = _highlightHoverColor;
+                        break;
+                    case ManualTargetType.LANE:
+                        LaneView lt = target.GetComponent<LaneView>();
+                        CardViewHoverSystem.Instance.UpdateDynamicDescription(lt);
+
+                        if (CardViewHoverSystem.Instance.CardViewHover.IsHighlighted(EffectContext.CreateHeroEC(lt)))
+                            color = _highlightHoverColor;
+                        break;
+                }
+            }
+            else
+            {
+                CardViewHoverSystem.Instance.UpdateDynamicDescription();
             }
         }
         else

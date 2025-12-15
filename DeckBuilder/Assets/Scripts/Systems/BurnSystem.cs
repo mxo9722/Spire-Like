@@ -20,13 +20,14 @@ public class BurnSystem : Singleton<BurnSystem>
     {
         List<CombatantView> targets = applyBurnGA.Targets;
 
-        foreach (var target in targets)
+        foreach (CombatantView target in targets)
         {
             Instantiate(_burnVFX, target.transform.position, Quaternion.identity);
 
             int burnStacks = target.GetStatusEffectStacks(StatusEffectType.BURN);
 
             target.Damage(burnStacks);
+            target.AddStatusEffect(StatusEffectType.BURN, -1);
         }
 
         yield return new WaitForSeconds(1f);

@@ -1,0 +1,98 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 855f40ef0ec43f44087f605044b287db, type: 3}
+  m_Name: StatusEffects 1
+  m_EditorClassIdentifier: 
+  Map:
+    _serializedList:
+    - Key: 0
+      Value:
+        <Name>k__BackingField: Block
+        <Sprite>k__BackingField: {fileID: 21300000, guid: 7a879c578ca567842b71f284faeba24b, type: 3}
+        <Stackable>k__BackingField: 1
+        <PreTurnModification>k__BackingField: 1
+        <PostTurnModification>k__BackingField: 0
+        _effect:
+          rid: -2
+        <Description>k__BackingField: Reduce incoming damage by X this turn.
+    - Key: 1
+      Value:
+        <Name>k__BackingField: Burn
+        <Sprite>k__BackingField: {fileID: 21300000, guid: e6c86ec38dd1dec499f2ddf06f901d89, type: 3}
+        <Stackable>k__BackingField: 1
+        <PreTurnModification>k__BackingField: 3
+        <PostTurnModification>k__BackingField: 0
+        _effect:
+          rid: 4055347657891905607
+        <Description>k__BackingField: Target loses X HP at the beginning of their
+          turn then remove 1 Burn.
+    - Key: 2
+      Value:
+        <Name>k__BackingField: Dexterity
+        <Sprite>k__BackingField: {fileID: 21300000, guid: ef6cd8fa74b938a4482b665c8493429d, type: 3}
+        <Stackable>k__BackingField: 1
+        <PreTurnModification>k__BackingField: 0
+        <PostTurnModification>k__BackingField: 0
+        _effect:
+          rid: -2
+        <Description>k__BackingField: Increases block gained from cards by X.
+    - Key: 3
+      Value:
+        <Name>k__BackingField: Frail
+        <Sprite>k__BackingField: {fileID: 21300000, guid: 8ed3dc0af409be5429fe0e3b03cfb53b, type: 3}
+        <Stackable>k__BackingField: 1
+        <PreTurnModification>k__BackingField: 0
+        <PostTurnModification>k__BackingField: 2
+        _effect:
+          rid: -2
+        <Description>k__BackingField: Target appies 25% less block for the next X
+          turns.
+    - Key: 4
+      Value:
+        <Name>k__BackingField: Strength
+        <Sprite>k__BackingField: {fileID: 21300000, guid: 25e50837128d47049b0826e7e50c81e8, type: 3}
+        <Stackable>k__BackingField: 1
+        <PreTurnModification>k__BackingField: 0
+        <PostTurnModification>k__BackingField: 0
+        _effect:
+          rid: -2
+        <Description>k__BackingField: Target deals X more damage on attacks.
+    - Key: 5
+      Value:
+        <Name>k__BackingField: Vulnerable
+        <Sprite>k__BackingField: {fileID: 21300000, guid: 11afccf098e360c48b11109ac2f33899, type: 3}
+        <Stackable>k__BackingField: 1
+        <PreTurnModification>k__BackingField: 2
+        <PostTurnModification>k__BackingField: 0
+        _effect:
+          rid: -2
+        <Description>k__BackingField: Target takes 50% more damage for the next X
+          turns.
+    - Key: 6
+      Value:
+        <Name>k__BackingField: Weak
+        <Sprite>k__BackingField: {fileID: 21300000, guid: 26768a6a24578a6458ac4fa36e70c3ed, type: 3}
+        <Stackable>k__BackingField: 1
+        <PreTurnModification>k__BackingField: 0
+        <PostTurnModification>k__BackingField: 2
+        _effect:
+          rid: -2
+        <Description>k__BackingField: Target deals 25% less damage for the next X
+          turns.
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 4055347657891905607
+      type: {class: ApplyBurnEffect, ns: , asm: Assembly-CSharp}
+      data: 

@@ -49,17 +49,17 @@ public class EnemySystem : Singleton<EnemySystem>
     {
         List<EnemyView> allEnemyViews = _boardView.GetAllEnemies();
 
-        List<CombatantView> burnEnemies = new(allEnemyViews);
-        burnEnemies = burnEnemies.FindAll(e => e.GetStatusEffectStacks(StatusEffectType.BURN) > 0);
+        //List<CombatantView> burnEnemies = new(allEnemyViews);
+        //burnEnemies = burnEnemies.FindAll(e => e.GetStatusEffectStacks(StatusEffectType.BURN) > 0);
 
-        ApplyBurnGA applyBurnGA = new(burnEnemies);
-        ActionSystem.Instance.AddReaction(applyBurnGA);
+        //ApplyBurnGA applyBurnGA = new(burnEnemies);
+        //ActionSystem.Instance.AddReaction(applyBurnGA);
 
         allEnemyViews = _boardView.GetAllEnemies();
 
         foreach (EnemyView enemyView in allEnemyViews)
         {
-            TargetModeContext targetModeContext = TargetModeContext.CreateEnemyTMC(enemyView);
+            EffectContext targetModeContext = EffectContext.CreateEnemyEC(enemyView);
 
             HideEnemyPreviewGA hideEnemyPreviewGA = new(enemyView);
             ActionSystem.Instance.AddReaction(hideEnemyPreviewGA);
@@ -214,11 +214,11 @@ public class EnemySystem : Singleton<EnemySystem>
 
     private static bool IsEnemyActionValid(EnemyAction enemyAction, EnemyView enemyView)
     {
-        ConditionContext conditionContext = new(enemyView);
+        EffectContext conditionContext = new(enemyView);
 
         foreach(Condition condition in enemyAction.Conditions)
         {
-            if (!condition.IsConditionMet(conditionContext))
+            if (!condition.TestCondition(conditionContext))
                 return false;
         }
 

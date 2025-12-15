@@ -1,0 +1,214 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5553794d1bf7bff44a066c096a5c5479, type: 3}
+  m_Name: Trolley Problem
+  m_EditorClassIdentifier: 
+  nodes:
+  - {fileID: 1241177576749561683}
+  - {fileID: 4090011545970005206}
+  - {fileID: 8738784151511126487}
+  - {fileID: 6060344708208411505}
+  <StartNode>k__BackingField: {fileID: 1241177576749561683}
+--- !u!114 &1241177576749561683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a52691074406ce1479b5808d138739d3, type: 3}
+  m_Name: Start Event
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -536, y: 184}
+  ports:
+    keys:
+    - Choices
+    values:
+    - _fieldName: Choices
+      _node: {fileID: 1241177576749561683}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: Prev
+        node: {fileID: 4090011545970005206}
+        reroutePoints: []
+      - fieldName: Prev
+        node: {fileID: 6060344708208411505}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  <Text>k__BackingField: You spot a trolley hurdling down a track at a break neck
+    speed. Tied to the track is 5 people. Next to you is a lever however, that can
+    divert the trolley to a different track where only one person is tied up.
+  <Sprite>k__BackingField: {fileID: 0}
+  Choices: 0
+--- !u!114 &4090011545970005206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 262dd8f326c811f49b5f8e3ff5f3b5fd, type: 3}
+  m_Name: Dialogue
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 264, y: -296}
+  ports:
+    keys:
+    - Prev
+    - Choices
+    values:
+    - _fieldName: Prev
+      _node: {fileID: 4090011545970005206}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: Choices
+        node: {fileID: 1241177576749561683}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Choices
+      _node: {fileID: 4090011545970005206}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: _prev
+        node: {fileID: 8738784151511126487}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  <Text>k__BackingField: You pull the lever and the trolley rolls over the one person.
+    You are left wondering if that was the right thing to do.
+  <Sprite>k__BackingField: {fileID: 0}
+  Choices: 0
+  OptionText: Pull the level (Gain the Guilt curse)
+  HideIfUnavailable: 0
+  <Conditions>k__BackingField: []
+  Prev: 0
+  <Actions>k__BackingField:
+  - rid: 4055347726652538959
+  references:
+    version: 2
+    RefIds:
+    - rid: 4055347726652538959
+      type: {class: AddCardToDeckEA, ns: , asm: Assembly-CSharp}
+      data:
+        _cards:
+        - {fileID: 11400000, guid: 946d04fcc6311ad48b2879b65352193c, type: 2}
+--- !u!114 &6060344708208411505
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 262dd8f326c811f49b5f8e3ff5f3b5fd, type: 3}
+  m_Name: Dialogue
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 264, y: 200}
+  ports:
+    keys:
+    - Prev
+    - Choices
+    values:
+    - _fieldName: Prev
+      _node: {fileID: 6060344708208411505}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: Choices
+        node: {fileID: 1241177576749561683}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Choices
+      _node: {fileID: 6060344708208411505}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: _prev
+        node: {fileID: 8738784151511126487}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  <Text>k__BackingField: You abstain from pulling the lever and watch as the trolley
+    rolls over the 5 people. You are left wondering if that was the right thing to
+    do.
+  <Sprite>k__BackingField: {fileID: 0}
+  Choices: 0
+  OptionText: Don't pull the lever (Lose 100 Credits)
+  HideIfUnavailable: 0
+  <Conditions>k__BackingField: []
+  Prev: 0
+  <Actions>k__BackingField:
+  - rid: 4055347726652538955
+  references:
+    version: 2
+    RefIds:
+    - rid: 4055347726652538955
+      type: {class: RemoveCreditsEA, ns: , asm: Assembly-CSharp}
+      data:
+        _credits: 100
+--- !u!114 &8738784151511126487
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a505528d4195824cad3750931c9a854, type: 3}
+  m_Name: Complete Room
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 894.66675, y: 141.00003}
+  ports:
+    keys:
+    - _prev
+    values:
+    - _fieldName: _prev
+      _node: {fileID: 8738784151511126487}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: Choices
+        node: {fileID: 4090011545970005206}
+        reroutePoints: []
+      - fieldName: Choices
+        node: {fileID: 6060344708208411505}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  _prev: 0

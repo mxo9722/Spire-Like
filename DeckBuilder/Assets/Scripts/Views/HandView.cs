@@ -64,11 +64,13 @@ public class HandView : MonoBehaviour
         yield return new WaitForSeconds(duration);
     }
 
-    public void UpdateDynamicDescriptions()
+    public void UpdateCardViews()
     {
-        foreach(CardView hand in _cards)
+        foreach(CardView card in _cards)
         {
-            hand.UpdateDynamicDescription(TargetModeContext.CreateHeroTMC());
+            card.UpdateDynamicDescription(EffectContext.CreateHeroEC());
+
+            card.UpdateGlow();
         }
     }
 }

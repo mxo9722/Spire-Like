@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CreditReward : Reward
+public class CreditReward : SetReward
 {
 
     [SerializeField, Min(1)] private int _amount;
@@ -8,8 +8,15 @@ public class CreditReward : Reward
 
     public override string RewardName => _amount.ToString()+" Credits";
 
+    public void Setcredits(int amount)
+    {
+        _amount = amount;
+    }
+
     public override void CollectReward()
     {
-        RunSystem.Instance.AddCredit(_amount);
+        CreditSystem.Instance.Add(_amount);
+
+        RewardSystem.Instance.RemoveReward(this);
     }
 }

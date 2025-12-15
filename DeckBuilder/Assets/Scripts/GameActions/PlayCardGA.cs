@@ -3,7 +3,7 @@ using UnityEngine;
 public class PlayCardGA : GameAction
 {
     public Card card { get; set; }
-    public EnemyView ManualEnemyTarget { get; private set; } = null;
+    public CombatantView ManualEnemyTarget { get; private set; } = null;
     public LaneView ManualLaneTarget { get; private set; } = null;
 
 
@@ -13,7 +13,7 @@ public class PlayCardGA : GameAction
         ManualEnemyTarget = null;
     }
     
-    public PlayCardGA(Card card, EnemyView manualTarget)
+    public PlayCardGA(Card card, CombatantView manualTarget)
     {
         this.card = card;
         ManualEnemyTarget = manualTarget;

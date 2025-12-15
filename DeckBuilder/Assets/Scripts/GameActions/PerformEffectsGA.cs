@@ -7,6 +7,7 @@ public class PerformEffectsGA : GameAction
     public Effect Effect { get; set; }
     public List<CombatantView> CombatantTargets { get; set; } = new();
     public List<LaneView> LaneTargets { get; set; } = new();
+    public List<Card> CardTargets { get; set; } = new();
 
     public PerformEffectsGA(Effect effect)
     {
@@ -36,5 +37,18 @@ public class PerformEffectsGA : GameAction
     {
         Effect = effect;
         LaneTargets = target == null ? new() : new() { target };
+    }
+    
+    public PerformEffectsGA(Effect effect, List<Card> targets)
+    {
+        Effect = effect;
+        CardTargets = targets == null ? new() : targets;
+
+    }
+    
+    public PerformEffectsGA(Effect effect, Card target)
+    {
+        Effect = effect;
+        CardTargets = target == null ? new() : new() { target };
     }
 }
