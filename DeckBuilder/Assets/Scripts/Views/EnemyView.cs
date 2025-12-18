@@ -12,11 +12,11 @@ public class EnemyView : CombatantView
     public EnemyAction CurrentAction { get; private set; } = null;
     public List<EnemyAction> PreviousActions { get; private set; } = new();
 
-    public void Setup(EnemyData enemyData)
+    public void Setup(EnemyData enemyData, SlotView slot)
     {
         Data = enemyData;
         UpdateBehaviorIndicator();
-        SetupBase(enemyData.Health, enemyData.Image);
+        SetupBase(enemyData.Health, enemyData.Image, slot);
     }
 
     public void SetCurrentAction(EnemyAction enemyAction)
@@ -52,7 +52,7 @@ public class EnemyView : CombatantView
 
                 List<CombatantView> targets = combatantTargetEffect.TargetMode.GetTargets(targetModeContext);
 
-                AttackHeroGA attackGameAction = (AttackHeroGA)attackHeroEffect.GetGameAction(this, targets);
+                AttackHeroGA attackGameAction = (AttackHeroGA)attackHeroEffect.GetGameAction(new(this), targets);
 
                 string attackText = DamageSystem.EnemyDamageTextFromAttack(attackGameAction.Damage, this, targets);
 

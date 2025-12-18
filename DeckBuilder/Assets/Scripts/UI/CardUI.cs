@@ -25,7 +25,12 @@ public class CardUI : MonoBehaviour
 
         _title.text = card.Title;
         _description.text = card.GetStaticDescription();
-        _mana.text = card.Mana.ToString();
+
+        if (card.Unplayable)
+            _mana.text = "";
+        else
+            _mana.text = card.Mana.ToString();
+        
         _image.sprite = card.Image;
     }
 

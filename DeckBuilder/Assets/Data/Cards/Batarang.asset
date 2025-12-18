@@ -14,13 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Description>k__BackingField: Deal {v0} damage to a random enemy.
   <Mana>k__BackingField: 1
+  Unplayable: 0
+  <RequiredConditions>k__BackingField: []
+  <HighlightConditions>k__BackingField: []
   <ExhuastOnUse>k__BackingField: 0
   <Image>k__BackingField: {fileID: 21300000, guid: dface75351cb6ee41ab5670fd16bae16, type: 3}
   <ManualTargetType>k__BackingField: 0
+  <CombatantFilters>k__BackingField: []
+  <LaneFilters>k__BackingField: []
   <ManualTargetEffect>k__BackingField:
     rid: -2
   <OtherEffects>k__BackingField:
   - rid: 1228494502818218260
+  <TurnEndEffects>k__BackingField: []
   references:
     version: 2
     RefIds:
@@ -36,8 +42,14 @@ MonoBehaviour:
     - rid: 1228494502818218262
       type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
       data:
+        _damage:
+          rid: 4055347768894947442
         _damageAmount: 10
     - rid: 1228494502818218320
       type: {class: RandomEnemiesCTM, ns: , asm: Assembly-CSharp}
       data:
         _enemyCount: 1
+    - rid: 4055347768894947442
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 10

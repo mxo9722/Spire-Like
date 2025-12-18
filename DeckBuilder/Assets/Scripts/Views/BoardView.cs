@@ -35,11 +35,11 @@ public class BoardView : MonoBehaviour
     {
         LaneView laneView = _laneViews[laneIndex];
 
-        HeroView heroView = CombatantViewCreator.Instance.CreateHeroView(heroData, laneView.HeroSlot.position, Quaternion.identity);
+        HeroView heroView = CombatantViewCreator.Instance.CreateHeroView(heroData, laneView.HeroSlot);
 
         laneView.SetHero(heroView);
 
-        heroView.transform.parent = laneView.HeroSlot;
+        laneView.HeroSlot.AddCombatant(heroView);
         heroView.transform.localScale = Vector3.one;
 
         if(RunSystem.Instance.CurrentHealth > 0)
@@ -52,11 +52,10 @@ public class BoardView : MonoBehaviour
     {
         LaneView laneView = _laneViews[laneIndex];
 
-        EnemyView enemyView = CombatantViewCreator.Instance.CreateEnemyView(enemyData, Vector3.zero, Quaternion.identity);
+        SlotView slot = laneView.FirstAvailableEnemySlot();
 
-        laneView.AddEnemy(enemyView);
+        EnemyView enemyView = CombatantViewCreator.Instance.CreateEnemyView(enemyData, slot);
         enemyView.transform.localScale = Vector3.one;
-
 
         EnemySystem.DetermineEnemyBehaviour(enemyView);
 
@@ -182,17 +181,14 @@ public class BoardView : MonoBehaviour
         originalLaneView.EnemyViews.Remove(moveEnemyGA.EnemyView);
         moveEnemyGA.DestinationLane.EnemyViews.Add(moveEnemyGA.EnemyView);
 
-        yield return moveEnemyGA.EnemyView.WaitForTweensComplete();
-
-        moveEnemyGA.EnemyView.transform.parent = moveEnemyGA.DestinationLane.FirstAvailableSlot();
-        Tween tween = moveEnemyGA.EnemyView.transform.DOLocalMove(Vector3.zero, duration);
+        var lane = moveEnemyGA.DestinationLane.FirstAvailableEnemySlot();
+        lane.AddCombatant(moveEnemyGA.EnemyView, false);
+        Coroutine wait = StartCoroutine(lane.PullCombatant(0.4f));
 
         yield return originalLaneView.SlideEnemiesLeft(duration);
 
         if (pause)
-            yield return tween.WaitForCompletion();
-        else
-            yield return null;
+            yield return wait;
 
         DynamicViewsSystem.Instance.UpdateDynamicValues();
     }

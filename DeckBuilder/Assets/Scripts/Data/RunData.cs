@@ -57,7 +57,7 @@ public class RunData
 
     public void SetHealth(int health)
     {
-        CurrentHealth = health;
+        CurrentHealth = Mathf.Clamp(health, 0, MaxHealth);
     }
 
     public void MarkPerkDataUsed(PerkData perkData)

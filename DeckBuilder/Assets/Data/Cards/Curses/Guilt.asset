@@ -12,12 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62bf69310631aa94896652d3f8be392c, type: 3}
   m_Name: Guilt
   m_EditorClassIdentifier: 
+  <Upgrade>k__BackingField: {fileID: 0}
+  <Unplayable>k__BackingField: 1
+  <Mana>k__BackingField: 0
   <Description>k__BackingField: 'Unplayable.
 
     If this card is in your hand at
     the end of your turn apply 1 weak to self.'
-  <Mana>k__BackingField: 0
-  Unplayable: 1
   <RequiredConditions>k__BackingField: []
   <HighlightConditions>k__BackingField: []
   <ExhuastOnUse>k__BackingField: 0

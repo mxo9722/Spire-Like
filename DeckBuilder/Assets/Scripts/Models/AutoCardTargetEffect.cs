@@ -28,11 +28,11 @@ public class AutoCardTargetEffect : AutoTargetEffect
         return statusEffects;
     }
 
-    public override string GetDynamicText(EffectContext targetModeContext)
+    public override string GetDynamicText(EffectContext context)
     {
         IDynamicEffectText dynamicEffectText = GetDynamicTextEffect();
 
-        string value = dynamicEffectText.GetDynamicText(targetModeContext.Caster);
+        string value = dynamicEffectText.GetDynamicText(context);
 
         return value;
     }

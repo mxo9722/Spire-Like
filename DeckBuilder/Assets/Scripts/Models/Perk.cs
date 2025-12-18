@@ -44,7 +44,7 @@ public class Perk
                 targets.AddRange(_effect.TargetMode.GetTargets(targetModeContext));
             }
 
-            GameAction perkEffectAction = _effect.Effect.GetGameAction(HeroSystem.Instance.HeroView, combatantTargets:targets);
+            GameAction perkEffectAction = _effect.Effect.GetGameAction(EffectContext.CreateHeroEC(), combatantTargets:targets);
             ActionSystem.Instance.AddReaction(perkEffectAction);
         }
     }

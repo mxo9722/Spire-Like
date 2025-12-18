@@ -7,22 +7,22 @@ using UnityEngine;
 
 public class LaneView : MonoBehaviour, ITargetPreviewable
 {
-    [field: SerializeField] public Transform HeroSlot { get; private set; }
-    [field: SerializeField] public List<Transform> EnemySlots { get; private set; }
+    [field: SerializeField] public SlotView HeroSlot { get; private set; }
+    [field: SerializeField] public List<SlotView> EnemySlots { get; private set; }
 
     [SerializeField] private SpriteRenderer _targetPreviewSR;
 
-    public List<EnemyView> EnemyViews { get; private set; } = new();
-    public HeroView HeroView { get; private set; } = null;
+    public List<EnemyView> EnemyViews { get => EnemySlots.Select(s => (EnemyView)s.Combatant).Where(c => c != null).ToList(); }
+    public HeroView HeroView { get => (HeroView)HeroSlot.Combatant; }
     public bool Dead { get; private set; } = false;
 
     public bool TargetPreviewActive => _targetPreviewSR.color != Color.clear;
 
-    public Transform FirstAvailableSlot()
+    public SlotView FirstAvailableEnemySlot()
     {
-        foreach (Transform slot in EnemySlots)
+        foreach (SlotView slot in EnemySlots)
         {
-            if (slot.childCount == 0)
+            if (slot.IsEmpty)
                 return slot;
         }
 
@@ -37,41 +37,33 @@ public class LaneView : MonoBehaviour, ITargetPreviewable
 
     public IEnumerator SlideEnemiesLeft(float duration, bool pauseForMove = false)
     {
-        Tween tween = null;
+        Coroutine wait = null;
 
         for(int i=0;i<EnemyViews.Count;i++)
         {
             EnemyView enemyView = EnemyViews[i];
-            Transform enemySlot = EnemySlots[i];
+            SlotView enemySlot = EnemySlots[i];
 
-            if (enemyView.transform.parent != enemySlot)
+            if (enemyView.Slot != enemySlot)
             {
-                enemyView.transform.parent = enemySlot;
-
-                List<Tween> tweens = DOTween.TweensByTarget(enemyView.transform);
-
-                if(tweens != null)
-                {
-                    foreach (Tween t in tweens)
-                        yield return t;
-                }
-
-                tween = enemyView.transform.DOLocalMove(Vector3.zero, duration);
+                yield return enemyView.WaitForTweensComplete();
+                enemySlot.AddCombatant(enemyView, false);
+                wait = StartCoroutine(enemySlot.PullCombatant(0.4f));
             }
         }
 
-        if (tween != null && pauseForMove)
-            yield return tween.WaitForCompletion();
+        if (wait != null && pauseForMove)
+            yield return wait;
     }
 
     public void AddEnemy(EnemyView enemyView, LaneView originalLaneView = null)
     {
-        Transform slot = FirstAvailableSlot();
+        SlotView slot = FirstAvailableEnemySlot();
 
         if (slot == null)
             return;
 
-        enemyView.transform.parent = slot;
+        slot.AddCombatant(enemyView);
         EnemyViews.Add(enemyView);
 
         if (originalLaneView != null)
@@ -92,7 +84,7 @@ public class LaneView : MonoBehaviour, ITargetPreviewable
 
         yield return enemyView.WaitForTweensComplete();
 
-        EnemyViews.Remove(enemyView);
+        enemyView.Slot.RemoveCombatant();
 
         Tween tween = enemyView.transform.DOScale(Vector3.zero, 0.25f);
         yield return tween.WaitForCompletion();
@@ -108,8 +100,7 @@ public class LaneView : MonoBehaviour, ITargetPreviewable
             return;
         }
 
-        heroView.transform.parent = HeroSlot;
-        HeroView = heroView;
+        HeroSlot.AddCombatant(heroView);
 
         if (originalLaneView == null)
             heroView.transform.localPosition = Vector3.zero;
@@ -121,14 +112,10 @@ public class LaneView : MonoBehaviour, ITargetPreviewable
 
     public IEnumerator SwapHero(HeroView heroView, float duration)
     {
-        HeroView = heroView;
-
         if (heroView != null)
         {
-            yield return heroView.WaitForTweensComplete();
-
-            heroView.transform.parent = HeroSlot;
-            yield return heroView.transform.DOLocalJump(Vector3.zero, 2, 1, duration).WaitForCompletion();
+            HeroSlot.AddCombatant(heroView, false);
+            yield return HeroSlot.PullCombatant(0.4f);
         }
     }
 

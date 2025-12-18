@@ -4,5 +4,5 @@ using UnityEngine;
 public interface IDynamicEffectText
 {
     public abstract string GetStaticText();
-    public abstract string GetDynamicText(CombatantView caster, List<CombatantView> targetCombatants = null, List<LaneView> targetLanes = null);
+    public abstract string GetDynamicText(EffectContext context, List<CombatantView> targetCombatants = null, List<LaneView> targetLanes = null);
 }

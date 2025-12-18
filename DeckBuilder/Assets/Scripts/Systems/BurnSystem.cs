@@ -26,7 +26,7 @@ public class BurnSystem : Singleton<BurnSystem>
 
             int burnStacks = target.GetStatusEffectStacks(StatusEffectType.BURN);
 
-            target.Damage(burnStacks);
+            target.Damage(burnStacks, true);
             target.AddStatusEffect(StatusEffectType.BURN, -1);
         }
 

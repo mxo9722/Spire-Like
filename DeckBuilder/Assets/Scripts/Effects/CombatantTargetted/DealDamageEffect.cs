@@ -1,23 +1,24 @@
+using SerializeReferenceEditor;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class DealDamageEffect : CombatantTargetEffect, IDynamicEffectText
 {
-    [SerializeField] private int _damageAmount;
+    [field: SerializeReference, SR] private Quantity _damage = new SetQ();
 
-    protected override GameAction GetGameAction(CombatantView caster, List<CombatantView> combatantTargets)
+    protected override GameAction GetGameAction(EffectContext context, List<CombatantView> combatantTargets)
     {
-        DealDamageGA dealDamageGA = new DealDamageGA(_damageAmount, combatantTargets, caster);
+        DealDamageGA dealDamageGA = new DealDamageGA(_damage.GetAmount(context), combatantTargets, context.Caster);
         return dealDamageGA;
     }
 
     public string GetStaticText()
     {
-        return _damageAmount.ToString();
+        return _damage.GetStaticAmount().ToString();
     }
 
-    public string GetDynamicText(CombatantView caster, List<CombatantView> targetCombatants = null, List<LaneView> targetLanes = null)
+    public string GetDynamicText(EffectContext context, List<CombatantView> targetCombatants = null, List<LaneView> targetLanes = null)
     {
-        return DamageSystem.CardDamageTextFromAttack(_damageAmount, caster, targetCombatants);
+        return DamageSystem.CardDamageTextFromAttack(_damage.GetAmount(context), context.Caster, targetCombatants);
     }
 }

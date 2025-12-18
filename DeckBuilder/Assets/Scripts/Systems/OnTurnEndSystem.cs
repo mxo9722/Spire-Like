@@ -40,11 +40,19 @@ public class OnTurnEndSystem : Singleton<OnTurnEndSystem>
 
     private void PreDiscardCardHandler(DiscardCardGA discardCardGA)
     {
-        Card card = discardCardGA.Target.Card;
+        Card card = discardCardGA.Target;
+        CardView cardView = discardCardGA.TargetView;
 
-        if(discardCardGA.ForEndOfTurn && card.TurnEndEffect.Count > 0)
+        if (cardView == null)
         {
-            SpotlightCardGA spotlightCardGA = new(discardCardGA.Target);
+            cardView = CardSystem.Instance.RemoveFromHand(card);
+            discardCardGA.SetCardView(cardView);
+        }
+
+
+        if (discardCardGA.ForEndOfTurn && card.TurnEndEffect.Count > 0)
+        {
+            SpotlightCardGA spotlightCardGA = new(cardView);
             ActionSystem.Instance.AddReaction(spotlightCardGA);
 
             foreach(AutoTargetEffect effect in card.TurnEndEffect)

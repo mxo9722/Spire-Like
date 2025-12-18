@@ -10,28 +10,29 @@ public abstract class CombatantView : MonoBehaviour, ITargetPreviewable
 {
     [SerializeField] private TMP_Text _healthText;
     [SerializeField] private SpriteRenderer _spriteRenderer;
-    [SerializeField] private SpriteRenderer _targetPreviewSR;
     [SerializeField] private StatusEffectsUI _statusEffectsUI;
     [SerializeField] private HelpBoxesUI _helpBoxesUI;
 
     public int MaxHealth { get; private set; }
     public int CurrentHealth { get; private set; }
 
-    public bool TargetPreviewActive => _targetPreviewSR.color != Color.clear;
+    public SlotView Slot { get; private set; } = null;
+
+    public bool TargetPreviewActive => Slot.TargetPreviewActive;
+
 
     private Dictionary<StatusEffectType, int> _statusEffects = new();
 
     public Action<int> OnHealthChanged;
     public Action<int> OnMaxHealthChanged;
 
-    protected void SetupBase(int health, Sprite sprite)
+    protected void SetupBase(int health, Sprite sprite, SlotView slotView)
     {
+        slotView.AddCombatant(this);
+
         MaxHealth = CurrentHealth = health;
         _spriteRenderer.sprite = sprite;
         UpdateHealthText();
-
-        _targetPreviewSR.transform.DORotate(new(0, 0, 180.0f), 2f, RotateMode.Fast).SetLoops(-1).SetEase(Ease.Linear);
-        HideTargetPreview();
     }
 
     public void OnMouseEnter()
@@ -43,6 +44,11 @@ public abstract class CombatantView : MonoBehaviour, ITargetPreviewable
     public void OnMouseExit()
     {
         _helpBoxesUI.Hide();
+    }
+
+    private void OnDestroy()
+    {
+        Slot?.RemoveCombatant();
     }
 
     protected virtual void LoadHelpBoxes(HelpBoxesUI helpBoxesUI)
@@ -60,7 +66,7 @@ public abstract class CombatantView : MonoBehaviour, ITargetPreviewable
         _healthText.text = "HP: " + CurrentHealth;
     }
 
-    public void Damage(int damageAmount)
+    public void Damage(int damageAmount, bool ignoreBlock = false)
     {
         int remainingDamage = damageAmount;
         int currentArmor = GetStatusEffectStacks(StatusEffectType.BLOCK);
@@ -68,15 +74,18 @@ public abstract class CombatantView : MonoBehaviour, ITargetPreviewable
         if (remainingDamage == 0)
             return;
 
-        if (currentArmor >= remainingDamage)
+        if (!ignoreBlock)
         {
-            RemoveStatusEffect(StatusEffectType.BLOCK, remainingDamage);
-            remainingDamage = 0;
-        }
-        else if (currentArmor > 0)
-        {
-            RemoveStatusEffect(StatusEffectType.BLOCK, currentArmor);
-            remainingDamage -= currentArmor;
+            if (currentArmor >= remainingDamage)
+            {
+                RemoveStatusEffect(StatusEffectType.BLOCK, remainingDamage);
+                remainingDamage = 0;
+            }
+            else if (currentArmor > 0)
+            {
+                RemoveStatusEffect(StatusEffectType.BLOCK, currentArmor);
+                remainingDamage -= currentArmor;
+            }
         }
 
         CurrentHealth -= remainingDamage;
@@ -167,15 +176,17 @@ public abstract class CombatantView : MonoBehaviour, ITargetPreviewable
 
     public void SetTargetPreview(Color color)
     {
-        if (_targetPreviewSR.color == Color.clear)
-        {
-            _targetPreviewSR.color = color;
-        }
+        Slot.SetTargetPreview(color);
     }
 
     public void HideTargetPreview()
     {
-        _targetPreviewSR.color = Color.clear;
+        Slot.HideTargetPreview();
+    }
+
+    public void SetSlot(SlotView slotView)
+    {
+        Slot = slotView;
     }
 
     public abstract void Die();

@@ -22,11 +22,11 @@ public class AutoLaneTargetEffect : AutoTargetEffect
         return performEffectsGA;
     }
 
-    public override string GetDynamicText(EffectContext targetModeContext)
+    public override string GetDynamicText(EffectContext context)
     {
         IDynamicEffectText dynamicEffectText = GetDynamicTextEffect();
 
-        string value = dynamicEffectText.GetDynamicText(targetModeContext.Caster, targetLanes:TargetMode.GetTargets(targetModeContext));
+        string value = dynamicEffectText.GetDynamicText(context, targetLanes:TargetMode.GetTargets(context));
 
         return value;
     }

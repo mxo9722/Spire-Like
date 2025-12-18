@@ -3,9 +3,9 @@ using UnityEngine;
 
 public abstract class CardTargetEffect : Effect
 {
-    public override GameAction GetGameAction(CombatantView caster, List<CombatantView> combatantTargets = null, List<LaneView> laneTargets = null, List<Card> cardTargets = null)
+    public override GameAction GetGameAction(EffectContext context, List<CombatantView> combatantTargets = null, List<LaneView> laneTargets = null, List<Card> cardTargets = null)
     {
-        return GetGameAction(caster, cardTargets);
+        return GetGameAction(context.Caster, cardTargets);
     }
 
     protected abstract GameAction GetGameAction(CombatantView caster, List<Card> cardTargets);

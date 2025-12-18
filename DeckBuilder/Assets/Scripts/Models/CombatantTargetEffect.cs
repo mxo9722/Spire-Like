@@ -3,10 +3,10 @@ using UnityEngine;
 
 public abstract class CombatantTargetEffect : Effect
 {
-    public override GameAction GetGameAction(CombatantView caster, List<CombatantView> combatantTargets = null, List<LaneView> laneTargets = null, List<Card> cardTargets = null)
+    public override GameAction GetGameAction(EffectContext context, List<CombatantView> combatantTargets = null, List<LaneView> laneTargets = null, List<Card> cardTargets = null)
     {
-        return GetGameAction(caster, combatantTargets);
+        return GetGameAction(context, combatantTargets);
     }
 
-    protected abstract GameAction GetGameAction(CombatantView caster, List<CombatantView> combatantTargets);
+    protected abstract GameAction GetGameAction(EffectContext context, List<CombatantView> combatantTargets);
 }

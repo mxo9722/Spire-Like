@@ -271,9 +271,9 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 515397044}
   - {fileID: 571161003}
   - {fileID: 1866245686}
-  - {fileID: 515397044}
   - {fileID: 2067846515}
   m_Father: {fileID: 1620175606}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1002,37 +1002,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 170047696}
     m_Modifications:
-    - target: {fileID: 5377329351577317980, guid: c1f635ee2bbe09d45a4f740b2b5ec667, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5377329351577317980, guid: c1f635ee2bbe09d45a4f740b2b5ec667, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5377329351577317980, guid: c1f635ee2bbe09d45a4f740b2b5ec667, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7867029302803107995, guid: c1f635ee2bbe09d45a4f740b2b5ec667, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7867029302803107995, guid: c1f635ee2bbe09d45a4f740b2b5ec667, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8038437790511764217, guid: c1f635ee2bbe09d45a4f740b2b5ec667, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8502130293819567526, guid: c1f635ee2bbe09d45a4f740b2b5ec667, type: 3}
       propertyPath: m_Name
       value: CardCollectionUI
-      objectReference: {fileID: 0}
-    - target: {fileID: 8502130293819567526, guid: c1f635ee2bbe09d45a4f740b2b5ec667, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8984433295225296158, guid: c1f635ee2bbe09d45a4f740b2b5ec667, type: 3}
       propertyPath: m_Pivot.x
@@ -2811,8 +2783,9 @@ MonoBehaviour:
   <DefaultRoom>k__BackingField:
     <IsCompleted>k__BackingField: 0
     <Seed>k__BackingField: 0
-    <EventGraph>k__BackingField: {fileID: 11400000, guid: f7fbe9a1205baff4496810d8d79fc589, type: 2}
+    <EventGraph>k__BackingField: {fileID: 11400000, guid: 413c9578a560dcd4f87e0347664e17aa, type: 2}
     <CurrentNode>k__BackingField: {fileID: 0}
+  <SafeHouseGraph>k__BackingField: {fileID: 11400000, guid: 413c9578a560dcd4f87e0347664e17aa, type: 2}
   _mapScene:
     scenePath: Assets/Scenes/MapScene.unity
 --- !u!1 &1395879178

@@ -704,23 +704,23 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5377329351577317980, guid: c1f635ee2bbe09d45a4f740b2b5ec667, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5377329351577317980, guid: c1f635ee2bbe09d45a4f740b2b5ec667, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5377329351577317980, guid: c1f635ee2bbe09d45a4f740b2b5ec667, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: -17
       objectReference: {fileID: 0}
     - target: {fileID: 7867029302803107995, guid: c1f635ee2bbe09d45a4f740b2b5ec667, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7867029302803107995, guid: c1f635ee2bbe09d45a4f740b2b5ec667, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8038437790511764217, guid: c1f635ee2bbe09d45a4f740b2b5ec667, type: 3}
       propertyPath: m_IsActive
@@ -729,10 +729,6 @@ PrefabInstance:
     - target: {fileID: 8502130293819567526, guid: c1f635ee2bbe09d45a4f740b2b5ec667, type: 3}
       propertyPath: m_Name
       value: CardCollectionUI
-      objectReference: {fileID: 0}
-    - target: {fileID: 8502130293819567526, guid: c1f635ee2bbe09d45a4f740b2b5ec667, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8984433295225296158, guid: c1f635ee2bbe09d45a4f740b2b5ec667, type: 3}
       propertyPath: m_Pivot.x
@@ -764,7 +760,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8984433295225296158, guid: c1f635ee2bbe09d45a4f740b2b5ec667, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: -80
       objectReference: {fileID: 0}
     - target: {fileID: 8984433295225296158, guid: c1f635ee2bbe09d45a4f740b2b5ec667, type: 3}
       propertyPath: m_LocalPosition.x
@@ -800,7 +796,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8984433295225296158, guid: c1f635ee2bbe09d45a4f740b2b5ec667, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -40
       objectReference: {fileID: 0}
     - target: {fileID: 8984433295225296158, guid: c1f635ee2bbe09d45a4f740b2b5ec667, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

@@ -123,7 +123,9 @@ public class CardSystem : Singleton<CardSystem>
 
     private IEnumerator DiscardAllCardsPerformer(DiscardAllCardsGA discardallCardsGA)
     {
-        DiscardCardsGA discardCardGA = new(new(_hand), discardallCardsGA.ForEndOfTurn);
+        List<Card> cards = new(_hand);
+        cards.Reverse();
+        DiscardCardsGA discardCardGA = new(cards, discardallCardsGA.ForEndOfTurn);
         ActionSystem.Instance.AddReaction(discardCardGA);
 
         yield return null;
@@ -133,11 +135,8 @@ public class CardSystem : Singleton<CardSystem>
     {
         foreach (Card card in discardCardsGA.Targets)
         {
-            CardView cardView = _handView.RemoveCard(card);
-            DiscardCardGA discardCardGA = new(cardView, discardCardsGA.ForEndOfTurn);
+            DiscardCardGA discardCardGA = new(card, discardCardsGA.ForEndOfTurn);
             ActionSystem.Instance.AddReaction(discardCardGA);
-
-            _hand.Remove(card);
         }
 
         yield return null;
@@ -145,9 +144,16 @@ public class CardSystem : Singleton<CardSystem>
 
     private IEnumerator DiscardCardPerformer(DiscardCardGA discardCardGA)
     {
-        CardView cardView = discardCardGA.Target;
+        CardView cardView = discardCardGA.TargetView;
+
+        if (cardView == null)
+        {
+            cardView = _handView.RemoveCard(discardCardGA.Target);
+            _hand.Remove(discardCardGA.Target);
+        }
 
         yield return DiscardCard(cardView);
+
     }
 
     private IEnumerator PlayCardPerformer(PlayCardGA playCardGA)
@@ -274,5 +280,16 @@ public class CardSystem : Singleton<CardSystem>
     public List<Card> GetDrawPile()
     {
         return new(_drawPile);
+    }
+
+    public CardView RemoveFromHand(Card card) 
+    {
+        if (_hand.Contains(card))
+        {
+            CardView cardView = _handView.RemoveCard(card);
+            _hand.Remove(card);
+            return cardView;
+        }
+        return null;
     }
 }

@@ -8,7 +8,7 @@ public class SafeHouseRoom : Room
 
     public override void Enter()
     {
-        
+        MapSystem.Instance.EnterEvent();
     }
 
     public override void SetUp() { }

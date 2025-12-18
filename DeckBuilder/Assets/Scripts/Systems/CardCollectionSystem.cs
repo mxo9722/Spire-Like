@@ -53,6 +53,11 @@ public class CardCollectionSystem : Singleton<CardCollectionSystem>
         _cardCollectionUI.SetUpSelection(cardCollection, amount);
     }
 
+    public void UpgradeDisplay()
+    {
+        _cardCollectionUI.SetUpUpgradeChoice();
+    }
+
     public void Close()
     {
         Cards = null;

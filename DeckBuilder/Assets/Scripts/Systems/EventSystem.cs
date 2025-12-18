@@ -7,15 +7,29 @@ public class EventSystem : Singleton<EventSystem>
 {
     [field: SerializeField] public EventView EventView { get; private set; }
     [field: SerializeField] public EventRoom DefaultRoom { get; private set; }
+    [field: SerializeField] public EventGraph SafeHouseGraph { get; private set; }
     [SerializeField] private ScenePicker _mapScene;
 
 
 
     private void Start()
     {
-        if (RunSystem.Instance.GetRoom() is EventRoom eventRoom)
-            DefaultRoom = eventRoom;
-        EnterNode(DefaultRoom.EventGraph.StartNode);
+        Room room = RunSystem.Instance.GetRoom();
+
+        switch (room)
+        {
+            case EventRoom eventRoom:
+                DefaultRoom = eventRoom;
+                EnterNode(DefaultRoom.EventGraph.StartNode);
+                break;
+            case SafeHouseRoom:
+                EnterNode(SafeHouseGraph.StartNode);
+                break;
+            default:
+                EnterNode(DefaultRoom.EventGraph.StartNode);
+                break;
+        }
+
     }
 
     public void EnterNode(Node node)

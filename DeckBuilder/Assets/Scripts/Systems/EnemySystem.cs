@@ -66,7 +66,7 @@ public class EnemySystem : Singleton<EnemySystem>
 
             foreach (AutoCombatantTargetEffect effect in enemyView.CurrentAction.Effects)
             {
-                GameAction gameAction = effect.Effect.GetGameAction(enemyView, combatantTargets:effect.TargetMode.GetTargets(targetModeContext));
+                GameAction gameAction = effect.Effect.GetGameAction(new(enemyView), combatantTargets:effect.TargetMode.GetTargets(targetModeContext));
                 ActionSystem.Instance.AddReaction(gameAction);
             }
         }

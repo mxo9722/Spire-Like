@@ -12,6 +12,11 @@ public class CardCollectionUI : MonoBehaviour
     [SerializeField] private Button _returnButton;
     [SerializeField] private TMPro.TMP_Text _selectionText;
 
+    [Header("Upgrade UI")]
+    [SerializeField] private GameObject _upgradeWrapper;
+    [SerializeField] private CardUI _beforeUpgradeUI;
+    [SerializeField] private CardUI _afterUpgradeUI;
+
     public bool Opened { get => _wrapper.activeSelf; }
     public bool WaitingForSelection { get; private set; } = false;
 
@@ -45,6 +50,7 @@ public class CardCollectionUI : MonoBehaviour
         WaitingForSelection = true;
         _wrapper.SetActive(true);
         _returnButton.gameObject.SetActive(false);
+        _upgradeWrapper.SetActive(false);
 
         _selectionsNeeded = amountNeeded;
         _selections = new();
@@ -59,6 +65,34 @@ public class CardCollectionUI : MonoBehaviour
         {
             CardUI cardUI = Instantiate(_cardUIPrefab, _contentTransform);
             cardUI.SetUp(card, OnSelected);
+            CardUIs.Add(cardUI);
+        }
+    }
+    
+    public void SetUpUpgradeChoice()
+    {
+        List<Card> cardCollection = RunSystem.Instance.Deck.Where(c => c.Upgrade != null).Select(c => new Card(c)).ToList();
+
+        if (1 >= cardCollection.Count)
+        {
+            cardCollection.ForEach(c => RunSystem.Instance.UpgradeCard(c.data));
+            return;
+        }
+
+        WaitingForSelection = true;
+        _wrapper.SetActive(true);
+        _returnButton.gameObject.SetActive(false);
+        _upgradeWrapper.SetActive(false);
+
+        _selections = new();
+        _selectionText.gameObject.SetActive(true);
+
+        _selectionText.text = "Select a card to upgrade";
+
+        foreach (Card card in cardCollection)
+        {
+            CardUI cardUI = Instantiate(_cardUIPrefab, _contentTransform);
+            cardUI.SetUp(card, OpenUpgradeUI);
             CardUIs.Add(cardUI);
         }
     }
@@ -98,5 +132,26 @@ public class CardCollectionUI : MonoBehaviour
         _selections = null;
 
         return cardSelections;
+    }
+
+    public void OpenUpgradeUI(Card selected)
+    {
+        _upgradeWrapper.SetActive(true);
+        _beforeUpgradeUI.SetUp(selected);
+        _afterUpgradeUI.SetUp(new(selected.Upgrade));
+    }
+
+    public void ConfirmUpgrade()
+    {
+        RunSystem.Instance.UpgradeCard(_beforeUpgradeUI.Card.data);
+
+        _upgradeWrapper.SetActive(false);
+        Close();
+        WaitingForSelection = false;
+    }
+
+    public void CancelUpgrade()
+    {
+        _upgradeWrapper.SetActive(false);
     }
 }

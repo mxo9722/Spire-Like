@@ -43,13 +43,4 @@ public class DialogueNode : BaseDialogueNode {
     {
 		return Conditions.Count == 0 || Conditions.TrueForAll(c => c.IsMet());
 	}
-
-	private void OnValidate()
-	{
-		foreach (EventAction action in Actions)
-		{
-			if(action.ID == 0)
-				action.SetID(Guid.NewGuid().GetHashCode());
-		}
-	}
 }

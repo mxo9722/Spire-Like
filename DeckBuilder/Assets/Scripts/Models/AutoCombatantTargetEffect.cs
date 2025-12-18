@@ -22,11 +22,11 @@ public class AutoCombatantTargetEffect : AutoTargetEffect
         return performEffectsGA;
     }
 
-    public override string GetDynamicText(EffectContext targetModeContext)
+    public override string GetDynamicText(EffectContext context)
     {
         IDynamicEffectText dynamicEffectText = GetDynamicTextEffect();
 
-        string value = dynamicEffectText.GetDynamicText(targetModeContext.Caster, targetCombatants:TargetMode.GetTargets(targetModeContext));
+        string value = dynamicEffectText.GetDynamicText(context, targetCombatants:TargetMode.GetTargets(context));
 
         return value;
     }

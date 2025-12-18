@@ -12,21 +12,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62bf69310631aa94896652d3f8be392c, type: 3}
   m_Name: Kill
   m_EditorClassIdentifier: 
-  _description: Deal 99999 damage. Draw a card.
+  <Description>k__BackingField: 
   <Mana>k__BackingField: 0
+  Unplayable: 0
+  <RequiredConditions>k__BackingField: []
+  <HighlightConditions>k__BackingField: []
   <ExhuastOnUse>k__BackingField: 0
   <Image>k__BackingField: {fileID: 21300000, guid: d7e764b34f9a35f4ab1f3f19a0550b5a, type: 3}
   <ManualTargetType>k__BackingField: 0
+  <CombatantFilters>k__BackingField: []
+  <LaneFilters>k__BackingField: []
   <ManualTargetEffect>k__BackingField:
     rid: 1228494274682945607
   <OtherEffects>k__BackingField:
   - rid: 1228494502818218274
+  <TurnEndEffects>k__BackingField: []
   references:
     version: 2
     RefIds:
     - rid: 1228494274682945607
       type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
       data:
+        _damage:
+          rid: 4055347768894947446
         _damageAmount: 99999
     - rid: 1228494502818218274
       type: {class: AutoTargetlessEffect, ns: , asm: Assembly-CSharp}
@@ -37,3 +45,7 @@ MonoBehaviour:
       type: {class: DrawCardsEffect, ns: , asm: Assembly-CSharp}
       data:
         _drawAmount: 1
+    - rid: 4055347768894947446
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 99999

@@ -1,0 +1,221 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-4138474327887874441
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 262dd8f326c811f49b5f8e3ff5f3b5fd, type: 3}
+  m_Name: Dialogue
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 8, y: -72}
+  ports:
+    keys:
+    - Prev
+    - Choices
+    values:
+    - _fieldName: Prev
+      _node: {fileID: -4138474327887874441}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: Choices
+        node: {fileID: 1241177576749561683}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Choices
+      _node: {fileID: -4138474327887874441}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: _prev
+        node: {fileID: 4312190408174604118}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  <Text>k__BackingField: You spend some time resting up and tending to your battle
+    wounds.
+  <Sprite>k__BackingField: {fileID: 0}
+  Choices: 0
+  OptionText: Rest (Regain X HP)
+  HideIfUnavailable: 0
+  <Conditions>k__BackingField: []
+  Prev: 0
+  <Actions>k__BackingField:
+  - rid: 4055347793743315016
+  references:
+    version: 2
+    RefIds:
+    - rid: 4055347793743315016
+      type: {class: RestoreHealthEA, ns: , asm: Assembly-CSharp}
+      data:
+        _amount:
+          rid: 4055347793743315018
+    - rid: 4055347793743315018
+      type: {class: PercentOfQ, ns: , asm: Assembly-CSharp}
+      data:
+        _percent: 0.2
+        _value:
+          rid: 4055347793743315020
+    - rid: 4055347793743315020
+      type: {class: MaxHealthQ, ns: , asm: Assembly-CSharp}
+      data: 
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5553794d1bf7bff44a066c096a5c5479, type: 3}
+  m_Name: Safe House
+  m_EditorClassIdentifier: 
+  nodes:
+  - {fileID: 1241177576749561683}
+  - {fileID: -4138474327887874441}
+  - {fileID: 1936570263149577446}
+  - {fileID: 4312190408174604118}
+  <StartNode>k__BackingField: {fileID: 1241177576749561683}
+--- !u!114 &1241177576749561683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a52691074406ce1479b5808d138739d3, type: 3}
+  m_Name: Start Event
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -536, y: 184}
+  ports:
+    keys:
+    - Choices
+    values:
+    - _fieldName: Choices
+      _node: {fileID: 1241177576749561683}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: Prev
+        node: {fileID: -4138474327887874441}
+        reroutePoints: []
+      - fieldName: Prev
+        node: {fileID: 1936570263149577446}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  <Text>k__BackingField: You arrive to one of your old hideouts hidden around the
+    city. The dust and cobwebs remind you that it has been a while since you've needed
+    to come to this one.
+  <Sprite>k__BackingField: {fileID: 0}
+  Choices: 0
+--- !u!114 &1936570263149577446
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 262dd8f326c811f49b5f8e3ff5f3b5fd, type: 3}
+  m_Name: Dialogue
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 8, y: 344}
+  ports:
+    keys:
+    - Prev
+    - Choices
+    values:
+    - _fieldName: Prev
+      _node: {fileID: 1936570263149577446}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: Choices
+        node: {fileID: 1241177576749561683}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Choices
+      _node: {fileID: 1936570263149577446}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: _prev
+        node: {fileID: 4312190408174604118}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  <Text>k__BackingField: You spend some time in the training room sharpening your
+    moves.
+  <Sprite>k__BackingField: {fileID: 0}
+  Choices: 0
+  OptionText: Train (Upgrade a card)
+  HideIfUnavailable: 0
+  <Conditions>k__BackingField: []
+  Prev: 0
+  <Actions>k__BackingField:
+  - rid: 4055347793743315021
+  references:
+    version: 2
+    RefIds:
+    - rid: 4055347793743315021
+      type: {class: UpgradeCardEA, ns: , asm: Assembly-CSharp}
+      data: 
+--- !u!114 &4312190408174604118
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a505528d4195824cad3750931c9a854, type: 3}
+  m_Name: Complete Room
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 600, y: 264}
+  ports:
+    keys:
+    - _prev
+    values:
+    - _fieldName: _prev
+      _node: {fileID: 4312190408174604118}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: Choices
+        node: {fileID: -4138474327887874441}
+        reroutePoints: []
+      - fieldName: Choices
+        node: {fileID: 1936570263149577446}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  _prev: 0

@@ -6,23 +6,23 @@ using UnityEngine;
 public class MoveTowardLaneEffect : LaneTargetEffect
 {
 
-    protected override GameAction GetGameAction(CombatantView caster, List<LaneView> laneViews)
+    protected override GameAction GetGameAction(EffectContext context, List<LaneView> laneViews)
     {
         if (laneViews == null || laneViews.Count == 0)
             return null;
 
         LaneView targetLaneView = laneViews[0];
 
-        LaneView originalLaneView = BoardSystem.Instance.GetCurrentLaneView(caster);
+        LaneView originalLaneView = BoardSystem.Instance.GetCurrentLaneView(context.Caster);
 
         if (targetLaneView == originalLaneView)
             return null;
 
-        if (caster is HeroView heroView)
+        if (context.Caster is HeroView heroView)
         {
             return new MoveHeroGA(targetLaneView, heroView);
         }
-        else if (caster is EnemyView enemyView)
+        else if (context.Caster is EnemyView enemyView)
         {
             return new MoveEnemyGA(targetLaneView, enemyView);
         }

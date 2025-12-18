@@ -8,8 +8,9 @@ using UnityEngine;
 public class Card
 {
     public string Title => data.name;
-    public string Description => data.Description;
+    public CardData Upgrade => data.Upgrade;
     public bool Unplayable => data.Unplayable;
+    public string Description => data.Description;
     public List<Condition> RequiredConditions => data.RequiredConditions;
     public List<Condition> HighlightConditions => data.HighlightConditions;
     public Sprite Image => data.Image;
@@ -64,16 +65,16 @@ public class Card
         return description;
     }
 
-    public string GetDynamicDescription(EffectContext targetModeContext)
+    public string GetDynamicDescription(EffectContext context)
     {
         string description = Description;
 
         if (ManualTargetEffect is IDynamicEffectText dynamicEffect)
         {
-            List<CombatantView> targetCombatants = targetModeContext.TargetCombatant ? new() { targetModeContext.TargetCombatant } : null;
-            List<LaneView> laneViews = targetModeContext.TargetLane ? new() { targetModeContext.TargetLane } : null;
+            List<CombatantView> targetCombatants = context.TargetCombatant ? new() { context.TargetCombatant } : null;
+            List<LaneView> laneViews = context.TargetLane ? new() { context.TargetLane } : null;
 
-            string value = dynamicEffect.GetDynamicText(targetModeContext.Caster, targetCombatants, laneViews);
+            string value = dynamicEffect.GetDynamicText(context, targetCombatants, laneViews);
             description = description.Replace("{vt}", value);
         }
 
@@ -88,7 +89,7 @@ public class Card
 
         for (int i = 0; i < dynamicTextEffects.Count; i++)
         {
-            string value = dynamicTextEffects[i].GetDynamicText(targetModeContext);
+            string value = dynamicTextEffects[i].GetDynamicText(context);
             description = description.Replace("{v" + i.ToString()+"}", value);
         }
 
@@ -178,7 +179,6 @@ public class Card
 
         if (ManualTargetEffect != null)
         {
-
             switch (ManualTargetType)
             {
                 case ManualTargetType.COMBATANT:

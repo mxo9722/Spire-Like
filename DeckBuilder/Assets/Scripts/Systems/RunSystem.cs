@@ -99,8 +99,19 @@ public class RunSystem : PersistentSingleton<RunSystem>
         SaveRun();
     }
 
+    public void UpgradeCard(CardData card)
+    {
+        int index = Deck.IndexOf(card);
+
+        if (index == -1)
+            return;
+
+        Deck[index] = card.Upgrade;
+    }
+
     public Room GetRoom() => RunData.Room;
     public HeroData GetHeroData() => RunData.Hero;
     public void SetMap(Map map) => RunData.SetMap(map);
     public void MarkPerkUsed(PerkData perkData) => RunData.MarkPerkDataUsed(perkData);
+    public void SetHealth(int amount) => RunData.SetHealth(amount);
 }

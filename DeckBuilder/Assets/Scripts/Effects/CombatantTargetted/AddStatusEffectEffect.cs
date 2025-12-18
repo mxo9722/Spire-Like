@@ -6,9 +6,9 @@ public class AddStatusEffectEffect : CombatantTargetEffect, IDynamicEffectText
     [SerializeField] private StatusEffectType _statusEffectType;
     [SerializeField] private int _stackCount;
 
-    protected override GameAction GetGameAction(CombatantView caster, List<CombatantView> combatantTargets)
+    protected override GameAction GetGameAction(EffectContext context, List<CombatantView> combatantTargets)
     {
-        return new AddStatusEffectGA(_statusEffectType, _stackCount, combatantTargets, caster);
+        return new AddStatusEffectGA(_statusEffectType, _stackCount, combatantTargets, context.Caster);
     }
 
     public string GetStaticText()
@@ -16,9 +16,9 @@ public class AddStatusEffectEffect : CombatantTargetEffect, IDynamicEffectText
         return _stackCount.ToString();
     }
 
-    public string GetDynamicText(CombatantView caster, List<CombatantView> targetCombatants = null, List<LaneView> targetLanes = null)
+    public string GetDynamicText(EffectContext context, List<CombatantView> targetCombatants = null, List<LaneView> targetLanes = null)
     {
-        return StatusEffectSystem.StackAdditionValueFromEffect(_statusEffectType, _stackCount, caster, targetCombatants);
+        return StatusEffectSystem.StackAdditionValueFromEffect(_statusEffectType, _stackCount, context.Caster, targetCombatants);
     }
 
     public override List<StatusEffectType> GetAllStatusEffects()
