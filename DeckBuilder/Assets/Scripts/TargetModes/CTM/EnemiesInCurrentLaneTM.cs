@@ -7,7 +7,7 @@ public class EnemiesInCurrentLaneTM : CombatantTargetMode
     {
         LaneView laneView = null;
 
-        if (targetModeContext.Caster is EnemyView enemyView)
+        if (targetModeContext.Caster is NPCView enemyView)
             laneView = BoardSystem.Instance.GetCurrentLaneView(enemyView);
         else if (targetModeContext.Caster is HeroView heroView)
             laneView = BoardSystem.Instance.GetCurrentLaneView(heroView);

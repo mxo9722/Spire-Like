@@ -5,6 +5,7 @@ using UnityEngine;
 public class DamageSystem : Singleton<DamageSystem>
 {
     [SerializeField] private GameObject _damageVFX;
+    [SerializeField] private GameObject _healVFX;
 
     public const float VULNERABLE_MULITPLIER = 1.5f;
     public const float WEAK_MULITPLIER = 0.75f;
@@ -12,11 +13,13 @@ public class DamageSystem : Singleton<DamageSystem>
     void OnEnable()
     {
         ActionSystem.AttachPerformer<DealDamageGA>(DealDamagePerformer);
+        ActionSystem.AttachPerformer<HealUnitsGA>(HealUnitsPerformer);
     }
 
     void OnDisable()
     {
         ActionSystem.DetachPerformer<DealDamageGA>();
+        ActionSystem.DetachPerformer<HealUnitsGA>();
     }
 
     private IEnumerator DealDamagePerformer(DealDamageGA dealDamageGA) 
@@ -47,11 +50,33 @@ public class DamageSystem : Singleton<DamageSystem>
             if (target.GetStatusEffectStacks(StatusEffectType.VULNERABLE) > 0)
                 individualDamage = Mathf.FloorToInt(individualDamage * VULNERABLE_MULITPLIER);
 
-            target.Damage(individualDamage);
+            (int UnblockedDamage, int Overkill) result = target.Damage(individualDamage);
+
+            dealDamageGA.SetUnblockedDamage(result.UnblockedDamage);
+            dealDamageGA.SetOverkill(result.Overkill);
+
             Instantiate(_damageVFX, target.transform.position, Quaternion.Euler(0, 0, Random.value % 360));
-            yield return new WaitForSeconds(0.15f);
         }
 
+        foreach (CombatantView target in dealDamageGA.Targets)
+        {
+            yield return target.WaitForTweensComplete();
+        }
+    }
+
+    private IEnumerator HealUnitsPerformer(HealUnitsGA healUnitsGA)
+    {
+        if (healUnitsGA.Amount <= 0)
+            yield break;
+
+        foreach(CombatantView target in healUnitsGA.Targets)
+        {
+            target.Heal(healUnitsGA.Amount);
+
+            Instantiate(_healVFX, target.transform.position + new Vector3(0,0,-2), Quaternion.identity);
+        }
+
+        yield return new WaitForSeconds(1);
     }
 
     public static string CardDamageTextFromAttack(int baseDamage, CombatantView attacker, List<CombatantView> targets = null)
@@ -64,7 +89,7 @@ public class DamageSystem : Singleton<DamageSystem>
         }
         else if(baseDamage < damage)
         {
-            return "<color=\"green\">" + damage.ToString() + "</color>";
+            return "<color=#4CBB17>" + damage.ToString() + "</color>";
         }
 
         return baseDamage.ToString();

@@ -12,7 +12,7 @@ public class RunData
     public bool RoomCompleted => Room.IsCompleted;
     [field: SerializeField] public int CurrentHealth { get; private set; }
     [field: SerializeField] public int MaxHealth { get; private set; }
-    [field: SerializeField] public int Credits { get; private set; } = 0;
+    [field: SerializeField] public int Karma { get; private set; } = 0;
     [field: SerializeField] public List<Perk> Perks { get; private set; } = new();
     public List<PerkData> UsedPerks { get; private set; } = new();
 
@@ -47,7 +47,7 @@ public class RunData
 
     public void SetCredits(int credits)
     {
-        Credits = credits;
+        Karma = credits;
     }
 
     public void SetMap(Map map)

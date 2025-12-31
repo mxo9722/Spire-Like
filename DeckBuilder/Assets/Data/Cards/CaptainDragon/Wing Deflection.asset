@@ -1,0 +1,78 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62bf69310631aa94896652d3f8be392c, type: 3}
+  m_Name: Wing Deflection
+  m_EditorClassIdentifier: 
+  <Upgrade>k__BackingField: {fileID: 11400000, guid: 0ea36e6b0298e624ba691be2c76664f8, type: 2}
+  <Unplayable>k__BackingField: 0
+  <Mana>k__BackingField: 1
+  <Type>k__BackingField: 0
+  <Image>k__BackingField: {fileID: 21300000, guid: b1e4ae071871c6449a358dea73a8fcb9, type: 3}
+  <Description>k__BackingField: Gain {v0} block. If you moved this turn draw a card.
+  <RequiredConditions>k__BackingField: []
+  <HighlightConditions>k__BackingField: []
+  <ExhuastOnUse>k__BackingField: 0
+  <ManualTargetType>k__BackingField: 2
+  <CombatantFilters>k__BackingField: []
+  <LaneFilters>k__BackingField: []
+  <ManualTargetEffect>k__BackingField:
+    rid: -2
+  <OtherEffects>k__BackingField:
+  - rid: 4055348078608908524
+  - rid: 4055348078608908528
+  <TurnEndEffects>k__BackingField: []
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 4055348078608908524
+      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 4055348078608908525
+        _combatantEffect:
+          rid: 4055348078608908526
+    - rid: 4055348078608908525
+      type: {class: CasterCTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 4055348078608908526
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _statusEffectType: 0
+        _stackCount:
+          rid: 4055348078608908527
+        _skipAnimation: 0
+    - rid: 4055348078608908527
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 7
+    - rid: 4055348078608908528
+      type: {class: ConditionalAutoTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _conditions:
+        - rid: 4055348078608908530
+        _successEffect:
+          rid: 4055348078608908531
+    - rid: 4055348078608908530
+      type: {class: CasterMovedThisTurnCondition, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
+    - rid: 4055348078608908531
+      type: {class: AutoTargetlessEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _noTargetEffect:
+          rid: 4055348078608908532
+    - rid: 4055348078608908532
+      type: {class: DrawCardsEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _drawAmount: 1

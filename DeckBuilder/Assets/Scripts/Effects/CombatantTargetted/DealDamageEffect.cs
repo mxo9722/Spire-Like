@@ -8,7 +8,7 @@ public class DealDamageEffect : CombatantTargetEffect, IDynamicEffectText
 
     protected override GameAction GetGameAction(EffectContext context, List<CombatantView> combatantTargets)
     {
-        DealDamageGA dealDamageGA = new DealDamageGA(_damage.GetAmount(context), combatantTargets, context.Caster);
+        DealDamageGA dealDamageGA = new DealDamageGA(_damage.GetAmount(context), combatantTargets, context);
         return dealDamageGA;
     }
 

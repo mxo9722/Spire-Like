@@ -12,15 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62bf69310631aa94896652d3f8be392c, type: 3}
   m_Name: Signal
   m_EditorClassIdentifier: 
-  <Description>k__BackingField: Draw two cards.
+  <Upgrade>k__BackingField: {fileID: 0}
+  <Unplayable>k__BackingField: 0
   <Mana>k__BackingField: 0
-  <ExhuastOnUse>k__BackingField: 0
+  <Type>k__BackingField: 1
   <Image>k__BackingField: {fileID: 21300000, guid: 911309b9358be4e429abc862087d5642, type: 3}
-  <ManualTargetType>k__BackingField: 0
+  <Description>k__BackingField: Draw two cards.
+  <RequiredConditions>k__BackingField: []
+  <HighlightConditions>k__BackingField: []
+  <ExhuastOnUse>k__BackingField: 0
+  <ManualTargetType>k__BackingField: 2
+  <CombatantFilters>k__BackingField: []
+  <LaneFilters>k__BackingField: []
   <ManualTargetEffect>k__BackingField:
     rid: -2
   <OtherEffects>k__BackingField:
   - rid: 1228494502818218276
+  <TurnEndEffects>k__BackingField: []
   references:
     version: 2
     RefIds:

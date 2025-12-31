@@ -11,14 +11,14 @@ public class ManaSystem : Singleton<ManaSystem>
     {
         ActionSystem.AttachPerformer<SpendManaGA>(SpendManaPerformer);
         ActionSystem.AttachPerformer<RefillManaGA>(RefillManaPerformer);
-        ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction, ReactionTiming.POST);
+        ActionSystem.SubscribeReaction<NPCTurnGA>(this, EnemyTurnPostReaction, ReactionTiming.POST);
     }
 
     void OnDisable()
     {
         ActionSystem.DetachPerformer<SpendManaGA>();
         ActionSystem.DetachPerformer<RefillManaGA>();
-        ActionSystem.UnsubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction, ReactionTiming.POST);
+        ActionSystem.UnsubscribeReaction<NPCTurnGA>(this, EnemyTurnPostReaction, ReactionTiming.POST);
     }
 
     public void UpdateManaText()
@@ -46,7 +46,7 @@ public class ManaSystem : Singleton<ManaSystem>
         yield return null;
     }
 
-    private void EnemyTurnPostReaction(EnemyTurnGA enemyTurnGA)
+    private void EnemyTurnPostReaction(NPCTurnGA enemyTurnGA)
     {
         RefillManaGA refillManaGA = new();
         ActionSystem.Instance.AddReaction(refillManaGA);

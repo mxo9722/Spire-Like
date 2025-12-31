@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TopBarUI : Singleton<TopBarUI>
 {
-    [SerializeField] private TMPro.TMP_Text _creditText;
+    [SerializeField] private TMPro.TMP_Text _karmaText;
     [SerializeField] private TMPro.TMP_Text _healthText;
     [SerializeField] private CardPileUI _deckUI;
 
@@ -13,14 +13,14 @@ public class TopBarUI : Singleton<TopBarUI>
     private void Start()
     {
         _deckUI.SetUp(RunSystem.Instance.RunData.Deck);
-        _creditText.text = CreditSystem.Instance.Credits.ToString();
+        _karmaText.text = KarmaSystem.Instance.Karma.ToString();
         
         UpdateHealth();
     }
 
     public void UpdateCredits(int credits)
     {
-        int prevAmount = int.Parse(_creditText.text);
+        int prevAmount = int.Parse(_karmaText.text);
         StartCoroutine(LerpCredits(credits-prevAmount, 0.5f));
     }
 
@@ -42,11 +42,11 @@ public class TopBarUI : Singleton<TopBarUI>
 
         for (int i = 0; i < uAmount; i++)
         {
-            if (_creditText == null)
+            if (_karmaText == null)
                 yield break;
 
-            int prevAmount = int.Parse(_creditText.text);
-            _creditText.text = (prevAmount + increment).ToString();
+            int prevAmount = int.Parse(_karmaText.text);
+            _karmaText.text = (prevAmount + increment).ToString();
             yield return new WaitForSeconds(duration / (float)uAmount);
         }
     }

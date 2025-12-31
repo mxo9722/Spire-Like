@@ -7,9 +7,9 @@ using UnityEngine;
 [Serializable]
 public class CombatRoom : Room, IHaveRewards
 {
-    [field: SerializeField] public List<EnemyData> TopRow { get; private set; } = new();
-    [field: SerializeField] public List<EnemyData> MiddleRow { get; private set; } = new();
-    [field: SerializeField] public List<EnemyData> BottomRow { get; private set; } = new();
+    [field: SerializeField] public List<NPCData> TopRow { get; private set; } = new();
+    [field: SerializeField] public List<NPCData> MiddleRow { get; private set; } = new();
+    [field: SerializeField] public List<NPCData> BottomRow { get; private set; } = new();
     [field: SerializeReference, SR] public List<SetReward> Rewards { get; private set; } = new();
 
     public int FightIndex { get; private set; } = -1;

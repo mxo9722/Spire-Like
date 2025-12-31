@@ -249,7 +249,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: -1.344}
-  m_SizeDelta: {x: 180, y: 60}
+  m_SizeDelta: {x: 240, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &7963149651165535474
 Canvas:
@@ -325,8 +325,8 @@ GameObject:
   - component: {fileID: 2245781261674062786}
   - component: {fileID: 4597146356872464879}
   - component: {fileID: 1908231445517418272}
-  - component: {fileID: 2889149404955258560}
   - component: {fileID: 8524552831570061082}
+  - component: {fileID: 2155748970153120381}
   m_Layer: 0
   m_Name: StatusEffectsUI
   m_TagString: Untagged
@@ -375,32 +375,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _statusEffectUIPrefab: {fileID: 2863590501795665833, guid: a59095e9c37b7554480187eb7b5f83a3, type: 3}
   _statusEffectsData: {fileID: 11400000, guid: 8ada9312399e24f47978e5d77e8e581f, type: 2}
---- !u!114 &2889149404955258560
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5263568670344185282}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Padding:
-    m_Left: 0
-    m_Right: 0
-    m_Top: 0
-    m_Bottom: 0
-  m_ChildAlignment: 0
-  m_Spacing: 0
-  m_ChildForceExpandWidth: 0
-  m_ChildForceExpandHeight: 0
-  m_ChildControlWidth: 0
-  m_ChildControlHeight: 0
-  m_ChildScaleWidth: 0
-  m_ChildScaleHeight: 0
-  m_ReverseArrangement: 0
 --- !u!114 &8524552831570061082
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -431,6 +405,30 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &2155748970153120381
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5263568670344185282}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 0
+  m_StartCorner: 0
+  m_StartAxis: 0
+  m_CellSize: {x: 60, y: 60}
+  m_Spacing: {x: 0, y: 0}
+  m_Constraint: 1
+  m_ConstraintCount: 4
 --- !u!1 &8963363122532214306
 GameObject:
   m_ObjectHideFlags: 0
@@ -598,7 +596,7 @@ SpriteRenderer:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
-  m_DrawMode: 0
+  m_DrawMode: 1
   m_Size: {x: 5.11, y: 5.11}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0

@@ -12,17 +12,18 @@ public class TargetPreviewSystem : Singleton<TargetPreviewSystem>
     [SerializeField] private Color _possibleColor;
     [SerializeField] private bool _randomCycleTargets = false;
 
-
-    private bool _highLighted = false;
+    public bool HighLighted { get; private set; } = false;
 
     private List<Coroutine> _randomCoroutines = new();
 
     public void SetTargetPreviews(Card card)
     {
-        if (_highLighted)
+        if (HighLighted)
+        {
             return;
+        }
 
-        _highLighted = true;
+        HighLighted = true;
 
         List<ITargetPreviewable> targets = new();
         List<ITargetPreviewable> highlights = new();
@@ -32,13 +33,26 @@ public class TargetPreviewSystem : Singleton<TargetPreviewSystem>
         foreach (AutoTargetEffect effect in card.OtherEffects)
         {
             if (effect is ConditionalAutoTargetEffect)
-                highlights.AddRange(GetTargets(effect));
+                highlights.AddRange(GetTargets(effect, context));
             else
-                targets.AddRange(GetTargets(effect));
+                targets.AddRange(GetTargets(effect, context));
         }
 
         targets.ForEach(t => t.SetTargetPreview(_defaultColor));
-        highlights.ForEach(h => h.SetTargetPreview(Color.yellow));
+        highlights.ForEach(h => h.SetTargetPreview(_highlightColor));
+
+        if (card.IsChaotic())
+        {
+            switch (card.ManualTargetType)
+            {
+                case ManualTargetType.COMBATANT:
+                    _randomCoroutines.AddRange(GetRandomTargetCoroutines(card.GetChaosTargetMode<CombatantView>(), _defaultColor));
+                    break;
+                case ManualTargetType.LANE:
+                    _randomCoroutines.AddRange(GetRandomTargetCoroutines(card.GetChaosTargetMode<LaneView>(), _defaultColor));
+                    break;
+            }
+        }
 
         foreach (AutoTargetEffect effect in card.OtherEffects)
         {
@@ -46,12 +60,69 @@ public class TargetPreviewSystem : Singleton<TargetPreviewSystem>
         }
     }
 
+    public void SetTargetPreviewsManual(Card card, CombatantView manualTarget)
+    {
+        if (HighLighted)
+        {
+            HideTargetPreviews();
+        }
+
+        HighLighted = true;
+
+        EffectContext context = EffectContext.CreateHeroEC(manualTarget);
+        List<ITargetPreviewable> targets = new();
+        List<ITargetPreviewable> hTargets = new();
+
+        targets.Add(manualTarget);
+
+        foreach (AutoTargetEffect effect in card.OtherEffects)
+        {
+            if(effect is ConditionalAutoTargetEffect)
+                hTargets.AddRange(GetTargets(effect, context));
+            else
+                targets.AddRange(GetTargets(effect, context));
+        }
+
+        targets.ForEach(t => t.SetTargetPreview(_defaultColor));
+        hTargets.ForEach(t => t.SetTargetPreview(_highlightColor));
+    }
+    
+    public void SetTargetPreviewsManual(Card card, LaneView manualTarget)
+    {
+        if (HighLighted)
+        {
+            HideTargetPreviews();
+        }
+
+        HighLighted = true;
+
+        EffectContext context = EffectContext.CreateHeroEC(manualTarget);
+        List<ITargetPreviewable> targets = new();
+        List<ITargetPreviewable> hTargets = new();
+
+        targets.Add(manualTarget);
+
+        foreach (AutoTargetEffect effect in card.OtherEffects)
+        {
+            if(effect is ConditionalAutoTargetEffect)
+                hTargets.AddRange(GetTargets(effect, context));
+            else
+                targets.AddRange(GetTargets(effect, context));
+
+        }
+
+        targets.ForEach(t => t.SetTargetPreview(_defaultColor));
+        hTargets.ForEach(t => t.SetTargetPreview(_highlightColor));
+    }
+
     public void SetTargetPreviewsManual<T, F>(List<F> filters, List<ConditionalAutoTargetEffect> highlightConditionals) where T : ITargetPreviewable where F : TargetFilter<T>
     {
-        if (_highLighted)
-            return;
+        if (HighLighted)
+        {
+            HideTargetPreviews();
+        }
 
-        _highLighted = true;
+        HighLighted = true;
 
         EffectContext context = EffectContext.CreateHeroEC();
 
@@ -61,7 +132,7 @@ public class TargetPreviewSystem : Singleton<TargetPreviewSystem>
         {
             EffectContext specificContext = EffectContext.CreateHeroEC();
 
-            if (target is EnemyView enemyView)
+            if (target is NPCView enemyView)
                 specificContext = EffectContext.CreateHeroEC(enemyView);
             else if (target is LaneView laneView)
                 specificContext = EffectContext.CreateHeroEC(laneView);
@@ -69,19 +140,50 @@ public class TargetPreviewSystem : Singleton<TargetPreviewSystem>
             bool highlight = highlightConditionals.Any(h => h.Conditions.TrueForAll(c => c.TestCondition(specificContext)));
 
             if (highlight)
-                target.SetTargetPreview(Color.yellow);
+                target.SetTargetPreview(_highlightColor);
             else
-                target.SetTargetPreview(_defaultColor);
+                target.SetTargetPreview(_possibleColor);
         }
 
     }
 
+    public void SetTargetPreviews(NPCView npc,NPCAction action)
+    {
+        if (HighLighted)
+        {
+            HideTargetPreviews();
+        }
+
+        HighLighted = true;
+
+        List<ITargetPreviewable> targets = new();
+        List<ITargetPreviewable> highlights = new();
+
+        EffectContext context = EffectContext.CreateNpcEC(npc);
+
+        foreach (AutoTargetEffect effect in action.Effects)
+        {
+            if (effect is ConditionalAutoTargetEffect)
+                highlights.AddRange(GetTargets(effect, context));
+            else
+                targets.AddRange(GetTargets(effect, context));
+        }
+
+        targets.ForEach(t => t.SetTargetPreview(_defaultColor));
+        highlights.ForEach(h => h.SetTargetPreview(_highlightColor));
+
+        foreach (AutoTargetEffect effect in action.Effects)
+        {
+            _randomCoroutines.AddRange(GetRandomTargetCoroutines(effect));
+        }
+    }
+
     public void HideTargetPreviews()
     {
-        if (!_highLighted)
+        if (!HighLighted)
             return;
 
-        _highLighted = false;
+        HighLighted = false;
 
         foreach (Coroutine coroutine in _randomCoroutines)
         {
@@ -95,11 +197,12 @@ public class TargetPreviewSystem : Singleton<TargetPreviewSystem>
         BoardSystem.Instance.GetAllLanes().ForEach(l => l.HideTargetPreview());
     }
 
-    private List<ITargetPreviewable> GetTargets(AutoTargetEffect effect)
+    private List<ITargetPreviewable> GetTargets(AutoTargetEffect effect, EffectContext context)
     {
         List<ITargetPreviewable> targets = new();
 
-        EffectContext context = EffectContext.CreateHeroEC();
+        if(context == null)
+            context = EffectContext.CreateHeroEC();
 
         if (effect is AutoCombatantTargetEffect cEffect && (!cEffect.TargetMode.IsRandom || !_randomCycleTargets))
         {
@@ -113,11 +216,26 @@ public class TargetPreviewSystem : Singleton<TargetPreviewSystem>
         {
             if (conditional.GetGameAction(context) != null)
             {
-                return GetTargets(conditional.SuccessEffect);
+                return GetTargets(conditional.SuccessEffect, context);
             }
         }
 
         return targets;
+    }
+
+    private List<Coroutine> GetRandomTargetCoroutines<T>(TargetMode<T> targetMode, Color color = default) where T : ITargetPreviewable
+    {
+        if (!_randomCycleTargets)
+            return new();
+
+        if (color == default)
+            color = _defaultColor;
+
+        List<Coroutine> coroutines = new();
+
+        coroutines.Add(StartCoroutine(RandomTargetPreview(targetMode, color)));
+
+        return coroutines;
     }
 
     private List<Coroutine> GetRandomTargetCoroutines(AutoTargetEffect effect, Color color = default)
@@ -144,7 +262,7 @@ public class TargetPreviewSystem : Singleton<TargetPreviewSystem>
         {
             if (conditional.GetGameAction(context) != null)
             {
-                return GetRandomTargetCoroutines(conditional.SuccessEffect, Color.yellow);
+                return GetRandomTargetCoroutines(conditional.SuccessEffect, _highlightColor);
             }
         }
 
@@ -176,7 +294,7 @@ public class TargetPreviewSystem : Singleton<TargetPreviewSystem>
                 randomTry = tm.GetTargetsTrivial(context);
                 randomTry.RemoveAll(t => t.TargetPreviewActive);
             }
-            while (targets.Except(randomTry).Count() == 0);
+            while (targets.Except(randomTry).Count() == 0 && targets.Count != 0);
 
             targets = randomTry;
 

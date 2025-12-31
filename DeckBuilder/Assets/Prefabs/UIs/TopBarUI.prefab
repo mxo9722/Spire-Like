@@ -26,7 +26,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1554993035960563416}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -59,7 +59,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aef6220cded4d7b49bf7c986314c617f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _creditText: {fileID: 2707493811414712741}
+  _karmaText: {fileID: 2707493811414712741}
   _healthText: {fileID: 1658707782493903476}
   _deckUI: {fileID: 8238779879508360533}
 --- !u!114 &5968691109426245030
@@ -104,7 +104,7 @@ GameObject:
   - component: {fileID: 5994353929530418231}
   - component: {fileID: 2707493811414712741}
   m_Layer: 0
-  m_Name: CreditText
+  m_Name: KarmaText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -395,7 +395,7 @@ GameObject:
   - component: {fileID: 8714242298446774471}
   - component: {fileID: 1287966143101698140}
   m_Layer: 0
-  m_Name: CreditSymbol
+  m_Name: KarmaSymbol
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -448,7 +448,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 998bc3fdc649e2040afc4b8372d2611d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 60ca5b9ce00f0f94e90677da26fc5e85, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1

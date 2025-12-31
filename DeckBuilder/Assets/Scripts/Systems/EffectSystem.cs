@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class EffectSystem : MonoBehaviour
+public class EffectSystem : Singleton<EffectSystem>
 {
     void OnEnable()
     {
@@ -15,11 +15,10 @@ public class EffectSystem : MonoBehaviour
 
     private IEnumerator PerformEffectPerformer(PerformEffectsGA performEffectsGA)
     {
-        GameAction effectAction = performEffectsGA.Effect.GetGameAction(EffectContext.CreateHeroEC(), combatantTargets: performEffectsGA.CombatantTargets, laneTargets:performEffectsGA.LaneTargets, cardTargets: performEffectsGA.CardTargets);
+        GameAction effectAction = performEffectsGA.Effect.GetGameAction(performEffectsGA.Context, combatantTargets: performEffectsGA.CombatantTargets, laneTargets:performEffectsGA.LaneTargets, cardTargets: performEffectsGA.CardTargets);
         if (effectAction != null)
             ActionSystem.Instance.AddReaction(effectAction);
-        else
-            Debug.LogError("Null GameAction attempted to be applied!");
+
         yield return null;
     }
 }

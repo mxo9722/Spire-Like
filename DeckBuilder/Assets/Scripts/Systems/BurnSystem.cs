@@ -8,20 +8,23 @@ public class BurnSystem : Singleton<BurnSystem>
 
     private void OnEnable()
     {
-        ActionSystem.AttachPerformer<ApplyBurnGA>(ApplyBurnPerformer);
+        ActionSystem.AttachPerformer<InvokeBurnGA>(ApplyBurnPerformer);
     }
 
     private void OnDisable()
     {
-        ActionSystem.DetachPerformer<ApplyBurnGA>();
+        ActionSystem.DetachPerformer<InvokeBurnGA>();
     }
 
-    private IEnumerator ApplyBurnPerformer(ApplyBurnGA applyBurnGA)
+    private IEnumerator ApplyBurnPerformer(InvokeBurnGA applyBurnGA)
     {
         List<CombatantView> targets = applyBurnGA.Targets;
 
         foreach (CombatantView target in targets)
         {
+            if (target == null)
+                continue;
+
             Instantiate(_burnVFX, target.transform.position, Quaternion.identity);
 
             int burnStacks = target.GetStatusEffectStacks(StatusEffectType.BURN);

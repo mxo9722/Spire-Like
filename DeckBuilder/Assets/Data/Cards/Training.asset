@@ -12,21 +12,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62bf69310631aa94896652d3f8be392c, type: 3}
   m_Name: Training
   m_EditorClassIdentifier: 
+  <Upgrade>k__BackingField: {fileID: 0}
+  <Unplayable>k__BackingField: 0
+  <Mana>k__BackingField: 0
+  <Type>k__BackingField: 1
+  <Image>k__BackingField: {fileID: 21300000, guid: d8cafdc704151c844a22b6b9c11685a1, type: 3}
   <Description>k__BackingField: 'Add a card of your choice from your deck to your
     hand.
 
     Exhaust.'
-  <Mana>k__BackingField: 0
   <RequiredConditions>k__BackingField: []
+  <HighlightConditions>k__BackingField: []
   <ExhuastOnUse>k__BackingField: 1
-  <Image>k__BackingField: {fileID: 21300000, guid: d8cafdc704151c844a22b6b9c11685a1, type: 3}
-  <ManualTargetType>k__BackingField: 0
+  <ManualTargetType>k__BackingField: 2
   <CombatantFilters>k__BackingField: []
   <LaneFilters>k__BackingField: []
   <ManualTargetEffect>k__BackingField:
     rid: -2
   <OtherEffects>k__BackingField:
   - rid: 4055347490719531079
+  <TurnEndEffects>k__BackingField: []
   references:
     version: 2
     RefIds:

@@ -15,10 +15,10 @@ public class AutoLaneTargetEffect : AutoTargetEffect
 
     [field: SerializeReference, SR] private LaneTargetEffect _laneEffect;
 
-    public override GameAction GetGameAction(EffectContext targetModeContext)
+    public override GameAction GetGameAction(EffectContext context)
     {
-        List<LaneView> targets = TargetMode.GetTargets(targetModeContext);
-        PerformEffectsGA performEffectsGA = new(Effect, targets);
+        List<LaneView> targets = TargetMode.GetTargets(context);
+        PerformEffectsGA performEffectsGA = new(context, Effect, targets);
         return performEffectsGA;
     }
 

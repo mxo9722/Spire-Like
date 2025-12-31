@@ -10,15 +10,14 @@ public class HeroSystem : Singleton<HeroSystem>
 
     private void OnEnable()
     {
-
-        ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPreReaction, ReactionTiming.PRE);
-        ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction, ReactionTiming.POST);
+        ActionSystem.AttachPerformer<BeforePlayerTurnGA>(BeforePlayerTurnPerformer);
+        ActionSystem.AttachPerformer<AfterPlayerTurnGA>(AfterPlayerTurnPerformer);
     }
 
     private void OnDisable()
     {
-        ActionSystem.UnsubscribeReaction<EnemyTurnGA>(EnemyTurnPreReaction, ReactionTiming.PRE);
-        ActionSystem.UnsubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction, ReactionTiming.POST);
+        ActionSystem.DetachPerformer<BeforePlayerTurnGA>();
+        ActionSystem.DetachPerformer<AfterPlayerTurnGA>();
     }
 
     public void Setup(HeroData heroData)
@@ -26,39 +25,41 @@ public class HeroSystem : Singleton<HeroSystem>
         HeroView = BoardSystem.Instance.BoardView.CreateHero(heroData, 1);
     }
 
-    private void EnemyTurnPreReaction(EnemyTurnGA enemyTurnGA)
+    private IEnumerator AfterPlayerTurnPerformer(AfterPlayerTurnGA afterPlayerTurnGA)
     {
         DiscardAllCardsGA discardAllCardsGA = new(true);
         ActionSystem.Instance.AddReaction(discardAllCardsGA);
 
         StatusEffectSystem.Instance.PrePostModifyStatusEffect(HeroView, ReactionTiming.POST);
+        yield return null;
+        
+        NPCTurnGA enemyTurnGA;
+        List<NPCView> sideKicks = BoardSystem.Instance.GetAllSideKicks();
 
-        List<EnemyView> enemies = BoardSystem.Instance.BoardView.GetAllEnemies();
+        if (sideKicks.Count > 0)
+        {
+            enemyTurnGA = new NPCTurnGA(sideKicks);
+            ActionSystem.Instance.AddReaction(enemyTurnGA);
+        }
 
-        StatusEffectSystem.Instance.PrePostModifyStatusEffect(enemies.Select(e => (CombatantView)e).ToList(), ReactionTiming.PRE);
+        enemyTurnGA = new NPCTurnGA(BoardSystem.Instance.GetAllEnemies());
+        ActionSystem.Instance.AddReaction(enemyTurnGA);
+
+        BeforePlayerTurnGA beforePlayerTurnGA = new();
+        ActionSystem.Instance.AddReaction(beforePlayerTurnGA);
     }
 
-    private void EnemyTurnPostReaction(EnemyTurnGA enemyTurnGA)
+    private IEnumerator BeforePlayerTurnPerformer(BeforePlayerTurnGA beforePlayerTurnGA)
     {
-        List<EnemyView> enemies = BoardSystem.Instance.BoardView.GetAllEnemies();
-
-        StatusEffectSystem.Instance.PrePostModifyStatusEffect(enemies.Select(e => (CombatantView)e).ToList(), ReactionTiming.POST);
-
         StatusEffectSystem.Instance.PrePostModifyStatusEffect(HeroView, ReactionTiming.PRE);
-
-        int burnStack = HeroView.GetStatusEffectStacks(StatusEffectType.BURN);
-
-        if(burnStack > 0)
-        {
-            ApplyBurnGA applyBurnGA = new(HeroView);
-            ActionSystem.Instance.AddReaction(applyBurnGA);
-        }
 
         //RedistributeEnemiesGA redistributeEnemiesGA = new RedistributeEnemiesGA();
         //ActionSystem.Instance.AddReaction(redistributeEnemiesGA);
 
         DrawCardsGA drawCardsGA = new(5);
         ActionSystem.Instance.AddReaction(drawCardsGA);
+
+        yield return null;
     }
 
     public int GetHealth()

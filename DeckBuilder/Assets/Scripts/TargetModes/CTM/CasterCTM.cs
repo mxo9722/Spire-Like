@@ -8,8 +8,8 @@ public class CasterCTM : CombatantTargetMode
         return new() { targetModeContext.Caster };
     }
 
-    public override EnemyTargetTypes GetTargetIntent()
+    public override NPCTargetTypes GetTargetIntent()
     {
-        return EnemyTargetTypes.SELF;
+        return NPCTargetTypes.SELF;
     }
 }

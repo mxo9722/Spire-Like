@@ -7,14 +7,16 @@ using UnityEngine;
 
 public class LaneView : MonoBehaviour, ITargetPreviewable
 {
-    [field: SerializeField] public SlotView HeroSlot { get; private set; }
-    [field: SerializeField] public List<SlotView> EnemySlots { get; private set; }
+    [field: SerializeField] public SlotView[] HeroSlots { get; private set; }
+    [field: SerializeField] public SlotView[] EnemySlots { get; private set; }
 
     [SerializeField] private SpriteRenderer _targetPreviewSR;
 
-    public List<EnemyView> EnemyViews { get => EnemySlots.Select(s => (EnemyView)s.Combatant).Where(c => c != null).ToList(); }
-    public HeroView HeroView { get => (HeroView)HeroSlot.Combatant; }
+    public NPCView[] EnemyViews { get => EnemySlots.Select(e => (NPCView)(e.Combatant)).Where(c => c != null).ToArray(); }
+    public CombatantView[] HeroViews { get => HeroSlots.Select(e => e.Combatant).Where(s => s != null).ToArray(); }
     public bool Dead { get; private set; } = false;
+    public BoardView Board { get; private set; }
+    public int Index { get; private set; }
 
     public bool TargetPreviewActive => _targetPreviewSR.color != Color.clear;
 
@@ -28,35 +30,75 @@ public class LaneView : MonoBehaviour, ITargetPreviewable
 
         return null;
     }
+    
+    public SlotView FirstAvailableHeroSlot()
+    {
+        foreach (SlotView slot in HeroSlots)
+        {
+            if (slot.IsEmpty)
+                return slot;
+        }
+
+        return null;
+    }
 
     public void Start()
     {
         _targetPreviewSR.transform.DORotate(new(0, 0, 180.0f), 2f, RotateMode.Fast).SetLoops(-1).SetEase(Ease.Linear);
         HideTargetPreview();
+        for(int i = 0; i < EnemySlots.Length; i++)
+        {
+            SlotView slot = EnemySlots[i];
+            slot.SetUp(this, i);
+        }
+
+        for (int i = 0; i < HeroSlots.Length; i++)
+        {
+            SlotView slot = HeroSlots[i];
+            slot.SetUp(this, i);
+        }
     }
 
-    public IEnumerator SlideEnemiesLeft(float duration, bool pauseForMove = false)
+    public void SetUp(BoardView board, int index)
     {
-        Coroutine wait = null;
+        Board = board;
+        Index = index;
+    }
 
-        for(int i=0;i<EnemyViews.Count;i++)
+    private void OnDestroy()
+    {
+        _targetPreviewSR.transform.DOKill();
+    }
+
+    public void SlideEnemiesLeft()
+    {
+        for(int i=0;i<EnemyViews.Length;i++)
         {
-            EnemyView enemyView = EnemyViews[i];
+            NPCView enemyView = EnemyViews[i];
             SlotView enemySlot = EnemySlots[i];
 
             if (enemyView.Slot != enemySlot)
             {
-                yield return enemyView.WaitForTweensComplete();
                 enemySlot.AddCombatant(enemyView, false);
-                wait = StartCoroutine(enemySlot.PullCombatant(0.4f));
             }
         }
-
-        if (wait != null && pauseForMove)
-            yield return wait;
     }
 
-    public void AddEnemy(EnemyView enemyView, LaneView originalLaneView = null)
+    public void SlideAlliesLeft()
+    {
+        for (int i = 0; i < HeroViews.Length; i++)
+        {
+            CombatantView heroView = HeroViews[i];
+            SlotView heroSlot = HeroSlots[i];
+
+            if (heroView.Slot != heroSlot)
+            {
+                heroSlot.AddCombatant(heroView, false);
+            }
+        }
+    }
+
+    public void AddEnemy(NPCView enemyView, LaneView originalLaneView = null)
     {
         SlotView slot = FirstAvailableEnemySlot();
 
@@ -64,11 +106,10 @@ public class LaneView : MonoBehaviour, ITargetPreviewable
             return;
 
         slot.AddCombatant(enemyView);
-        EnemyViews.Add(enemyView);
 
         if (originalLaneView != null)
         {
-            MoveEnemyGA moveEnemyGA = new(this, enemyView);
+            MoveUnitsGA moveEnemyGA = new(this, enemyView, null);
             ActionSystem.Instance.AddReaction(moveEnemyGA);
         }
         else
@@ -77,7 +118,7 @@ public class LaneView : MonoBehaviour, ITargetPreviewable
         }
     }
 
-    public IEnumerator RemoveEnemy(EnemyView enemyView)
+    public IEnumerator RemoveEnemy(NPCView enemyView)
     {
         if (!EnemyViews.Contains(enemyView))
             yield break;
@@ -89,18 +130,31 @@ public class LaneView : MonoBehaviour, ITargetPreviewable
         Tween tween = enemyView.transform.DOScale(Vector3.zero, 0.25f);
         yield return tween.WaitForCompletion();
         Destroy(enemyView.gameObject);
-        yield return SlideEnemiesLeft(0.2f);
+
+        SlideEnemiesLeft();
+
+        tween = null;
+
+        foreach (NPCView npc in EnemyViews)
+        {
+            if (npc.transform.localPosition != Vector3.zero)
+            {
+                tween = npc.transform.DOLocalMove(Vector3.zero, 0.4f);
+            }
+        }
+
+        if (tween != null)
+            yield return tween.WaitForCompletion();
     }
 
     public void SetHero(HeroView heroView, LaneView originalLaneView = null)
     {
-        if (HeroView != null)
+        if (HeroViews.Length == HeroSlots.Length)
         {
-            //TODO: Add swap hero functionality
             return;
         }
 
-        HeroSlot.AddCombatant(heroView);
+        FirstAvailableHeroSlot().AddCombatant(heroView);
 
         if (originalLaneView == null)
             heroView.transform.localPosition = Vector3.zero;
@@ -112,16 +166,18 @@ public class LaneView : MonoBehaviour, ITargetPreviewable
 
     public IEnumerator SwapHero(HeroView heroView, float duration)
     {
+        SlotView heroSlot = FirstAvailableHeroSlot();
+
         if (heroView != null)
         {
-            HeroSlot.AddCombatant(heroView, false);
-            yield return HeroSlot.PullCombatant(0.4f);
+            heroSlot.AddCombatant(heroView, false);
+            yield return heroSlot.PullCombatant(0.4f);
         }
     }
 
     public bool Contains(CombatantView combatant)
     {
-        return HeroView == combatant || EnemyViews.Any(e => e == combatant);
+        return HeroViews.Contains(combatant) || EnemyViews.Contains(combatant);
     }
 
     public bool IsValid(EffectContext context, List<LaneFilter> filters)
@@ -137,5 +193,25 @@ public class LaneView : MonoBehaviour, ITargetPreviewable
     public void HideTargetPreview()
     {
         _targetPreviewSR.color = Color.clear;
+    }
+
+    public CombatantView FrontHeroView()
+    {
+        var heroes = HeroViews;
+
+        if (heroes.Length > 0)
+            return heroes.Last();
+
+        return null;
+    }
+    
+    public CombatantView FrontEnemyView()
+    {
+        CombatantView[] enemies = EnemyViews;
+
+        if (enemies.Length > 0)
+            return enemies.First();
+
+        return null;
     }
 }

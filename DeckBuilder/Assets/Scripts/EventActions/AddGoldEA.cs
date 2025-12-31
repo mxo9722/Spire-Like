@@ -9,7 +9,7 @@ public class AddGoldEA : EventAction
 
     public override IEnumerator Invoke()
     {
-        CreditSystem.Instance.Add(_credits);
+        KarmaSystem.Instance.Add(_credits);
         yield return null;
     }
 }

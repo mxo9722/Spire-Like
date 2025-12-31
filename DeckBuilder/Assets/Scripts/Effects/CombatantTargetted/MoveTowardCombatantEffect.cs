@@ -9,20 +9,9 @@ public class MoveTowardCombatantEffect : CombatantTargetEffect
         if ((combatantTargets == null || combatantTargets.Count == 0))
             return null;
 
-        GameAction gameAction = null;
-
         CombatantView targetView = combatantTargets[0];
         LaneView targetLaneView = BoardSystem.Instance.GetCurrentLaneView(targetView);
 
-        if (context.Caster is HeroView heroView)
-        {
-            gameAction = new MoveHeroGA(targetLaneView, heroView);
-        }
-        else if (context.Caster is EnemyView enemyView)
-        {
-            gameAction = new MoveEnemyGA(targetLaneView, enemyView);
-        }
-
-        return gameAction;
+        return new MoveUnitsGA(targetLaneView, context.Caster, context.Caster);
     }
 }

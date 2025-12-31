@@ -17,7 +17,9 @@ public class StatusEffectSystem : Singleton<StatusEffectSystem>
         ActionSystem.AttachPerformer<AddStatusEffectGA>(AddStatusEffectPerformer);
         ActionSystem.AttachPerformer<RemoveAllStatusEffectGA>(RemoveAllStatusEffectPerformer);
 
-        ActionSystem.SubscribeReaction<AddStatusEffectGA>(PreStatusEffectReaction, ReactionTiming.PRE);
+        ActionSystem.SubscribeReaction<AddStatusEffectGA>(this, PreStatusEffectReaction, ReactionTiming.PRE);
+        ActionSystem.SubscribeReaction<NPCTurnGA>(this, PreNPCTurnReaction, ReactionTiming.PRE);
+        ActionSystem.SubscribeReaction<NPCTurnGA>(this, PostNPCTurnReaction, ReactionTiming.POST);
     }
 
     private void OnDisable()
@@ -25,13 +27,16 @@ public class StatusEffectSystem : Singleton<StatusEffectSystem>
         ActionSystem.DetachPerformer<AddStatusEffectGA>();
         ActionSystem.DetachPerformer<RemoveAllStatusEffectGA>();
 
-        ActionSystem.UnsubscribeReaction<AddStatusEffectGA>(PreStatusEffectReaction, ReactionTiming.PRE);
+        ActionSystem.UnsubscribeReaction<AddStatusEffectGA>(this, PreStatusEffectReaction, ReactionTiming.PRE);
+        ActionSystem.UnsubscribeReaction<NPCTurnGA>(this, PreNPCTurnReaction, ReactionTiming.PRE);
+        ActionSystem.UnsubscribeReaction<NPCTurnGA>(this, PostNPCTurnReaction, ReactionTiming.POST);
     }
 
     private IEnumerator AddStatusEffectPerformer(AddStatusEffectGA addStatusEffectGA)
     {
         float waitTime = 0;
 
+        if(!addStatusEffectGA.SkipAnimation)
         foreach (CombatantView target in addStatusEffectGA.Targets)
         {
             if (target.CurrentHealth <= 0)
@@ -74,10 +79,10 @@ public class StatusEffectSystem : Singleton<StatusEffectSystem>
 
     private IEnumerator RemoveAllStatusEffectPerformer(RemoveAllStatusEffectGA removeAllStatusEffect)
     {
-        foreach(CombatantView target in removeAllStatusEffect.Targets)
+        foreach (CombatantView target in removeAllStatusEffect.Targets)
         {
             int stackCount = target.GetStatusEffectStacks(removeAllStatusEffect.StatusEffectType);
-            target.RemoveStatusEffect(removeAllStatusEffect.StatusEffectType,stackCount);
+            target.RemoveStatusEffect(removeAllStatusEffect.StatusEffectType, stackCount);
         }
 
         yield return null;
@@ -103,6 +108,16 @@ public class StatusEffectSystem : Singleton<StatusEffectSystem>
                 addStatusEffectGA.SetStackCount(stackCount);
             }
         }
+    }
+
+    private void PreNPCTurnReaction(NPCTurnGA npcTurnGA)
+    {
+        PrePostModifyStatusEffect(npcTurnGA.Targets.Cast<CombatantView>().ToList(), ReactionTiming.PRE);
+    }
+
+    private void PostNPCTurnReaction(NPCTurnGA npcTurnGA)
+    {
+        PrePostModifyStatusEffect(npcTurnGA.Targets.Cast<CombatantView>().ToList(), ReactionTiming.POST);
     }
 
     public void PrePostModifyStatusEffect(CombatantView combatantView, ReactionTiming reactionTiming)

@@ -37,10 +37,10 @@ public class AutoCardTargetEffect : AutoTargetEffect
         return value;
     }
 
-    public override GameAction GetGameAction(EffectContext targetModeContext)
+    public override GameAction GetGameAction(EffectContext context)
     {
-        List<Card> cards = TargetMode.GetTargets(targetModeContext);
-        PerformEffectsGA performEffectsGA = new(_cardEffect, cards);
+        List<Card> cards = TargetMode.GetTargets(context);
+        PerformEffectsGA performEffectsGA = new(context, _cardEffect, cards);
         return performEffectsGA;
     }
 

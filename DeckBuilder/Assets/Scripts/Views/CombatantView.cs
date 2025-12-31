@@ -20,35 +20,49 @@ public abstract class CombatantView : MonoBehaviour, ITargetPreviewable
 
     public bool TargetPreviewActive => Slot.TargetPreviewActive;
 
-
     private Dictionary<StatusEffectType, int> _statusEffects = new();
 
     public Action<int> OnHealthChanged;
     public Action<int> OnMaxHealthChanged;
 
+    public bool MovedThisRound { get; private set; } = false;
+
     protected void SetupBase(int health, Sprite sprite, SlotView slotView)
     {
         slotView.AddCombatant(this);
+        transform.localScale = Vector3.one;
 
         MaxHealth = CurrentHealth = health;
+
+        Vector2 size = _spriteRenderer.size;
         _spriteRenderer.sprite = sprite;
+        _spriteRenderer.size = size;
+        _statusEffectsUI.SetUp(this);
+
         UpdateHealthText();
     }
 
-    public void OnMouseEnter()
+    public void OnEnable()
+    {
+        ActionSystem.SubscribeReaction<BeforePlayerTurnGA>(this, BeforePlayerTurn, ReactionTiming.PRE);
+    }
+
+    private void OnDisable()
+    {
+        ActionSystem.UnsubscribeReaction<BeforePlayerTurnGA>(this, BeforePlayerTurn, ReactionTiming.PRE);
+
+        transform.DOKill();
+    }
+
+    public virtual void OnMouseEnter()
     {
         if(!ManualTargetSystem.Instance.IsTargetting && !CardCollectionSystem.Instance.Opened)
             LoadHelpBoxes(_helpBoxesUI);
     }
 
-    public void OnMouseExit()
+    public virtual void OnMouseExit()
     {
         _helpBoxesUI.Hide();
-    }
-
-    private void OnDestroy()
-    {
-        Slot?.RemoveCombatant();
     }
 
     protected virtual void LoadHelpBoxes(HelpBoxesUI helpBoxesUI)
@@ -66,13 +80,13 @@ public abstract class CombatantView : MonoBehaviour, ITargetPreviewable
         _healthText.text = "HP: " + CurrentHealth;
     }
 
-    public void Damage(int damageAmount, bool ignoreBlock = false)
+    public (int UnblockedDamage, int Overkill) Damage(int damageAmount, bool ignoreBlock = false)
     {
         int remainingDamage = damageAmount;
         int currentArmor = GetStatusEffectStacks(StatusEffectType.BLOCK);
 
         if (remainingDamage == 0)
-            return;
+            return (0, 0);
 
         if (!ignoreBlock)
         {
@@ -87,6 +101,8 @@ public abstract class CombatantView : MonoBehaviour, ITargetPreviewable
                 remainingDamage -= currentArmor;
             }
         }
+
+        int overkill = Math.Max(remainingDamage - CurrentHealth, 0);
 
         CurrentHealth -= remainingDamage;
 
@@ -103,6 +119,20 @@ public abstract class CombatantView : MonoBehaviour, ITargetPreviewable
         else if (remainingDamage > 0)
         {
             transform.DOShakePosition(0.2f, 0.5f);
+        }
+
+        return (remainingDamage, overkill);
+    }
+
+    public void Heal(int amount)
+    {
+        int newHealth = Math.Min(MaxHealth, CurrentHealth + amount); ;
+
+        if (newHealth != CurrentHealth)
+        {
+            CurrentHealth = newHealth;
+            OnHealthChanged?.Invoke(CurrentHealth);
+            UpdateHealthText();
         }
     }
 
@@ -129,7 +159,14 @@ public abstract class CombatantView : MonoBehaviour, ITargetPreviewable
                 _statusEffects[type] = 0;
         }
 
-        _statusEffectsUI.UpdateStatusEffectsUI(type, _statusEffects[type]);
+        if(CurrentHealth > 0)
+            _statusEffectsUI.UpdateStatusEffectsUI(type, _statusEffects[type]);
+    }
+
+    public void SetUpStatusEffect(StatusEffectType type)
+    {
+        StatusEffectInfo info = StatusEffectSystem.Instance.GetStatusEffectInfo(type);
+        //info.
     }
 
     public List<StatusEffectType> GetAllActiveStatusEffects()
@@ -152,8 +189,6 @@ public abstract class CombatantView : MonoBehaviour, ITargetPreviewable
             foreach (Tween t in tweens)
                 yield return t.WaitForCompletion();
     }
-
-
 
     public void SetHealth(int health)
     {
@@ -187,6 +222,16 @@ public abstract class CombatantView : MonoBehaviour, ITargetPreviewable
     public void SetSlot(SlotView slotView)
     {
         Slot = slotView;
+    }
+
+    private void BeforePlayerTurn(BeforePlayerTurnGA beforePlayerTurnGA)
+    {
+        MovedThisRound = false;
+    }
+
+    public void SetMoved(bool moved)
+    {
+        MovedThisRound = true;
     }
 
     public abstract void Die();

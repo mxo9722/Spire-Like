@@ -1,6 +1,7 @@
 using DG.Tweening;
 using System;
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -112,7 +113,7 @@ public class CardView : MonoBehaviour
         {
             Cursor.visible = false;
 
-            if (Card.ManualTargetEffect != null)
+            if (Card.ManualTargetType != ManualTargetType.NONE && !Card.IsChaotic())
             {
                 Vector3 origin = Vector3.zero;
                 origin.y = CardViewHoverSystem.Instance.CardViewHover.transform.position.y;
@@ -131,6 +132,7 @@ public class CardView : MonoBehaviour
                 //dragStartRotation = transform.rotation;
                 transform.rotation = Quaternion.identity;
                 transform.position = MouseUtil.GetMousePositionInWorldSpace(-1);
+                TargetPreviewSystem.Instance.SetTargetPreviews(Card);
             }
         }
         else if (_treatAsButton && !CardCollectionSystem.Instance.Opened)
@@ -143,11 +145,9 @@ public class CardView : MonoBehaviour
     {
         if (_treatAsButton) return;
         if (!Interactions.Instance.PlayerCanInteract()) return;
-        if (Card.ManualTargetEffect != null) return;
+        if (Card.ManualTargetType != ManualTargetType.NONE && !Card.IsChaotic()) return;
         if (!IsPlayable()) return;
         transform.position = MouseUtil.GetMousePositionInWorldSpace(-1);
-
-        TargetPreviewSystem.Instance.SetTargetPreviews(Card);
     }
 
     private void OnMouseUp()
@@ -156,13 +156,23 @@ public class CardView : MonoBehaviour
         if (!Interactions.Instance.PlayerCanInteract()) return;
 
         Cursor.visible = true;
+        bool onDropLayer = Physics.Raycast(transform.position, Vector3.forward, out RaycastHit hit, 10f, _dropLayer);
 
-        if (Card.ManualTargetEffect != null)
+        if (Card.ManualTargetType != ManualTargetType.NONE)
         {
+
+            EffectContext context = EffectContext.CreateHeroEC();
+
             switch (Card.ManualTargetType)
             {
                 case ManualTargetType.COMBATANT:
-                    CombatantView combatantView = ManualTargetSystem.Instance.EndEnemyTargeting(MouseUtil.GetMousePositionInWorldSpace(-1));
+                    CombatantView combatantView = null;
+
+                    if (!Card.IsChaotic())
+                        combatantView = ManualTargetSystem.Instance.EndEnemyTargeting(MouseUtil.GetMousePositionInWorldSpace(-1));
+                    else if (onDropLayer)
+                        combatantView = Card.GetChaosTargetMode<CombatantView>().GetTargets(context).FirstOrDefault();
+
                     if (combatantView != null && IsPlayable())
                     {
                         PlayCardGA playCardGA = new PlayCardGA(Card, combatantView);
@@ -170,7 +180,13 @@ public class CardView : MonoBehaviour
                     }
                     break;
                 case ManualTargetType.LANE:
-                    LaneView laneView = ManualTargetSystem.Instance.EndLaneTargeting(MouseUtil.GetMousePositionInWorldSpace(-1));
+                    LaneView laneView = null;
+
+                    if (!Card.IsChaotic())
+                        laneView = ManualTargetSystem.Instance.EndLaneTargeting(MouseUtil.GetMousePositionInWorldSpace(-1));
+                    else if (onDropLayer)
+                        laneView = Card.GetChaosTargetMode<LaneView>().GetTargets(context).FirstOrDefault();
+                    
                     if (laneView != null && IsPlayable())
                     {
                         PlayCardGA playCardGA = new PlayCardGA(Card, laneView);
@@ -186,26 +202,34 @@ public class CardView : MonoBehaviour
         }
         else if (!CardCollectionSystem.Instance.Opened)
         {
-            if (IsPlayable() && Physics.Raycast(transform.position, Vector3.forward, out RaycastHit hit, 10f, _dropLayer))
+            if (IsPlayable() && onDropLayer)
             {
                 PlayCardGA playCardGA = new PlayCardGA(Card);
                 ActionSystem.Instance.Perform(playCardGA);
-            }
-            else
-            {
-                transform.position = _dragStartPosition;
-                transform.rotation = _dragStartRotation;
+
+                if (Card.ExhuastOnUse)
+                {
+                    transform.DOMove(_dragStartPosition + new Vector3(0, 2, 0), 0.15f);
+                    SortingGroup.sortingOrder++;
+                }
             }
 
-            SortingGroup.sortingOrder = _originalLayerOrder;
-
-            Interactions.Instance.playerIsDragging = false;
-            TargetPreviewSystem.Instance.HideTargetPreviews();
         }
+
+        transform.position = _dragStartPosition;
+        transform.rotation = _dragStartRotation;
+
+        Interactions.Instance.playerIsDragging = false;
+        TargetPreviewSystem.Instance.HideTargetPreviews();
+
+        SortingGroup.sortingOrder = _originalLayerOrder;
     }
 
     public IEnumerator ActivateExhaustVFX()
     {
+        CardViewHoverSystem.Instance.Hide();
+        _wrapper.SetActive(true);
+
         float startStopTime = 0.1f;
         float burnLength = _burnVFX.main.duration;
 

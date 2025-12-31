@@ -9,14 +9,18 @@ public class StatusEffectUI : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     [SerializeField] private TMP_Text _stackCountText;
     [SerializeField] private HelpBoxUI _helpBoxUI;
 
+    private CombatantView _owner;
     private int _stackCount = 0;
     private StatusEffectType _statusEffectType;
 
-    public void Set(Sprite sprite, int stackCount, StatusEffectType statusEffectType)
+    private bool _started = false;
+
+    public void Set(CombatantView owner, Sprite sprite, int stackCount, StatusEffectType statusEffectType)
     {
+        _owner = owner;
         _image.sprite = sprite;
 
-        if(stackCount!=0)
+        if (stackCount != 0)
             _stackCountText.text = stackCount.ToString();
         else
             _stackCountText.text = "";
@@ -25,7 +29,30 @@ public class StatusEffectUI : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
         _statusEffectType = statusEffectType;
 
+        if (!_started)
+        {
+            StatusEffectInfo info = StatusEffectSystem.Instance.GetStatusEffectInfo(statusEffectType);
+
+            foreach (StatusEffectReaction reaction in info.Reactions)
+            {
+                reaction.SubscribeCondition(this, HandleReaction);
+            }
+
+            _started = true;
+        }
+
         LayoutRebuilder.ForceRebuildLayoutImmediate(transform as RectTransform);
+    }
+
+    private void OnDisable()
+    {
+        StatusEffectInfo info = StatusEffectSystem.Instance?.GetStatusEffectInfo(_statusEffectType);
+
+        if (info != null)
+            foreach (StatusEffectReaction reaction in info.Reactions)
+            {
+                reaction.UnsubscribeCondition(this, HandleReaction);
+            }
     }
 
 
@@ -38,4 +65,20 @@ public class StatusEffectUI : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     {
         _helpBoxUI.Hide();
     }
+
+    private void HandleReaction(GameAction gameAction)
+    {
+        StatusEffectInfo info = StatusEffectSystem.Instance.GetStatusEffectInfo(_statusEffectType);
+
+        foreach (StatusEffectReaction reaction in info.Reactions)
+        {
+            int count = reaction.SubConditionIsMet(_owner, gameAction);
+
+            for (int i = 0; i < count; i++)
+            {
+                reaction.InvokeEffects(_owner);
+            }
+        }
+    }
+
 }

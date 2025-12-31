@@ -12,21 +12,21 @@ public class CombatData : ScriptableObject
 [System.Serializable]
 public class FightLayout
 {
-    [field: SerializeField] public EnemyData[] TopLane { get; private set; }
-    [field: SerializeField] public EnemyData[] MiddleLane { get; private set; }
-    [field: SerializeField] public EnemyData[] BottomLane { get; private set; }
+    [field: SerializeField] public NPCData[] TopLane { get; private set; }
+    [field: SerializeField] public NPCData[] MiddleLane { get; private set; }
+    [field: SerializeField] public NPCData[] BottomLane { get; private set; }
     [field: SerializeField] public bool LaneOrderMatters { get; private set; } = false;
 
     public void SetCombatLayout(CombatRoom room)
     {
 
-        List<EnemyData> topRow = room.TopRow;
-        List<EnemyData> middleRow = room.MiddleRow;
-        List<EnemyData> bottomRow = room.BottomRow;
+        List<NPCData> topRow = room.TopRow;
+        List<NPCData> middleRow = room.MiddleRow;
+        List<NPCData> bottomRow = room.BottomRow;
 
         if (!LaneOrderMatters)
         {
-            List<EnemyData>[] lanes = new[]{topRow,middleRow,bottomRow};
+            List<NPCData>[] lanes = new[]{topRow,middleRow,bottomRow};
 
             RNG.Random.Shuffle(lanes);
 

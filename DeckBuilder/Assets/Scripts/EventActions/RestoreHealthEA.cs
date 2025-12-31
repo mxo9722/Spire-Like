@@ -12,6 +12,7 @@ public class RestoreHealthEA : EventAction
         int health = HeroSystem.Instance.GetHealth();
         health += _amount.GetStaticAmount();
         RunSystem.Instance.SetHealth(health);
+        TopBarUI.Instance.UpdateHealth();
         yield return null;
     }
 }

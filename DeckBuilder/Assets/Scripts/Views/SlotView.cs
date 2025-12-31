@@ -6,16 +6,29 @@ public class SlotView : MonoBehaviour, ITargetPreviewable
 {
     [SerializeField] private SpriteRenderer _targetPreviewSR;
 
-    public CombatantView Combatant { get; private set; } = null;
+    [field: SerializeField] public CombatantView Combatant { get; private set; } = null;
+
+    public LaneView Lane { get; private set; }
+    public int Index { get; private set; }
 
     public bool IsEmpty { get => Combatant == null; }
     public bool TargetPreviewActive => _targetPreviewSR.color != Color.clear;
 
+    public void SetUp(LaneView lane, int index)
+    {
+        Lane = lane;
+        Index = index;
+    }
 
     private void OnEnable()
     {
         _targetPreviewSR.transform.DORotate(new(0, 0, 180.0f), 2f, RotateMode.Fast).SetLoops(-1).SetEase(Ease.Linear);
         HideTargetPreview();
+    }
+
+    private void OnDisable()
+    {
+        _targetPreviewSR.transform.DOKill();
     }
 
     public void AddCombatant(CombatantView combatant, bool updatePos = true)

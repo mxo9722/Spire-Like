@@ -52,6 +52,8 @@ public class MatchSetUpSystem : Singleton<MatchSetUpSystem>
 
     private IEnumerator CombatStartPerformer(CombatStartGA combatStartGA)
     {
+        var combatants = BoardSystem.Instance.GetAllCombatants();
+
         DrawCardsGA drawCardsGA = new(5);
         ActionSystem.Instance.AddReaction(drawCardsGA);
         yield return null;

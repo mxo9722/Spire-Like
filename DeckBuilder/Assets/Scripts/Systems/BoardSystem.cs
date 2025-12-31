@@ -12,8 +12,7 @@ public class BoardSystem : Singleton<BoardSystem>
         ActionSystem.AttachPerformer<RedistributeEnemiesGA>(RedistributeEnemiesPerformer);
         ActionSystem.AttachPerformer<CompressBoardGA>(CompressBoardPerformer);
         ActionSystem.AttachPerformer<RemoveLaneGA>(RemoveLanePerformer);
-        ActionSystem.AttachPerformer<MoveEnemyGA>(MoveEnemyPerformer);
-        ActionSystem.AttachPerformer<MoveHeroGA>(MoveHeroPerformer);
+        ActionSystem.AttachPerformer<MoveUnitsGA>(MoveCombatantsPerformer);
     }
 
     private void OnDisable()
@@ -21,8 +20,7 @@ public class BoardSystem : Singleton<BoardSystem>
         ActionSystem.DetachPerformer<RedistributeEnemiesGA>();
         ActionSystem.DetachPerformer<CompressBoardGA>();
         ActionSystem.DetachPerformer<RemoveLaneGA>();
-        ActionSystem.DetachPerformer<MoveEnemyGA>();
-        ActionSystem.DetachPerformer<MoveHeroGA>();
+        ActionSystem.DetachPerformer<MoveUnitsGA>();
     }
 
     private IEnumerator RedistributeEnemiesPerformer(RedistributeEnemiesGA updateBoardGA)
@@ -40,31 +38,48 @@ public class BoardSystem : Singleton<BoardSystem>
         yield return BoardView.RemoveLane(removeLaneGA.LaneView, 0.5f);
     }
 
-    private IEnumerator MoveEnemyPerformer(MoveEnemyGA moveEnemyGA)
+    private IEnumerator MoveCombatantsPerformer(MoveUnitsGA moveEnemyGA)
     {
-        yield return BoardView.MoveEnemy(moveEnemyGA, 0.5f);
-    }
-    
-    private IEnumerator MoveHeroPerformer(MoveHeroGA moveHeroGA)
-    {
-        yield return BoardView.MoveHero(moveHeroGA, 0.5f);
+        yield return BoardView.MoveCombatants(moveEnemyGA, 0.5f);
     }
 
     public LaneView GetCurrentLaneView(CombatantView combatantView)
     {
         if (combatantView is HeroView heroView)
             return BoardView.GetCurrentLaneView(heroView);
-        else if (combatantView is EnemyView enemyView)
+        else if (combatantView is NPCView enemyView)
             return BoardView.GetCurrentLaneView(enemyView);
 
         throw new System.Exception();
     }
     
     public LaneView GetCurrentLaneView(HeroView heroView) => BoardView.GetCurrentLaneView(heroView);    
-    public LaneView GetCurrentLaneView(EnemyView enemyView) => BoardView.GetCurrentLaneView(enemyView);
-    public List<EnemyView> GetAllEnemies() => BoardView.GetAllEnemies();
+    public LaneView GetCurrentLaneView(NPCView enemyView) => BoardView.GetCurrentLaneView(enemyView);
+    public List<NPCView> GetAllEnemies() => BoardView.GetAllEnemies();
+    public List<NPCView> GetAllSideKicks() => BoardView.GetAllSideKicks();
     public List<CombatantView> GetAllCombatants() => BoardView.GetAllCombatants();
+    public List<CombatantView> GetAllFoes(CombatantView caster) => BoardView.GetAllFoes(caster);
     public List<LaneView> GetAllLanes() => BoardView.GetAllLanes();
+
+    public LaneView GetLaneFromDirection(LaneView laneView, MovementDirection direction)
+    {
+        var lanes = BoardView.GetAllLanes();
+        int index = lanes.IndexOf(laneView);
+
+        switch (direction)
+        {
+            case MovementDirection.UP:
+                index--;
+                break;
+            case MovementDirection.DOWN:
+                index++;
+                break;
+        }
+
+        index = Mathf.Clamp(index, 0, lanes.Count - 1);
+
+        return lanes[index];
+    }
 
     public List<T> GetAllViews<T>()
     {

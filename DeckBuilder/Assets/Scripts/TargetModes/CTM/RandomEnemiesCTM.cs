@@ -21,7 +21,7 @@ public class RandomEnemiesCTM : CombatantTargetMode
 
     private List<CombatantView> GetTargets(EffectContext targetModeContext, System.Random random)
     {
-        List<EnemyView> enemies = BoardSystem.Instance.BoardView.GetAllEnemies();
+        List<NPCView> enemies = BoardSystem.Instance.BoardView.GetAllEnemies();
 
         if (enemies.Count == 0)
             return new();
@@ -33,7 +33,7 @@ public class RandomEnemiesCTM : CombatantTargetMode
         for (int i = 0; i < _enemyCount; i++)
         {
             int index = RNG.Random.Next(enemies.Count);
-            EnemyView target = enemies[index];
+            NPCView target = enemies[index];
             enemies.RemoveAt(index);
             targets.Add(target);
         }

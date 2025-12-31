@@ -15,13 +15,16 @@ MonoBehaviour:
   <Upgrade>k__BackingField: {fileID: 0}
   <Unplayable>k__BackingField: 0
   <Mana>k__BackingField: 1
-  <Description>k__BackingField: Deal {vt} damage.
+  <Type>k__BackingField: 0
+  <Image>k__BackingField: {fileID: 21300000, guid: 5769ff186716f8644854ad74d514b3ba, type: 3}
+  <Description>k__BackingField: Deal {vt} damage to a foe.
   <RequiredConditions>k__BackingField: []
   <HighlightConditions>k__BackingField: []
   <ExhuastOnUse>k__BackingField: 0
-  <Image>k__BackingField: {fileID: 21300000, guid: 5769ff186716f8644854ad74d514b3ba, type: 3}
   <ManualTargetType>k__BackingField: 0
-  <CombatantFilters>k__BackingField: []
+  <CombatantFilters>k__BackingField:
+  - rid: 4055348011206443445
+  - rid: 4055348043236245587
   <LaneFilters>k__BackingField: []
   <ManualTargetEffect>k__BackingField:
     rid: 3796151383156588620
@@ -39,3 +42,16 @@ MonoBehaviour:
       type: {class: SetQ, ns: , asm: Assembly-CSharp}
       data:
         _set: 9
+    - rid: 4055348011206443445
+      type: {class: TargIsInLaneFilter, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
+        _lane:
+          rid: 4055348011206443446
+    - rid: 4055348011206443446
+      type: {class: CurrentLTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 4055348043236245587
+      type: {class: TargIsEvilFilter, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0

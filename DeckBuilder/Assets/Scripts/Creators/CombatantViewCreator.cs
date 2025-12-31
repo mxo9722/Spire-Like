@@ -3,7 +3,8 @@ using UnityEngine;
 public class CombatantViewCreator : Singleton<CombatantViewCreator>
 {
     [SerializeField] private HeroView _heroViewPrefab;
-    [SerializeField] private EnemyView _enemyViewPrefab;
+    [SerializeField] private NPCView _enemyViewPrefab;
+    [SerializeField] private NPCView _sideKickViewPrefab;
 
     public HeroView CreateHeroView(HeroData heroData, SlotView slot)
     {
@@ -12,10 +13,20 @@ public class CombatantViewCreator : Singleton<CombatantViewCreator>
         return heroView;
     }
     
-    public EnemyView CreateEnemyView(EnemyData enemyData, SlotView slot)
+    public NPCView CreateEnemyView(NPCData enemyData, SlotView slot)
     {
-        EnemyView enemyView = Instantiate(_enemyViewPrefab, slot.transform.position, slot.transform.rotation);
+        NPCView enemyView = Instantiate(_enemyViewPrefab, slot.transform.position, slot.transform.rotation);
         enemyView.Setup(enemyData, slot);
         return enemyView;
+    }
+
+    public NPCView CreateSideKickView(NPCData npcData, SlotView slot)
+    {
+        NPCView sidekickView = Instantiate(_sideKickViewPrefab, slot.transform.position, slot.transform.rotation);
+        sidekickView.Setup(npcData, slot, false);
+
+        EnemySystem.Instance.UpdateEnemiesBehaviorUI();
+
+        return sidekickView;
     }
 }

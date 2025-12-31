@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 public static class ListExtensions
 {
@@ -33,5 +34,19 @@ public static class ListExtensions
             list[k] = list[n];
             list[n] = value;
         }
+    }
+
+    public static IEnumerable<CombatantView> ApplyFilters(this List<CombatantView> list,List<CombatantFilter> filters, EffectContext context = null)
+    {
+        if (context == null)
+            context = new();
+        return list.Where(i => filters.TrueForAll(f => f.TestTarget(context, i)));
+    }
+    
+    public static IEnumerable<LaneView> ApplyFilters(this List<LaneView> list,List<LaneFilter> filters, EffectContext context = null)
+    {
+        if (context == null)
+            context = new();
+        return list.Where(i => filters.TrueForAll(f => f.TestTarget(context, i)));
     }
 }

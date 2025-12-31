@@ -27,21 +27,21 @@ public class RunSystem : PersistentSingleton<RunSystem>
 
     private void Start()
     {
-        CreditSystem.Instance.OnCreditsChange += RunData.SetCredits;
+        KarmaSystem.Instance.OnKarmaChange += RunData.SetCredits;
         _started = true;
     }
 
     private void OnEnable()
     {
         if(_started)
-            CreditSystem.Instance.OnCreditsChange += RunData.SetCredits;
+            KarmaSystem.Instance.OnKarmaChange += RunData.SetCredits;
     }
 
     private void OnDisable()
     {
         if (Instance == this)
         {
-            CreditSystem.Instance.OnCreditsChange -= RunData.SetCredits;
+            KarmaSystem.Instance.OnKarmaChange -= RunData.SetCredits;
         }
     }
 

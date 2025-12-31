@@ -15,14 +15,16 @@ MonoBehaviour:
   <Upgrade>k__BackingField: {fileID: 0}
   <Unplayable>k__BackingField: 1
   <Mana>k__BackingField: 0
+  <Type>k__BackingField: 4
+  <Image>k__BackingField: {fileID: 21300000, guid: 4f79353e2e709014993ef84376410750, type: 3}
   <Description>k__BackingField: 'Unplayable.
 
-    If this card is in your hand at
-    the end of your turn apply 1 weak to self.'
+    Afterthought:
+
+    Gain 1 weak.'
   <RequiredConditions>k__BackingField: []
   <HighlightConditions>k__BackingField: []
   <ExhuastOnUse>k__BackingField: 0
-  <Image>k__BackingField: {fileID: 21300000, guid: 4f79353e2e709014993ef84376410750, type: 3}
   <ManualTargetType>k__BackingField: 0
   <CombatantFilters>k__BackingField: []
   <LaneFilters>k__BackingField: []
@@ -50,4 +52,10 @@ MonoBehaviour:
       type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
       data:
         _statusEffectType: 6
-        _stackCount: 1
+        _stackCount:
+          rid: 4055348043236245599
+        _skipAnimation: 0
+    - rid: 4055348043236245599
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 1

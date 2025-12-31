@@ -12,20 +12,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62bf69310631aa94896652d3f8be392c, type: 3}
   m_Name: Fire Storm
   m_EditorClassIdentifier: 
+  <Upgrade>k__BackingField: {fileID: 0}
+  <Unplayable>k__BackingField: 0
+  <Mana>k__BackingField: 2
+  <Type>k__BackingField: 1
+  <Image>k__BackingField: {fileID: 21300000, guid: ff2a7503989264c4d9678d11c8acf745, type: 3}
   <Description>k__BackingField: 'Apply 4 burn to all enemies.
 
     Exhaust.'
-  <Mana>k__BackingField: 2
   <RequiredConditions>k__BackingField: []
+  <HighlightConditions>k__BackingField: []
   <ExhuastOnUse>k__BackingField: 1
-  <Image>k__BackingField: {fileID: 21300000, guid: ff2a7503989264c4d9678d11c8acf745, type: 3}
-  <ManualTargetType>k__BackingField: 0
+  <ManualTargetType>k__BackingField: 2
   <CombatantFilters>k__BackingField: []
   <LaneFilters>k__BackingField: []
   <ManualTargetEffect>k__BackingField:
     rid: -2
   <OtherEffects>k__BackingField:
   - rid: 1228494508162810031
+  <TurnEndEffects>k__BackingField: []
   references:
     version: 2
     RefIds:
@@ -45,4 +50,10 @@ MonoBehaviour:
       type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
       data:
         _statusEffectType: 1
-        _stackCount: 4
+        _stackCount:
+          rid: 4055347921024450627
+        _skipAnimation: 0
+    - rid: 4055347921024450627
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 4

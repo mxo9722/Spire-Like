@@ -12,14 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62bf69310631aa94896652d3f8be392c, type: 3}
   m_Name: Batarang
   m_EditorClassIdentifier: 
-  <Description>k__BackingField: Deal {v0} damage to a random enemy.
+  <Upgrade>k__BackingField: {fileID: 0}
+  <Unplayable>k__BackingField: 0
   <Mana>k__BackingField: 1
-  Unplayable: 0
+  <Description>k__BackingField: Deal {v0} damage to a random enemy.
   <RequiredConditions>k__BackingField: []
   <HighlightConditions>k__BackingField: []
   <ExhuastOnUse>k__BackingField: 0
   <Image>k__BackingField: {fileID: 21300000, guid: dface75351cb6ee41ab5670fd16bae16, type: 3}
-  <ManualTargetType>k__BackingField: 0
+  <ManualTargetType>k__BackingField: 2
   <CombatantFilters>k__BackingField: []
   <LaneFilters>k__BackingField: []
   <ManualTargetEffect>k__BackingField:
@@ -44,7 +45,6 @@ MonoBehaviour:
       data:
         _damage:
           rid: 4055347768894947442
-        _damageAmount: 10
     - rid: 1228494502818218320
       type: {class: RandomEnemiesCTM, ns: , asm: Assembly-CSharp}
       data:

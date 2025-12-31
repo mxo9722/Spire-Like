@@ -10,10 +10,11 @@ public class Card
     public string Title => data.name;
     public CardData Upgrade => data.Upgrade;
     public bool Unplayable => data.Unplayable;
+    public CardType Type => data.Type;
+    public Sprite Image => data.Image;
     public string Description => data.Description;
     public List<Condition> RequiredConditions => data.RequiredConditions;
     public List<Condition> HighlightConditions => data.HighlightConditions;
-    public Sprite Image => data.Image;
 
     public ManualTargetType ManualTargetType => data.ManualTargetType;
     public Effect ManualTargetEffect => data.ManualTargetEffect;
@@ -177,7 +178,7 @@ public class Card
 
         EffectContext context = new EffectContext(caster);
 
-        if (ManualTargetEffect != null)
+        if (ManualTargetType != ManualTargetType.NONE)
         {
             switch (ManualTargetType)
             {
@@ -251,7 +252,7 @@ public class Card
 
     public CombatantView[] AllValidCombatants(EffectContext context)
     {
-        if (ManualTargetEffect == null || ManualTargetType != ManualTargetType.COMBATANT)
+        if (ManualTargetType != ManualTargetType.COMBATANT)
             return null;
 
         List<CombatantView> combatants = BoardSystem.Instance.GetAllCombatants();
@@ -261,11 +262,38 @@ public class Card
     
     public LaneView[] AllValidLanes(EffectContext context)
     {
-        if (ManualTargetEffect == null || ManualTargetType != ManualTargetType.LANE)
+        if (ManualTargetType != ManualTargetType.LANE)
             return null;
 
         List<LaneView> lanes = BoardSystem.Instance.GetAllLanes();
 
         return lanes.FindAll(c => c.IsValid(context, LaneFilters)).ToArray();
+    }
+
+    public bool IsChaotic()
+    {
+        return HeroSystem.Instance.HeroView.GetStatusEffectStacks(StatusEffectType.CHAOS) > 0 && ManualTargetType != ManualTargetType.NONE && Type == CardType.ATTACK;
+    }
+
+    public TargetMode<T> GetChaosTargetMode<T>()
+    {
+        if (!IsChaotic())
+            return null;
+
+        switch (ManualTargetType)
+        {
+            case ManualTargetType.COMBATANT:
+                RandomCTM ctm = new();
+                ctm.Filters.AddRange(CombatantFilters);
+
+                return ctm as TargetMode<T>;
+            case ManualTargetType.LANE:
+                RandomLTM ltm = new();
+                ltm.Filters.AddRange(LaneFilters);
+
+                return ltm as TargetMode<T>;
+        }
+
+        return null;
     }
 }

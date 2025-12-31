@@ -15,10 +15,10 @@ public class AutoCombatantTargetEffect : AutoTargetEffect
 
     [field: SerializeReference, SR] private CombatantTargetEffect _combatantEffect;
 
-    public override GameAction GetGameAction(EffectContext targetModeContext)
+    public override GameAction GetGameAction(EffectContext context)
     {
-        List<CombatantView> targets = TargetMode.GetTargets(targetModeContext);
-        PerformEffectsGA performEffectsGA = new(_combatantEffect, targets);
+        List<CombatantView> targets = TargetMode.GetTargets(context);
+        PerformEffectsGA performEffectsGA = new(context,_combatantEffect, targets);
         return performEffectsGA;
     }
 

@@ -10,14 +10,14 @@ public class OnTurnEndSystem : Singleton<OnTurnEndSystem>
     {
         ActionSystem.AttachPerformer<SpotlightCardGA>(SpotlightCardPerformer);
 
-        ActionSystem.SubscribeReaction<DiscardCardGA>(PreDiscardCardHandler, ReactionTiming.PRE);
+        ActionSystem.SubscribeReaction<DiscardCardGA>(this, PreDiscardCardHandler, ReactionTiming.PRE);
     }
 
     private void OnDisable()
     {
         ActionSystem.DetachPerformer<SpotlightCardGA>();
 
-        ActionSystem.UnsubscribeReaction<DiscardCardGA>(PreDiscardCardHandler, ReactionTiming.PRE);
+        ActionSystem.UnsubscribeReaction<DiscardCardGA>(this, PreDiscardCardHandler, ReactionTiming.PRE);
     }
 
     private IEnumerator SpotlightCardPerformer(SpotlightCardGA spotlightCardViewGA)

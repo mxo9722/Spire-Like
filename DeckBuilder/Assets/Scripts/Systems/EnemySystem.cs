@@ -14,40 +14,44 @@ public class EnemySystem : Singleton<EnemySystem>
 
     void OnEnable()
     {
-        ActionSystem.AttachPerformer<EnemyTurnGA>(EnemyTurnPerformer);
-        ActionSystem.AttachPerformer<DetermineEnemyBehaviorGA>(DetermineEnemyBehaviorPerformer);
+        ActionSystem.AttachPerformer<NPCTurnGA>(NPCTurnPerformer);
+        ActionSystem.AttachPerformer<NPCActGA>(NPCActPerformer);
+        ActionSystem.AttachPerformer<NPCBehaviorTextGA>(NPCBehaviorTextPerformer);
+        ActionSystem.AttachPerformer<DetermineNPCBehaviorGA>(DetermineNPCBehaviorPerformer);
         ActionSystem.AttachPerformer<HideEnemyPreviewGA>(HideEnemyPreviewPerformer);
         ActionSystem.AttachPerformer<AttackHeroGA>(AttackHeroPerformer);
         ActionSystem.AttachPerformer<MultiAttackHeroGA>(MultiAttackHeroPerformer);
-        ActionSystem.AttachPerformer<KillEnemyGA>(KillEnemyPerformer);
+        ActionSystem.AttachPerformer<KillNpcGA>(KillNpcPerformer);
     }
 
     void OnDisable()
     {
-        ActionSystem.DetachPerformer<EnemyTurnGA>();
-        ActionSystem.DetachPerformer<DetermineEnemyBehaviorGA>();
+        ActionSystem.DetachPerformer<NPCTurnGA>();
+        ActionSystem.DetachPerformer<NPCActGA>();
+        ActionSystem.DetachPerformer<NPCBehaviorTextGA>();
+        ActionSystem.DetachPerformer<DetermineNPCBehaviorGA>();
         ActionSystem.DetachPerformer<HideEnemyPreviewGA>();
         ActionSystem.DetachPerformer<AttackHeroGA>();
         ActionSystem.DetachPerformer<MultiAttackHeroGA>();
-        ActionSystem.DetachPerformer<KillEnemyGA>();
+        ActionSystem.DetachPerformer<KillNpcGA>();
     }
 
-    public void Setup(List<EnemyData> laneData, int index)
+    public void Setup(List<NPCData> laneData, int index)
     {
         _boardView = BoardSystem.Instance.BoardView;
 
         if (laneData == null)
             return;
 
-        foreach (EnemyData enemyData in laneData)
+        foreach (NPCData enemyData in laneData)
         {
             _boardView.CreateEnemy(enemyData, index);
         }
     }
 
-    private IEnumerator EnemyTurnPerformer(EnemyTurnGA enemyTurnGA)
+    private IEnumerator NPCTurnPerformer(NPCTurnGA enemyTurnGA)
     {
-        List<EnemyView> allEnemyViews = _boardView.GetAllEnemies();
+        List<NPCView> allViews = enemyTurnGA.Targets;
 
         //List<CombatantView> burnEnemies = new(allEnemyViews);
         //burnEnemies = burnEnemies.FindAll(e => e.GetStatusEffectStacks(StatusEffectType.BURN) > 0);
@@ -55,35 +59,56 @@ public class EnemySystem : Singleton<EnemySystem>
         //ApplyBurnGA applyBurnGA = new(burnEnemies);
         //ActionSystem.Instance.AddReaction(applyBurnGA);
 
-        allEnemyViews = _boardView.GetAllEnemies();
-
-        foreach (EnemyView enemyView in allEnemyViews)
+        foreach (NPCView npcView in allViews)
         {
-            EffectContext targetModeContext = EffectContext.CreateEnemyEC(enemyView);
+            EffectContext context = new(npcView);
 
-            HideEnemyPreviewGA hideEnemyPreviewGA = new(enemyView);
-            ActionSystem.Instance.AddReaction(hideEnemyPreviewGA);
-
-            foreach (AutoCombatantTargetEffect effect in enemyView.CurrentAction.Effects)
-            {
-                GameAction gameAction = effect.Effect.GetGameAction(new(enemyView), combatantTargets:effect.TargetMode.GetTargets(targetModeContext));
-                ActionSystem.Instance.AddReaction(gameAction);
-            }
+            NPCActGA npcActGA = new(context, npcView);
+            ActionSystem.Instance.AddReaction(npcActGA);
         }
 
         CompressBoardGA compressBoardGA = new();
         ActionSystem.Instance.AddReaction(compressBoardGA);
 
-        foreach (EnemyView enemyView in allEnemyViews)
+        foreach (NPCView npcView in allViews)
         {
-            DetermineEnemyBehaviorGA determineEnemyBehaviorGA = new(enemyView);
+            DetermineNPCBehaviorGA determineEnemyBehaviorGA = new(npcView);
             ActionSystem.Instance.AddReaction(determineEnemyBehaviorGA);
         }
 
         yield return null;
     }
 
-    private IEnumerator DetermineEnemyBehaviorPerformer(DetermineEnemyBehaviorGA determineEnemyBehaviorGA)
+    private IEnumerator NPCActPerformer(NPCActGA npcActGA)
+    {
+        NPCView npcView = npcActGA.NPC;
+
+        HideEnemyPreviewGA hideEnemyPreviewGA = new(npcView);
+        ActionSystem.Instance.AddReaction(hideEnemyPreviewGA);
+
+        EffectContext context = new(npcView);
+
+        //List<GameAction> gameActions = new();
+
+        NPCBehaviorTextGA npcBehaviorTextGA = new(npcView, npcView.CurrentAction.Name);
+        ActionSystem.Instance.AddReaction(npcBehaviorTextGA);
+
+        foreach (AutoTargetEffect effect in npcView.CurrentAction.Effects)
+        {
+            AutoTargetEffectGA autoTargetEffectGA = new(context, effect);
+            //gameActions.Add(autoTargetEffectGA);
+            ActionSystem.Instance.AddReaction(autoTargetEffectGA);
+        }
+
+        yield return null;
+    }
+
+    private IEnumerator NPCBehaviorTextPerformer(NPCBehaviorTextGA npcBehaviorTextGA)
+    {
+        yield return npcBehaviorTextGA.Target.ApplyBehaviorText(npcBehaviorTextGA.BehaviorName, 0.75f);
+    }
+
+    private IEnumerator DetermineNPCBehaviorPerformer(DetermineNPCBehaviorGA determineEnemyBehaviorGA)
     {
         if (determineEnemyBehaviorGA.EnemyView.CurrentHealth == 0)
             yield break;
@@ -95,18 +120,18 @@ public class EnemySystem : Singleton<EnemySystem>
 
     private IEnumerator HideEnemyPreviewPerformer(HideEnemyPreviewGA hideEnemyPreviewGA)
     {
-        if(hideEnemyPreviewGA.EnemyView.CurrentHealth > 0)
+        if (hideEnemyPreviewGA.EnemyView.CurrentHealth > 0)
             hideEnemyPreviewGA.EnemyView.SetCurrentAction(null);
         yield return null;
     }
 
     private IEnumerator AttackHeroPerformer(AttackHeroGA attackHeroGA)
     {
-        if (attackHeroGA.Attacker.CurrentHealth == 0 || attackHeroGA.Targets.Count == 0)
+        if (attackHeroGA.Caster.CurrentHealth == 0 || attackHeroGA.Targets.Count == 0)
             yield return null;
         else
         {
-            EnemyView attacker = attackHeroGA.Attacker;
+            CombatantView attacker = attackHeroGA.Caster;
 
             yield return attacker.WaitForTweensComplete();
 
@@ -114,8 +139,10 @@ public class EnemySystem : Singleton<EnemySystem>
             yield return tween.WaitForCompletion();
             tween = attacker.transform.DOMoveX(attacker.transform.position.x + 1.0f, 0.25f);
 
-            DealDamageGA dealDamageGA = new(attackHeroGA.Damage, attackHeroGA.Targets, attacker);
-            
+            DealDamageGA dealDamageGA = new(attackHeroGA.Damage, attackHeroGA.Targets, attackHeroGA.Context);
+            dealDamageGA.SetUnblockedKey(attackHeroGA.UnblockedKey);
+            dealDamageGA.SetOverkillKey(attackHeroGA.OverkillKey);
+
             ActionSystem.Instance.AddReaction(dealDamageGA);
             yield return tween.WaitForCompletion();
         }
@@ -123,68 +150,76 @@ public class EnemySystem : Singleton<EnemySystem>
 
     private IEnumerator MultiAttackHeroPerformer(MultiAttackHeroGA arg)
     {
-        for(int i = 0; i < arg.AttackTimes; i++)
+        for (int i = 0; i < arg.AttackTimes; i++)
         {
-            AttackHeroGA attackHeroGA = new(arg.Damage,arg.Targets,arg.Attacker);
+            AttackHeroGA attackHeroGA = new(arg.Damage, arg.Targets, arg.Context, arg.UnblockedKey, arg.OverkillKey);
             ActionSystem.Instance.AddReaction(attackHeroGA);
         }
         yield return 0;
     }
 
-    private IEnumerator KillEnemyPerformer(KillEnemyGA killEnemyGA)
+    private IEnumerator KillNpcPerformer(KillNpcGA killEnemyGA)
     {
-        yield return _boardView.RemoveEnemy(killEnemyGA.EnemyView);
+        Coroutine coroutine = null;
 
-        if(BoardSystem.Instance.GetAllEnemies().Count == 0)
+        foreach (NPCView npc in killEnemyGA.NPCViews)
+        {
+            coroutine = StartCoroutine(_boardView.RemoveEnemy(npc));
+        }
+
+        if (coroutine != null)
+            yield return coroutine;
+
+        if (BoardSystem.Instance.GetAllEnemies().Count == 0)
         {
             MatchEndSystem.Instance.EndCombat();
         }
     }
 
-    public Sprite GetEnemyActionSymbol(EnemyActionType enemyActionSymbolType)
+    public Sprite GetEnemyActionSymbol(NPCActionType enemyActionSymbolType)
     {
         return EnemyActionSymbolData.EnemyActionTypes[enemyActionSymbolType].Sprite;
     }
 
-    public Sprite GetEnemyTargetSymbol(EnemyTargetTypes enemyActionSymbolType)
+    public Sprite GetEnemyTargetSymbol(NPCTargetTypes enemyActionSymbolType)
     {
         return EnemyActionSymbolData.EnemyTargetTypes[enemyActionSymbolType].Sprite;
     }
-    
-    public string GetEnemyActionDescription(EnemyActionType enemyActionSymbolType)
+
+    public string GetEnemyActionDescription(NPCActionType enemyActionSymbolType)
     {
         return EnemyActionSymbolData.EnemyActionTypes[enemyActionSymbolType].Text;
     }
 
-    public string GetEnemyTargetDescription(EnemyTargetTypes enemyActionSymbolType)
+    public string GetEnemyTargetDescription(NPCTargetTypes enemyActionSymbolType)
     {
         return EnemyActionSymbolData.EnemyTargetTypes[enemyActionSymbolType].Text;
     }
 
     public void UpdateEnemiesBehaviorUI()
     {
-        List<EnemyView> enemies = BoardSystem.Instance.BoardView.GetAllEnemies();
-        foreach(EnemyView enemyView in enemies)
+        List<NPCView> enemies = BoardSystem.Instance.BoardView.GetAllEnemies();
+        foreach (NPCView enemyView in enemies)
         {
             enemyView.UpdateBehaviorIndicator();
         }
     }
 
-    public static void DetermineEnemyBehaviour(EnemyView enemyView)
+    public static void DetermineEnemyBehaviour(NPCView enemyView)
     {
-        List<EnemyAction> fullPattern = enemyView.Data.ActionPattern;
+        List<NPCAction> fullPattern = enemyView.Data.ActionPattern;
 
-        List<EnemyAction> validPattern = new();
+        List<NPCAction> validPattern = new();
         float validWeight = 0;
         int highPriority = 0;
 
-        foreach (EnemyAction enemyAction in fullPattern)
+        foreach (NPCAction enemyAction in fullPattern)
         {
             int priority = enemyAction.Priority;
 
             if (IsEnemyActionValid(enemyAction, enemyView) && priority >= highPriority)
             {
-                if(highPriority < priority)
+                if (highPriority < priority)
                 {
                     validPattern.Clear();
                     validWeight = 0;
@@ -198,7 +233,7 @@ public class EnemySystem : Singleton<EnemySystem>
 
         float randomValue = (float)(RNG.Random.NextDouble() * validWeight);
 
-        foreach (EnemyAction enemyAction in validPattern)
+        foreach (NPCAction enemyAction in validPattern)
         {
             if (enemyAction.Weight < randomValue)
             {
@@ -212,19 +247,19 @@ public class EnemySystem : Singleton<EnemySystem>
         }
     }
 
-    private static bool IsEnemyActionValid(EnemyAction enemyAction, EnemyView enemyView)
+    private static bool IsEnemyActionValid(NPCAction enemyAction, NPCView enemyView)
     {
         EffectContext conditionContext = new(enemyView);
 
-        foreach(Condition condition in enemyAction.Conditions)
+        foreach (Condition condition in enemyAction.Conditions)
         {
             if (!condition.TestCondition(conditionContext))
                 return false;
         }
 
-        if(enemyAction.ConsecutiveMax != 0 && enemyAction.ConsecutiveMax <= enemyView.PreviousActions.Count)
+        if (enemyAction.ConsecutiveMax != 0 && enemyAction.ConsecutiveMax <= enemyView.PreviousActions.Count)
         {
-            List<EnemyAction> previousActionsSubset = enemyView.PreviousActions.GetRange(enemyView.PreviousActions.Count - enemyAction.ConsecutiveMax, enemyAction.ConsecutiveMax);
+            List<NPCAction> previousActionsSubset = enemyView.PreviousActions.GetRange(enemyView.PreviousActions.Count - enemyAction.ConsecutiveMax, enemyAction.ConsecutiveMax);
 
             if (!previousActionsSubset.Any(e => e != enemyAction))
                 return false;

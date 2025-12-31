@@ -31,3 +31,19 @@ MonoBehaviour:
       Value: Target takes 50% more damage.
     - Key: WEAK
       Value: Target deals 25% less damage.
+    - Key: NINJA_MATH
+      Value: 
+    - Key: AFTERTHOUGHT
+      Value: Effect activates if the card is in your hand when you end your turn.
+    - Key: CHAOTIC
+      Value: Effect activates if the hero has Chaos.
+    - Key: CHAOS
+      Value: Randomizes the next few targetted card effects.
+    - Key: ADJACENT
+      Value: Units to the immediate left, right, above or below are considered adjacent.
+    - Key: ANCHORED
+      Value: Target is immune to movement from other units for a number of turns.
+    - Key: HAMSTRUNG
+      Value: Target can't move itself for a number of turns.
+    - Key: JABBERWOCKY
+      Value: 

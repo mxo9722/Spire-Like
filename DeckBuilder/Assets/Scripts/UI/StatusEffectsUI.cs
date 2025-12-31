@@ -8,9 +8,16 @@ public class StatusEffectsUI : MonoBehaviour
 
     private Dictionary<StatusEffectType, StatusEffectUI> _statusEffectUIs = new();
 
+    private CombatantView _owner;
+
+    public void SetUp(CombatantView owner)
+    {
+        _owner = owner;
+    }
+
     public void UpdateStatusEffectsUI(StatusEffectType statusEffectType, int stackCount)
     {
-        if (stackCount <= 0)
+        if (stackCount == 0)
         {
             if (_statusEffectUIs.ContainsKey(statusEffectType))
             {
@@ -31,7 +38,7 @@ public class StatusEffectsUI : MonoBehaviour
 
             int displayStackCount = _statusEffectsData.Map[statusEffectType].Stackable ? stackCount : 0;
 
-            _statusEffectUIs[statusEffectType].Set(sprite, displayStackCount, statusEffectType);
+            _statusEffectUIs[statusEffectType].Set(_owner, sprite, displayStackCount, statusEffectType);
         }
     }
 

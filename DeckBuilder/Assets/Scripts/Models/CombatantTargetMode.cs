@@ -2,8 +2,8 @@
 [System.Serializable]
 public abstract class CombatantTargetMode : TargetMode<CombatantView>
 {
-    public virtual EnemyTargetTypes GetTargetIntent()
+    public virtual NPCTargetTypes GetTargetIntent()
     {
-        return EnemyTargetTypes.NONE;
+        return NPCTargetTypes.NONE;
     }
 }

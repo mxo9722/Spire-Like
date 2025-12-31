@@ -12,24 +12,47 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62bf69310631aa94896652d3f8be392c, type: 3}
   m_Name: Dash
   m_EditorClassIdentifier: 
-  <Description>k__BackingField: Move to another lane.
+  <Upgrade>k__BackingField: {fileID: 0}
+  <Unplayable>k__BackingField: 0
   <Mana>k__BackingField: 1
-  <ExhuastOnUse>k__BackingField: 0
+  <Type>k__BackingField: 1
   <Image>k__BackingField: {fileID: 21300000, guid: 4c18a5f0d1236f54aa1bd1cebfd281a4, type: 3}
+  <Description>k__BackingField: Move to another lane and gain {v0} block.
+  <RequiredConditions>k__BackingField: []
+  <HighlightConditions>k__BackingField: []
+  <ExhuastOnUse>k__BackingField: 0
   <ManualTargetType>k__BackingField: 1
   <CombatantFilters>k__BackingField: []
-  <LaneFilters>k__BackingField:
-  - rid: 1228494865696030792
+  <LaneFilters>k__BackingField: []
   <ManualTargetEffect>k__BackingField:
     rid: 1228494508162810030
-  <OtherEffects>k__BackingField: []
+  <OtherEffects>k__BackingField:
+  - rid: 4055348043236245589
+  <TurnEndEffects>k__BackingField: []
   references:
     version: 2
     RefIds:
     - rid: 1228494508162810030
       type: {class: MoveTowardLaneEffect, ns: , asm: Assembly-CSharp}
       data: 
-    - rid: 1228494865696030792
-      type: {class: CasterInLaneFilter, ns: , asm: Assembly-CSharp}
+    - rid: 4055348043236245589
+      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
       data:
-        _invert: 1
+        <TargetMode>k__BackingField:
+          rid: 4055348043236245590
+        _combatantEffect:
+          rid: 4055348043236245591
+    - rid: 4055348043236245590
+      type: {class: CasterCTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 4055348043236245591
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _statusEffectType: 0
+        _stackCount:
+          rid: 4055348043236245592
+        _skipAnimation: 0
+    - rid: 4055348043236245592
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 3

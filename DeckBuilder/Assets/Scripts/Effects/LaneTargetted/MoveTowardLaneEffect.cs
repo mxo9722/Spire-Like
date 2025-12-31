@@ -18,15 +18,6 @@ public class MoveTowardLaneEffect : LaneTargetEffect
         if (targetLaneView == originalLaneView)
             return null;
 
-        if (context.Caster is HeroView heroView)
-        {
-            return new MoveHeroGA(targetLaneView, heroView);
-        }
-        else if (context.Caster is EnemyView enemyView)
-        {
-            return new MoveEnemyGA(targetLaneView, enemyView);
-        }
-
-        return null;
+        return new MoveUnitsGA(targetLaneView, context.Caster, context.Caster);
     }
 }

@@ -30,14 +30,14 @@ public class RewardCreator : Singleton<RewardCreator>
         return reward;
     }
 
-    public CreditReward CreateMoney()
+    public KarmaReward CreateMoney()
     {
         return CreateMoney(_creditMin,_creditMax);
     }
 
-    public CreditReward CreateMoney(int min, int max)
+    public KarmaReward CreateMoney(int min, int max)
     {
-        CreditReward reward = new();
+        KarmaReward reward = new();
         reward.Setcredits(RNG.Random.Next(min, max + 1));
         return reward;
     }

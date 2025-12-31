@@ -21,7 +21,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f92370de9cf6f0846b6e4aeb537352b8, type: 2}
   - {fileID: 11400000, guid: 97ac44f9d63c98f409e8a6459ca5a6d0, type: 2}
   - {fileID: 11400000, guid: 97ac44f9d63c98f409e8a6459ca5a6d0, type: 2}
-  - {fileID: 11400000, guid: 97ac44f9d63c98f409e8a6459ca5a6d0, type: 2}
+  - {fileID: 11400000, guid: 638d91a5b1b710541892f900106ce41f, type: 2}
   - {fileID: 11400000, guid: f2d691a1cc4ecb54aad6dc532550d8cb, type: 2}
   - {fileID: 11400000, guid: 14dc697e921ff8c41911930d236cfaa6, type: 2}
   - {fileID: 11400000, guid: 14dc697e921ff8c41911930d236cfaa6, type: 2}
@@ -30,6 +30,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7699426e09439d242af25834374d8e7f, type: 2}
   - {fileID: 11400000, guid: b2a783778174cf8419c8dbdb538ceb77, type: 2}
   - {fileID: 11400000, guid: cc50c00b1e6833c4f95cbbe9574e751b, type: 2}
+  - {fileID: 11400000, guid: 35fa6d2bd2b0855468de7edced4352ed, type: 2}
   <StartingPerk>k__BackingField: {fileID: 0}
   _allCards:
   - {fileID: 11400000, guid: f2d691a1cc4ecb54aad6dc532550d8cb, type: 2}

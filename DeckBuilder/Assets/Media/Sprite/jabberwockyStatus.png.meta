@@ -1,0 +1,455 @@
+fileFormatVersion: 2
+guid: e30fb59e33edada40a078d3b1f3b2701
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -572418125013331165
+    second: jabberwockyStatus_0
+  - first:
+      213: -8718848529261418063
+    second: jabberwockyStatus_1
+  - first:
+      213: -2745867533104607813
+    second: jabberwockyStatus_2
+  - first:
+      213: -7850489326471774692
+    second: jabberwockyStatus_3
+  - first:
+      213: 2185965918064841990
+    second: jabberwockyStatus_4
+  - first:
+      213: 7405196030234716443
+    second: jabberwockyStatus_5
+  - first:
+      213: -925550369389210030
+    second: jabberwockyStatus_6
+  - first:
+      213: 2729755469273830194
+    second: jabberwockyStatus_7
+  - first:
+      213: -1327560501386334344
+    second: jabberwockyStatus_8
+  - first:
+      213: -3842744133945471651
+    second: jabberwockyStatus_9
+  - first:
+      213: -1755657761787966101
+    second: jabberwockyStatus_10
+  - first:
+      213: -4673895176577318775
+    second: jabberwockyStatus_11
+  - first:
+      213: -5345898608615395369
+    second: jabberwockyStatus_12
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: jabberwockyStatus_0
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 366
+        width: 112
+        height: 116
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 323d5938fbc5e08f0800000000000000
+      internalID: -572418125013331165
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jabberwockyStatus_1
+      rect:
+        serializedVersion: 2
+        x: 391
+        y: 364
+        width: 86
+        height: 105
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1b9afe2057d600780800000000000000
+      internalID: -8718848529261418063
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jabberwockyStatus_2
+      rect:
+        serializedVersion: 2
+        x: 10
+        y: 184
+        width: 46
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bbd8501e608b4e9d0800000000000000
+      internalID: -2745867533104607813
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jabberwockyStatus_3
+      rect:
+        serializedVersion: 2
+        x: 33
+        y: 122
+        width: 74
+        height: 131
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c1e77ae1d857d0390800000000000000
+      internalID: -7850489326471774692
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jabberwockyStatus_4
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 179
+        width: 73
+        height: 126
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6059d55bb6c165e10800000000000000
+      internalID: 2185965918064841990
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jabberwockyStatus_5
+      rect:
+        serializedVersion: 2
+        x: 105
+        y: 75
+        width: 85
+        height: 149
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b19e54a1e8a84c660800000000000000
+      internalID: 7405196030234716443
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jabberwockyStatus_6
+      rect:
+        serializedVersion: 2
+        x: 141
+        y: 149
+        width: 89
+        height: 184
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 25613d2c7d8c723f0800000000000000
+      internalID: -925550369389210030
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jabberwockyStatus_7
+      rect:
+        serializedVersion: 2
+        x: 191
+        y: 50
+        width: 91
+        height: 191
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2331fbde22a02e520800000000000000
+      internalID: 2729755469273830194
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jabberwockyStatus_8
+      rect:
+        serializedVersion: 2
+        x: 226
+        y: 162
+        width: 95
+        height: 189
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 87f2709f1ce839de0800000000000000
+      internalID: -1327560501386334344
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jabberwockyStatus_9
+      rect:
+        serializedVersion: 2
+        x: 277
+        y: 40
+        width: 102
+        height: 209
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d5dc675e194dbaac0800000000000000
+      internalID: -3842744133945471651
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jabberwockyStatus_10
+      rect:
+        serializedVersion: 2
+        x: 322
+        y: 151
+        width: 98
+        height: 191
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b6d88794196a2a7e0800000000000000
+      internalID: -1755657761787966101
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jabberwockyStatus_11
+      rect:
+        serializedVersion: 2
+        x: 370
+        y: 40
+        width: 86
+        height: 196
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 98082baa91df22fb0800000000000000
+      internalID: -4673895176577318775
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jabberwockyStatus_12
+      rect:
+        serializedVersion: 2
+        x: 414
+        y: 120
+        width: 84
+        height: 204
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7df693c0a8d8fc5b0800000000000000
+      internalID: -5345898608615395369
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      jabberwockyStatus_0: -572418125013331165
+      jabberwockyStatus_1: -8718848529261418063
+      jabberwockyStatus_10: -1755657761787966101
+      jabberwockyStatus_11: -4673895176577318775
+      jabberwockyStatus_12: -5345898608615395369
+      jabberwockyStatus_2: -2745867533104607813
+      jabberwockyStatus_3: -7850489326471774692
+      jabberwockyStatus_4: 2185965918064841990
+      jabberwockyStatus_5: 7405196030234716443
+      jabberwockyStatus_6: -925550369389210030
+      jabberwockyStatus_7: 2729755469273830194
+      jabberwockyStatus_8: -1327560501386334344
+      jabberwockyStatus_9: -3842744133945471651
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

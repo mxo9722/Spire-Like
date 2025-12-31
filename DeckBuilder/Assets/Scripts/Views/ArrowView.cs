@@ -26,7 +26,7 @@ public class ArrowView : MonoBehaviour
 
         Collider2D target = ManualTargetSystem.Instance.ValidRaycast(MouseUtil.GetMousePositionInWorldSpace(-1));
 
-
+        Card card = CardViewHoverSystem.Instance.CardViewHover.Card;
 
         if (target != null)
         {
@@ -36,7 +36,7 @@ public class ArrowView : MonoBehaviour
             {
                 case ManualTargetType.COMBATANT:
                     CombatantView combatantView = target.GetComponent<CombatantView>();
-                    isValid = ManualTargetSystem.Instance.CombatantIsValid(EffectContext.CreateHeroEC(combatantView),combatantView);
+                    isValid = ManualTargetSystem.Instance.CombatantIsValid(EffectContext.CreateHeroEC(combatantView), combatantView);
                     break;
                 case ManualTargetType.LANE:
                     LaneView laneView = target.GetComponent<LaneView>();
@@ -48,6 +48,7 @@ public class ArrowView : MonoBehaviour
 
             if (isValid)
             {
+
                 switch (ManualTargetSystem.Instance.ManualTargetType)
                 {
                     case ManualTargetType.COMBATANT:
@@ -55,14 +56,18 @@ public class ArrowView : MonoBehaviour
                         CombatantView ct = target.GetComponent<CombatantView>();
                         CardViewHoverSystem.Instance.UpdateDynamicDescription(ct);
 
-                        if (CardViewHoverSystem.Instance.CardViewHover.IsHighlighted(EffectContext.CreateHeroEC(ct)))
+                        TargetPreviewSystem.Instance.SetTargetPreviewsManual(card, ct);
+
+                        if (card.IsHighlighted(EffectContext.CreateHeroEC(ct)))
                             color = _highlightHoverColor;
                         break;
                     case ManualTargetType.LANE:
                         LaneView lt = target.GetComponent<LaneView>();
                         CardViewHoverSystem.Instance.UpdateDynamicDescription(lt);
 
-                        if (CardViewHoverSystem.Instance.CardViewHover.IsHighlighted(EffectContext.CreateHeroEC(lt)))
+                        TargetPreviewSystem.Instance.SetTargetPreviewsManual(card, lt);
+
+                        if (card.IsHighlighted(EffectContext.CreateHeroEC(lt)))
                             color = _highlightHoverColor;
                         break;
                 }
@@ -70,11 +75,15 @@ public class ArrowView : MonoBehaviour
             else
             {
                 CardViewHoverSystem.Instance.UpdateDynamicDescription();
+                ManualTargetSystem.Instance.HighlightManualTargets(card);
             }
         }
         else
+        {
             CardViewHoverSystem.Instance.UpdateDynamicDescription();
 
+            ManualTargetSystem.Instance.HighlightManualTargets(card);
+        }
         _lineRenderer.startColor = color;
         _lineRenderer.endColor = color;
         _arrowHead.color = color;

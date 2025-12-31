@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22cb840d6ecd68947baf436f5ae4fd37, type: 3}
+  m_Name: CaptainDragon
+  m_EditorClassIdentifier: 
+  <Name>k__BackingField: Captain Dragon
+  <Image>k__BackingField: {fileID: 21300000, guid: c4e0b83b00b673a4491f403aa8f928ed, type: 3}
+  <StartingMaxHealth>k__BackingField: 60
+  <StartingDeck>k__BackingField:
+  - {fileID: 11400000, guid: 97ac44f9d63c98f409e8a6459ca5a6d0, type: 2}
+  - {fileID: 11400000, guid: 97ac44f9d63c98f409e8a6459ca5a6d0, type: 2}
+  - {fileID: 11400000, guid: 97ac44f9d63c98f409e8a6459ca5a6d0, type: 2}
+  - {fileID: 11400000, guid: 97ac44f9d63c98f409e8a6459ca5a6d0, type: 2}
+  - {fileID: 11400000, guid: f92370de9cf6f0846b6e4aeb537352b8, type: 2}
+  - {fileID: 11400000, guid: f92370de9cf6f0846b6e4aeb537352b8, type: 2}
+  - {fileID: 11400000, guid: f92370de9cf6f0846b6e4aeb537352b8, type: 2}
+  - {fileID: 11400000, guid: c3589d9f857f04f46877befe398f5cf8, type: 2}
+  - {fileID: 11400000, guid: 9b170048756697247b90db3e3e81d739, type: 2}
+  - {fileID: 11400000, guid: 35fa6d2bd2b0855468de7edced4352ed, type: 2}
+  <StartingPerk>k__BackingField: {fileID: 0}
+  _allCards:
+  - {fileID: 11400000, guid: 9b170048756697247b90db3e3e81d739, type: 2}
+  - {fileID: 11400000, guid: 35fa6d2bd2b0855468de7edced4352ed, type: 2}
+  - {fileID: 11400000, guid: cc50c00b1e6833c4f95cbbe9574e751b, type: 2}
+  - {fileID: 11400000, guid: 0686dad36b1b9844eaf39ea84c64bd35, type: 2}
+  - {fileID: 11400000, guid: cd2e01e1086e04f4b82741cb9cc1760b, type: 2}
+  - {fileID: 11400000, guid: 35811b0c630c5ca4dafc1d9a35afed3d, type: 2}
+  - {fileID: 11400000, guid: 1e3183b2867277542a34df8d4cb2dab7, type: 2}
+  - {fileID: 11400000, guid: f4dfc432249586a47a0cbd1f3568f020, type: 2}
+  - {fileID: 11400000, guid: d512ff62c0bb0024eb6e15665889c354, type: 2}
+  - {fileID: 11400000, guid: a3e062c04f42c5c409949305d1c295d9, type: 2}
+  _perks: []

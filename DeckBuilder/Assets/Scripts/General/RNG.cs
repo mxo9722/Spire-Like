@@ -20,9 +20,9 @@ public class RNG
     {
         get
         {
-            if (_random == null)
-                _random = new Random();
-            return _random;
+            if (_trivialRandom == null)
+                _trivialRandom = new Random();
+            return _trivialRandom;
         }
     }
 

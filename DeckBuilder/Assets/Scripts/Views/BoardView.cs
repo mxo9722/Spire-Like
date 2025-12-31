@@ -17,6 +17,7 @@ public class BoardView : MonoBehaviour
 
     private List<Vector3> _lanePositions = new();
 
+    public readonly int MAX_HERO_COUNT = 2;
     public readonly int MAX_ENEMY_COUNT = 3;
 
     public void OnEnable()
@@ -25,21 +26,23 @@ public class BoardView : MonoBehaviour
         _originalScale = _wrapper.localScale;
         _originalLaneCount = _laneViews.Count;
 
-        foreach (LaneView laneView in _laneViews)
+        for (int i=0;i<_laneViews.Count;i++)
         {
+            LaneView laneView = _laneViews[i];
             _lanePositions.Add(laneView.transform.localPosition);
+            laneView.SetUp(this, i);
         }
     }
 
     public HeroView CreateHero(HeroData heroData, int laneIndex = 0)
     {
         LaneView laneView = _laneViews[laneIndex];
-
-        HeroView heroView = CombatantViewCreator.Instance.CreateHeroView(heroData, laneView.HeroSlot);
+        SlotView slot = laneView.FirstAvailableHeroSlot();
+        HeroView heroView = CombatantViewCreator.Instance.CreateHeroView(heroData, slot);
 
         laneView.SetHero(heroView);
 
-        laneView.HeroSlot.AddCombatant(heroView);
+        slot.AddCombatant(heroView);
         heroView.transform.localScale = Vector3.one;
 
         if(RunSystem.Instance.CurrentHealth > 0)
@@ -48,13 +51,13 @@ public class BoardView : MonoBehaviour
         return heroView;
     }
 
-    public EnemyView CreateEnemy(EnemyData enemyData, int laneIndex)
+    public NPCView CreateEnemy(NPCData enemyData, int laneIndex)
     {
         LaneView laneView = _laneViews[laneIndex];
 
         SlotView slot = laneView.FirstAvailableEnemySlot();
 
-        EnemyView enemyView = CombatantViewCreator.Instance.CreateEnemyView(enemyData, slot);
+        NPCView enemyView = CombatantViewCreator.Instance.CreateEnemyView(enemyData, slot);
         enemyView.transform.localScale = Vector3.one;
 
         EnemySystem.DetermineEnemyBehaviour(enemyView);
@@ -62,14 +65,34 @@ public class BoardView : MonoBehaviour
         return enemyView;
     }
 
-    public List<EnemyView> GetAllEnemies()
+    public List<NPCView> GetAllEnemies()
     {
-        List<EnemyView> allEnemies = new();
+        List<NPCView> allEnemies = new();
 
         foreach (LaneView laneView in _laneViews)
             allEnemies.AddRange(laneView.EnemyViews);
 
         return allEnemies;
+    }
+
+    public List<CombatantView> GetAllHeroes()
+    {
+        List<CombatantView> allHeroes = new();
+
+        foreach (LaneView laneView in _laneViews)
+            allHeroes.AddRange(laneView.HeroViews);
+
+        return allHeroes;
+    }
+    
+    public List<NPCView> GetAllSideKicks()
+    {
+        List<NPCView> allSideKicks = new();
+
+        foreach (LaneView laneView in _laneViews)
+            allSideKicks.AddRange(laneView.HeroViews.Where(h => h is NPCView).Cast<NPCView>());
+
+        return allSideKicks;
     }
 
     public List<CombatantView> GetAllCombatants()
@@ -79,26 +102,43 @@ public class BoardView : MonoBehaviour
         foreach (LaneView laneView in _laneViews)
         {
             allCombatants.AddRange(laneView.EnemyViews);
-            if (laneView.HeroView != null)
-                allCombatants.Add(laneView.HeroView);
+            allCombatants.AddRange(laneView.HeroViews);
         }
 
         return allCombatants;
     }
 
+    public List<CombatantView> GetAllFoes(CombatantView caster)
+    {
+        if (caster is HeroView)
+            return GetAllEnemies().Cast<CombatantView>().ToList();
+        else if(caster is NPCView npcView)
+        {
+            if(!npcView.IsEvil)
+                return GetAllEnemies().Cast<CombatantView>().ToList();
+        }
+
+        return GetAllHeroes().Cast<CombatantView>().ToList();
+    }
+
     public List<LaneView> GetAllLanes() => _laneViews;
 
-    public LaneView GetCurrentLaneView(EnemyView enemyView)
+    public LaneView GetCurrentLaneView(CombatantView combatantView)
     {
-        return _laneViews.Find(e => e.EnemyViews.Contains(enemyView));
+        return _laneViews.Find(e => e.HeroViews.Contains(combatantView) || e.EnemyViews.Contains(combatantView));
+    }
+
+    public LaneView GetCurrentLaneView(NPCView npcView)
+    {
+        return _laneViews.Find(e => e.EnemyViews.Contains(npcView) || e.HeroViews.Contains(npcView));
     }
 
     public LaneView GetCurrentLaneView(HeroView heroView)
     {
-        return _laneViews.Find(e => e.HeroView == heroView);
+        return _laneViews.Find(e => e.HeroViews.Contains(heroView));
     }
 
-    public IEnumerator RemoveEnemy(EnemyView enemyView)
+    public IEnumerator RemoveEnemy(NPCView enemyView)
     {
         LaneView laneView = GetCurrentLaneView(enemyView);
 
@@ -107,7 +147,7 @@ public class BoardView : MonoBehaviour
 
     public IEnumerator RedistributeEnemies()
     {
-        List<EnemyView> allEnemyViews = GetAllEnemies();
+        List<NPCView> allEnemyViews = GetAllEnemies();
 
         int enemyCount = allEnemyViews.Count;
         int minCount = enemyCount / _laneViews.Count;
@@ -121,7 +161,7 @@ public class BoardView : MonoBehaviour
             yield break;
         }
 
-        int shortageIndex = _laneViews.FindIndex(e => e.EnemyViews.Count < minCount);
+        int shortageIndex = _laneViews.FindIndex(e => e.EnemyViews.Length < minCount);
 
         if (shortageIndex != -1)
         {
@@ -135,7 +175,7 @@ public class BoardView : MonoBehaviour
             {
                 LaneView laneView = _laneViews[excessIndex];
 
-                int count = laneView.EnemyViews.Count;
+                int count = laneView.EnemyViews.Length;
                 int dist = Mathf.Abs(excessIndex - shortageIndex);
 
                 if (count > 0 && excessIndex != shortageIndex && (dist < bestDist || (count > highestCount && dist == bestDist)))
@@ -146,51 +186,103 @@ public class BoardView : MonoBehaviour
                 }
             }
 
-            MoveEnemyGA moveEnemyGA = new MoveEnemyGA(shortageLane, excess.EnemyViews.Last());
+            MoveUnitsGA moveEnemyGA = new MoveUnitsGA(shortageLane, excess.EnemyViews.Last(), null);
             ActionSystem.Instance.AddReaction(moveEnemyGA);
 
             ActionSystem.Instance.AddReaction(new RedistributeEnemiesGA());
         }
     }
 
-    public IEnumerator MoveHero(MoveHeroGA moveHeroGA, float duration, bool pause = false)
+    public IEnumerator MoveCombatants(MoveUnitsGA moveEnemyGA, float duration)
     {
-        HeroView heroView = moveHeroGA.DestinationLane.HeroView;
+        if (moveEnemyGA == null)
+            yield break;
 
-        LaneView originalLaneView = BoardSystem.Instance.GetCurrentLaneView(moveHeroGA.HeroView);
+        foreach (KeyValuePair<CombatantView, LaneView> move in moveEnemyGA.Moves)
+        {
+            CombatantView target = move.Key;
 
-        IEnumerator tween1 = moveHeroGA.DestinationLane.SwapHero(moveHeroGA.HeroView, duration);
-        IEnumerator tween2 = originalLaneView.SwapHero(heroView, duration);
+            bool unmoved = false;
 
-        yield return tween1;
-        yield return tween2;
+            if (target.GetStatusEffectStacks(StatusEffectType.ANCHORED) > 0 && moveEnemyGA.Caster != target && moveEnemyGA.Caster != null)
+                unmoved = true;
+            else if (target.GetStatusEffectStacks(StatusEffectType.HAMSTRUNG) > 0 && moveEnemyGA.Caster == target)
+                unmoved = true;
+
+            if (unmoved)
+            {
+                target.transform.DOPunchPosition(Random.insideUnitCircle, 1);
+                continue;
+            }
+
+            bool moved;
+            if (target is NPCView enemy && enemy.IsEvil)
+                moved = MoveEnemy(enemy, move.Value);
+            else
+                moved = MoveHero(target, move.Value);
+
+            if(moved)
+                target.SetMoved(true);
+        }
+
+        Tween tween = null;
+
+        foreach(CombatantView target in GetAllCombatants())
+        {
+            yield return target.WaitForTweensComplete();
+
+            if (moveEnemyGA.Moves.Keys.Contains(target))
+            {
+                if (moveEnemyGA.JumpValue > 0)
+                    tween = target.transform.DOLocalJump(Vector3.zero, moveEnemyGA.JumpValue, 1, moveEnemyGA.AnimationDuration);
+                else
+                    tween = target.transform.DOLocalMove(Vector3.zero, moveEnemyGA.AnimationDuration);
+            }
+            else if(target.transform.localPosition != Vector3.zero)
+            {
+                target.transform.DOLocalMove(Vector3.zero, duration);
+            }
+        }
+
+        if (tween != null)
+            yield return tween.WaitForCompletion();
+
         DynamicViewsSystem.Instance.UpdateDynamicValues();
-
     }
 
-    public IEnumerator MoveEnemy(MoveEnemyGA moveEnemyGA, float duration, bool pause = false)
+    private bool MoveEnemy(CombatantView enemy, LaneView destination)
     {
-        if (moveEnemyGA.EnemyView.CurrentHealth == 0)
-            yield break;
+        if (enemy.CurrentHealth == 0)
+            return false;
 
-        if (moveEnemyGA.DestinationLane.EnemyViews.Count >= MAX_ENEMY_COUNT)
-            yield break;
+        if (destination.EnemyViews.Length >= MAX_ENEMY_COUNT)
+            return false;
 
-        LaneView originalLaneView = GetCurrentLaneView(moveEnemyGA.EnemyView);
+        LaneView originalLaneView = GetCurrentLaneView(enemy);
 
-        originalLaneView.EnemyViews.Remove(moveEnemyGA.EnemyView);
-        moveEnemyGA.DestinationLane.EnemyViews.Add(moveEnemyGA.EnemyView);
+        SlotView slot = destination.FirstAvailableEnemySlot();
+        slot.AddCombatant(enemy, false);
 
-        var lane = moveEnemyGA.DestinationLane.FirstAvailableEnemySlot();
-        lane.AddCombatant(moveEnemyGA.EnemyView, false);
-        Coroutine wait = StartCoroutine(lane.PullCombatant(0.4f));
+        originalLaneView.SlideEnemiesLeft();
 
-        yield return originalLaneView.SlideEnemiesLeft(duration);
+        return true;
+    }
 
-        if (pause)
-            yield return wait;
+    private bool MoveHero(CombatantView hero, LaneView destination)
+    {
+        if (hero.CurrentHealth == 0)
+            return false;
 
-        DynamicViewsSystem.Instance.UpdateDynamicValues();
+        if (destination.HeroViews.Length >= MAX_HERO_COUNT)
+            return false;
+
+        LaneView originalLaneView = GetCurrentLaneView(hero);
+
+        SlotView slot = destination.FirstAvailableHeroSlot();
+        slot.AddCombatant(hero, false);
+
+        originalLaneView.SlideAlliesLeft();
+        return true;
     }
 
     public IEnumerator CompressBoard()
@@ -210,7 +302,7 @@ public class BoardView : MonoBehaviour
         } 
         while (index != -1 && index < _laneViews.Count - 1);
 
-        int heroIndex = _laneViews.FindIndex(e => e.HeroView == HeroSystem.Instance.HeroView);
+        int heroIndex = _laneViews.FindIndex(e => e.HeroViews.Any(h => h is HeroView));
 
         foreach (int emptyIndex in emptyIndexes)
         {
@@ -232,9 +324,9 @@ public class BoardView : MonoBehaviour
 
                         if (beginPull)
                         {
-                            foreach (EnemyView enemyView in pushLaneView.EnemyViews)
+                            foreach (NPCView enemyView in pushLaneView.EnemyViews)
                             {
-                                MoveEnemyGA moveEnemyGA = new(pullLaneView, enemyView);
+                                MoveUnitsGA moveEnemyGA = new(pullLaneView, enemyView, null);
                                 ActionSystem.Instance.AddReaction(moveEnemyGA);
                             }
                         }
@@ -254,9 +346,9 @@ public class BoardView : MonoBehaviour
 
                         if (beginPull)
                         {
-                            foreach (EnemyView enemyView in pushLaneView.EnemyViews)
+                            foreach (NPCView enemyView in pushLaneView.EnemyViews)
                             {
-                                MoveEnemyGA moveEnemyGA = new(pullLaneView, enemyView);
+                                MoveUnitsGA moveEnemyGA = new(pullLaneView, enemyView, null);
                                 ActionSystem.Instance.AddReaction(moveEnemyGA);
                             }
                         }
@@ -293,28 +385,32 @@ public class BoardView : MonoBehaviour
 
         int removeIndex = _laneViews.IndexOf(laneView);
 
-        HeroView heroView = laneView.HeroView;
+        CombatantView[] heroViews = laneView.HeroViews;
 
-        if (heroView != null)
+        if (heroViews.Length > 0)
         {
-            int middleIndex = _laneViews.Count / 2;
-
-            MoveHeroGA moveHeroGA;
-
-            RemoveLaneGA removeLaneGA = new(laneView);
-
-            if (removeIndex > middleIndex)
+            foreach (CombatantView heroView in heroViews)
             {
-                moveHeroGA = new(_laneViews[removeIndex + 1],heroView);
-            }
-            else
-            {
-                moveHeroGA = new(_laneViews[removeIndex - 1], heroView);
-            }
+                int middleIndex = _laneViews.Count / 2;
 
-            if(heroView!=null)
-                ActionSystem.Instance.AddReaction(moveHeroGA);
-            ActionSystem.Instance.AddReaction(removeLaneGA);
+                MoveUnitsGA moveHeroGA;
+
+                RemoveLaneGA removeLaneGA = new(laneView);
+
+                if (removeIndex >= middleIndex)
+                {
+                    moveHeroGA = new(_laneViews[removeIndex - 1], heroView, null);
+                }
+                else
+                {
+                    moveHeroGA = new(_laneViews[removeIndex + 1], heroView, null);
+                }
+
+                if (heroView != null)
+                    ActionSystem.Instance.AddReaction(moveHeroGA);
+                ActionSystem.Instance.AddReaction(removeLaneGA);
+            }
+            
             yield break;
         }
 
@@ -341,5 +437,17 @@ public class BoardView : MonoBehaviour
         _laneViews.Remove(laneView);
 
         yield return null;
+    }
+
+    public HeroView GetMainHero()
+    {
+        foreach(LaneView lane in _laneViews)
+        {
+            CombatantView heroView = lane.HeroViews.First(h => h is HeroView);
+            if (heroView != null)
+                return (HeroView)heroView;
+        }
+
+        return null;
     }
 }

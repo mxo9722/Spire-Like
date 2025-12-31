@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class ExhaustCardGA : GameAction
 {
-    public CardView CardView { get; private set; }
+    public Card Card { get; private set; }
 
-    public ExhaustCardGA(CardView cardView)
+    public ExhaustCardGA(Card card)
     {
-        CardView = cardView;
+        Card = card;
     }
 }

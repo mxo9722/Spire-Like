@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class EffectContext
@@ -6,7 +7,9 @@ public class EffectContext
     public LaneView TargetLane { get; private set; }
     public CombatantView TargetCombatant { get; private set; }
 
-    public EffectContext(CombatantView caster, LaneView manualTargetLane = null, CombatantView manualTargetCombatant = null)
+    public Dictionary<string, object> _data { get; private set; } = null;
+
+    public EffectContext(CombatantView caster = null, LaneView manualTargetLane = null, CombatantView manualTargetCombatant = null)
     {
         Caster = caster;
         TargetLane = manualTargetLane;
@@ -29,9 +32,39 @@ public class EffectContext
         return new(HeroSystem.Instance.HeroView, manualTargetLane: target);
     }
 
-    public static EffectContext CreateEnemyEC(CombatantView caster)
+    public static EffectContext CreateNpcEC(CombatantView caster)
     {
         return new(caster);
     }
-    #endregion
+    #endregion 
+
+    public void AddData(string key, object data)
+    {
+        if (_data == null)
+            _data = new();
+
+        if (_data.ContainsKey(key))
+            _data[key] = data;
+        else
+            _data.Add(key, data);
+    }
+    
+    public T GetData<T>(string key)
+    {
+        if (_data == null || !_data.ContainsKey(key))
+            return default(T);
+
+        if (_data[key] is T t)
+            return t;
+
+        return default(T);
+    }
+
+    public bool ContainsKey(string key)
+    {
+        if (_data == null)
+            return false;
+
+        return _data.ContainsKey(key);
+    }
 }

@@ -7,9 +7,16 @@ public class AttackHeroEffect : CombatantTargetEffect
 {
     [field: SerializeField, Min(0)] public int Damage { get; private set; } = 0;
 
+    [SerializeField] private string _unblockedKey = ""; 
+    [SerializeField] private string _overkillKey = ""; 
+
     protected override GameAction GetGameAction(EffectContext context, List<CombatantView> combatantTargets)
     {
-        AttackHeroGA attackHeroGA = new AttackHeroGA(Damage, combatantTargets, (EnemyView)context.Caster);
+        if (combatantTargets.Count == 0)
+            return null;
+
+        AttackHeroGA attackHeroGA = new AttackHeroGA(Damage, combatantTargets, context, _unblockedKey, _overkillKey);
+
         return attackHeroGA;
     }
 }

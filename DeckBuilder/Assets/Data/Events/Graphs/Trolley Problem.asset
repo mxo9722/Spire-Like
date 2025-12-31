@@ -165,17 +165,17 @@ MonoBehaviour:
     do.
   <Sprite>k__BackingField: {fileID: 0}
   Choices: 0
-  OptionText: Don't pull the lever (Lose 100 Credits)
+  OptionText: Don't pull the lever (Lose 100 Karma)
   HideIfUnavailable: 0
   <Conditions>k__BackingField: []
   Prev: 0
   <Actions>k__BackingField:
-  - rid: 4055347726652538955
+  - rid: 4055348078608908373
   references:
     version: 2
     RefIds:
-    - rid: 4055347726652538955
-      type: {class: RemoveCreditsEA, ns: , asm: Assembly-CSharp}
+    - rid: 4055348078608908373
+      type: {class: RemoveKarmaEA, ns: , asm: Assembly-CSharp}
       data:
         _credits: 100
 --- !u!114 &8738784151511126487

@@ -10,9 +10,9 @@ public class AutoTargetlessEffect : AutoTargetEffect
     public override Effect Effect { get => _noTargetEffect; }
     [field: SerializeReference, SR] private NoTargetEffect _noTargetEffect;
 
-    public override GameAction GetGameAction(EffectContext targetModeContext)
+    public override GameAction GetGameAction(EffectContext context)
     {
-        PerformEffectsGA performEffectsGA = new(Effect);
+        PerformEffectsGA performEffectsGA = new(context, Effect);
         return performEffectsGA;
     }
 

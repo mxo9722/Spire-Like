@@ -27,6 +27,9 @@ public class CardSystem : Singleton<CardSystem>
         _exhaustedPileView.SetUp(_exhaustPile);
 
         ActionSystem.AttachPerformer<AddCardsToHandGA>(AddCardsToHandPerformer);
+        ActionSystem.AttachPerformer<AddCardsToDeckGA>(AddCardsToDeckPerformer);
+        ActionSystem.AttachPerformer<AddCardsToDiscardGA>(AddCardsToDiscardPerformer);
+        ActionSystem.AttachPerformer<AutoTargetEffectGA>(AutoTargetEffectPerformer);
         ActionSystem.AttachPerformer<DrawCardsGA>(DrawCardsPerformer);
         ActionSystem.AttachPerformer<DiscardAllCardsGA>(DiscardAllCardsPerformer);
         ActionSystem.AttachPerformer<DiscardCardsGA>(DiscardCardsPerformer);
@@ -38,6 +41,9 @@ public class CardSystem : Singleton<CardSystem>
     void OnDisable()
     {
         ActionSystem.DetachPerformer<AddCardsToHandGA>();
+        ActionSystem.DetachPerformer<AddCardsToDeckGA>();
+        ActionSystem.DetachPerformer<AddCardsToDiscardGA>();
+        ActionSystem.DetachPerformer<AutoTargetEffectGA>();
         ActionSystem.DetachPerformer<DrawCardsGA>();
         ActionSystem.DetachPerformer<DiscardAllCardsGA>();
         ActionSystem.DetachPerformer<DiscardCardsGA>();
@@ -66,39 +72,59 @@ public class CardSystem : Singleton<CardSystem>
     {
         foreach (Card card in addCardsToHandGA.Cards)
         {
-            Transform pileView = default;
+            CardView cardView = GetCardViewForEffect(card, 0.15f);
 
-            if (_drawPile.Contains(card))
-            {
-                pileView = _drawPileView.transform;
-
-                _drawPile.Remove(card);
-                _drawPileView.UpdateUI();
-            }
-            else if (_discardPile.Contains(card))
-            {
-                pileView = _discardPileView.transform;
-
-                _discardPile.Remove(card);
-                _discardPileView.UpdateUI();
-            }
-            else if (_exhaustPile.Contains(card))
-            {
-                pileView = _exhaustedPileView.transform;
-
-                _exhaustPile.Remove(card);
-                _exhaustedPileView.UpdateUI();
-            }
-            else if (_hand.Contains(card))
-            {
-                continue;
-            }
+            yield return new WaitForSeconds(0.65f);
 
             _hand.Add(card);
 
-            CardView cardView = CardViewCreator.Instance.CreateCardView(card, pileView.position, pileView.rotation);
             yield return _handView.AddCard(cardView);
         }
+    }
+
+    private IEnumerator AddCardsToDeckPerformer(AddCardsToDeckGA addCardsToDeckGA)
+    {
+        foreach (Card card in addCardsToDeckGA.Cards)
+        {
+            CardView cardView = GetCardViewForEffect(card, 0.15f);
+
+            yield return new WaitForSeconds(0.65f);
+
+            cardView.transform.DOMove(_drawPileView.transform.position, 0.15f);
+            Tween tween = cardView.transform.DOScale(Vector3.zero, 0.15f);
+
+            yield return tween.WaitForCompletion();
+
+            Destroy(cardView.gameObject);
+            _drawPile.Add(card);
+        }
+    }
+
+
+    private IEnumerator AddCardsToDiscardPerformer(AddCardsToDiscardGA addCardsToDiscardGA)
+    {
+
+        foreach (Card card in addCardsToDiscardGA.Cards)
+        {
+            CardView cardView = GetCardViewForEffect(card, 0.15f);
+
+            yield return new WaitForSeconds(0.65f);
+
+            cardView.transform.DOMove(_discardPileView.transform.position, 0.15f);
+            Tween tween = cardView.transform.DOScale(Vector3.zero, 0.15f);
+
+            yield return tween.WaitForCompletion();
+
+            Destroy(cardView.gameObject);
+            _discardPile.Add(card);
+        }
+    }
+
+    private IEnumerator AutoTargetEffectPerformer(AutoTargetEffectGA performAutoTargetEffectGA)
+    {
+        GameAction gameAction = performAutoTargetEffectGA.Effect.GetGameAction(performAutoTargetEffectGA.Context);
+        ActionSystem.Instance.AddReaction(gameAction);
+        yield return null;
     }
 
     private IEnumerator DrawCardsPerformer(DrawCardsGA drawCardsGA)
@@ -158,35 +184,25 @@ public class CardSystem : Singleton<CardSystem>
 
     private IEnumerator PlayCardPerformer(PlayCardGA playCardGA)
     {
-        _hand.Remove(playCardGA.card);
-
-        CardView cardView = _handView.RemoveCard(playCardGA.card);
-
-        if (!playCardGA.card.ExhuastOnUse)
-        {
-            yield return DiscardCard(cardView);
-        }
-        else
-        {
-            cardView.transform.DOMove(Vector3.zero, 0.15f);
-        }
-
         SpendManaGA spendManaGA = new(playCardGA.card.Mana);
         ActionSystem.Instance.AddReaction(spendManaGA);
 
-        if (playCardGA.ManualEnemyTarget != null)
-        {
-            PerformEffectsGA performEffectsGA = new PerformEffectsGA(playCardGA.card.ManualTargetEffect, playCardGA.ManualEnemyTarget);
-            ActionSystem.Instance.AddReaction(performEffectsGA);
-        }
-        else if (playCardGA.ManualLaneTarget != null)
-        {
-            PerformEffectsGA performEffectsGA = new PerformEffectsGA(playCardGA.card.ManualTargetEffect, playCardGA.ManualLaneTarget);
-            ActionSystem.Instance.AddReaction(performEffectsGA);
-        }
-
         HeroView heroView = HeroSystem.Instance.HeroView;
-        EffectContext targetModeContext = new(heroView, playCardGA.ManualLaneTarget, playCardGA.ManualEnemyTarget);
+        EffectContext context = new(heroView, playCardGA.ManualLaneTarget, playCardGA.ManualEnemyTarget);
+
+        if (playCardGA.card.ManualTargetEffect != null)
+        {
+            if (playCardGA.ManualEnemyTarget != null)
+            {
+                PerformEffectsGA performEffectsGA = new PerformEffectsGA(context, playCardGA.card.ManualTargetEffect, playCardGA.ManualEnemyTarget);
+                ActionSystem.Instance.AddReaction(performEffectsGA);
+            }
+            else if (playCardGA.ManualLaneTarget != null)
+            {
+                PerformEffectsGA performEffectsGA = new PerformEffectsGA(context, playCardGA.card.ManualTargetEffect, playCardGA.ManualLaneTarget);
+                ActionSystem.Instance.AddReaction(performEffectsGA);
+            }
+        }
 
         //Perform effects
         foreach (AutoTargetEffect effectWrapper in playCardGA.card.OtherEffects)
@@ -194,29 +210,36 @@ public class CardSystem : Singleton<CardSystem>
             if (effectWrapper.RequiresUserInput())
                 yield return effectWrapper.WaitForUserInput();
 
-            GameAction gameAction = effectWrapper.GetGameAction(targetModeContext);
-
-            if (gameAction != null)
-                ActionSystem.Instance.AddReaction(gameAction);
+            AutoTargetEffectGA gameAction = new AutoTargetEffectGA(context, effectWrapper);
+            ActionSystem.Instance.AddReaction(gameAction);
         }
 
-        if (playCardGA.card.ExhuastOnUse)
+        if (!playCardGA.card.ExhuastOnUse)
         {
-            ExhaustCardGA exhaustCardGA = new(cardView);
+            _hand.Remove(playCardGA.card);
+            CardView cardView = _handView.RemoveCard(playCardGA.card);
+
+            yield return DiscardCard(cardView);
+        }
+        else
+        {
+            ExhaustCardGA exhaustCardGA = new(playCardGA.card);
             ActionSystem.Instance.AddReaction(exhaustCardGA);
         }
     }
 
     private IEnumerator ExhaustCardPerformer(ExhaustCardGA exhaustCardGA)
     {
-        Tweener moveCardTweener = exhaustCardGA.CardView.transform.DOMove(Vector3.zero, 0.15f);
-        exhaustCardGA.CardView.transform.DORotate(Vector3.zero, 0.15f);
+        CardView cardView = GetCardViewForEffect(exhaustCardGA.Card, 0.15f);
+
+        Tweener moveCardTweener = cardView.transform.DOMove(Vector3.zero, 0.15f);
+        cardView.transform.DORotate(Vector3.zero, 0.15f);
 
         yield return moveCardTweener.WaitForCompletion();
 
-        yield return exhaustCardGA.CardView.ActivateExhaustVFX();
+        yield return cardView.ActivateExhaustVFX();
 
-        _exhaustPile.Add(exhaustCardGA.CardView.Card);
+        _exhaustPile.Add(cardView.Card);
         UpdateUI();
     }
 
@@ -264,6 +287,52 @@ public class CardSystem : Singleton<CardSystem>
         yield return null;
     }
 
+    private CardView GetCardViewForEffect(Card card, float duration)
+    {
+        Transform pileView = default;
+        CardView cardView = null;
+
+        if (_drawPile.Contains(card))
+        {
+            pileView = _drawPileView.transform;
+
+            _drawPile.Remove(card);
+            _drawPileView.UpdateUI();
+        }
+        else if (_discardPile.Contains(card))
+        {
+            pileView = _discardPileView.transform;
+
+            _discardPile.Remove(card);
+            _discardPileView.UpdateUI();
+        }
+        else if (_exhaustPile.Contains(card))
+        {
+            pileView = _exhaustedPileView.transform;
+
+            _exhaustPile.Remove(card);
+            _exhaustedPileView.UpdateUI();
+        }
+        else if (_hand.Contains(card))
+        {
+            cardView = _handView.RemoveCard(card);
+            _hand.Remove(card);
+        }
+
+        if (cardView == null)
+        {
+            if (pileView != default)
+                cardView = CardViewCreator.Instance.CreateCardView(card, pileView.position, pileView.rotation, true);
+            else
+                cardView = CardViewCreator.Instance.CreateCardView(card, Vector3.zero, Quaternion.identity, true);
+        }
+        cardView.transform.DOMove(Vector3.zero, duration);
+        cardView.transform.DORotate(Vector3.zero, duration);
+        cardView.SortingGroup.sortingOrder++;
+
+        return cardView;
+    }
+
 
     private void UpdateUI()
     {
@@ -280,6 +349,11 @@ public class CardSystem : Singleton<CardSystem>
     public List<Card> GetDrawPile()
     {
         return new(_drawPile);
+    }
+
+    public List<Card> GetExhaustPile()
+    {
+        return new(_exhaustPile);
     }
 
     public CardView RemoveFromHand(Card card) 

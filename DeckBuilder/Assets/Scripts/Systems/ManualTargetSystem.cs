@@ -15,7 +15,6 @@ public class ManualTargetSystem : Singleton<ManualTargetSystem>
     private List<CombatantFilter> _combatantFilters = null;
     private List<LaneFilter> _laneFilters = null;
 
-
     public void StartTargeting(Vector3 startPosition, Card card)
     {
         _arrowView.gameObject.SetActive(true);
@@ -24,19 +23,21 @@ public class ManualTargetSystem : Singleton<ManualTargetSystem>
         _combatantFilters = card.CombatantFilters;
         _laneFilters = card.LaneFilters;
 
+        HighlightManualTargets(card);
+    }
+
+    public void HighlightManualTargets(Card card)
+    {
         List<ConditionalAutoTargetEffect> highlightConditionals = card.OtherEffects.Where(e => e is ConditionalAutoTargetEffect).Select(e => (ConditionalAutoTargetEffect)e).ToList();
 
         switch (card.ManualTargetType)
         {
             case ManualTargetType.COMBATANT:
-
                 TargetPreviewSystem.Instance.SetTargetPreviewsManual<CombatantView, CombatantFilter>(card.CombatantFilters, highlightConditionals);
-
                 break;
+
             case ManualTargetType.LANE:
-
                 TargetPreviewSystem.Instance.SetTargetPreviewsManual<LaneView, LaneFilter>(card.LaneFilters, highlightConditionals);
-
                 break;
         }
     }
@@ -54,6 +55,8 @@ public class ManualTargetSystem : Singleton<ManualTargetSystem>
             && hit.transform.TryGetComponent(out CombatantView target))
         {
             EffectContext context = EffectContext.CreateHeroEC(target);
+
+            TargetPreviewSystem.Instance.HideTargetPreviews();
 
             return CombatantIsValid(context, target) ? target : null;
         }
@@ -74,6 +77,8 @@ public class ManualTargetSystem : Singleton<ManualTargetSystem>
             && hit.transform.TryGetComponent(out LaneView target))
         {
             EffectContext context = EffectContext.CreateHeroEC(target);
+
+            TargetPreviewSystem.Instance.HideTargetPreviews();
 
             return LaneIsValid(context, target) ? target : null;
         }
