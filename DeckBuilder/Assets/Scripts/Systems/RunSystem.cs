@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RunSystem : PersistentSingleton<RunSystem>
+public class RunSystem : PersistentSingleton<RunSystem>, IHoldData
 {
     [SerializeField] private HeroData _defaultHeroData;
     
@@ -27,21 +27,21 @@ public class RunSystem : PersistentSingleton<RunSystem>
 
     private void Start()
     {
-        KarmaSystem.Instance.OnKarmaChange += RunData.SetCredits;
+        RenownSystem.Instance.OnRenownChange += RunData.SetCredits;
         _started = true;
     }
 
     private void OnEnable()
     {
         if(_started)
-            KarmaSystem.Instance.OnKarmaChange += RunData.SetCredits;
+            RenownSystem.Instance.OnRenownChange += RunData.SetCredits;
     }
 
     private void OnDisable()
     {
         if (Instance == this)
         {
-            KarmaSystem.Instance.OnKarmaChange -= RunData.SetCredits;
+            RenownSystem.Instance.OnRenownChange -= RunData.SetCredits;
         }
     }
 
@@ -114,4 +114,8 @@ public class RunSystem : PersistentSingleton<RunSystem>
     public void SetMap(Map map) => RunData.SetMap(map);
     public void MarkPerkUsed(PerkData perkData) => RunData.MarkPerkDataUsed(perkData);
     public void SetHealth(int amount) => RunData.SetHealth(amount);
+
+    public void AddData(string key, object data) => RunData.AddData(key, data);
+    public T GetData<T>(string key) => RunData.GetData<T>(key);
+    public bool ContainsKey(string key) => RunData.ContainsKey(key);
 }

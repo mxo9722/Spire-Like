@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 262dd8f326c811f49b5f8e3ff5f3b5fd, type: 3}
-  m_Name: Dialogue
+  m_Name: Catch up with them (Remove a card)
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
   position: {x: 136, y: -392}
@@ -46,7 +46,7 @@ MonoBehaviour:
   <Text>k__BackingField: Catching up was nice!
   <Sprite>k__BackingField: {fileID: 0}
   Choices: 0
-  OptionText: Catch up with them (Remove a card from your deck)
+  OptionText: Catch up with them (Remove a card)
   HideIfUnavailable: 0
   <Conditions>k__BackingField: []
   Prev: 0
@@ -103,7 +103,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 262dd8f326c811f49b5f8e3ff5f3b5fd, type: 3}
-  m_Name: Dialogue
+  m_Name: Focus on work (Take one of three cards)
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
   position: {x: 136, y: -24}
@@ -139,7 +139,7 @@ MonoBehaviour:
   <Text>k__BackingField: Probably a good call to leave the past in the past.
   <Sprite>k__BackingField: {fileID: 0}
   Choices: 0
-  OptionText: Focus on work (Add one card of 3 to your deck)
+  OptionText: Focus on work (Take one of three cards)
   HideIfUnavailable: 0
   <Conditions>k__BackingField: []
   Prev: 0

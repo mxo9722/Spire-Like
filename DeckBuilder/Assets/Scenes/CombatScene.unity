@@ -1373,6 +1373,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1446325188}
+  - {fileID: 2011825902}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &506048675
@@ -1859,7 +1860,7 @@ MonoBehaviour:
   m_Intensity: 1
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
-  m_ApplyToSortingLayers: 000000002f1d95a9f51241b9d904187eb59490d5
+  m_ApplyToSortingLayers: 000000002f1d95a9f51241b9d904187eb59490d51fc60c50
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -2324,16 +2325,17 @@ Transform:
   - {fileID: 875981755}
   - {fileID: 1381541743}
   - {fileID: 420050306}
-  - {fileID: 1665517322}
   - {fileID: 1618119686}
   - {fileID: 1697923670}
   - {fileID: 1045014650}
   - {fileID: 1326605523}
   - {fileID: 639465532}
   - {fileID: 1945211679}
+  - {fileID: 1665517322}
   - {fileID: 1055422075}
   - {fileID: 847779407}
   - {fileID: 454567774}
+  - {fileID: 1189293582}
   - {fileID: 897077367}
   - {fileID: 1539628665}
   m_Father: {fileID: 0}
@@ -2565,6 +2567,41 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &997439859
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 997439860}
+  m_Layer: 0
+  m_Name: SpeechBubbleParent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &997439860
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 997439859}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2011825902}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &1032668594
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2729,7 +2766,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rewardsUI: {fileID: 1078378617}
-  <CreditSprite>k__BackingField: {fileID: 21300000, guid: 60ca5b9ce00f0f94e90677da26fc5e85, type: 3}
+  <CreditSprite>k__BackingField: {fileID: 21300000, guid: 44e8c4c5be659f849b128c55b5ea6a01, type: 3}
   <CardSprite>k__BackingField: {fileID: 21300000, guid: 5a74b76509d583f44a01be9aeea234e5, type: 3}
 --- !u!224 &1078378616 stripped
 RectTransform:
@@ -2903,6 +2940,52 @@ MonoBehaviour:
   _wrapper: {fileID: 148143472}
   _hideOrder: 0
   _hideWhenEmpty: 1
+--- !u!1 &1189293581
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1189293582}
+  - component: {fileID: 1189293583}
+  m_Layer: 0
+  m_Name: SpeechBubbleSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1189293582
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1189293581}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 824803057}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1189293583
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1189293581}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa150908bf07c394caf43ea439f7d063, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _speechBubblePrefab: {fileID: 9175142018809540371, guid: 2dd9d6cbb20b8784caf6b784c2c5fe21, type: 3}
+  _bubbleParent: {fileID: 997439860}
 --- !u!1 &1228491474
 GameObject:
   m_ObjectHideFlags: 0
@@ -3074,12 +3157,12 @@ MonoBehaviour:
     <IsCompleted>k__BackingField: 0
     <Seed>k__BackingField: 0
     <TopRow>k__BackingField:
-    - {fileID: 11400000, guid: 5b1f435ff139a7946a5019c463f0263a, type: 2}
+    - {fileID: 11400000, guid: 819e5372a26ebe446955b2e4749d3370, type: 2}
     <MiddleRow>k__BackingField:
-    - {fileID: 11400000, guid: 5b1f435ff139a7946a5019c463f0263a, type: 2}
-    - {fileID: 11400000, guid: e748ac999bdc3b14c99dacb8af2e6b3b, type: 2}
+    - {fileID: 11400000, guid: 819e5372a26ebe446955b2e4749d3370, type: 2}
     <BottomRow>k__BackingField:
-    - {fileID: 11400000, guid: 5b1f435ff139a7946a5019c463f0263a, type: 2}
+    - {fileID: 11400000, guid: 819e5372a26ebe446955b2e4749d3370, type: 2}
+    - {fileID: 11400000, guid: 18c20b7f2e695444f8d991478c856d87, type: 2}
     <Rewards>k__BackingField: []
   references:
     version: 2
@@ -3423,7 +3506,7 @@ GameObject:
   - component: {fileID: 1446325190}
   - component: {fileID: 1446325189}
   m_Layer: 0
-  m_Name: Canvas
+  m_Name: ScreenSpaceCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3919,7 +4002,7 @@ GameObject:
   - component: {fileID: 1665517322}
   - component: {fileID: 1665517323}
   m_Layer: 0
-  m_Name: KarmaSystem
+  m_Name: RenownSystem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3949,7 +4032,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1665517321}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0dbf82346de7424cad2fb7265cc2dee, type: 3}
+  m_Script: {fileID: 11500000, guid: 388f6d225c9032547908ce64a02b1f82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1697923669
@@ -4342,6 +4425,108 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <BoardView>k__BackingField: {fileID: 1823932733}
+--- !u!1 &2011825901
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2011825902}
+  - component: {fileID: 2011825905}
+  - component: {fileID: 2011825904}
+  - component: {fileID: 2011825903}
+  m_Layer: 0
+  m_Name: WorldSpaceCanvas
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2011825902
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2011825901}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 997439860}
+  m_Father: {fileID: 488023649}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 19.2, y: 10.8}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2011825903
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2011825901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+--- !u!114 &2011825904
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2011825901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UiScaleMode: 0
+  m_ReferencePixelsPerUnit: 100
+  m_ScaleFactor: 1
+  m_ReferenceResolution: {x: 800, y: 600}
+  m_ScreenMatchMode: 0
+  m_MatchWidthOrHeight: 0
+  m_PhysicalUnit: 3
+  m_FallbackScreenDPI: 96
+  m_DefaultSpriteDPI: 96
+  m_DynamicPixelsPerUnit: 1
+  m_PresetInfoIsWorld: 1
+--- !u!223 &2011825905
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2011825901}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 519420031}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
+  m_AdditionalShaderChannelsFlag: 25
+  m_UpdateRectTransformForStandalone: 0
+  m_SortingLayerID: -1449845457
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
 --- !u!1 &2081463315
 GameObject:
   m_ObjectHideFlags: 0

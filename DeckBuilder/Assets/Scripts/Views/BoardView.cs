@@ -198,31 +198,17 @@ public class BoardView : MonoBehaviour
         if (moveEnemyGA == null)
             yield break;
 
-        foreach (KeyValuePair<CombatantView, LaneView> move in moveEnemyGA.Moves)
+        Dictionary<CombatantView, LaneView> moves = new(moveEnemyGA.Moves);
+
+        foreach (KeyValuePair<CombatantView, LaneView> move in moves)
         {
-            CombatantView target = move.Key;
+            bool moved = MoveCombatant(move.Key, move.Value, moveEnemyGA.Caster);
 
-            bool unmoved = false;
-
-            if (target.GetStatusEffectStacks(StatusEffectType.ANCHORED) > 0 && moveEnemyGA.Caster != target && moveEnemyGA.Caster != null)
-                unmoved = true;
-            else if (target.GetStatusEffectStacks(StatusEffectType.HAMSTRUNG) > 0 && moveEnemyGA.Caster == target)
-                unmoved = true;
-
-            if (unmoved)
-            {
-                target.transform.DOPunchPosition(Random.insideUnitCircle, 1);
-                continue;
-            }
-
-            bool moved;
-            if (target is NPCView enemy && enemy.IsEvil)
-                moved = MoveEnemy(enemy, move.Value);
+            if (moved)
+                move.Key.SetMoved(true);
             else
-                moved = MoveHero(target, move.Value);
+                moveEnemyGA.RemoveMove(move.Key);
 
-            if(moved)
-                target.SetMoved(true);
         }
 
         Tween tween = null;
@@ -250,6 +236,30 @@ public class BoardView : MonoBehaviour
         DynamicViewsSystem.Instance.UpdateDynamicValues();
     }
 
+    private bool MoveCombatant(CombatantView target, LaneView lane, CombatantView caster)
+    {
+        bool unmoved = false;
+
+        if (target.GetStatusEffectStacks(StatusEffectType.ANCHORED) > 0 && caster != target && caster != null)
+            unmoved = true;
+        else if (target.GetStatusEffectStacks(StatusEffectType.HAMSTRUNG) > 0 && caster == target)
+            unmoved = true;
+
+        if (unmoved)
+        {
+            target.transform.DOPunchPosition(Random.insideUnitCircle, 1);
+            return false;
+        }
+
+        bool moved;
+        if (target is NPCView enemy && enemy.IsEvil)
+            moved = MoveEnemy(enemy, lane);
+        else
+            moved = MoveHero(target, lane);
+
+        return moved;
+    }
+
     private bool MoveEnemy(CombatantView enemy, LaneView destination)
     {
         if (enemy.CurrentHealth == 0)
@@ -264,6 +274,7 @@ public class BoardView : MonoBehaviour
         slot.AddCombatant(enemy, false);
 
         originalLaneView.SlideEnemiesLeft();
+        destination.SlideEnemiesLeft();
 
         return true;
     }
@@ -281,7 +292,9 @@ public class BoardView : MonoBehaviour
         SlotView slot = destination.FirstAvailableHeroSlot();
         slot.AddCombatant(hero, false);
 
-        originalLaneView.SlideAlliesLeft();
+        originalLaneView.SlideHeroesRight();
+        destination.SlideHeroesRight();
+
         return true;
     }
 

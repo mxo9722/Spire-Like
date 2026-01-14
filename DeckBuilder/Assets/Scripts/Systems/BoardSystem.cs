@@ -27,12 +27,12 @@ public class BoardSystem : Singleton<BoardSystem>
     {
         yield return BoardView.RedistributeEnemies();
     }
-    
+
     private IEnumerator CompressBoardPerformer(CompressBoardGA compressBoardGA)
     {
         yield return BoardView.CompressBoard();
     }
-    
+
     private IEnumerator RemoveLanePerformer(RemoveLaneGA removeLaneGA)
     {
         yield return BoardView.RemoveLane(removeLaneGA.LaneView, 0.5f);
@@ -52,8 +52,8 @@ public class BoardSystem : Singleton<BoardSystem>
 
         throw new System.Exception();
     }
-    
-    public LaneView GetCurrentLaneView(HeroView heroView) => BoardView.GetCurrentLaneView(heroView);    
+
+    public LaneView GetCurrentLaneView(HeroView heroView) => BoardView.GetCurrentLaneView(heroView);
     public LaneView GetCurrentLaneView(NPCView enemyView) => BoardView.GetCurrentLaneView(enemyView);
     public List<NPCView> GetAllEnemies() => BoardView.GetAllEnemies();
     public List<NPCView> GetAllSideKicks() => BoardView.GetAllSideKicks();
@@ -61,19 +61,27 @@ public class BoardSystem : Singleton<BoardSystem>
     public List<CombatantView> GetAllFoes(CombatantView caster) => BoardView.GetAllFoes(caster);
     public List<LaneView> GetAllLanes() => BoardView.GetAllLanes();
 
-    public LaneView GetLaneFromDirection(LaneView laneView, MovementDirection direction)
+    public LaneView GetLaneFromDirection(LaneView laneView, MovementDirection direction, int count = 1, bool loopAround = false)
     {
-        var lanes = BoardView.GetAllLanes();
+        List<LaneView> lanes = BoardView.GetAllLanes();
         int index = lanes.IndexOf(laneView);
+
+        count %= lanes.Count;
 
         switch (direction)
         {
             case MovementDirection.UP:
-                index--;
+                index -= count;
                 break;
             case MovementDirection.DOWN:
-                index++;
+                index += count;
                 break;
+        }
+
+        if (loopAround)
+        {
+            index += lanes.Count;
+            index %= lanes.Count;
         }
 
         index = Mathf.Clamp(index, 0, lanes.Count - 1);
@@ -89,6 +97,6 @@ public class BoardSystem : Singleton<BoardSystem>
             return GetAllCombatants() as List<T>;
 
         return new();
-        
+
     }
 }

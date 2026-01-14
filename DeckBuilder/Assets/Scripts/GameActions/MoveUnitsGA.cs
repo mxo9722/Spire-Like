@@ -30,6 +30,11 @@ public class MoveUnitsGA : CombinableGameAction<MoveUnitsGA>, IHaveCaster
             Moves.Add(combatantView, laneView);
     }
 
+    public void RemoveMove(CombatantView combatantView)
+    {
+        Moves.Remove(combatantView);
+    }
+
     public void SetAnimationDuration(float animDuration)
     {
         AnimationDuration = animDuration;

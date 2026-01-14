@@ -29,8 +29,6 @@ public class CardRewardView : MonoBehaviour
 
             float p = (i + 1.00f) / (cards.Count+1.00f);
 
-            Debug.Log(p);
-
             Vector3 position = spline.EvaluatePosition(p);
 
             CardView cardView = CardViewCreator.Instance.CreateCardView(card, position, Quaternion.identity, true);

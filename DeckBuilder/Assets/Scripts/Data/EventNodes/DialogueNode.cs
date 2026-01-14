@@ -6,7 +6,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using XNode;
 
-public class DialogueNode : BaseDialogueNode {
+public class DialogueNode : BaseDialogueNode 
+{
 	[field: SerializeField] public string OptionText;
 	[field: SerializeField] public bool HideIfUnavailable = false;
 	[field: SerializeReference, SR] public List<EventCondition> Conditions { get; private set; }
@@ -43,4 +44,9 @@ public class DialogueNode : BaseDialogueNode {
     {
 		return Conditions.Count == 0 || Conditions.TrueForAll(c => c.IsMet());
 	}
+
+    private void OnValidate()
+    {
+		name = OptionText;
+    }
 }

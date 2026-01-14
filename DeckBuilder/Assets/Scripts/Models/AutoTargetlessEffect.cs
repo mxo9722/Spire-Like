@@ -16,11 +16,6 @@ public class AutoTargetlessEffect : AutoTargetEffect
         return performEffectsGA;
     }
 
-    public override string GetDynamicText(EffectContext targetModeContext)
-    {
-        return null;
-    }
-
     public override List<StatusEffectType> GetAllStatusEffects()
     {
         return _noTargetEffect.GetAllStatusEffects();

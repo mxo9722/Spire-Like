@@ -41,5 +41,22 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 5b1f435ff139a7946a5019c463f0263a, type: 2}
     - {fileID: 11400000, guid: e748ac999bdc3b14c99dacb8af2e6b3b, type: 2}
     <LaneOrderMatters>k__BackingField: 0
-  <BossFights>k__BackingField: []
+  - <TopLane>k__BackingField:
+    - {fileID: 11400000, guid: 819e5372a26ebe446955b2e4749d3370, type: 2}
+    - {fileID: 11400000, guid: 4a3f60a65e4bebf45a1694453e864f94, type: 2}
+    <MiddleLane>k__BackingField:
+    - {fileID: 11400000, guid: 4a3f60a65e4bebf45a1694453e864f94, type: 2}
+    <BottomLane>k__BackingField:
+    - {fileID: 11400000, guid: 819e5372a26ebe446955b2e4749d3370, type: 2}
+    - {fileID: 11400000, guid: 4a3f60a65e4bebf45a1694453e864f94, type: 2}
+    <LaneOrderMatters>k__BackingField: 0
+  <BossFights>k__BackingField:
+  - <TopLane>k__BackingField:
+    - {fileID: 11400000, guid: 819e5372a26ebe446955b2e4749d3370, type: 2}
+    - {fileID: 11400000, guid: 18c20b7f2e695444f8d991478c856d87, type: 2}
+    <MiddleLane>k__BackingField:
+    - {fileID: 11400000, guid: 819e5372a26ebe446955b2e4749d3370, type: 2}
+    <BottomLane>k__BackingField:
+    - {fileID: 11400000, guid: 819e5372a26ebe446955b2e4749d3370, type: 2}
+    <LaneOrderMatters>k__BackingField: 0
   <VillianFights>k__BackingField: []

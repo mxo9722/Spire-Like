@@ -19,3 +19,4 @@ public abstract class TargetFilter<T>
 
 [System.Serializable] public abstract class CombatantFilter : TargetFilter<CombatantView> {}
 [System.Serializable]public abstract class LaneFilter : TargetFilter<LaneView> {}
+[System.Serializable]public abstract class CardFilter : TargetFilter<Card> {}

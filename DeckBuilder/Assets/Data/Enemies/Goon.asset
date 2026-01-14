@@ -13,13 +13,14 @@ MonoBehaviour:
   m_Name: Goon
   m_EditorClassIdentifier: 
   <Image>k__BackingField: {fileID: 21300000, guid: 840b55da3eba86b40a31dd225fe68759, type: 3}
-  <Health>k__BackingField: 13
+  <Health>k__BackingField: 10
+  <RandomHealthMod>k__BackingField: 4
   <StatusEffects>k__BackingField:
     _serializedList: []
   <ActionPattern>k__BackingField:
   - <Name>k__BackingField: Shoot
     <Symbol>k__BackingField: 0
-    <Weight>k__BackingField: 1
+    <Weight>k__BackingField: 2
     <Priority>k__BackingField: 1
     <ConsecutiveMax>k__BackingField: 3
     <Conditions>k__BackingField: []
@@ -27,16 +28,48 @@ MonoBehaviour:
     - rid: 1228494508162809985
   - <Name>k__BackingField: Pistol Whip
     <Symbol>k__BackingField: 0
-    <Weight>k__BackingField: 1
+    <Weight>k__BackingField: 2
     <Priority>k__BackingField: 1
     <ConsecutiveMax>k__BackingField: 2
     <Conditions>k__BackingField: []
     <Effects>k__BackingField:
     - rid: 4055348078608908533
     - rid: 1228494508162809988
+  - <Name>k__BackingField: Cower
+    <Symbol>k__BackingField: 6
+    <Weight>k__BackingField: 1
+    <Priority>k__BackingField: 1
+    <ConsecutiveMax>k__BackingField: 1
+    <Conditions>k__BackingField: []
+    <Effects>k__BackingField:
+    - rid: 262420534285304079
   references:
     version: 2
     RefIds:
+    - rid: 262420534285304079
+      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 262420534285304080
+        _combatantEffect:
+          rid: 262420534285304081
+    - rid: 262420534285304080
+      type: {class: CasterCTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 262420534285304081
+      type: {class: RandomSpeechBubbleEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _dialogueOptions:
+        - 'Oh Geez we really
+
+          stepped in it this time!'
+        - 'They weren''t supposed
+
+          be here for this job!'
+        - 'I knew I should''ve
+
+          stayed in college!'
+        _duration: 3
     - rid: 1228494508162809985
       type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
       data:
@@ -50,6 +83,7 @@ MonoBehaviour:
         <Damage>k__BackingField: 6
         _unblockedKey: 
         _overkillKey: 
+        _onHit: 
     - rid: 1228494508162809988
       type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
       data:
@@ -105,3 +139,4 @@ MonoBehaviour:
         <Damage>k__BackingField: 4
         _unblockedKey: 
         _overkillKey: 
+        _onHit: 

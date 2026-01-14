@@ -6,6 +6,7 @@ public class MapSystem : Singleton<MapSystem>
 {
     [SerializeField] private ScenePicker _combatScene = new();
     [SerializeField] private ScenePicker _eventScene = new();
+    [SerializeField] private ScenePicker _shopScene = new();
     [SerializeField] private MapView _mapView;
     [SerializeField] private CombatData _combatData;
     [SerializeField] private EventsData _eventsData;
@@ -41,6 +42,11 @@ public class MapSystem : Singleton<MapSystem>
     {
         _eventScene.LoadScene();
     }
+    
+    public void EnterShop()
+    {
+        _shopScene.LoadScene();
+    }
 
     public void EnterRoom(Room room)
     {
@@ -69,7 +75,7 @@ public class MapSystem : Singleton<MapSystem>
                 indexList = _eventIndexes;
                 indexTotal = _eventsData.Events.Count;
                 break;
-            case RoomType.BOSS_FIGHT:
+            case RoomType.ELITE:
                 indexList = _bossFightIndexes;
                 indexTotal = _combatData.BossFights.Count;
                 break;

@@ -18,8 +18,6 @@ public class ConditionalAutoTargetEffect : AutoTargetEffect
 
     public override List<StatusEffectType> GetAllStatusEffects() => _successEffect.GetAllStatusEffects();
 
-    public override string GetDynamicText(EffectContext context) => _successEffect.GetDynamicText(context);
-
     public override GameAction GetGameAction(EffectContext context)
     {
         if(_conditions.TrueForAll(c => c.TestCondition(context)))

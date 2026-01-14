@@ -1,9 +1,10 @@
+using AYellowpaper.SerializedCollections;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class RunData
+public class RunData : IHoldData
 {
     [field: SerializeField] public List<CardData> Deck { get; private set; }
     [field: SerializeField] public HeroData Hero { get; private set; }
@@ -12,9 +13,12 @@ public class RunData
     public bool RoomCompleted => Room.IsCompleted;
     [field: SerializeField] public int CurrentHealth { get; private set; }
     [field: SerializeField] public int MaxHealth { get; private set; }
-    [field: SerializeField] public int Karma { get; private set; } = 0;
+    [field: SerializeField] public int Renown { get; private set; } = 100;
     [field: SerializeField] public List<Perk> Perks { get; private set; } = new();
     public List<PerkData> UsedPerks { get; private set; } = new();
+
+
+    private SerializedDictionary<string, object> _data = null;
 
     public RunData(HeroData heroData)
     {
@@ -47,7 +51,7 @@ public class RunData
 
     public void SetCredits(int credits)
     {
-        Karma = credits;
+        Renown = credits;
     }
 
     public void SetMap(Map map)
@@ -63,5 +67,35 @@ public class RunData
     public void MarkPerkDataUsed(PerkData perkData)
     {
         UsedPerks.Add(perkData);
+    }
+
+    public void AddData(string key, object data)
+    {
+        if (_data == null)
+            _data = new();
+
+        if (_data.ContainsKey(key))
+            _data[key] = data;
+        else
+            _data.Add(key, data);
+    }
+
+    public T GetData<T>(string key)
+    {
+        if (_data == null || !_data.ContainsKey(key))
+            return default(T);
+
+        if (_data[key] is T t)
+            return t;
+
+        return default(T);
+    }
+
+    public bool ContainsKey(string key)
+    {
+        if (_data == null)
+            return false;
+
+        return _data.ContainsKey(key);
     }
 }

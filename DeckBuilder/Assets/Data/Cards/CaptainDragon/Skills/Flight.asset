@@ -1,0 +1,95 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62bf69310631aa94896652d3f8be392c, type: 3}
+  m_Name: Flight
+  m_EditorClassIdentifier: 
+  <Upgrade>k__BackingField: {fileID: 0}
+  <Unplayable>k__BackingField: 0
+  <Mana>k__BackingField: 0
+  <Type>k__BackingField: 0
+  <Image>k__BackingField: {fileID: 21300000, guid: 8afa01b71dd611c4887551a8b2e3003c, type: 3}
+  <Description>k__BackingField: Move to a lane. Gain {v0} block. Add another "Flight"
+    card from your deck to your hand.
+  <RequiredConditions>k__BackingField: []
+  <HighlightConditions>k__BackingField: []
+  <ExhuastOnUse>k__BackingField: 0
+  <ManualTargetType>k__BackingField: 1
+  <CombatantFilters>k__BackingField: []
+  <LaneFilters>k__BackingField: []
+  <ManualTargetEffect>k__BackingField:
+    rid: -2
+  <OtherEffects>k__BackingField:
+  - rid: 262420551506591841
+  - rid: 262420551506591844
+  - rid: 262420551506591848
+  <TurnEndEffects>k__BackingField: []
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 262420551506591841
+      type: {class: AutoLaneTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 262420551506591842
+        _laneEffect:
+          rid: 262420551506591843
+    - rid: 262420551506591842
+      type: {class: ManuallySelectedLTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 262420551506591843
+      type: {class: MoveTowardLaneEffect, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 262420551506591844
+      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 262420551506591845
+        _combatantEffect:
+          rid: 262420551506591846
+    - rid: 262420551506591845
+      type: {class: CasterCTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 262420551506591846
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _statusEffectType: 0
+        _stackCount:
+          rid: 262420551506591847
+        _skipAnimation: 0
+    - rid: 262420551506591847
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 2
+    - rid: 262420551506591848
+      type: {class: AutoCardTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 262420551506591849
+        _cardEffect:
+          rid: 262420551506591851
+    - rid: 262420551506591849
+      type: {class: FirstCardsOfTypeInDeckCaTM, ns: , asm: Assembly-CSharp}
+      data:
+        CardCount:
+          rid: 262420551506591850
+        Cards:
+        - {fileID: 11400000}
+        - {fileID: 11400000, guid: 44ef57bd568706a4eb93a328c2b7b9d7, type: 2}
+    - rid: 262420551506591850
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 1
+    - rid: 262420551506591851
+      type: {class: AddCardsToHandEffect, ns: , asm: Assembly-CSharp}
+      data: 

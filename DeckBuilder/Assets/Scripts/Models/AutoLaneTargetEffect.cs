@@ -22,15 +22,6 @@ public class AutoLaneTargetEffect : AutoTargetEffect
         return performEffectsGA;
     }
 
-    public override string GetDynamicText(EffectContext context)
-    {
-        IDynamicEffectText dynamicEffectText = GetDynamicTextEffect();
-
-        string value = dynamicEffectText.GetDynamicText(context, targetLanes:TargetMode.GetTargets(context));
-
-        return value;
-    }
-
     public override List<StatusEffectType> GetAllStatusEffects()
     {
         List<StatusEffectType> statusEffects = new();
@@ -57,5 +48,19 @@ public class AutoLaneTargetEffect : AutoTargetEffect
     {
         if (TargetMode is IUserInputTM userInputTM)
             yield return userInputTM.WaitForUserInput();
+    }
+
+    public override string ApplyDynamicTextEffect(string description, int startIndex, EffectContext context, Card card)
+    {
+        IDynamicEffectText[] dtes = GetDynamicTextEffects();
+
+        foreach (IDynamicEffectText dte in dtes)
+        {
+            List<LaneView> targets = TargetMode.AllPossibleTargets(context, card);
+            string value = dte.GetDynamicText(context);
+            description = description.Replace("{v" + (startIndex++) + "}", value);
+        }
+
+        return description;
     }
 }

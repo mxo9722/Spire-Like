@@ -83,6 +83,9 @@ public class EnemySystem : Singleton<EnemySystem>
     {
         NPCView npcView = npcActGA.NPC;
 
+        if (npcView.CurrentHealth == 0)
+            yield break;
+
         HideEnemyPreviewGA hideEnemyPreviewGA = new(npcView);
         ActionSystem.Instance.AddReaction(hideEnemyPreviewGA);
 
@@ -128,10 +131,14 @@ public class EnemySystem : Singleton<EnemySystem>
     private IEnumerator AttackHeroPerformer(AttackHeroGA attackHeroGA)
     {
         if (attackHeroGA.Caster.CurrentHealth == 0 || attackHeroGA.Targets.Count == 0)
+        {
+            attackHeroGA.Context.AddData(attackHeroGA.OnHitKey, false);
             yield return null;
+        }
         else
         {
             CombatantView attacker = attackHeroGA.Caster;
+            attackHeroGA.Context.AddData(attackHeroGA.OnHitKey, true);
 
             yield return attacker.WaitForTweensComplete();
 
@@ -152,7 +159,7 @@ public class EnemySystem : Singleton<EnemySystem>
     {
         for (int i = 0; i < arg.AttackTimes; i++)
         {
-            AttackHeroGA attackHeroGA = new(arg.Damage, arg.Targets, arg.Context, arg.UnblockedKey, arg.OverkillKey);
+            AttackHeroGA attackHeroGA = new(arg.Damage, arg.Targets, arg.Context, arg.UnblockedKey, arg.OverkillKey, arg.OnHitKey);
             ActionSystem.Instance.AddReaction(attackHeroGA);
         }
         yield return 0;

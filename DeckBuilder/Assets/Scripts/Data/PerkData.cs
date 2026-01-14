@@ -1,12 +1,12 @@
 using SerializeReferenceEditor;
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Data/Perk")]
 public class PerkData : ScriptableObject
 {
     [field: SerializeField] public Sprite Image { get; private set; }
-    [field: SerializeReference, SR] public PerkCondition PerkCondition { get; private set; }
-    [field: SerializeReference, SR] public AutoCombatantTargetEffect AutoTargetEffect { get; private set; }
-    [field: SerializeField] public bool UseAutoTarget { get; private set; } = true;
-    [field: SerializeField] public bool UseActionCasterAsTarget { get; private set; } = true;
+    [field: SerializeField] public List<PerkReaction> PerkReactions { get; private set; }
+    [field: SerializeField, TextArea(2,4)] public string Description { get; private set; }
+
 }

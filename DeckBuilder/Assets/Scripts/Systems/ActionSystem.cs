@@ -120,15 +120,14 @@ public class ActionSystem : Singleton<ActionSystem>
         Debug.Log(typeof(T).ToString());
         //Debug.Log(typeof(action).ToString());
         void wrappedReaction(GameAction action) => reaction((T)action);
-        if (subs.ContainsKey(typeof(T)))
-        {
-            subs[typeof(T)].Add(subscriber, wrappedReaction);
-        }
-        else
-        {
+
+        if (!subs.ContainsKey(typeof(T)))
             subs.Add(typeof(T), new());
+
+        if (!subs[typeof(T)].ContainsKey(subscriber))
             subs[typeof(T)].Add(subscriber, wrappedReaction);
-        }
+        else
+            subs[typeof(T)][subscriber] = wrappedReaction;
     }
 
     public static void UnsubscribeReaction<T>(object subscriber, Action<T> reaction, ReactionTiming timing) where T : GameAction

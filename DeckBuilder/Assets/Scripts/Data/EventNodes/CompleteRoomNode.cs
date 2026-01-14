@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using XNode;
 
-public class CompleteRoomNode : Node {
+public class CompleteRoomNode : Node, IHasNodeContent
+{
 
 	public static string OptionText = "Continue";
 
@@ -19,4 +17,9 @@ public class CompleteRoomNode : Node {
 	public override object GetValue(NodePort port) {
 		return this; // Replace this
 	}
+
+    public Node[] GetNodeContent()
+    {
+		return new Node[] { this };
+    }
 }

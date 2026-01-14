@@ -3,7 +3,7 @@ using UnityEngine;
 public class BossRoom : CombatRoom
 {
 
-    public override RoomType RoomType => RoomType.BOSS_FIGHT;
+    public override RoomType RoomType => RoomType.ELITE;
 
     public BossRoom(int level, int row, int seed) : base(level, row, seed) 
     {

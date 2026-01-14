@@ -79,6 +79,8 @@ public class CardSystem : Singleton<CardSystem>
             _hand.Add(card);
 
             yield return _handView.AddCard(cardView);
+
+            cardView.SortingGroup.sortingOrder--;
         }
     }
 
@@ -96,7 +98,10 @@ public class CardSystem : Singleton<CardSystem>
             yield return tween.WaitForCompletion();
 
             Destroy(cardView.gameObject);
-            _drawPile.Add(card);
+
+            int index = RNG.Random.Next(0,_drawPile.Count);
+
+            _drawPile.Insert(index, card);
         }
     }
 
@@ -365,5 +370,10 @@ public class CardSystem : Singleton<CardSystem>
             return cardView;
         }
         return null;
+    }
+
+    public int GetCardCount()
+    {
+        return _hand.Count;
     }
 }

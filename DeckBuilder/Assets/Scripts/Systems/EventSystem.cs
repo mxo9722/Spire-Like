@@ -10,8 +10,6 @@ public class EventSystem : Singleton<EventSystem>
     [field: SerializeField] public EventGraph SafeHouseGraph { get; private set; }
     [SerializeField] private ScenePicker _mapScene;
 
-
-
     private void Start()
     {
         Room room = RunSystem.Instance.GetRoom();
@@ -61,10 +59,13 @@ public class EventSystem : Singleton<EventSystem>
 
     public IEnumerator PerformActions(DialogueNode node)
     {
-        foreach(EventAction action in node.Actions)
+        foreach (EventAction action in node.Actions)
         {
             yield return action.Invoke();
         }
+
+        if (DefaultRoom.CurrentNode != node)
+            yield break;
 
         List<EventOption> options = GetOptions(node);
         EventView.SetUp(node, options);
@@ -81,10 +82,27 @@ public class EventSystem : Singleton<EventSystem>
             if (p == null)
                 continue;
 
-            EventOption option = new();
-            bool success = option.SetUp(p.node);
-            if (success)
-                options.Add(option);
+            if (p.node is BaseDialogueNode)
+            {
+                Node[] baseDNodes = ((IHasNodeContent)p.node).GetNodeContent();
+
+                foreach (BaseDialogueNode baseDNode in baseDNodes)
+                {
+                    EventOption option = new();
+                    bool success = option.SetUp(baseDNode);
+
+                    if (success)
+                        options.Add(option);
+                }
+            }
+            else
+            {
+                EventOption option = new();
+                bool success = option.SetUp(p.node);
+
+                if (success)
+                    options.Add(option);
+            }
         }
 
         return options;

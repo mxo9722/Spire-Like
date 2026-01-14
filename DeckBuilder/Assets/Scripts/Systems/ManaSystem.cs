@@ -5,11 +5,12 @@ public class ManaSystem : Singleton<ManaSystem>
 {
     [SerializeField] private ManaUI _manaUI;
     private const int MAX_MANA = 3;
-    private int _currentMana = 3;
+    public int CurrentMana { get; private set; } = 3;
 
     void OnEnable()
     {
         ActionSystem.AttachPerformer<SpendManaGA>(SpendManaPerformer);
+        ActionSystem.AttachPerformer<GainManaGA>(GainManaPerformer);
         ActionSystem.AttachPerformer<RefillManaGA>(RefillManaPerformer);
         ActionSystem.SubscribeReaction<NPCTurnGA>(this, EnemyTurnPostReaction, ReactionTiming.POST);
     }
@@ -17,31 +18,41 @@ public class ManaSystem : Singleton<ManaSystem>
     void OnDisable()
     {
         ActionSystem.DetachPerformer<SpendManaGA>();
+        ActionSystem.DetachPerformer<GainManaGA>();
         ActionSystem.DetachPerformer<RefillManaGA>();
         ActionSystem.UnsubscribeReaction<NPCTurnGA>(this, EnemyTurnPostReaction, ReactionTiming.POST);
     }
 
     public void UpdateManaText()
     {
-        _manaUI.UpdateManaText(_currentMana);
+        _manaUI.UpdateManaText(CurrentMana);
     }
 
     public bool HasEnoughMana(int mana)
     {
-        return _currentMana >= mana;
+        return CurrentMana >= mana;
     }
 
     private IEnumerator SpendManaPerformer(SpendManaGA spendManaGA)
     {
-        _currentMana -= spendManaGA.Amount;
-        _manaUI.UpdateManaText(_currentMana);
+        CurrentMana -= spendManaGA.Amount;
+        _manaUI.UpdateManaText(CurrentMana);
         CardSystem.Instance.UpdateCardViews();
         yield return null;
     }
+    
+    private IEnumerator GainManaPerformer(GainManaGA gainManaGA)
+    {
+        CurrentMana += gainManaGA.Amount;
+        _manaUI.UpdateManaText(CurrentMana);
+        CardSystem.Instance.UpdateCardViews();
+        yield return null;
+    }
+    
     private IEnumerator RefillManaPerformer(RefillManaGA refillManaGA)
     {
-        _currentMana = MAX_MANA;
-        _manaUI.UpdateManaText(_currentMana);
+        CurrentMana = MAX_MANA;
+        _manaUI.UpdateManaText(CurrentMana);
         CardSystem.Instance.UpdateCardViews();
         yield return null;
     }

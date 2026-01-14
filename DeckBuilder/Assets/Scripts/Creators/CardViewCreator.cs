@@ -12,6 +12,12 @@ public class CardViewCreator : Singleton<CardViewCreator>
 
         cardView.Setup(card, treatAsButton);
 
+        if (!treatAsButton)
+        {
+            cardView.SetSideUp(false);
+            cardView.SetSideUp(true, 0.3f);
+        }
+
         return cardView;
     }
 }

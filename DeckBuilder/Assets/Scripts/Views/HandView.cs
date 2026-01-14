@@ -15,6 +15,7 @@ public class HandView : MonoBehaviour
     {
         _cards.Add(card);
         yield return UpdateCardPositions(0.15f);
+        card.SetTreatAsButton(false);
     }
 
     public CardView RemoveCard(Card card)

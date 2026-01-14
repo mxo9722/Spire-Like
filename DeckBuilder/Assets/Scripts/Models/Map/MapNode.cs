@@ -77,6 +77,9 @@ public class MapNode
             //TODO: switch statement to make the right room type
             switch (RoomType)
             {
+                case RoomType.ELITE:
+                    _room = new BossRoom(Level, Row, _seed);
+                    break;
                 case RoomType.EVENT:
                     _room = new EventRoom(Level, Row, _seed);
                     break;
@@ -86,8 +89,8 @@ public class MapNode
                 case RoomType.SAFE_HOUSE:
                     _room = new SafeHouseRoom(Level, Row, _seed);
                     break;
-                case RoomType.BOSS_FIGHT:
-                    _room = new BossRoom(Level, Row, _seed);
+                case RoomType.SHOP:
+                    _room = new ShopRoom(Level, Row, _seed);
                     break;
                 case RoomType.TREASURE:
                     _room = new TreasureRoom(Level, Row, _seed);

@@ -90,24 +90,27 @@ public class StatusEffectSystem : Singleton<StatusEffectSystem>
 
     private void PreStatusEffectReaction(AddStatusEffectGA addStatusEffectGA)
     {
-        if (addStatusEffectGA.StatusEffectType == StatusEffectType.BLOCK)
-        {
-            int stackCount = addStatusEffectGA.StackCount;
+        //if (addStatusEffectGA.StatusEffectType == StatusEffectType.BLOCK)
+        //{
+        //    int stackCount = addStatusEffectGA.StackCount;
 
-            CombatantView caster = addStatusEffectGA.Caster;
+        //    CombatantView caster = addStatusEffectGA.Caster;
 
-            if (stackCount > 0 && caster != null)
-            {
-                stackCount += caster.GetStatusEffectStacks(StatusEffectType.DEXTERITY);
+        //    if (stackCount > 0 && caster != null)
+        //    {
+        //        stackCount += caster.GetStatusEffectStacks(StatusEffectType.DEXTERITY);
 
-                stackCount = Mathf.Max(0, stackCount);
+        //        stackCount = Mathf.Max(0, stackCount);
 
-                if (caster.GetStatusEffectStacks(StatusEffectType.FRAIL) > 0)
-                    stackCount = Mathf.FloorToInt(FRAIL_MULITPLIER * stackCount);
+        //        if (caster.GetStatusEffectStacks(StatusEffectType.FRAIL) > 0)
+        //            stackCount = Mathf.FloorToInt(FRAIL_MULITPLIER * stackCount);
 
-                addStatusEffectGA.SetStackCount(stackCount);
-            }
-        }
+        //        addStatusEffectGA.SetStackCount(stackCount);
+        //    }
+        //}
+
+        int nStacks = ModifiedStackValue(addStatusEffectGA.StatusEffectType, addStatusEffectGA.StackCount, addStatusEffectGA.Caster);
+        addStatusEffectGA.SetStackCount(nStacks);
     }
 
     private void PreNPCTurnReaction(NPCTurnGA npcTurnGA)
@@ -231,7 +234,7 @@ public class StatusEffectSystem : Singleton<StatusEffectSystem>
                 if (caster.GetStatusEffectStacks(StatusEffectType.FRAIL) > 0)
                     modifier *= FRAIL_MULITPLIER;
 
-                return Mathf.CeilToInt(baseStacks * modifier);
+                return Mathf.FloorToInt(baseStacks * modifier);
             }
         }
 

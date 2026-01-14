@@ -40,19 +40,18 @@ public class Card
     {
         string description = Description;
 
-        if (ManualTargetEffect is IDynamicEffectText dynamicEffect)
-        {
-            string value = dynamicEffect.GetStaticText();
-            description = description.Replace("{vt}", value);
-        }
+        description = RemoveParentheses(description);
 
         List<IDynamicEffectText> dynamicTextEffects = new();
 
+        if (ManualTargetEffect != null)
+        {
+            dynamicTextEffects.AddRange(ManualTargetEffect.GetDynamicTextEffects());
+        }
+
         foreach (AutoTargetEffect effect in OtherEffects)
         {
-            IDynamicEffectText dynamicTextEffect = effect.GetDynamicTextEffect();
-            if (dynamicTextEffect != null)
-                dynamicTextEffects.Add(dynamicTextEffect);
+            dynamicTextEffects.AddRange(effect.GetDynamicTextEffects());
         }
 
         for (int i = 0; i < dynamicTextEffects.Count; i++)
@@ -66,32 +65,42 @@ public class Card
         return description;
     }
 
-    public string GetDynamicDescription(EffectContext context)
+    public string GetDynamicDescription(EffectContext context, List<CombatantView> targetCombatants = null, List<LaneView> targetLanes = null)
     {
         string description = Description;
 
-        if (ManualTargetEffect is IDynamicEffectText dynamicEffect)
+        int index = 0;
+
+        if (ManualTargetEffect != null)
         {
-            List<CombatantView> targetCombatants = context.TargetCombatant ? new() { context.TargetCombatant } : null;
-            List<LaneView> laneViews = context.TargetLane ? new() { context.TargetLane } : null;
 
-            string value = dynamicEffect.GetDynamicText(context, targetCombatants, laneViews);
-            description = description.Replace("{vt}", value);
+            IDynamicEffectText[] dynamicTextEffects = ManualTargetEffect.GetDynamicTextEffects();
+
+            foreach (IDynamicEffectText dte in dynamicTextEffects)
+            {
+
+                List<CombatantView> cTargets = null;
+                if (context.TargetCombatant != null)
+                    cTargets = new() { context.TargetCombatant };
+
+                List<LaneView> lTargets = null;
+                if (context.TargetLane != null)
+                    lTargets = new() { context.TargetLane };
+
+                string value = dte.GetDynamicText(context, cTargets, lTargets);
+                description = description.Replace("{v" + index++.ToString() + "}", value);
+            }
         }
-
-        List<AutoTargetEffect> dynamicTextEffects = new();
 
         foreach (AutoTargetEffect effect in OtherEffects)
         {
-            IDynamicEffectText dynamicTextEffect = effect.GetDynamicTextEffect();
-            if (dynamicTextEffect != null)
-                dynamicTextEffects.Add(effect);
-        }
+            IDynamicEffectText[] dtes = effect.GetDynamicTextEffects();
 
-        for (int i = 0; i < dynamicTextEffects.Count; i++)
-        {
-            string value = dynamicTextEffects[i].GetDynamicText(context);
-            description = description.Replace("{v" + i.ToString()+"}", value);
+            if(dtes.Length > 0)
+            {
+                description = effect.ApplyDynamicTextEffect(description, index, context, this);
+                index += dtes.Length;
+            }
         }
 
         description = HighlightKeyWords(description);
@@ -163,6 +172,11 @@ public class Card
         }
 
         return description;
+    }
+
+    private string RemoveParentheses(string description)
+    {
+        return Regex.Replace(description, @" \(.*?\)", "");
     }
 
     public bool IsPlayable(CombatantView caster = null)

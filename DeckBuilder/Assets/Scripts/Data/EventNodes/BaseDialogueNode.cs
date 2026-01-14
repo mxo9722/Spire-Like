@@ -6,7 +6,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using XNode;
 [NodeWidth(450)]
-public abstract class BaseDialogueNode : Node {
+public abstract class BaseDialogueNode : Node, IHasNodeContent
+{
 	[field: SerializeField, TextArea] public string Text { get; private set; }
 	[field: SerializeField] public Sprite Sprite { get; private set; }
 
@@ -22,6 +23,11 @@ public abstract class BaseDialogueNode : Node {
 	public override object GetValue(NodePort port) {
 		return this; // Replace this
 	}
+
+	public virtual Node[] GetNodeContent()
+    {
+		return new Node[] { this };
+    }
 
 	public abstract void SetUp();
 }

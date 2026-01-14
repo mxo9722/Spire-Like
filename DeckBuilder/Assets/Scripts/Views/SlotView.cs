@@ -33,10 +33,9 @@ public class SlotView : MonoBehaviour, ITargetPreviewable
 
     public void AddCombatant(CombatantView combatant, bool updatePos = true)
     {
-        if (Combatant != null)
-            return;
-
-        combatant.Slot?.RemoveCombatant();
+        if(combatant.Slot?.Combatant == combatant)
+            combatant.Slot?.RemoveCombatant();
+        
         Combatant = combatant;
         combatant.transform.parent = transform;
         combatant.SetSlot(this);

@@ -66,7 +66,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 262dd8f326c811f49b5f8e3ff5f3b5fd, type: 3}
-  m_Name: Dialogue
+  m_Name: Pull the level (Gain the Guilt curse)
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
   position: {x: 264, y: -296}
@@ -127,7 +127,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 262dd8f326c811f49b5f8e3ff5f3b5fd, type: 3}
-  m_Name: Dialogue
+  m_Name: Don't pull the lever (Lose 100 Renown)
   m_EditorClassIdentifier: 
   graph: {fileID: 11400000}
   position: {x: 264, y: 200}
@@ -165,19 +165,19 @@ MonoBehaviour:
     do.
   <Sprite>k__BackingField: {fileID: 0}
   Choices: 0
-  OptionText: Don't pull the lever (Lose 100 Karma)
+  OptionText: Don't pull the lever (Lose 100 Renown)
   HideIfUnavailable: 0
   <Conditions>k__BackingField: []
   Prev: 0
   <Actions>k__BackingField:
-  - rid: 4055348078608908373
+  - rid: 262420529996365914
   references:
     version: 2
     RefIds:
-    - rid: 4055348078608908373
-      type: {class: RemoveKarmaEA, ns: , asm: Assembly-CSharp}
+    - rid: 262420529996365914
+      type: {class: RemoveRenownEA, ns: , asm: Assembly-CSharp}
       data:
-        _credits: 100
+        _renown: 100
 --- !u!114 &8738784151511126487
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -28,15 +28,6 @@ public class AutoCardTargetEffect : AutoTargetEffect
         return statusEffects;
     }
 
-    public override string GetDynamicText(EffectContext context)
-    {
-        IDynamicEffectText dynamicEffectText = GetDynamicTextEffect();
-
-        string value = dynamicEffectText.GetDynamicText(context);
-
-        return value;
-    }
-
     public override GameAction GetGameAction(EffectContext context)
     {
         List<Card> cards = TargetMode.GetTargets(context);

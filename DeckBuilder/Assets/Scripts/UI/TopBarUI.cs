@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TopBarUI : Singleton<TopBarUI>
 {
-    [SerializeField] private TMPro.TMP_Text _karmaText;
+    [SerializeField] private TMPro.TMP_Text _renownText;
     [SerializeField] private TMPro.TMP_Text _healthText;
     [SerializeField] private CardPileUI _deckUI;
 
@@ -13,14 +13,14 @@ public class TopBarUI : Singleton<TopBarUI>
     private void Start()
     {
         _deckUI.SetUp(RunSystem.Instance.RunData.Deck);
-        _karmaText.text = KarmaSystem.Instance.Karma.ToString();
+        _renownText.text = RenownSystem.Instance.Renown.ToString();
         
         UpdateHealth();
     }
 
-    public void UpdateCredits(int credits)
+    public void UpdateRenown(int credits)
     {
-        int prevAmount = int.Parse(_karmaText.text);
+        int prevAmount = int.Parse(_renownText.text);
         StartCoroutine(LerpCredits(credits-prevAmount, 0.5f));
     }
 
@@ -36,17 +36,20 @@ public class TopBarUI : Singleton<TopBarUI>
 
     private IEnumerator LerpCredits(int amount, float duration)
     {
+        if (amount == 0)
+            yield break;
+
         int uAmount = Mathf.Abs(amount);
 
         int increment = amount / uAmount;
 
         for (int i = 0; i < uAmount; i++)
         {
-            if (_karmaText == null)
+            if (_renownText == null)
                 yield break;
 
-            int prevAmount = int.Parse(_karmaText.text);
-            _karmaText.text = (prevAmount + increment).ToString();
+            int prevAmount = int.Parse(_renownText.text);
+            _renownText.text = (prevAmount + increment).ToString();
             yield return new WaitForSeconds(duration / (float)uAmount);
         }
     }

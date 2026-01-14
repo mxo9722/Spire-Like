@@ -929,7 +929,7 @@ GameObject:
   - component: {fileID: 754363392}
   - component: {fileID: 754363393}
   m_Layer: 0
-  m_Name: KarmaSystem
+  m_Name: RenownSystem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -959,7 +959,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 754363391}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0dbf82346de7424cad2fb7265cc2dee, type: 3}
+  m_Script: {fileID: 11500000, guid: 388f6d225c9032547908ce64a02b1f82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &841037027
@@ -1014,7 +1014,7 @@ MonoBehaviour:
     - Key: 1
       Value: {fileID: 21300000, guid: 1c91a79dfb7475b4c88371e6128ac0e4, type: 3}
     - Key: 2
-      Value: {fileID: 21300000, guid: a38add4bde49e18468e83957865d2ddf, type: 3}
+      Value: {fileID: 21300000, guid: 7f68cc02f716a2245a72032ab74382eb, type: 3}
     - Key: 3
       Value: {fileID: 21300000, guid: 0730ec3d0a5e7144496ed85332271b3a, type: 3}
     - Key: 4
@@ -1024,7 +1024,7 @@ MonoBehaviour:
     - Key: 6
       Value: {fileID: 21300000, guid: a99da43efe9a3634baf20d3116806648, type: 3}
     - Key: 7
-      Value: {fileID: 0}
+      Value: {fileID: 21300000, guid: 87114fdb870d2a540a0ff673df06a9da, type: 3}
 --- !u!1001 &996877434
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1234,9 +1234,9 @@ Transform:
   - {fileID: 1772842232}
   - {fileID: 1229267542}
   - {fileID: 1205493503}
-  - {fileID: 754363392}
   - {fileID: 1314828992}
   - {fileID: 1772912600}
+  - {fileID: 754363392}
   - {fileID: 1395879179}
   - {fileID: 1001911619}
   m_Father: {fileID: 0}
@@ -1526,6 +1526,8 @@ MonoBehaviour:
     scenePath: Assets/Scenes/CombatScene.unity
   _eventScene:
     scenePath: Assets/Scenes/EventScene.unity
+  _shopScene:
+    scenePath: Assets/Scenes/ShopScene.unity
   _mapView: {fileID: 1720031943}
   _combatData: {fileID: 11400000, guid: be98572c81513654d88dc8818cd6baa1, type: 2}
   _eventsData: {fileID: 11400000, guid: cc9cf358ceb96594a82b2168cb72074f, type: 2}

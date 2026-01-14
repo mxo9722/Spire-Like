@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "CardData", menuName = "Data/Card")]
 public class CardData : ScriptableObject
 {
+    [field: SerializeField] public Rarity Rarity { get; internal set; } = Rarity.COMMON;
     [field: SerializeField] public CardData Upgrade { get; private set; } = null;
     [field: SerializeField] public bool Unplayable { get; private set; } = false;
     [field: SerializeField, Min(0)] public int Mana { get; private set; }

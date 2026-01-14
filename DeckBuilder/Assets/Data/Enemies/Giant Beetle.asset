@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: Giant Beetle
   m_EditorClassIdentifier: 
   <Image>k__BackingField: {fileID: 21300000, guid: dace3b3eb2aacea4d9a36a15c3d2b5db, type: 3}
-  <Health>k__BackingField: 18
+  <Health>k__BackingField: 16
+  <RandomHealthMod>k__BackingField: 4
   <StatusEffects>k__BackingField:
     _serializedList: []
   <ActionPattern>k__BackingField:
@@ -27,7 +28,6 @@ MonoBehaviour:
     - rid: 4055348055111631086
     - rid: 4055348055111631092
     - rid: 4055348055111631103
-    - rid: 4055348078608908459
   - <Name>k__BackingField: Huff
     <Symbol>k__BackingField: 1
     <Weight>k__BackingField: 2
@@ -51,6 +51,7 @@ MonoBehaviour:
       type: {class: SaveCombatantsAsDataEffect, ns: , asm: Assembly-CSharp}
       data:
         _dataKey: TargetUnits
+        _saveDataLevel: 0
     - rid: 4055348055111631092
       type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
       data:
@@ -62,6 +63,7 @@ MonoBehaviour:
       type: {class: SavedDataCTM, ns: , asm: Assembly-CSharp}
       data:
         _dataKey: TargetUnits
+        _dataLevel: 0
     - rid: 4055348055111631095
       type: {class: MoveUnitsToLaneEffect, ns: , asm: Assembly-CSharp}
       data:
@@ -91,6 +93,7 @@ MonoBehaviour:
       type: {class: SavedDataCTM, ns: , asm: Assembly-CSharp}
       data:
         _dataKey: TargetUnits
+        _dataLevel: 0
     - rid: 4055348055111631109
       type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
       data:
@@ -139,6 +142,7 @@ MonoBehaviour:
         <Damage>k__BackingField: 3
         _unblockedKey: 
         _overkillKey: 
+        _onHit: 
     - rid: 4055348078608908379
       type: {class: FrontFoeInLaneCTM, ns: , asm: Assembly-CSharp}
       data:
@@ -147,24 +151,3 @@ MonoBehaviour:
     - rid: 4055348078608908380
       type: {class: CurrentLTM, ns: , asm: Assembly-CSharp}
       data: 
-    - rid: 4055348078608908459
-      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
-      data:
-        <TargetMode>k__BackingField:
-          rid: 4055348078608908460
-        _combatantEffect:
-          rid: 4055348078608908461
-    - rid: 4055348078608908460
-      type: {class: CasterCTM, ns: , asm: Assembly-CSharp}
-      data: 
-    - rid: 4055348078608908461
-      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
-      data:
-        _statusEffectType: 7
-        _stackCount:
-          rid: 4055348078608908462
-        _skipAnimation: 0
-    - rid: 4055348078608908462
-      type: {class: SetQ, ns: , asm: Assembly-CSharp}
-      data:
-        _set: 2

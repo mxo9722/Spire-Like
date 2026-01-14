@@ -5,47 +5,52 @@ using UnityEngine;
 public class Perk
 {
     public Sprite Image => _data.Image;
+    public string Name => _data.name;
+    public string Description => _data.Description;
 
     private readonly PerkData _data;
-    private readonly PerkCondition _condition;
-    private readonly AutoCombatantTargetEffect _effect;
+    private readonly List<PerkReaction> _reactions;
 
     public Perk(PerkData perkData)
     {
         _data = perkData;
-        _condition = perkData.PerkCondition;
-        _effect = perkData.AutoTargetEffect;
+        _reactions = perkData.PerkReactions;
     }
 
     public void OnAdd()
     {
-        _condition.SubscribeCondition(Reaction);
+        foreach(PerkReaction reaction in _reactions)
+            reaction.SubscribeCondition(Reaction);
     }
 
     public void OnRemove()
     {
-        _condition.UnsubscribeCondition(Reaction);
+        foreach (PerkReaction reaction in _reactions)
+            reaction.UnsubscribeCondition();
     }
 
-    private void Reaction(GameAction gameAction)
+    private void Reaction(PerkReaction reaction, GameAction gameAction)
     {
-        if (_condition.SubConditionIsMet(gameAction))
+        if (reaction.PerkCondition.SubConditionIsMet(gameAction))
         {
-            List<CombatantView> targets = new();
-
-            if(_data.UseActionCasterAsTarget && gameAction is IHaveCaster haveCaster)
+            foreach (AutoCombatantTargetEffect autoTargetEffect in reaction.AutoTargetEffects)
             {
-                targets.Add(haveCaster.Caster);
-            }
-            if (_data.UseAutoTarget)
-            {
-                EffectContext targetModeContext = EffectContext.CreateHeroEC();
+                List<CombatantView> targets = new();
 
-                targets.AddRange(_effect.TargetMode.GetTargets(targetModeContext));
-            }
+                if (reaction.UseActionCasterAsTarget && gameAction is IHaveCaster haveCaster)
+                {
+                    targets.Add(haveCaster.Caster);
+                }
+                else
+                {
+                    EffectContext targetModeContext = new();
 
-            GameAction perkEffectAction = _effect.Effect.GetGameAction(EffectContext.CreateHeroEC(), combatantTargets:targets);
-            ActionSystem.Instance.AddReaction(perkEffectAction);
+                    targets.AddRange(autoTargetEffect.TargetMode.GetTargets(targetModeContext));
+                }
+
+                GameAction perkEffectAction = autoTargetEffect.Effect.GetGameAction(EffectContext.CreateHeroEC(), combatantTargets: targets);
+                ActionSystem.Instance.AddReaction(perkEffectAction);
+            }
         }
     }
 

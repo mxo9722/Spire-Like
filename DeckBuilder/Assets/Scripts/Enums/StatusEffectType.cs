@@ -25,10 +25,14 @@ public enum StatusEffectType
 
     [InspectorName("Enemy/Ninja Math")]
     NINJA_MATH = 1000,
+    [InspectorName("Enemy/Blend In")]
+    BLEND_IN,
     
     
     [InspectorName("CaptainDragon/Chaos")]
     CHAOS = 2000,
     [InspectorName("CaptainDragon/Jabberwocky")]
-    JABBERWOCKY
+    JABBERWOCKY,
+    [InspectorName("CaptainDragon/Fear Aura")]
+    FEAR_AURA,
 }

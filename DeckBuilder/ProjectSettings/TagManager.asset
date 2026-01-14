@@ -42,6 +42,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: SpeechBubbles
+    uniqueID: 1343014431
+    locked: 0
   - name: UI
     uniqueID: 2845121839
     locked: 0

@@ -1,6 +1,7 @@
 using DG.Tweening;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -31,6 +32,8 @@ public class CardView : MonoBehaviour
     private Vector3 _dragStartPosition;
     private Quaternion _dragStartRotation;
     private bool _treatAsButton = false;
+    private bool _hasBeenPlayed = false;
+    private bool _showTips = true;
 
     public void Setup(Card card, bool treatAsButton = false)
     {
@@ -70,6 +73,7 @@ public class CardView : MonoBehaviour
         if (!_treatAsButton)
         {
             if (!Interactions.Instance.PlayerCanHover()) return;
+            if (_hasBeenPlayed) return;
 
             Hovering = true;
 
@@ -80,7 +84,8 @@ public class CardView : MonoBehaviour
         }
         else
         {
-            _helpBoxesUI.Populate(Card);
+            if(_showTips)
+                _helpBoxesUI.Populate(Card);
         }
     }
 
@@ -177,6 +182,7 @@ public class CardView : MonoBehaviour
                     {
                         PlayCardGA playCardGA = new PlayCardGA(Card, combatantView);
                         ActionSystem.Instance.Perform(playCardGA);
+                        _hasBeenPlayed = true;
                     }
                     break;
                 case ManualTargetType.LANE:
@@ -191,6 +197,7 @@ public class CardView : MonoBehaviour
                     {
                         PlayCardGA playCardGA = new PlayCardGA(Card, laneView);
                         ActionSystem.Instance.Perform(playCardGA);
+                        _hasBeenPlayed = true;
                     }
                     break;
             }
@@ -206,6 +213,7 @@ public class CardView : MonoBehaviour
             {
                 PlayCardGA playCardGA = new PlayCardGA(Card);
                 ActionSystem.Instance.Perform(playCardGA);
+                _hasBeenPlayed = true;
 
                 if (Card.ExhuastOnUse)
                 {
@@ -332,6 +340,23 @@ public class CardView : MonoBehaviour
     {
         _glowSR.DOKill();
         _glowSR.color = Color.clear;
+    }
+
+    public void SetTreatAsButton(bool value)
+    {
+        _treatAsButton = value;
+    }
+
+    public void SetSideUp(bool faceUp, float animTime = 0)
+    {
+        Vector3 rotation = new(0, faceUp ? 0 : 180, 0);
+
+        if (animTime > 0)
+            _wrapper.transform.DOLocalRotate(rotation, animTime);
+        else
+            _wrapper.transform.localEulerAngles = rotation;
+
+        _showTips = faceUp;
     }
 
     public bool IsPlayable(CombatantView caster = null) => Card.IsPlayable();

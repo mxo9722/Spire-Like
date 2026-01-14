@@ -1,4 +1,5 @@
 using SerializeReferenceEditor;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class StatusEffectStacksQ : Quantity
@@ -8,7 +9,8 @@ public class StatusEffectStacksQ : Quantity
 
     public override int GetAmount(EffectContext effectContext)
     {
-        var targets = _target.GetTargets(effectContext);
+        List<CombatantView> targets = _target.GetTargets(effectContext);
+        targets.RemoveAll(t => t == null);
 
         if (targets.Count == 0)
             return 0;

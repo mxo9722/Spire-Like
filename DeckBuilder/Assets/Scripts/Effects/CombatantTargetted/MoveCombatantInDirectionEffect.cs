@@ -5,6 +5,8 @@ public class MoveCombatantInDirectionEffect : CombatantTargetEffect
 {
 
     [SerializeField] private MovementDirection _direction;
+    [SerializeField] private int _amount = 1;
+    [SerializeField] private bool _loopAround;
 
     protected override GameAction GetGameAction(EffectContext context, List<CombatantView> combatantTargets)
     {
@@ -13,7 +15,7 @@ public class MoveCombatantInDirectionEffect : CombatantTargetEffect
         foreach(CombatantView target in combatantTargets)
         {
             LaneView oldLane = BoardSystem.Instance.GetCurrentLaneView(target);
-            LaneView newLane = BoardSystem.Instance.GetLaneFromDirection(oldLane, _direction);
+            LaneView newLane = BoardSystem.Instance.GetLaneFromDirection(oldLane, _direction, _amount, _loopAround);
             if (oldLane != newLane)
                 moveUnitsGA.AddMove(target, newLane);
         }

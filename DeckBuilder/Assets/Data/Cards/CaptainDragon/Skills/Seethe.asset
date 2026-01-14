@@ -1,0 +1,68 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62bf69310631aa94896652d3f8be392c, type: 3}
+  m_Name: Seethe
+  m_EditorClassIdentifier: 
+  <Rarity>k__BackingField: 0
+  <Upgrade>k__BackingField: {fileID: 11400000, guid: a4a58f938949aa349ba790eff06e511b, type: 2}
+  <Unplayable>k__BackingField: 0
+  <Mana>k__BackingField: 1
+  <Type>k__BackingField: 1
+  <Image>k__BackingField: {fileID: 21300000, guid: caf0431bd7e7aa248b10bd55faea5a64, type: 3}
+  <Description>k__BackingField: Draw {v0} cards. Gain {v1} chaos.
+  <RequiredConditions>k__BackingField: []
+  <HighlightConditions>k__BackingField: []
+  <ExhuastOnUse>k__BackingField: 0
+  <ManualTargetType>k__BackingField: 2
+  <CombatantFilters>k__BackingField: []
+  <LaneFilters>k__BackingField: []
+  <ManualTargetEffect>k__BackingField:
+    rid: -2
+  <OtherEffects>k__BackingField:
+  - rid: 4055348103697924354
+  - rid: 4055348103697924356
+  <TurnEndEffects>k__BackingField: []
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 4055348103697924354
+      type: {class: AutoTargetlessEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _noTargetEffect:
+          rid: 4055348103697924355
+    - rid: 4055348103697924355
+      type: {class: DrawCardsEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _drawAmount: 3
+    - rid: 4055348103697924356
+      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 4055348103697924357
+        _combatantEffect:
+          rid: 4055348103697924358
+    - rid: 4055348103697924357
+      type: {class: CasterCTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 4055348103697924358
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _statusEffectType: 2000
+        _stackCount:
+          rid: 4055348103697924359
+        _skipAnimation: 0
+    - rid: 4055348103697924359
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 2

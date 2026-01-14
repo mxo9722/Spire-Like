@@ -10,6 +10,11 @@ public class CardReward : SetReward
 
     [field: SerializeField] public List<CardData> Cards { get; private set; }
 
+    public void SetCards(CardData card)
+    {
+        Cards = new() { card };
+    }
+    
     public void SetCards(List<CardData> cards)
     {
         Cards = cards;
@@ -17,8 +22,15 @@ public class CardReward : SetReward
 
     public override void CollectReward()
     {
-        CardRewardSystem.Instance.Show(this);
+        if (Cards.Count > 1)
+        {
+            CardRewardSystem.Instance.Show(this);
 
-        RewardSystem.Instance.Hide();
+            RewardSystem.Instance.Hide();
+        }
+        else if(Cards.Count == 1)
+        {
+            RunSystem.Instance.AddCard(new(Cards[0]));
+        }
     }
 }

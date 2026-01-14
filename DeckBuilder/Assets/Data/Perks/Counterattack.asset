@@ -13,30 +13,36 @@ MonoBehaviour:
   m_Name: Counterattack
   m_EditorClassIdentifier: 
   <Image>k__BackingField: {fileID: 21300000, guid: 61cf8bda40db8ab40aaa7de4937ccc6e, type: 3}
-  <PerkCondition>k__BackingField:
-    rid: 904407216073211974
-  <AutoTargetEffect>k__BackingField:
-    rid: 1228494508162810022
-  <UseAutoTarget>k__BackingField: 0
-  <UseActionCasterAsTarget>k__BackingField: 1
+  <PerkReactions>k__BackingField:
+  - <PerkCondition>k__BackingField:
+      rid: 262420752671178857
+    <UseActionCasterAsTarget>k__BackingField: 1
+    <AutoTargetEffects>k__BackingField:
+    - rid: 262420752671178858
+  <Description>k__BackingField: Units that attack you take 3 damage.
   references:
     version: 2
     RefIds:
-    - rid: 904407216073211974
-      type: {class: OnEnemyAttackCondition, ns: , asm: Assembly-CSharp}
+    - rid: 262420752671178857
+      type: {class: OnEnemyAttackPC, ns: , asm: Assembly-CSharp}
       data:
-        reactionTiming: 1
-    - rid: 1228494508162810022
+        reactionTiming: 0
+    - rid: 262420752671178858
       type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
       data:
         <TargetMode>k__BackingField:
-          rid: 1228494508162810026
+          rid: 262420752671178859
         _combatantEffect:
-          rid: 1228494508162810025
-    - rid: 1228494508162810025
-      type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
-      data:
-        _damageAmount: 3
-    - rid: 1228494508162810026
+          rid: 262420752671178860
+    - rid: 262420752671178859
       type: {class: NoCTM, ns: , asm: Assembly-CSharp}
       data: 
+    - rid: 262420752671178860
+      type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _damage:
+          rid: 262420752671178861
+    - rid: 262420752671178861
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 3

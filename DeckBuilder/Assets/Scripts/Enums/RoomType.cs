@@ -4,10 +4,10 @@ public enum RoomType
 {
     UNDECIDED,
     FIGHT,
-    BOSS_FIGHT,
+    ELITE,
     EVENT,
     SHOP,
     SAFE_HOUSE,
     TREASURE,
-    GUARDIAN,
+    BOSS,
 }

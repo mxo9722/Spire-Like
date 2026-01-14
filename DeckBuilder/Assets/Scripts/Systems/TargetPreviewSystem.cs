@@ -33,9 +33,9 @@ public class TargetPreviewSystem : Singleton<TargetPreviewSystem>
         foreach (AutoTargetEffect effect in card.OtherEffects)
         {
             if (effect is ConditionalAutoTargetEffect)
-                highlights.AddRange(GetTargets(effect, context));
+                highlights.AddRange(GetTargets(effect, context,card));
             else
-                targets.AddRange(GetTargets(effect, context));
+                targets.AddRange(GetTargets(effect, context,card));
         }
 
         targets.ForEach(t => t.SetTargetPreview(_defaultColor));
@@ -78,9 +78,9 @@ public class TargetPreviewSystem : Singleton<TargetPreviewSystem>
         foreach (AutoTargetEffect effect in card.OtherEffects)
         {
             if(effect is ConditionalAutoTargetEffect)
-                hTargets.AddRange(GetTargets(effect, context));
+                hTargets.AddRange(GetTargets(effect, context, card));
             else
-                targets.AddRange(GetTargets(effect, context));
+                targets.AddRange(GetTargets(effect, context, card));
         }
 
         targets.ForEach(t => t.SetTargetPreview(_defaultColor));
@@ -105,9 +105,9 @@ public class TargetPreviewSystem : Singleton<TargetPreviewSystem>
         foreach (AutoTargetEffect effect in card.OtherEffects)
         {
             if(effect is ConditionalAutoTargetEffect)
-                hTargets.AddRange(GetTargets(effect, context));
+                hTargets.AddRange(GetTargets(effect, context, card));
             else
-                targets.AddRange(GetTargets(effect, context));
+                targets.AddRange(GetTargets(effect, context, card));
 
         }
 
@@ -164,9 +164,9 @@ public class TargetPreviewSystem : Singleton<TargetPreviewSystem>
         foreach (AutoTargetEffect effect in action.Effects)
         {
             if (effect is ConditionalAutoTargetEffect)
-                highlights.AddRange(GetTargets(effect, context));
+                highlights.AddRange(GetTargets(effect, context, null));
             else
-                targets.AddRange(GetTargets(effect, context));
+                targets.AddRange(GetTargets(effect, context, null));
         }
 
         targets.ForEach(t => t.SetTargetPreview(_defaultColor));
@@ -197,7 +197,7 @@ public class TargetPreviewSystem : Singleton<TargetPreviewSystem>
         BoardSystem.Instance.GetAllLanes().ForEach(l => l.HideTargetPreview());
     }
 
-    private List<ITargetPreviewable> GetTargets(AutoTargetEffect effect, EffectContext context)
+    private List<ITargetPreviewable> GetTargets(AutoTargetEffect effect, EffectContext context, Card card)
     {
         List<ITargetPreviewable> targets = new();
 
@@ -206,17 +206,17 @@ public class TargetPreviewSystem : Singleton<TargetPreviewSystem>
 
         if (effect is AutoCombatantTargetEffect cEffect && (!cEffect.TargetMode.IsRandom || !_randomCycleTargets))
         {
-            targets.AddRange(cEffect.TargetMode.AllPossibleTargets(context));
+            targets.AddRange(cEffect.TargetMode.AllPossibleTargets(context, card));
         }
         else if (effect is AutoLaneTargetEffect lEffect && (!lEffect.TargetMode.IsRandom || !_randomCycleTargets))
         {
-            targets.AddRange(lEffect.TargetMode.AllPossibleTargets(context));
+            targets.AddRange(lEffect.TargetMode.AllPossibleTargets(context, card));
         }
         else if (effect is ConditionalAutoTargetEffect conditional)
         {
             if (conditional.GetGameAction(context) != null)
             {
-                return GetTargets(conditional.SuccessEffect, context);
+                return GetTargets(conditional.SuccessEffect, context, card);
             }
         }
 

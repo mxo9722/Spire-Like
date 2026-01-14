@@ -7,17 +7,31 @@ public abstract class AutoTargetEffect
     public abstract Effect Effect { get; }
 
     public abstract GameAction GetGameAction(EffectContext targetModeContext);
-    public IDynamicEffectText GetDynamicTextEffect()
+    public virtual IDynamicEffectText[] GetDynamicTextEffects()
     {
-        if (Effect is IDynamicEffectText dynamicEffectText)
-            return dynamicEffectText;
-        return null;
+        return Effect.GetDynamicTextEffects();
+    }
+
+    public virtual bool HasDynamicTextEffects()
+    {
+        return GetDynamicTextEffects().Length > 0;
+    }
+
+    public virtual string ApplyDynamicTextEffect(string description, int startIndex, EffectContext context, Card card)
+    {
+        IDynamicEffectText[] dtes = GetDynamicTextEffects();
+        
+        foreach(IDynamicEffectText dte in dtes)
+        {
+            string value = dte.GetDynamicText(context);
+            description = description.Replace("{v"+(startIndex++)+"}", value);
+        }
+
+        return description;
     }
 
     public abstract bool RequiresUserInput();
     public abstract IEnumerator WaitForUserInput();
-
-    public abstract string GetDynamicText(EffectContext targetModeContext);
 
     public abstract List<StatusEffectType> GetAllStatusEffects();
 }

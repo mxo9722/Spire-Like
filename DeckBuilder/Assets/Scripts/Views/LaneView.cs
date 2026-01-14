@@ -72,9 +72,13 @@ public class LaneView : MonoBehaviour, ITargetPreviewable
 
     public void SlideEnemiesLeft()
     {
-        for(int i=0;i<EnemyViews.Length;i++)
+        CombatantView[] enemies = EnemyViews;
+
+        enemies = SortLane(enemies);
+        
+        for ( int i=0; i < enemies.Length; i++)
         {
-            NPCView enemyView = EnemyViews[i];
+            NPCView enemyView = (NPCView)enemies[i];
             SlotView enemySlot = EnemySlots[i];
 
             if (enemyView.Slot != enemySlot)
@@ -84,11 +88,15 @@ public class LaneView : MonoBehaviour, ITargetPreviewable
         }
     }
 
-    public void SlideAlliesLeft()
+    public void SlideHeroesRight()
     {
-        for (int i = 0; i < HeroViews.Length; i++)
+        CombatantView[] heroes = HeroViews;
+
+        heroes = SortLane(heroes);
+
+        for (int i = 0; i < heroes.Length; i++)
         {
-            CombatantView heroView = HeroViews[i];
+            CombatantView heroView = heroes[i];
             SlotView heroSlot = HeroSlots[i];
 
             if (heroView.Slot != heroSlot)
@@ -213,5 +221,27 @@ public class LaneView : MonoBehaviour, ITargetPreviewable
             return enemies.First();
 
         return null;
+    }
+
+    public int GetFriendlyCount(CombatantView combatantView)
+    {
+        if (combatantView is NPCView npc && npc.IsEvil)
+            return EnemyViews.Length;
+
+        return HeroViews.Length;
+    }
+
+    public CombatantView[] SortLane(CombatantView[] npcs)
+    {
+        List<CombatantView> list = new(npcs);
+
+        list.Sort(
+            //(x, y) =>
+            //{
+            //    return x.GetSortValue() - y.GetSortValue();
+            //}
+            );
+
+        return list.ToArray();
     }
 }

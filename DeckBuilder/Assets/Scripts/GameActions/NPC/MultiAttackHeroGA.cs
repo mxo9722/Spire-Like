@@ -14,8 +14,9 @@ public class MultiAttackHeroGA : GameAction
 
     public string UnblockedKey { get; private set; } = "";
     public string OverkillKey { get; private set; } = "";
+    public string OnHitKey { get; private set; } = "";
 
-    public MultiAttackHeroGA(int attackTimes, int damage, List<CombatantView> targets, EffectContext context, string unblockedKey, string overkillKey)
+    public MultiAttackHeroGA(int attackTimes, int damage, List<CombatantView> targets, EffectContext context, string unblockedKey, string overkillKey, string onHitKey)
     {
         AttackTimes = attackTimes;
         Damage = damage;
@@ -23,5 +24,6 @@ public class MultiAttackHeroGA : GameAction
         Context = context;
         UnblockedKey = unblockedKey;
         OverkillKey = overkillKey;
+        OnHitKey = onHitKey;
     }
 }

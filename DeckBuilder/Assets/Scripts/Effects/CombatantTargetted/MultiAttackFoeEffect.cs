@@ -12,10 +12,11 @@ public class MultiAttackFoeEffect : CombatantTargetEffect
 
     [SerializeField] private string _unblockedKey = "";
     [SerializeField] private string _overkillKey = "";
+    [SerializeField] private string _onHitKey = "";
 
     protected override GameAction GetGameAction(EffectContext context, List<CombatantView> combatantTargets)
     {
-        MultiAttackHeroGA multiAttackHeroGA = new MultiAttackHeroGA(AttackCount.GetAmount(context), Damage.GetAmount(context), combatantTargets, context, _unblockedKey, _overkillKey);
+        MultiAttackHeroGA multiAttackHeroGA = new MultiAttackHeroGA(AttackCount.GetAmount(context), Damage.GetAmount(context), combatantTargets, context, _unblockedKey, _overkillKey, _onHitKey);
         return multiAttackHeroGA;
     }
 }

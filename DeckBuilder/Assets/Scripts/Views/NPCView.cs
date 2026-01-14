@@ -24,7 +24,10 @@ public class NPCView : CombatantView
         Data = enemyData;
         IsEvil = isEvil;
         UpdateBehaviorIndicator();
-        SetupBase(enemyData.Health, enemyData.Image, slot);
+
+        int health = enemyData.Health + RNG.Random.Next(enemyData.RandomHealthMod);
+
+        SetupBase(health, enemyData.Image, slot);
 
         if (enemyData.StatusEffects.Count > 0) 
         {

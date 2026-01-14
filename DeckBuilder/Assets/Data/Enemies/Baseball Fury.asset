@@ -1,0 +1,199 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4049c0b1badbe8947a15364491cb1ac9, type: 3}
+  m_Name: Baseball Fury
+  m_EditorClassIdentifier: 
+  <Image>k__BackingField: {fileID: 21300000, guid: 9dbfdd4d92fe5e5498983bcd168e97e9, type: 3}
+  <Health>k__BackingField: 15
+  <RandomHealthMod>k__BackingField: 5
+  <StatusEffects>k__BackingField:
+    _serializedList: []
+  <ActionPattern>k__BackingField:
+  - <Name>k__BackingField: Single
+    <Symbol>k__BackingField: 0
+    <Weight>k__BackingField: 2
+    <Priority>k__BackingField: 0
+    <ConsecutiveMax>k__BackingField: 3
+    <Conditions>k__BackingField: []
+    <Effects>k__BackingField:
+    - rid: 262420636293398606
+    - rid: 262420636293398686
+    - rid: 262420636293398610
+  - <Name>k__BackingField: Double
+    <Symbol>k__BackingField: 0
+    <Weight>k__BackingField: 1
+    <Priority>k__BackingField: 0
+    <ConsecutiveMax>k__BackingField: 3
+    <Conditions>k__BackingField: []
+    <Effects>k__BackingField:
+    - rid: 262420636293398615
+    - rid: 262420636293398616
+  references:
+    version: 2
+    RefIds:
+    - rid: 262420636293398606
+      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 262420636293398607
+        _combatantEffect:
+          rid: 262420636293398609
+    - rid: 262420636293398607
+      type: {class: FrontFoeInLaneCTM, ns: , asm: Assembly-CSharp}
+      data:
+        _laneTargetMode:
+          rid: 262420636293398608
+    - rid: 262420636293398608
+      type: {class: CurrentLTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 262420636293398609
+      type: {class: AttackHeroEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <Damage>k__BackingField: 6
+        _unblockedKey: 
+        _overkillKey: 
+        _onHit: onHit
+    - rid: 262420636293398610
+      type: {class: ConditionalAutoTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _conditions:
+        - rid: 262420636293398611
+        _successEffect:
+          rid: 262420636293398612
+    - rid: 262420636293398611
+      type: {class: SavedDataTrueCondition, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
+        _key: onHit
+        _dataLevel: 0
+    - rid: 262420636293398612
+      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 262420636293398613
+        _combatantEffect:
+          rid: 262420636293398614
+    - rid: 262420636293398613
+      type: {class: AllNPCsOfTypeCTM, ns: , asm: Assembly-CSharp}
+      data:
+        _npcType: {fileID: 11400000}
+    - rid: 262420636293398614
+      type: {class: MoveCombatantInDirectionEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _direction: 1
+        _amount: 1
+        _loopAround: 1
+    - rid: 262420636293398615
+      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 262420636293398626
+        _combatantEffect:
+          rid: 262420636293398682
+    - rid: 262420636293398616
+      type: {class: ConditionalAutoTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _conditions:
+        - rid: 262420636293398685
+        _successEffect:
+          rid: 262420636293398675
+    - rid: 262420636293398626
+      type: {class: FrontFoeInLaneCTM, ns: , asm: Assembly-CSharp}
+      data:
+        _laneTargetMode:
+          rid: 262420636293398627
+    - rid: 262420636293398627
+      type: {class: CurrentLTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 262420636293398675
+      type: {class: AutoTargetlessEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _noTargetEffect:
+          rid: 262420636293398676
+    - rid: 262420636293398676
+      type: {class: RepeatEffectsEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _repeatCount:
+          rid: 262420636293398677
+        _autoTargetEffects:
+        - rid: 262420636293398678
+    - rid: 262420636293398677
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 2
+    - rid: 262420636293398678
+      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 262420636293398679
+        _combatantEffect:
+          rid: 262420636293398680
+    - rid: 262420636293398679
+      type: {class: AllNPCsOfTypeCTM, ns: , asm: Assembly-CSharp}
+      data:
+        _npcType: {fileID: 11400000}
+    - rid: 262420636293398680
+      type: {class: MoveCombatantInDirectionEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _direction: 1
+        _amount: 1
+        _loopAround: 1
+    - rid: 262420636293398682
+      type: {class: MultiAttackFoeEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <AttackCount>k__BackingField:
+          rid: 262420636293398683
+        <Damage>k__BackingField:
+          rid: 262420636293398684
+        _unblockedKey: 
+        _overkillKey: 
+        _onHitKey: onHit
+    - rid: 262420636293398683
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 2
+    - rid: 262420636293398684
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 4
+    - rid: 262420636293398685
+      type: {class: SavedDataTrueCondition, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
+        _key: onHit
+        _dataLevel: 0
+    - rid: 262420636293398686
+      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 262420636293398687
+        _combatantEffect:
+          rid: 262420636293398689
+    - rid: 262420636293398687
+      type: {class: FrontFoeInLaneCTM, ns: , asm: Assembly-CSharp}
+      data:
+        _laneTargetMode:
+          rid: 262420636293398688
+    - rid: 262420636293398688
+      type: {class: CurrentLTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 262420636293398689
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _statusEffectType: 8
+        _stackCount:
+          rid: 262420636293398690
+        _skipAnimation: 0
+    - rid: 262420636293398690
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 1

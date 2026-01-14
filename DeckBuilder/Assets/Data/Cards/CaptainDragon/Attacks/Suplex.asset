@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62bf69310631aa94896652d3f8be392c, type: 3}
+  m_Name: Suplex
+  m_EditorClassIdentifier: 
+  <Rarity>k__BackingField: 2
+  <Upgrade>k__BackingField: {fileID: 11400000, guid: bfba6365af56b784eb78968c0e68126d, type: 2}
+  <Unplayable>k__BackingField: 0
+  <Mana>k__BackingField: 1
+  <Type>k__BackingField: 0
+  <Image>k__BackingField: {fileID: 21300000, guid: d8fada25936230d4d8b1152215f0720c, type: 3}
+  <Description>k__BackingField: Deal damage to the front foe in your lane equal to
+    your Chaos. (Current total is {v0} damage)
+  <RequiredConditions>k__BackingField: []
+  <HighlightConditions>k__BackingField: []
+  <ExhuastOnUse>k__BackingField: 0
+  <ManualTargetType>k__BackingField: 2
+  <CombatantFilters>k__BackingField: []
+  <LaneFilters>k__BackingField: []
+  <ManualTargetEffect>k__BackingField:
+    rid: -2
+  <OtherEffects>k__BackingField:
+  - rid: 4055348103697924322
+  <TurnEndEffects>k__BackingField: []
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 4055348103697924322
+      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 4055348103697924323
+        _combatantEffect:
+          rid: 4055348103697924325
+    - rid: 4055348103697924323
+      type: {class: FrontFoeInLaneCTM, ns: , asm: Assembly-CSharp}
+      data:
+        _laneTargetMode:
+          rid: 4055348103697924324
+    - rid: 4055348103697924324
+      type: {class: CurrentLTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 4055348103697924325
+      type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _damage:
+          rid: 4055348103697924327
+    - rid: 4055348103697924327
+      type: {class: StatusEffectStacksQ, ns: , asm: Assembly-CSharp}
+      data:
+        _target:
+          rid: 4055348103697924328
+        _type: 2000
+    - rid: 4055348103697924328
+      type: {class: CasterCTM, ns: , asm: Assembly-CSharp}
+      data: 

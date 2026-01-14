@@ -6,7 +6,7 @@ using System.Linq;
 using UnityEngine;
 using System;
 
-public abstract class CombatantView : MonoBehaviour, ITargetPreviewable
+public abstract class CombatantView : MonoBehaviour, ITargetPreviewable, IHoldData, IComparable
 {
     [SerializeField] private TMP_Text _healthText;
     [SerializeField] private SpriteRenderer _spriteRenderer;
@@ -17,6 +17,7 @@ public abstract class CombatantView : MonoBehaviour, ITargetPreviewable
     public int CurrentHealth { get; private set; }
 
     public SlotView Slot { get; private set; } = null;
+    public LaneView Lane => Slot.Lane;
 
     public bool TargetPreviewActive => Slot.TargetPreviewActive;
 
@@ -26,6 +27,9 @@ public abstract class CombatantView : MonoBehaviour, ITargetPreviewable
     public Action<int> OnMaxHealthChanged;
 
     public bool MovedThisRound { get; private set; } = false;
+
+
+    private Dictionary<string, object> _data = null;
 
     protected void SetupBase(int health, Sprite sprite, SlotView slotView)
     {
@@ -85,7 +89,7 @@ public abstract class CombatantView : MonoBehaviour, ITargetPreviewable
         int remainingDamage = damageAmount;
         int currentArmor = GetStatusEffectStacks(StatusEffectType.BLOCK);
 
-        if (remainingDamage == 0)
+        if (remainingDamage == 0 || IsInvincible())
             return (0, 0);
 
         if (!ignoreBlock)
@@ -136,6 +140,14 @@ public abstract class CombatantView : MonoBehaviour, ITargetPreviewable
         }
     }
 
+    public bool IsInvincible()
+    {
+        if (GetStatusEffectStacks(StatusEffectType.BLEND_IN) > 0 && Lane.GetFriendlyCount(this) > 1)
+            return true;
+
+        return false;
+    }
+
     public void AddStatusEffect(StatusEffectType type, int stackCount)
     {
         if (_statusEffects.ContainsKey(type))
@@ -182,7 +194,10 @@ public abstract class CombatantView : MonoBehaviour, ITargetPreviewable
         return 0;
     }
 
-    public IEnumerator WaitForTweensComplete(){
+    public IEnumerator WaitForTweensComplete()
+    {
+        if (CurrentHealth == 0)
+            yield break;
 
         List<Tween> tweens = DOTween.TweensByTarget(transform, true);
         if(tweens != null)
@@ -224,6 +239,14 @@ public abstract class CombatantView : MonoBehaviour, ITargetPreviewable
         Slot = slotView;
     }
 
+    public int GetSortValue()
+    {
+        if (GetStatusEffectStacks(StatusEffectType.BLEND_IN) > 0)
+            return -1;
+
+        return 0;
+    }
+
     private void BeforePlayerTurn(BeforePlayerTurnGA beforePlayerTurnGA)
     {
         MovedThisRound = false;
@@ -234,5 +257,42 @@ public abstract class CombatantView : MonoBehaviour, ITargetPreviewable
         MovedThisRound = true;
     }
 
+    public void AddData(string key, object data)
+    {
+        if (_data == null)
+            _data = new();
+
+        if (_data.ContainsKey(key))
+            _data[key] = data;
+        else
+            _data.Add(key, data);
+    }
+
+    public T GetData<T>(string key)
+    {
+        if (_data == null || !_data.ContainsKey(key))
+            return default(T);
+
+        if (_data[key] is T t)
+            return t;
+
+        return default(T);
+    }
+
+    public bool ContainsKey(string key)
+    {
+        if (_data == null)
+            return false;
+
+        return _data.ContainsKey(key);
+    }
+
     public abstract void Die();
+
+    public int CompareTo(object obj)
+    {
+        CombatantView cv = (CombatantView)obj;
+
+        return cv.GetSortValue() - GetSortValue();
+    }
 }

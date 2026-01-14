@@ -14,8 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Events>k__BackingField:
   - {fileID: 11400000, guid: f8ba31f985d0c204b9e244f83d8fa037, type: 2}
-  - {fileID: 11400000, guid: f8ba31f985d0c204b9e244f83d8fa037, type: 2}
-  - {fileID: 11400000, guid: f8ba31f985d0c204b9e244f83d8fa037, type: 2}
   - {fileID: 11400000, guid: f7fbe9a1205baff4496810d8d79fc589, type: 2}
-  - {fileID: 11400000, guid: f7fbe9a1205baff4496810d8d79fc589, type: 2}
-  - {fileID: 11400000, guid: f7fbe9a1205baff4496810d8d79fc589, type: 2}
+  - {fileID: 11400000, guid: ced1f34969b4fdf4ab88422643c2f339, type: 2}

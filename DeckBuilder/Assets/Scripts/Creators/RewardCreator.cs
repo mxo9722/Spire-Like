@@ -20,7 +20,7 @@ public class RewardCreator : Singleton<RewardCreator>
 
         for(int x = 0; x < cardCount; x++)
         {
-            var card = allOptions[RNG.Random.Next(0, allOptions.Count)];
+            CardData card = allOptions[RNG.Random.Next(0, allOptions.Count)];
             pack.Add(card);
             allOptions.Remove(card);
         }
@@ -30,14 +30,14 @@ public class RewardCreator : Singleton<RewardCreator>
         return reward;
     }
 
-    public KarmaReward CreateMoney()
+    public RenownReward CreateMoney()
     {
         return CreateMoney(_creditMin,_creditMax);
     }
 
-    public KarmaReward CreateMoney(int min, int max)
+    public RenownReward CreateMoney(int min, int max)
     {
-        KarmaReward reward = new();
+        RenownReward reward = new();
         reward.Setcredits(RNG.Random.Next(min, max + 1));
         return reward;
     }
@@ -63,5 +63,28 @@ public class RewardCreator : Singleton<RewardCreator>
         PerkReward reward = new();
         reward.SetPerk(allOptions[RNG.Random.Next(0, allOptions.Count)]);
         return reward;
+    }
+
+    public CardData GetRandomCard()
+    {
+        return GetRandomCards(1)[0];
+    }
+
+    public CardData[] GetRandomCards(int count)
+    {
+        List<CardData> allCardOptions = new(RunSystem.Instance.GetHeroData().GetClassCards());
+
+        allCardOptions.AddRange(ColorlessCards);
+
+        CardData[] results = new CardData[count];
+
+        for(int i = 0; i < count; i++)
+        {
+            int randomIndex = RNG.Random.Next(allCardOptions.Count);
+            results[i] = allCardOptions[randomIndex];
+            allCardOptions.RemoveAt(randomIndex);
+        }
+
+        return results;
     }
 }

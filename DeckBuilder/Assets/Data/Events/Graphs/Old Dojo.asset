@@ -1,0 +1,832 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-9060060659373459470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 262dd8f326c811f49b5f8e3ff5f3b5fd, type: 3}
+  m_Name: win
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 2269.9138, y: -720.64636}
+  ports:
+    keys:
+    - Prev
+    - Choices
+    values:
+    - _fieldName: Prev
+      _node: {fileID: -9060060659373459470}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: Choices
+        node: {fileID: -2164358634198250686}
+        reroutePoints: []
+      - fieldName: Choices
+        node: {fileID: 3277407865332097607}
+        reroutePoints: []
+      - fieldName: Choices
+        node: {fileID: 7574680154772823728}
+        reroutePoints: []
+      - fieldName: Choices
+        node: {fileID: -653422771097857133}
+        reroutePoints: []
+      - fieldName: Choices
+        node: {fileID: 8256154932126956982}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Choices
+      _node: {fileID: -9060060659373459470}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: _prev
+        node: {fileID: -6667962646327265572}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  <Text>k__BackingField: The master looks at you impressed by your display. She leads
+    you through some intensive exercises over the next 24 hours and you quickly see
+    your abilities sharpening.
+  <Sprite>k__BackingField: {fileID: 0}
+  Choices: 0
+  OptionText: win
+  HideIfUnavailable: 0
+  <Conditions>k__BackingField: []
+  Prev: 0
+  <Actions>k__BackingField:
+  - rid: 262420752671178848
+  references:
+    version: 2
+    RefIds:
+    - rid: 262420752671178848
+      type: {class: UpgradeRandomCardsEA, ns: , asm: Assembly-CSharp}
+      data:
+        cardCount: 2
+--- !u!114 &-6667962646327265572
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a505528d4195824cad3750931c9a854, type: 3}
+  m_Name: Complete Room
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 2952, y: 520}
+  ports:
+    keys:
+    - _prev
+    values:
+    - _fieldName: _prev
+      _node: {fileID: -6667962646327265572}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: Choices
+        node: {fileID: 372217152240799817}
+        reroutePoints: []
+      - fieldName: Choices
+        node: {fileID: -1553765484651521572}
+        reroutePoints: []
+      - fieldName: Choices
+        node: {fileID: -9060060659373459470}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  _prev: 0
+--- !u!114 &-4428657817901661946
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a52691074406ce1479b5808d138739d3, type: 3}
+  m_Name: Start Event
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -488, y: -8}
+  ports:
+    keys:
+    - Choices
+    values:
+    - _fieldName: Choices
+      _node: {fileID: -4428657817901661946}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: Prev
+        node: {fileID: 1091296510103953239}
+        reroutePoints: []
+      - fieldName: Prev
+        node: {fileID: 372217152240799817}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  <Text>k__BackingField: Traveling through a borough that has been mostly destroyed
+    you discover a dojo that not only appears to be untouched by the violence of
+    the new occupation but also seems to be open. Entering a wizened woman standing
+    before a small ensemble of martial artists calls out to you "I can teach you,
+    but only if you prove yousrself as a worthy student."
+  <Sprite>k__BackingField: {fileID: 0}
+  Choices: 0
+--- !u!114 &-3590402867975043293
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6074044d7359c1e4eb52eb9ad3ac24ef, type: 3}
+  m_Name: Random Dialogue
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 648, y: -376}
+  ports:
+    keys:
+    - Prev
+    - Choices
+    values:
+    - _fieldName: Prev
+      _node: {fileID: -3590402867975043293}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: Choices
+        node: {fileID: 1091296510103953239}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Choices
+      _node: {fileID: -3590402867975043293}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: Prev
+        node: {fileID: -2164358634198250686}
+        reroutePoints: []
+      - fieldName: Prev
+        node: {fileID: 3277407865332097607}
+        reroutePoints: []
+      - fieldName: Prev
+        node: {fileID: 7574680154772823728}
+        reroutePoints: []
+      - fieldName: Prev
+        node: {fileID: -653422771097857133}
+        reroutePoints: []
+      - fieldName: Prev
+        node: {fileID: 8256154932126956982}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  <Text>k__BackingField: 
+  <Sprite>k__BackingField: {fileID: 0}
+  Choices: 0
+  _optionCount: 2
+  Prev: 0
+--- !u!114 &-2164358634198250686
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 262dd8f326c811f49b5f8e3ff5f3b5fd, type: 3}
+  m_Name: 'Test Of Speed (Trial: "Move" Card)'
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 1352, y: -1800}
+  ports:
+    keys:
+    - Prev
+    - Choices
+    values:
+    - _fieldName: Prev
+      _node: {fileID: -2164358634198250686}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: Choices
+        node: {fileID: -3590402867975043293}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Choices
+      _node: {fileID: -2164358634198250686}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: Prev
+        node: {fileID: -9060060659373459470}
+        reroutePoints: []
+      - fieldName: Prev
+        node: {fileID: -1553765484651521572}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  <Text>k__BackingField: 
+  <Sprite>k__BackingField: {fileID: 0}
+  Choices: 0
+  OptionText: 'Test Of Speed (Trial: "Move" Card)'
+  HideIfUnavailable: 0
+  <Conditions>k__BackingField: []
+  Prev: 0
+  <Actions>k__BackingField:
+  - rid: 262420752671178831
+  references:
+    version: 2
+    RefIds:
+    - rid: 262420752671178831
+      type: {class: PerformTrialEA, ns: , asm: Assembly-CSharp}
+      data:
+        _winFilters:
+        - rid: 262420752671178837
+        _successesNeeded: 1
+        _trialText: 'Trial: 1 "Move" Card'
+        _successActions:
+        - rid: 262420752671178840
+        _failureActions:
+        - rid: 262420752671178841
+    - rid: 262420752671178837
+      type: {class: ContainsWordCF, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
+        _word: Move
+    - rid: 262420752671178840
+      type: {class: GoToConnectedNodeEA, ns: , asm: Assembly-CSharp}
+      data:
+        _optionName: win
+    - rid: 262420752671178841
+      type: {class: GoToConnectedNodeEA, ns: , asm: Assembly-CSharp}
+      data:
+        _optionName: lose
+--- !u!114 &-1553765484651521572
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 262dd8f326c811f49b5f8e3ff5f3b5fd, type: 3}
+  m_Name: lose
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 2280, y: -312}
+  ports:
+    keys:
+    - Prev
+    - Choices
+    values:
+    - _fieldName: Prev
+      _node: {fileID: -1553765484651521572}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: Choices
+        node: {fileID: -2164358634198250686}
+        reroutePoints: []
+      - fieldName: Choices
+        node: {fileID: 3277407865332097607}
+        reroutePoints: []
+      - fieldName: Choices
+        node: {fileID: 7574680154772823728}
+        reroutePoints: []
+      - fieldName: Choices
+        node: {fileID: -653422771097857133}
+        reroutePoints: []
+      - fieldName: Choices
+        node: {fileID: 8256154932126956982}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Choices
+      _node: {fileID: -1553765484651521572}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: _prev
+        node: {fileID: -6667962646327265572}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  <Text>k__BackingField: The master shakes her head with disappointment. "I thought
+    you might have had some potential. I see now that I was mistaken." You turn around
+    and leave.
+  <Sprite>k__BackingField: {fileID: 0}
+  Choices: 0
+  OptionText: lose
+  HideIfUnavailable: 0
+  <Conditions>k__BackingField: []
+  Prev: 0
+  <Actions>k__BackingField:
+  - rid: 262420752671178847
+  references:
+    version: 2
+    RefIds:
+    - rid: 262420752671178847
+      type: {class: RemoveRenownEA, ns: , asm: Assembly-CSharp}
+      data:
+        _renown: 50
+--- !u!114 &-653422771097857133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 262dd8f326c811f49b5f8e3ff5f3b5fd, type: 3}
+  m_Name: 'Test of Gentleness (Trial: 0 Mana Card)'
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 1352, y: 120}
+  ports:
+    keys:
+    - Prev
+    - Choices
+    values:
+    - _fieldName: Prev
+      _node: {fileID: -653422771097857133}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: Choices
+        node: {fileID: -3590402867975043293}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Choices
+      _node: {fileID: -653422771097857133}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: Prev
+        node: {fileID: -9060060659373459470}
+        reroutePoints: []
+      - fieldName: Prev
+        node: {fileID: -1553765484651521572}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  <Text>k__BackingField: 
+  <Sprite>k__BackingField: {fileID: 0}
+  Choices: 0
+  OptionText: 'Test of Gentleness (Trial: 0 Mana Card)'
+  HideIfUnavailable: 0
+  <Conditions>k__BackingField: []
+  Prev: 0
+  <Actions>k__BackingField:
+  - rid: 262420752671178849
+  - rid: 262420752671178851
+  references:
+    version: 2
+    RefIds:
+    - rid: 262420752671178849
+      type: {class: PerformTrialEA, ns: , asm: Assembly-CSharp}
+      data:
+        _winFilters:
+        - rid: 262420752671178855
+        _successesNeeded: 1
+        _trialText: 'Trial: 0 Mana Card'
+        _successActions:
+        - rid: 262420752671178850
+        _failureActions: []
+    - rid: 262420752671178850
+      type: {class: GoToConnectedNodeEA, ns: , asm: Assembly-CSharp}
+      data:
+        _optionName: win
+    - rid: 262420752671178851
+      type: {class: GoToConnectedNodeEA, ns: , asm: Assembly-CSharp}
+      data:
+        _optionName: lose
+    - rid: 262420752671178855
+      type: {class: ManaCostCF, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
+        _manaIs: 1
+        _value: 0
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5553794d1bf7bff44a066c096a5c5479, type: 3}
+  m_Name: Old Dojo
+  m_EditorClassIdentifier: 
+  nodes:
+  - {fileID: -4428657817901661946}
+  - {fileID: 1091296510103953239}
+  - {fileID: 372217152240799817}
+  - {fileID: -3590402867975043293}
+  - {fileID: -2164358634198250686}
+  - {fileID: 3277407865332097607}
+  - {fileID: 7574680154772823728}
+  - {fileID: -6667962646327265572}
+  - {fileID: -9060060659373459470}
+  - {fileID: -1553765484651521572}
+  - {fileID: -653422771097857133}
+  - {fileID: 8256154932126956982}
+  <StartNode>k__BackingField: {fileID: -4428657817901661946}
+--- !u!114 &372217152240799817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 262dd8f326c811f49b5f8e3ff5f3b5fd, type: 3}
+  m_Name: Leave
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 520, y: 1752}
+  ports:
+    keys:
+    - Prev
+    - Choices
+    values:
+    - _fieldName: Prev
+      _node: {fileID: 372217152240799817}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: Choices
+        node: {fileID: -4428657817901661946}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Choices
+      _node: {fileID: 372217152240799817}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: _prev
+        node: {fileID: -6667962646327265572}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  <Text>k__BackingField: Without a word you turn around and leave. Who is she to
+    judge if you're worthy?
+  <Sprite>k__BackingField: {fileID: 0}
+  Choices: 0
+  OptionText: Leave
+  HideIfUnavailable: 0
+  <Conditions>k__BackingField: []
+  Prev: 0
+  <Actions>k__BackingField: []
+  references:
+    version: 2
+    RefIds: []
+--- !u!114 &1091296510103953239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 262dd8f326c811f49b5f8e3ff5f3b5fd, type: 3}
+  m_Name: 'Accept (Win: Upgrade 2 cards, Fail: Lose 50 renown)'
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 104, y: -328}
+  ports:
+    keys:
+    - Prev
+    - Choices
+    values:
+    - _fieldName: Prev
+      _node: {fileID: 1091296510103953239}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: Choices
+        node: {fileID: -4428657817901661946}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Choices
+      _node: {fileID: 1091296510103953239}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: Prev
+        node: {fileID: -3590402867975043293}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  <Text>k__BackingField: '"Very well select one of my tests..."'
+  <Sprite>k__BackingField: {fileID: 0}
+  Choices: 0
+  OptionText: 'Accept (Win: Upgrade 2 cards, Fail: Lose 50 renown)'
+  HideIfUnavailable: 0
+  <Conditions>k__BackingField: []
+  Prev: 0
+  <Actions>k__BackingField: []
+  references:
+    version: 2
+    RefIds: []
+--- !u!114 &3277407865332097607
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 262dd8f326c811f49b5f8e3ff5f3b5fd, type: 3}
+  m_Name: 'Test of Power (Trial: A 2+ Mana Card)'
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 1352, y: -1224}
+  ports:
+    keys:
+    - Prev
+    - Choices
+    values:
+    - _fieldName: Prev
+      _node: {fileID: 3277407865332097607}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: Choices
+        node: {fileID: -3590402867975043293}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Choices
+      _node: {fileID: 3277407865332097607}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: Prev
+        node: {fileID: -9060060659373459470}
+        reroutePoints: []
+      - fieldName: Prev
+        node: {fileID: -1553765484651521572}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  <Text>k__BackingField: 
+  <Sprite>k__BackingField: {fileID: 0}
+  Choices: 0
+  OptionText: 'Test of Power (Trial: A 2+ Mana Card)'
+  HideIfUnavailable: 0
+  <Conditions>k__BackingField: []
+  Prev: 0
+  <Actions>k__BackingField:
+  - rid: 262420752671178833
+  - rid: 262420752671178843
+  references:
+    version: 2
+    RefIds:
+    - rid: 262420752671178833
+      type: {class: PerformTrialEA, ns: , asm: Assembly-CSharp}
+      data:
+        _winFilters:
+        - rid: 262420752671178839
+        _successesNeeded: 1
+        _trialText: 'Trial: A 2+ Mana Card'
+        _successActions:
+        - rid: 262420752671178842
+        _failureActions: []
+    - rid: 262420752671178839
+      type: {class: ManaCostCF, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
+        _manaIs: 2
+        _value: 1
+    - rid: 262420752671178842
+      type: {class: GoToConnectedNodeEA, ns: , asm: Assembly-CSharp}
+      data:
+        _optionName: win
+    - rid: 262420752671178843
+      type: {class: GoToConnectedNodeEA, ns: , asm: Assembly-CSharp}
+      data:
+        _optionName: lose
+--- !u!114 &7574680154772823728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 262dd8f326c811f49b5f8e3ff5f3b5fd, type: 3}
+  m_Name: 'Test of Defense (Trial: 2 "Block" Cards)'
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 1352, y: -520}
+  ports:
+    keys:
+    - Prev
+    - Choices
+    values:
+    - _fieldName: Prev
+      _node: {fileID: 7574680154772823728}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: Choices
+        node: {fileID: -3590402867975043293}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Choices
+      _node: {fileID: 7574680154772823728}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: Prev
+        node: {fileID: -9060060659373459470}
+        reroutePoints: []
+      - fieldName: Prev
+        node: {fileID: -1553765484651521572}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  <Text>k__BackingField: 
+  <Sprite>k__BackingField: {fileID: 0}
+  Choices: 0
+  OptionText: 'Test of Defense (Trial: 2 "Block" Cards)'
+  HideIfUnavailable: 0
+  <Conditions>k__BackingField: []
+  Prev: 0
+  <Actions>k__BackingField:
+  - rid: 262420752671178835
+  references:
+    version: 2
+    RefIds:
+    - rid: 262420752671178835
+      type: {class: PerformTrialEA, ns: , asm: Assembly-CSharp}
+      data:
+        _winFilters:
+        - rid: 262420752671178838
+        _successesNeeded: 2
+        _trialText: 'Trial: 2 "Block" card'
+        _successActions:
+        - rid: 262420752671178844
+        _failureActions:
+        - rid: 262420752671178845
+    - rid: 262420752671178838
+      type: {class: ContainsWordCF, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
+        _word: block
+    - rid: 262420752671178844
+      type: {class: GoToConnectedNodeEA, ns: , asm: Assembly-CSharp}
+      data:
+        _optionName: win
+    - rid: 262420752671178845
+      type: {class: GoToConnectedNodeEA, ns: , asm: Assembly-CSharp}
+      data:
+        _optionName: lose
+--- !u!114 &8256154932126956982
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 262dd8f326c811f49b5f8e3ff5f3b5fd, type: 3}
+  m_Name: 'Test of Ferocity (Trial: 2 Attack Cards)'
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 1352, y: 824}
+  ports:
+    keys:
+    - Prev
+    - Choices
+    values:
+    - _fieldName: Prev
+      _node: {fileID: 8256154932126956982}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: Choices
+        node: {fileID: -3590402867975043293}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Choices
+      _node: {fileID: 8256154932126956982}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: Prev
+        node: {fileID: -9060060659373459470}
+        reroutePoints: []
+      - fieldName: Prev
+        node: {fileID: -1553765484651521572}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  <Text>k__BackingField: 
+  <Sprite>k__BackingField: {fileID: 0}
+  Choices: 0
+  OptionText: 'Test of Ferocity (Trial: 2 Attack Cards)'
+  HideIfUnavailable: 0
+  <Conditions>k__BackingField: []
+  Prev: 0
+  <Actions>k__BackingField:
+  - rid: 262420752671178852
+  - rid: 262420752671178854
+  references:
+    version: 2
+    RefIds:
+    - rid: 262420752671178852
+      type: {class: PerformTrialEA, ns: , asm: Assembly-CSharp}
+      data:
+        _winFilters:
+        - rid: 262420752671178856
+        _successesNeeded: 2
+        _trialText: 'Trial: 2 Attack Cards'
+        _successActions:
+        - rid: 262420752671178853
+        _failureActions: []
+    - rid: 262420752671178853
+      type: {class: GoToConnectedNodeEA, ns: , asm: Assembly-CSharp}
+      data:
+        _optionName: win
+    - rid: 262420752671178854
+      type: {class: GoToConnectedNodeEA, ns: , asm: Assembly-CSharp}
+      data:
+        _optionName: lose
+    - rid: 262420752671178856
+      type: {class: IsTypeCF, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
+        _cardType: 0
