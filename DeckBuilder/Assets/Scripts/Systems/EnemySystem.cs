@@ -68,7 +68,7 @@ public class EnemySystem : Singleton<EnemySystem>
         }
 
         CompressBoardGA compressBoardGA = new();
-        ActionSystem.Instance.AddReaction(compressBoardGA);
+        //ActionSystem.Instance.AddReaction(compressBoardGA);
 
         foreach (NPCView npcView in allViews)
         {
@@ -86,9 +86,6 @@ public class EnemySystem : Singleton<EnemySystem>
         if (npcView.CurrentHealth == 0)
             yield break;
 
-        HideEnemyPreviewGA hideEnemyPreviewGA = new(npcView);
-        ActionSystem.Instance.AddReaction(hideEnemyPreviewGA);
-
         EffectContext context = new(npcView);
 
         //List<GameAction> gameActions = new();
@@ -103,6 +100,9 @@ public class EnemySystem : Singleton<EnemySystem>
             ActionSystem.Instance.AddReaction(autoTargetEffectGA);
         }
 
+        HideEnemyPreviewGA hideEnemyPreviewGA = new(npcView);
+        ActionSystem.Instance.AddReaction(hideEnemyPreviewGA);
+
         yield return null;
     }
 
@@ -116,7 +116,7 @@ public class EnemySystem : Singleton<EnemySystem>
         if (determineEnemyBehaviorGA.EnemyView.CurrentHealth == 0)
             yield break;
 
-        DetermineEnemyBehaviour(determineEnemyBehaviorGA.EnemyView);
+        DetermineNPCBehaviour(determineEnemyBehaviorGA.EnemyView);
 
         yield return null;
     }
@@ -171,6 +171,7 @@ public class EnemySystem : Singleton<EnemySystem>
 
         foreach (NPCView npc in killEnemyGA.NPCViews)
         {
+            npc.SetHealth(0);
             coroutine = StartCoroutine(_boardView.RemoveEnemy(npc));
         }
 
@@ -185,7 +186,9 @@ public class EnemySystem : Singleton<EnemySystem>
 
     public Sprite GetEnemyActionSymbol(NPCActionType enemyActionSymbolType)
     {
-        return EnemyActionSymbolData.EnemyActionTypes[enemyActionSymbolType].Sprite;
+        Sprite sprite = EnemyActionSymbolData.EnemyActionTypes[enemyActionSymbolType].Sprite;
+
+        return sprite;
     }
 
     public Sprite GetEnemyTargetSymbol(NPCTargetTypes enemyActionSymbolType)
@@ -212,9 +215,9 @@ public class EnemySystem : Singleton<EnemySystem>
         }
     }
 
-    public static void DetermineEnemyBehaviour(NPCView enemyView)
+    public static void DetermineNPCBehaviour(NPCView npcView)
     {
-        List<NPCAction> fullPattern = enemyView.Data.ActionPattern;
+        List<NPCAction> fullPattern = npcView.Data.ActionPattern;
 
         List<NPCAction> validPattern = new();
         float validWeight = 0;
@@ -224,7 +227,7 @@ public class EnemySystem : Singleton<EnemySystem>
         {
             int priority = enemyAction.Priority;
 
-            if (IsEnemyActionValid(enemyAction, enemyView) && priority >= highPriority)
+            if (IsEnemyActionValid(enemyAction, npcView) && priority >= highPriority)
             {
                 if (highPriority < priority)
                 {
@@ -248,7 +251,7 @@ public class EnemySystem : Singleton<EnemySystem>
             }
             else
             {
-                enemyView.SetCurrentAction(enemyAction);
+                npcView.SetCurrentAction(enemyAction);
                 break;
             }
         }

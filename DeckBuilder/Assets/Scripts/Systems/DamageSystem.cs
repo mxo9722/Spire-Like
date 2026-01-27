@@ -28,11 +28,11 @@ public class DamageSystem : Singleton<DamageSystem>
 
         if (dealDamageGA.Caster != null && dealDamageGA.IsAttack)
         {
-            baseDamage = Mathf.Max(dealDamageGA.Amount + dealDamageGA.Caster.GetStatusEffectStacks(StatusEffectType.STRENGTH), 0);
+            baseDamage = Mathf.Max(dealDamageGA.Amount + dealDamageGA.Caster.GetStatusEffectStacks(StatusEffect.STRENGTH), 0);
 
             float multiplier = 1;
 
-            if (dealDamageGA.Caster != null && dealDamageGA.Caster.GetStatusEffectStacks(StatusEffectType.WEAK) > 0)
+            if (dealDamageGA.Caster != null && dealDamageGA.Caster.GetStatusEffectStacks(StatusEffect.WEAK) > 0)
             {
                 multiplier *= WEAK_MULITPLIER;
             }
@@ -47,7 +47,7 @@ public class DamageSystem : Singleton<DamageSystem>
             if (target.CurrentHealth == 0)
                 continue;
 
-            if (target.GetStatusEffectStacks(StatusEffectType.VULNERABLE) > 0)
+            if (target.GetStatusEffectStacks(StatusEffect.VULNERABLE) > 0)
                 individualDamage = Mathf.FloorToInt(individualDamage * VULNERABLE_MULITPLIER);
 
             (int UnblockedDamage, int Overkill) result = target.Damage(individualDamage);
@@ -109,14 +109,14 @@ public class DamageSystem : Singleton<DamageSystem>
 
     public static int GetDamageFromAttack(int damage, CombatantView attacker, List<CombatantView> targets = null)
     {
-        damage = Mathf.Max(0, damage + attacker.GetStatusEffectStacks(StatusEffectType.STRENGTH));
+        damage = Mathf.Max(0, damage + attacker.GetStatusEffectStacks(StatusEffect.STRENGTH));
 
         float multiplier = 1.0f;
 
-        if (attacker.GetStatusEffectStacks(StatusEffectType.WEAK) > 0)
+        if (attacker.GetStatusEffectStacks(StatusEffect.WEAK) > 0)
             multiplier *= WEAK_MULITPLIER;
 
-        if (targets != null && targets.TrueForAll(e => e.GetStatusEffectStacks(StatusEffectType.VULNERABLE) > 0) && targets.Count > 0)
+        if (targets != null && targets.TrueForAll(e => e.GetStatusEffectStacks(StatusEffect.VULNERABLE) > 0) && targets.Count > 0)
             multiplier *= VULNERABLE_MULITPLIER;
 
         return Mathf.FloorToInt(damage * multiplier);

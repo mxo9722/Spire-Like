@@ -1,18 +1,22 @@
 using SerializeReferenceEditor;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class RestoreHealthEA : EventAction
+public class RestoreHealthEA : HeroTargettedEventAction
 {
 
     [SerializeReference, SR] private Quantity _amount = new SetQ();
 
-    public override IEnumerator Invoke()
+    protected override IEnumerator Invoke(EffectContext context,List<Hero> targets)
     {
-        int health = HeroSystem.Instance.GetHealth();
-        health += _amount.GetStaticAmount();
-        RunSystem.Instance.SetHealth(health);
-        TopBarUI.Instance.UpdateHealth();
+        foreach (var target in targets)
+        {
+            int health = target.CurrentHealth;
+            health += _amount.GetStaticAmount();
+            target.SetCurrentHealth(health);
+            TopBarUI.Instance.UpdateHealth();
+        }
         yield return null;
     }
 }

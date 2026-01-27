@@ -2,17 +2,17 @@ using AYellowpaper.SerializedCollections;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 [System.Serializable]
 public class RunData : IHoldData
 {
-    [field: SerializeField] public List<CardData> Deck { get; private set; }
-    [field: SerializeField] public HeroData Hero { get; private set; }
+    [field: SerializeField] public List<Card> Deck { get; private set; }
+    [field: SerializeField] public Hero Hero1 { get; private set; }
+    [field: SerializeField] public Hero Hero2 { get; private set; }
     [field: SerializeField] public Map Map { get; private set; }
     [field: SerializeField] public Room Room { get; private set; }
     public bool RoomCompleted => Room.IsCompleted;
-    [field: SerializeField] public int CurrentHealth { get; private set; }
-    [field: SerializeField] public int MaxHealth { get; private set; }
     [field: SerializeField] public int Renown { get; private set; } = 100;
     [field: SerializeField] public List<Perk> Perks { get; private set; } = new();
     public List<PerkData> UsedPerks { get; private set; } = new();
@@ -20,12 +20,13 @@ public class RunData : IHoldData
 
     private SerializedDictionary<string, object> _data = null;
 
-    public RunData(HeroData heroData)
+    public RunData(HeroData heroData1, HeroData heroData2)
     {
-        Hero = heroData;
-        Deck = new(Hero.StartingDeck);
-        MaxHealth = Hero.StartingMaxHealth;
-        CurrentHealth = Hero.StartingMaxHealth;
+        Hero1 = new(heroData1);
+        Hero2 = new(heroData2);
+
+        Deck = Hero1.StartingDeck.Select(c => new Card(c, Hero1.Data)).ToList();
+        Deck.AddRange(Hero2.StartingDeck.Select(c => new Card(c, Hero2.Data)));
     }
 
     public string ToJson()
@@ -57,11 +58,6 @@ public class RunData : IHoldData
     public void SetMap(Map map)
     {
         Map = map;
-    }
-
-    public void SetHealth(int health)
-    {
-        CurrentHealth = Mathf.Clamp(health, 0, MaxHealth);
     }
 
     public void MarkPerkDataUsed(PerkData perkData)

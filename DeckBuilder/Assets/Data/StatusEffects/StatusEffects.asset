@@ -19,6 +19,7 @@ MonoBehaviour:
         <Name>k__BackingField: Block
         <Sprite>k__BackingField: {fileID: 21300000, guid: 7a879c578ca567842b71f284faeba24b, type: 3}
         <Stackable>k__BackingField: 1
+        <Type>k__BackingField: 0
         <PreTurnModification>k__BackingField: 1
         <PostTurnModification>k__BackingField: 0
         <Effect>k__BackingField:
@@ -30,6 +31,7 @@ MonoBehaviour:
         <Name>k__BackingField: Burn
         <Sprite>k__BackingField: {fileID: 21300000, guid: 8df22c60555fe4c4998efc6560037b62, type: 3}
         <Stackable>k__BackingField: 1
+        <Type>k__BackingField: 1
         <PreTurnModification>k__BackingField: 3
         <PostTurnModification>k__BackingField: 0
         <Effect>k__BackingField:
@@ -42,6 +44,7 @@ MonoBehaviour:
         <Name>k__BackingField: Dexterity
         <Sprite>k__BackingField: {fileID: 21300000, guid: ef6cd8fa74b938a4482b665c8493429d, type: 3}
         <Stackable>k__BackingField: 1
+        <Type>k__BackingField: 0
         <PreTurnModification>k__BackingField: 0
         <PostTurnModification>k__BackingField: 0
         <Effect>k__BackingField:
@@ -53,6 +56,7 @@ MonoBehaviour:
         <Name>k__BackingField: Frail
         <Sprite>k__BackingField: {fileID: 21300000, guid: 8ed3dc0af409be5429fe0e3b03cfb53b, type: 3}
         <Stackable>k__BackingField: 1
+        <Type>k__BackingField: 1
         <PreTurnModification>k__BackingField: 0
         <PostTurnModification>k__BackingField: 2
         <Effect>k__BackingField:
@@ -65,6 +69,7 @@ MonoBehaviour:
         <Name>k__BackingField: Strength
         <Sprite>k__BackingField: {fileID: 21300000, guid: 25e50837128d47049b0826e7e50c81e8, type: 3}
         <Stackable>k__BackingField: 1
+        <Type>k__BackingField: 0
         <PreTurnModification>k__BackingField: 0
         <PostTurnModification>k__BackingField: 0
         <Effect>k__BackingField:
@@ -76,6 +81,7 @@ MonoBehaviour:
         <Name>k__BackingField: Vulnerable
         <Sprite>k__BackingField: {fileID: 21300000, guid: 11afccf098e360c48b11109ac2f33899, type: 3}
         <Stackable>k__BackingField: 1
+        <Type>k__BackingField: 1
         <PreTurnModification>k__BackingField: 2
         <PostTurnModification>k__BackingField: 0
         <Effect>k__BackingField:
@@ -88,6 +94,7 @@ MonoBehaviour:
         <Name>k__BackingField: Weak
         <Sprite>k__BackingField: {fileID: 21300000, guid: 26768a6a24578a6458ac4fa36e70c3ed, type: 3}
         <Stackable>k__BackingField: 1
+        <Type>k__BackingField: 1
         <PreTurnModification>k__BackingField: 0
         <PostTurnModification>k__BackingField: 2
         <Effect>k__BackingField:
@@ -98,8 +105,9 @@ MonoBehaviour:
     - Key: 1000
       Value:
         <Name>k__BackingField: Ninja Math
-        <Sprite>k__BackingField: {fileID: 21300000, guid: f3e30eee8348a814d9207d022ef73ab0, type: 3}
+        <Sprite>k__BackingField: {fileID: 21300000, guid: 59cf9ff4dc809344d9d54ecdfb430198, type: 3}
         <Stackable>k__BackingField: 0
+        <Type>k__BackingField: 3
         <PreTurnModification>k__BackingField: 0
         <PostTurnModification>k__BackingField: 0
         <Effect>k__BackingField:
@@ -115,6 +123,7 @@ MonoBehaviour:
         <Name>k__BackingField: Chaos
         <Sprite>k__BackingField: {fileID: 21300000, guid: c366c2203f6cc0a4b9aa476b9b95ddd8, type: 3}
         <Stackable>k__BackingField: 1
+        <Type>k__BackingField: 1
         <PreTurnModification>k__BackingField: 0
         <PostTurnModification>k__BackingField: 0
         <Effect>k__BackingField:
@@ -127,6 +136,7 @@ MonoBehaviour:
         <Name>k__BackingField: Anchored
         <Sprite>k__BackingField: {fileID: 21300000, guid: ead3eb0f314b4fd4d9a924500a474c08, type: 3}
         <Stackable>k__BackingField: 1
+        <Type>k__BackingField: 0
         <PreTurnModification>k__BackingField: 2
         <PostTurnModification>k__BackingField: 0
         <Effect>k__BackingField:
@@ -138,6 +148,7 @@ MonoBehaviour:
         <Name>k__BackingField: Hamstrung
         <Sprite>k__BackingField: {fileID: 21300000, guid: a1f6f5a9172ac2c44963dc6f3ebeaf57, type: 3}
         <Stackable>k__BackingField: 1
+        <Type>k__BackingField: 1
         <PreTurnModification>k__BackingField: 0
         <PostTurnModification>k__BackingField: 2
         <Effect>k__BackingField:
@@ -150,6 +161,7 @@ MonoBehaviour:
         <Name>k__BackingField: Jabberwocky
         <Sprite>k__BackingField: {fileID: 21300000, guid: e30fb59e33edada40a078d3b1f3b2701, type: 3}
         <Stackable>k__BackingField: 1
+        <Type>k__BackingField: 2
         <PreTurnModification>k__BackingField: 0
         <PostTurnModification>k__BackingField: 0
         <Effect>k__BackingField:
@@ -162,6 +174,7 @@ MonoBehaviour:
         <Name>k__BackingField: Fear Aura
         <Sprite>k__BackingField: {fileID: 21300000, guid: c2bf62eaf93d0584bba1998d41640a11, type: 3}
         <Stackable>k__BackingField: 1
+        <Type>k__BackingField: 2
         <PreTurnModification>k__BackingField: 0
         <PostTurnModification>k__BackingField: 0
         <Effect>k__BackingField:
@@ -171,16 +184,42 @@ MonoBehaviour:
         <Description>k__BackingField: Apply X weak to foes in lanes you move into.
     - Key: 1001
       Value:
-        <Name>k__BackingField: Blend In
-        <Sprite>k__BackingField: {fileID: 21300000, guid: a38add4bde49e18468e83957865d2ddf, type: 3}
+        <Name>k__BackingField: Stealth
+        <Sprite>k__BackingField: {fileID: 21300000, guid: f3e30eee8348a814d9207d022ef73ab0, type: 3}
         <Stackable>k__BackingField: 0
+        <Type>k__BackingField: 0
         <PreTurnModification>k__BackingField: 0
         <PostTurnModification>k__BackingField: 0
         <Effect>k__BackingField:
           rid: -2
         <Reactions>k__BackingField: []
-        <Description>k__BackingField: Invincible while in a lane with an ally. Remains
-          in back of lane.
+        <Description>k__BackingField: Unselectable while allies are in lane. Moves
+          to back of lane.
+    - Key: 1002
+      Value:
+        <Name>k__BackingField: Taunt
+        <Sprite>k__BackingField: {fileID: 21300000, guid: 657c9fe99975bee478b9221aad24cf09, type: 3}
+        <Stackable>k__BackingField: 0
+        <Type>k__BackingField: 0
+        <PreTurnModification>k__BackingField: 0
+        <PostTurnModification>k__BackingField: 0
+        <Effect>k__BackingField:
+          rid: -2
+        <Reactions>k__BackingField: []
+        <Description>k__BackingField: Aligned allies without taunt are invincible.
+          Moves to front of lane.
+    - Key: 1003
+      Value:
+        <Name>k__BackingField: Guard
+        <Sprite>k__BackingField: {fileID: 21300000, guid: 8432806d8e0098246b612fc958cbd2a5, type: 3}
+        <Stackable>k__BackingField: 0
+        <Type>k__BackingField: 3
+        <PreTurnModification>k__BackingField: 0
+        <PostTurnModification>k__BackingField: 0
+        <Effect>k__BackingField:
+          rid: -2
+        <Reactions>k__BackingField: []
+        <Description>k__BackingField: Moves to the front of the lane.
   references:
     version: 2
     RefIds:

@@ -12,67 +12,46 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62bf69310631aa94896652d3f8be392c, type: 3}
   m_Name: Updraft+
   m_EditorClassIdentifier: 
+  <Rarity>k__BackingField: 0
   <Upgrade>k__BackingField: {fileID: 0}
   <Unplayable>k__BackingField: 0
   <Mana>k__BackingField: 0
   <Type>k__BackingField: 1
   <Image>k__BackingField: {fileID: 21300000, guid: 4a537e4fee657c448b43354a37dd7261, type: 3}
-  <Description>k__BackingField: Move all foes in any lane up a lane. Add a copy of
-    Downdraft+ to your deck. Exhaust.
+  <Description>k__BackingField: Move any unit up a lane. Add a copy of Downdraft+
+    to your deck. Exhaust.
   <RequiredConditions>k__BackingField: []
   <HighlightConditions>k__BackingField: []
   <ExhuastOnUse>k__BackingField: 1
-  <ManualTargetType>k__BackingField: 1
+  <ManualTargetType>k__BackingField: 0
   <CombatantFilters>k__BackingField: []
   <LaneFilters>k__BackingField: []
   <ManualTargetEffect>k__BackingField:
-    rid: -2
+    rid: 4055348011206443285
   <OtherEffects>k__BackingField:
-  - rid: 4055347990049325137
   - rid: 4055347990049325142
   <TurnEndEffects>k__BackingField: []
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
-    - rid: 4055347990049325137
-      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
-      data:
-        <TargetMode>k__BackingField:
-          rid: 4055348103697924199
-        _combatantEffect:
-          rid: 4055347990049325141
-    - rid: 4055347990049325141
-      type: {class: MoveCombatantInDirectionEffect, ns: , asm: Assembly-CSharp}
-      data:
-        _direction: 0
     - rid: 4055347990049325142
       type: {class: AutoCardTargetEffect, ns: , asm: Assembly-CSharp}
       data:
         <TargetMode>k__BackingField:
           rid: 4055347990049325143
         _cardEffect:
-          rid: 4055348103697924208
+          rid: 4055348103697924207
     - rid: 4055347990049325143
       type: {class: NewCardsFromDataCaTM, ns: , asm: Assembly-CSharp}
       data:
         _cards:
-        - {fileID: 11400000, guid: f619aaee8e53c114983d1dbbe78f7554, type: 2}
-    - rid: 4055348103697924199
-      type: {class: CombatantsWithFilterCTM, ns: , asm: Assembly-CSharp}
+        - {fileID: 11400000, guid: 9aee0ec16cb9e084d9a6cbf7565744aa, type: 2}
+    - rid: 4055348011206443285
+      type: {class: MoveCombatantInDirectionEffect, ns: , asm: Assembly-CSharp}
       data:
-        _filters:
-        - rid: 4055348103697924200
-    - rid: 4055348103697924200
-      type: {class: TargIsInLaneFilter, ns: , asm: Assembly-CSharp}
-      data:
-        _invert: 0
-        _lane:
-          rid: 4055348103697924202
-    - rid: 4055348103697924202
-      type: {class: ManuallySelectedLTM, ns: , asm: Assembly-CSharp}
-      data: 
-    - rid: 4055348103697924208
+        _direction: 0
+        _amount: 1
+        _loopAround: 0
+    - rid: 4055348103697924207
       type: {class: AddCardsToDeckEffect, ns: , asm: Assembly-CSharp}
       data: 

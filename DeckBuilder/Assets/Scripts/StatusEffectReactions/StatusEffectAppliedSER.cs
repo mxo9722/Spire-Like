@@ -7,11 +7,9 @@ using UnityEngine;
 public class StatusEffectAppliedSER : StatusEffectReaction
 {
 
-    [SerializeField] private StatusEffectType _targetType;
+    [SerializeField] private StatusEffect _targetType;
     [SerializeField] private bool _repeatPerStack = true;
     [SerializeReference, SR] private List<CombatantFilter> _combatantFilters;
-
-
 
     public override int SubConditionIsMet(CombatantView owner, GameAction gameAction)
     {

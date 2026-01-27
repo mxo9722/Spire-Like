@@ -3,6 +3,14 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum StatusEffectType
+{
+    BUFF,
+    DEBUFF,
+    POWER,
+    OTHER
+}
+
 public enum StatusEffectModification
 {
     NONE,
@@ -17,6 +25,7 @@ public class StatusEffectInfo
     [field: SerializeField] public string Name { get; private set; }
     [field: SerializeField] public Sprite Sprite { get; private set; }
     [field: SerializeField] public bool Stackable { get; private set; } = true;
+    [field: SerializeField] public StatusEffectType Type { get; private set; } = StatusEffectType.OTHER;
     [field: SerializeField] public StatusEffectModification PreTurnModification { get; private set; } = StatusEffectModification.NONE;
     [field: SerializeField] public StatusEffectModification PostTurnModification { get; private set; } = StatusEffectModification.NONE;
 

@@ -15,10 +15,11 @@ public class SideKickSystem : Singleton<SideKickSystem>
 
     private IEnumerator SummonSideKickPerformer(SummonSideKickGA summonSideKick)
     {
-        var sideKick = CombatantViewCreator.Instance.CreateSideKickView(summonSideKick.Data, summonSideKick.TargetLane.FirstAvailableHeroSlot());
+        //may not have functionality going forward
+        //var sideKick = CombatantViewCreator.Instance.CreateSideKickView(summonSideKick.Data, summonSideKick.TargetLane.AvailableHeroSlot());
 
-        DetermineNPCBehaviorGA determineEnemyBehaviorGA = new(sideKick);
-        ActionSystem.Instance.AddReaction(determineEnemyBehaviorGA);
+        //DetermineNPCBehaviorGA determineEnemyBehaviorGA = new(sideKick);
+        //ActionSystem.Instance.AddReaction(determineEnemyBehaviorGA);
 
         yield return null;
     }

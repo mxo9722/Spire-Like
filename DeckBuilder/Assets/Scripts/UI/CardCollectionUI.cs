@@ -71,11 +71,11 @@ public class CardCollectionUI : MonoBehaviour
     
     public void SetUpUpgradeChoice()
     {
-        List<Card> cardCollection = RunSystem.Instance.Deck.Where(c => c.Upgrade != null).Select(c => new Card(c)).ToList();
+        List<Card> cardCollection = RunSystem.Instance.Deck.Where(c => c.Upgrade != null).ToList();
 
         if (1 >= cardCollection.Count)
         {
-            cardCollection.ForEach(c => RunSystem.Instance.UpgradeCard(c.data));
+            cardCollection.ForEach(c => RunSystem.Instance.UpgradeCard(c));
             return;
         }
 
@@ -143,7 +143,7 @@ public class CardCollectionUI : MonoBehaviour
 
     public void ConfirmUpgrade()
     {
-        RunSystem.Instance.UpgradeCard(_beforeUpgradeUI.Card.data);
+        RunSystem.Instance.UpgradeCard(_beforeUpgradeUI.Card);
 
         _upgradeWrapper.SetActive(false);
         Close();

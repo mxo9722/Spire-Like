@@ -10,7 +10,7 @@ public class AutoLaneTargetEffect : AutoTargetEffect
 
     [field: SerializeReference, SR] public LaneTargetMode TargetMode { get; private set; }
 
-    public override Effect Effect { get => _laneEffect; }
+    public override Effect[] Effects { get => new Effect[] { _laneEffect }; }
 
 
     [field: SerializeReference, SR] private LaneTargetEffect _laneEffect;
@@ -18,13 +18,13 @@ public class AutoLaneTargetEffect : AutoTargetEffect
     public override GameAction GetGameAction(EffectContext context)
     {
         List<LaneView> targets = TargetMode.GetTargets(context);
-        PerformEffectsGA performEffectsGA = new(context, Effect, targets);
+        PerformEffectsGA performEffectsGA = new(context, _laneEffect, targets);
         return performEffectsGA;
     }
 
-    public override List<StatusEffectType> GetAllStatusEffects()
+    public override List<StatusEffect> GetAllStatusEffects()
     {
-        List<StatusEffectType> statusEffects = new();
+        List<StatusEffect> statusEffects = new();
 
         var oStatusEffects = TargetMode.GetAllStatusEffects();
 
@@ -62,5 +62,10 @@ public class AutoLaneTargetEffect : AutoTargetEffect
         }
 
         return description;
+    }
+
+    public override NPCTargetTypes GetTargetIntent()
+    {
+        return TargetMode.GetTargetIntent();
     }
 }

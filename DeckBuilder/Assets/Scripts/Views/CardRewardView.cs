@@ -21,7 +21,7 @@ public class CardRewardView : MonoBehaviour
 
         _cards = new();
 
-        List<CardData> cards = cardReward.Cards;
+        List<Card> cards = cardReward.Cards;
 
         for (int i = 0; i < cards.Count; i++)
         {

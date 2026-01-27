@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [System.Serializable]
 public class AutoCombatantTargetEffect : AutoTargetEffect
@@ -10,9 +11,8 @@ public class AutoCombatantTargetEffect : AutoTargetEffect
 
     [field: SerializeReference, SR] public CombatantTargetMode TargetMode { get; private set; }
 
-    public override Effect Effect { get => _combatantEffect; }
-
-
+    public override Effect[] Effects { get => new Effect[] { _combatantEffect }; }
+    public Effect Effect { get => _combatantEffect; }
     [field: SerializeReference, SR] private CombatantTargetEffect _combatantEffect;
 
     public override GameAction GetGameAction(EffectContext context)
@@ -22,11 +22,11 @@ public class AutoCombatantTargetEffect : AutoTargetEffect
         return performEffectsGA;
     }
 
-    public override List<StatusEffectType> GetAllStatusEffects()
+    public override List<StatusEffect> GetAllStatusEffects()
     {
-        List<StatusEffectType> statusEffects = new();
+        List<StatusEffect> statusEffects = new();
 
-        List<StatusEffectType> oStatusEffects = TargetMode.GetAllStatusEffects();
+        List<StatusEffect> oStatusEffects = TargetMode.GetAllStatusEffects();
 
         if(oStatusEffects != null)
             statusEffects.AddRange(oStatusEffects);
@@ -57,10 +57,15 @@ public class AutoCombatantTargetEffect : AutoTargetEffect
         foreach (IDynamicEffectText dte in dtes)
         {
             List<CombatantView> targets = TargetMode.AllPossibleTargets(context, card);
-            string value = dte.GetDynamicText(context);
+            string value = dte.GetDynamicText(context, targets);
             description = description.Replace("{v" + (startIndex++) + "}", value);
         }
 
         return description;
+    }
+
+    public override NPCTargetTypes GetTargetIntent()
+    {
+        return TargetMode.GetTargetIntent();
     }
 }

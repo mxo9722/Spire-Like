@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class RewardCreator : Singleton<RewardCreator>
@@ -12,15 +13,19 @@ public class RewardCreator : Singleton<RewardCreator>
 
     public CardReward CreateCardPick()
     {
-        List<CardData> pack = new();
+        List<Card> pack = new();
 
         int cardCount = 3;
 
-        List<CardData> allOptions = new(RunSystem.Instance.GetHeroData().GetClassCards());
+        List<Card> allOptions = new();
 
-        for(int x = 0; x < cardCount; x++)
+        allOptions.AddRange(RunSystem.Instance.Hero1.ClassCards.Select(c => new Card(c, RunSystem.Instance.Hero1.Data))); 
+        allOptions.AddRange(RunSystem.Instance.Hero2.ClassCards.Select(c => new Card(c, RunSystem.Instance.Hero2.Data)));
+
+
+        for (int x = 0; x < cardCount; x++)
         {
-            CardData card = allOptions[RNG.Random.Next(0, allOptions.Count)];
+            Card card = allOptions[RNG.Random.Next(0, allOptions.Count)];
             pack.Add(card);
             allOptions.Remove(card);
         }
@@ -44,8 +49,10 @@ public class RewardCreator : Singleton<RewardCreator>
 
     public PerkReward CreatePerk()
     {
-        List<PerkData> allOptions = RunSystem.Instance.GetHeroData().GetClassPerks();
+        List<PerkData> allOptions = new(); 
         allOptions.AddRange(Perks);
+        allOptions.AddRange(RunSystem.Instance.Hero1.Perks);
+        allOptions.AddRange(RunSystem.Instance.Hero2.Perks);
 
         if (allOptions.Count == 0)
         {
@@ -65,18 +72,20 @@ public class RewardCreator : Singleton<RewardCreator>
         return reward;
     }
 
-    public CardData GetRandomCard()
+    public Card GetRandomCard()
     {
         return GetRandomCards(1)[0];
     }
 
-    public CardData[] GetRandomCards(int count)
+    public Card[] GetRandomCards(int count)
     {
-        List<CardData> allCardOptions = new(RunSystem.Instance.GetHeroData().GetClassCards());
+        List<Card> allCardOptions = new();
+        allCardOptions.AddRange(RunSystem.Instance.Hero1.ClassCards.Select(c => new Card(c, RunSystem.Instance.Hero1.Data)));
+        allCardOptions.AddRange(RunSystem.Instance.Hero2.ClassCards.Select(c => new Card(c, RunSystem.Instance.Hero2.Data)));
 
-        allCardOptions.AddRange(ColorlessCards);
+        //allCardOptions.AddRange(ColorlessCards);
 
-        CardData[] results = new CardData[count];
+        Card[] results = new Card[count];
 
         for(int i = 0; i < count; i++)
         {

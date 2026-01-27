@@ -5,7 +5,7 @@ using UnityEngine;
 public class StatusEffectStacksQ : Quantity
 {
     [SerializeReference, SR] private CombatantTargetMode _target = new CasterCTM();
-    [SerializeField] private StatusEffectType _type;
+    [SerializeField] private StatusEffect _type;
 
     public override int GetAmount(EffectContext effectContext)
     {

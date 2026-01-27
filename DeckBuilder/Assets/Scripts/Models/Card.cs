@@ -23,17 +23,52 @@ public class Card
     public List<CombatantFilter> CombatantFilters => data.CombatantFilters;
     public List<LaneFilter> LaneFilters => data.LaneFilters;
     public bool ExhuastOnUse => data.ExhuastOnUse;
+    public Rarity Rarity => data.Rarity;
 
     public int Mana { get; private set; }
+    public HeroData Owner { get; private set; } = null;
 
     public readonly CardData data;
 
     private List<string> _allKeyWords = null;
 
+    public Card(Card card)
+    {
+        data = card.data;
+        Mana = card.Mana;
+        Owner = card.Owner;
+    }
+
+    public Card(CardData cardData, HeroData owner)
+    {
+        data = cardData;
+        Mana = cardData.Mana;
+        Owner = owner;
+    }
+
     public Card(CardData cardData)
     {
         data = cardData;
         Mana = cardData.Mana;
+
+        RunData runData = RunSystem.Instance.RunData;
+
+        Hero possibleOwner1 = runData.Hero1;
+        Hero possibleOwner2 = runData.Hero2;
+
+        SetOwner(possibleOwner1, possibleOwner2);
+    }
+
+    private void SetOwner(Hero possibleOwner1, Hero possibleOwner2)
+    {
+        if (possibleOwner1.ClassCards.Contains(data) && possibleOwner2.ClassCards.Contains(data))
+            Owner = null;
+        else if (possibleOwner1.ClassCards.Contains(data))
+            Owner = possibleOwner1.Data;
+        else if (possibleOwner2.ClassCards.Contains(data))
+            Owner = possibleOwner2.Data;
+        else
+            Owner = null;
     }
 
     public string GetStaticDescription()
@@ -50,6 +85,11 @@ public class Card
         }
 
         foreach (AutoTargetEffect effect in OtherEffects)
+        {
+            dynamicTextEffects.AddRange(effect.GetDynamicTextEffects());
+        }
+        
+        foreach (AutoTargetEffect effect in TurnEndEffect)
         {
             dynamicTextEffects.AddRange(effect.GetDynamicTextEffects());
         }
@@ -70,6 +110,7 @@ public class Card
         string description = Description;
 
         int index = 0;
+
 
         if (ManualTargetEffect != null)
         {
@@ -92,7 +133,19 @@ public class Card
             }
         }
 
+
         foreach (AutoTargetEffect effect in OtherEffects)
+        {
+            IDynamicEffectText[] dtes = effect.GetDynamicTextEffects();
+
+            if(dtes.Length > 0)
+            {
+                description = effect.ApplyDynamicTextEffect(description, index, context, this);
+                index += dtes.Length;
+            }
+        }
+        
+        foreach (AutoTargetEffect effect in TurnEndEffect)
         {
             IDynamicEffectText[] dtes = effect.GetDynamicTextEffects();
 
@@ -157,6 +210,14 @@ public class Card
         return _allKeyWords;
     }
 
+    public HeroView GetOwnerView()
+    {
+        if (HeroSystem.Instance == null || Owner == null)
+            return null;
+        HeroView heroView = HeroSystem.Instance.HeroViews.First(h => h.Hero.Data == Owner);
+        return heroView;
+    }
+
     private string HighlightKeyWords(string description)
     {
         List<string> keyWords = GetAllKeyWords();
@@ -179,13 +240,28 @@ public class Card
         return Regex.Replace(description, @" \(.*?\)", "");
     }
 
-    public bool IsPlayable(CombatantView caster = null)
+    public bool IsPlayable(CombatantView caster)
     {
         if (Unplayable)
             return false;
 
         if (caster == null)
-            caster = HeroSystem.Instance.HeroView;
+        {
+            if (Owner == null)
+            {
+                HeroView[] heroViews = HeroSystem.Instance.HeroViews;
+
+                foreach (HeroView heroView in heroViews)
+                {
+                    if (IsPlayable(heroView))
+                        return true;
+                }
+
+                return false;
+            }
+
+            caster = GetOwnerView();
+        }
 
         if (!ManaSystem.Instance.HasEnoughMana(Mana))
             return false;
@@ -227,7 +303,7 @@ public class Card
     
     public bool IsHighlighted()
     {
-        return IsHighlighted(EffectContext.CreateHeroEC());
+        return IsHighlighted(new EffectContext(GetOwnerView()));
     }
 
     public bool IsHighlighted(EffectContext context)
@@ -235,7 +311,18 @@ public class Card
         CombatantView caster = context.Caster;
 
         if (caster == null)
-            caster = HeroSystem.Instance.HeroView;
+        {
+            HeroView[] heroViews = HeroSystem.Instance.HeroViews;
+
+            foreach(HeroView heroView in heroViews)
+            {
+                EffectContext newContext = new(heroView);
+                if (IsHighlighted(newContext))
+                    return true;
+            }
+
+            return false;
+        }
 
         IEnumerable<ConditionalAutoTargetEffect> conditionals = OtherEffects.Where(e => e is ConditionalAutoTargetEffect).Select(e => (ConditionalAutoTargetEffect)e);
 
@@ -286,7 +373,7 @@ public class Card
 
     public bool IsChaotic()
     {
-        return HeroSystem.Instance.HeroView.GetStatusEffectStacks(StatusEffectType.CHAOS) > 0 && ManualTargetType != ManualTargetType.NONE && Type == CardType.ATTACK;
+        return GetOwnerView().GetStatusEffectStacks(StatusEffect.CHAOS) > 0 && ManualTargetType != ManualTargetType.NONE && Type == CardType.ATTACK;
     }
 
     public TargetMode<T> GetChaosTargetMode<T>()
@@ -310,4 +397,6 @@ public class Card
 
         return null;
     }
+
+    
 }

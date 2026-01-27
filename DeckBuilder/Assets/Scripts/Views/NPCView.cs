@@ -6,8 +6,9 @@ using UnityEngine;
 
 public class NPCView : CombatantView
 {
-    [SerializeField] private SpriteRenderer _actionSymbol;
-    [SerializeField] private SpriteRenderer _targetSymbol;
+    [SerializeField] private NPCActionView _actionView1;
+    [SerializeField] private NPCActionView _actionView2;
+    [SerializeField] private NPCTargetView _targetView;
     [SerializeField] private TMP_Text _behaviorValue;
     [SerializeField] private TMP_Text _behaviorName;
 
@@ -28,12 +29,15 @@ public class NPCView : CombatantView
         int health = enemyData.Health + RNG.Random.Next(enemyData.RandomHealthMod);
 
         SetupBase(health, enemyData.Image, slot);
+        _targetView.SetUp(this);
+        _actionView1.SetUp(this);
+        _actionView2.SetUp(this);
 
         if (enemyData.StatusEffects.Count > 0) 
         {
             if (ActionSystem.Instance.IsPerforming)
             {
-                foreach (KeyValuePair<StatusEffectType, int> se in enemyData.StatusEffects) 
+                foreach (KeyValuePair<StatusEffect, int> se in enemyData.StatusEffects) 
                 {
                     AddStatusEffectGA addStatusEffectGA = new(se.Key,se.Value,new() { this });
                     ActionSystem.Instance.AddReaction(addStatusEffectGA);
@@ -41,7 +45,7 @@ public class NPCView : CombatantView
             }
             else
             {
-                foreach (KeyValuePair<StatusEffectType, int> se in enemyData.StatusEffects)
+                foreach (KeyValuePair<StatusEffect, int> se in enemyData.StatusEffects)
                 {
                     AddStatusEffect(se.Key, se.Value);
                 }
@@ -56,7 +60,7 @@ public class NPCView : CombatantView
 
         if (!TargetPreviewSystem.Instance.HighLighted && CurrentAction != null)
         {
-            TargetPreviewSystem.Instance.SetTargetPreviews(this,CurrentAction);
+            TargetPreviewSystem.Instance.SetTargetPreviews(this, CurrentAction);
             _highlighted = true;
         }
     }
@@ -67,7 +71,7 @@ public class NPCView : CombatantView
 
         if (_highlighted)
         {
-            TargetPreviewSystem.Instance.HideTargetPreviews();
+            TargetPreviewSystem.Instance.HideTargetPreviews(true);
             _highlighted = false;
         }
     }
@@ -81,23 +85,28 @@ public class NPCView : CombatantView
         UpdateBehaviorIndicator();
     }
 
-    public void UpdateBehaviorIndicator()
+    public void UpdateBehaviorIndicator(NPCAction npcAction = null)
     {
-        _behaviorValue.text = "";
-        _targetSymbol.sprite = EnemySystem.Instance.GetEnemyTargetSymbol(NPCTargetTypes.NONE);
+        if (npcAction == null)
+            npcAction = CurrentAction;
 
-        if (CurrentAction == null)
+        _behaviorValue.text = "";
+        _targetView.SetTargetPreview(NPCTargetTypes.NONE);
+
+        if (npcAction == null)
         {
-            _actionSymbol.sprite = EnemySystem.Instance.GetEnemyActionSymbol(NPCActionType.NONE);
+            _actionView1.SetActionPreview(NPCActionType.NONE);
+            _actionView2.SetActionPreview(NPCActionType.NONE);
 
             return;
         }
 
-        _actionSymbol.sprite = EnemySystem.Instance.GetEnemyActionSymbol(CurrentAction.Symbol);
+        _actionView1.SetActionPreview(npcAction.Symbol);
+        _actionView2.SetActionPreview(npcAction.Symbol2);
 
         EffectContext context = new(this);
 
-        foreach (AutoTargetEffect effect in CurrentAction.Effects)
+        foreach (AutoTargetEffect effect in npcAction.Effects)
         {
             GameAction pe = effect.GetGameAction(context);
 
@@ -109,16 +118,16 @@ public class NPCView : CombatantView
                     saveDataGA.SimulatedPerform();
             }
 
+            NPCTargetTypes intent = effect.GetTargetIntent();
+
+            if (intent != NPCTargetTypes.NONE)
+                _targetView.SetTargetPreview(intent);
 
             if (effect is AutoCombatantTargetEffect combatantTargetEffect)
             {
-                NPCTargetTypes intent = combatantTargetEffect.TargetMode.GetTargetIntent();
+                
 
-                if(intent != NPCTargetTypes.NONE)
-                    _targetSymbol.sprite = EnemySystem.Instance.GetEnemyTargetSymbol(intent);
-
-
-                if (effect.Effect is AttackHeroEffect attackHeroEffect)
+                if (combatantTargetEffect.Effect is AttackHeroEffect attackHeroEffect)
                 {
                     List<CombatantView> targets = combatantTargetEffect.TargetMode.GetTargets(context);
 
@@ -128,7 +137,7 @@ public class NPCView : CombatantView
 
                     break;
                 }
-                else if (effect.Effect is MultiAttackFoeEffect multiAttackFoeEffect)
+                else if (combatantTargetEffect.Effect is MultiAttackFoeEffect multiAttackFoeEffect)
                 {
                     List<CombatantView> targets = combatantTargetEffect.TargetMode.GetTargets(context);
 
@@ -142,22 +151,30 @@ public class NPCView : CombatantView
         }
     }
 
+    public override int GetSortValue()
+    {
+        int invert = IsEvil ? -1 : 1;
+
+        return base.GetSortValue() * invert;
+    }
+
     protected override void LoadHelpBoxes(HelpBoxesUI helpBoxesUI)
     {
         if (CurrentAction != null)
         {
             NPCActionType action = CurrentAction.Symbol;
 
-            string helpBoxText = "Enemy intends to";
+            string helpBoxText = Data.name + " intends to";
 
             helpBoxText = helpBoxText + ' ' + EnemySystem.Instance.GetEnemyActionDescription(action);
 
+            string enemyTargetDescription = EnemySystem.Instance.GetEnemyTargetDescription(CurrentAction.Effects[0].GetTargetIntent());
+
+            if (!string.IsNullOrEmpty(enemyTargetDescription))
+                helpBoxText = helpBoxText + ' ' + enemyTargetDescription;
+
             if (CurrentAction.Effects.Count > 0 && CurrentAction.Effects[0] is AutoCombatantTargetEffect combatantTargetEffect)
             {
-                string enemyTargetDescription = EnemySystem.Instance.GetEnemyTargetDescription(combatantTargetEffect.TargetMode.GetTargetIntent());
-
-                if(!string.IsNullOrEmpty(enemyTargetDescription))
-                    helpBoxText = helpBoxText + ' ' + enemyTargetDescription;
 
                 if (combatantTargetEffect.Effect is AttackHeroEffect attackHeroEffect)
                 {
@@ -165,6 +182,14 @@ public class NPCView : CombatantView
 
                     List<CombatantView> targets = combatantTargetEffect.TargetMode.GetTargets(targetContext);
                     helpBoxText = helpBoxText + " for " + DamageSystem.GetDamageFromAttack(attackHeroEffect.Damage, this, targets).ToString() + " damage";
+                }
+                else if (combatantTargetEffect.Effect is MultiAttackFoeEffect multiAttackFoeEffect)
+                {
+                    EffectContext targetContext = new(this);
+
+                    List<CombatantView> targets = combatantTargetEffect.TargetMode.GetTargets(targetContext);
+                    helpBoxText = helpBoxText + " for " + DamageSystem.GetDamageFromAttack(multiAttackFoeEffect.Damage.GetAmount(targetContext), this, targets).ToString() 
+                        + " damage " + multiAttackFoeEffect.AttackCount.GetAmount(targetContext) + " times";
                 }
             }
 

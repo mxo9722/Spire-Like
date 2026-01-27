@@ -6,7 +6,7 @@ public class StatusEffectsUI : MonoBehaviour
     [SerializeField] private StatusEffectUI _statusEffectUIPrefab;
     [SerializeField] private StatusEffectsData _statusEffectsData;
 
-    private Dictionary<StatusEffectType, StatusEffectUI> _statusEffectUIs = new();
+    private Dictionary<StatusEffect, StatusEffectUI> _statusEffectUIs = new();
 
     private CombatantView _owner;
 
@@ -15,7 +15,7 @@ public class StatusEffectsUI : MonoBehaviour
         _owner = owner;
     }
 
-    public void UpdateStatusEffectsUI(StatusEffectType statusEffectType, int stackCount)
+    public void UpdateStatusEffectsUI(StatusEffect statusEffectType, int stackCount)
     {
         if (stackCount == 0)
         {
@@ -42,7 +42,7 @@ public class StatusEffectsUI : MonoBehaviour
         }
     }
 
-    private Sprite GetSpriteByType(StatusEffectType statusEffectType)
+    private Sprite GetSpriteByType(StatusEffect statusEffectType)
     {
         return _statusEffectsData.Map[statusEffectType].Sprite;
     }

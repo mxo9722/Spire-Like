@@ -18,7 +18,7 @@ MonoBehaviour:
   <Mana>k__BackingField: 1
   <Type>k__BackingField: 0
   <Image>k__BackingField: {fileID: 21300000, guid: 1c41f7bb3a6571747918a568581d1b63, type: 3}
-  <Description>k__BackingField: 'Deal {v0} damage to a random nearby foe.
+  <Description>k__BackingField: 'Deal {v0} damage to a random aligned foe.
 
     Chaotic:
     Attack three times.'
@@ -40,6 +40,58 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
+    - rid: 262420840209711244
+      type: {class: AutoTargetlessEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _noTargetEffect:
+          rid: 262420840209711245
+    - rid: 262420840209711245
+      type: {class: RepeatEffectsEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _repeatCount:
+          rid: 262420840209711246
+        _autoTargetEffects:
+        - rid: 262420840209711247
+    - rid: 262420840209711246
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 2
+    - rid: 262420840209711247
+      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 262420840209711248
+        _combatantEffect:
+          rid: 262420840209711252
+    - rid: 262420840209711248
+      type: {class: RandomCTM, ns: , asm: Assembly-CSharp}
+      data:
+        _targetCount: 1
+        <Filters>k__BackingField:
+        - rid: 262420840209711249
+        - rid: 262420840209711250
+    - rid: 262420840209711249
+      type: {class: TargIsEvilFilter, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
+    - rid: 262420840209711250
+      type: {class: TargIsInLaneFilter, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
+        _lane:
+          rid: 262420840209711251
+    - rid: 262420840209711251
+      type: {class: CurrentLTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 262420840209711252
+      type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _damage:
+          rid: 262420840209711253
+    - rid: 262420840209711253
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 9
     - rid: 4055348055111631062
       type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
       data:
@@ -81,94 +133,23 @@ MonoBehaviour:
       data:
         _conditions:
         - rid: 4055348055111631073
-        _successEffect:
-          rid: 4055348055111631074
+        _successEffects: []
+        _failEffects: []
     - rid: 4055348055111631073
       type: {class: CasterHasStatusEffectCondition, ns: , asm: Assembly-CSharp}
       data:
         _invert: 0
         _statusEffectType: 2000
-    - rid: 4055348055111631074
-      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
-      data:
-        <TargetMode>k__BackingField:
-          rid: 4055348055111631075
-        _combatantEffect:
-          rid: 4055348055111631079
-    - rid: 4055348055111631075
-      type: {class: RandomCTM, ns: , asm: Assembly-CSharp}
-      data:
-        _targetCount: 1
-        <Filters>k__BackingField:
-        - rid: 4055348055111631076
-        - rid: 4055348055111631078
-    - rid: 4055348055111631076
-      type: {class: TargIsInLaneFilter, ns: , asm: Assembly-CSharp}
-      data:
-        _invert: 0
-        _lane:
-          rid: 4055348055111631077
-    - rid: 4055348055111631077
-      type: {class: CurrentLTM, ns: , asm: Assembly-CSharp}
-      data: 
-    - rid: 4055348055111631078
-      type: {class: TargIsEvilFilter, ns: , asm: Assembly-CSharp}
-      data:
-        _invert: 0
-    - rid: 4055348055111631079
-      type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
-      data:
-        _damage:
-          rid: 4055348055111631080
-    - rid: 4055348055111631080
-      type: {class: SetQ, ns: , asm: Assembly-CSharp}
-      data:
-        _set: 9
     - rid: 4055348078608908513
       type: {class: ConditionalAutoTargetEffect, ns: , asm: Assembly-CSharp}
       data:
         _conditions:
         - rid: 4055348078608908514
-        _successEffect:
-          rid: 4055348078608908515
+        _successEffects:
+        - rid: 262420840209711244
+        _failEffects: []
     - rid: 4055348078608908514
       type: {class: CasterHasStatusEffectCondition, ns: , asm: Assembly-CSharp}
       data:
         _invert: 0
         _statusEffectType: 2000
-    - rid: 4055348078608908515
-      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
-      data:
-        <TargetMode>k__BackingField:
-          rid: 4055348078608908516
-        _combatantEffect:
-          rid: 4055348078608908520
-    - rid: 4055348078608908516
-      type: {class: RandomCTM, ns: , asm: Assembly-CSharp}
-      data:
-        _targetCount: 1
-        <Filters>k__BackingField:
-        - rid: 4055348078608908518
-        - rid: 4055348078608908517
-    - rid: 4055348078608908517
-      type: {class: TargIsEvilFilter, ns: , asm: Assembly-CSharp}
-      data:
-        _invert: 0
-    - rid: 4055348078608908518
-      type: {class: TargIsInLaneFilter, ns: , asm: Assembly-CSharp}
-      data:
-        _invert: 0
-        _lane:
-          rid: 4055348078608908519
-    - rid: 4055348078608908519
-      type: {class: CurrentLTM, ns: , asm: Assembly-CSharp}
-      data: 
-    - rid: 4055348078608908520
-      type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
-      data:
-        _damage:
-          rid: 4055348078608908521
-    - rid: 4055348078608908521
-      type: {class: SetQ, ns: , asm: Assembly-CSharp}
-      data:
-        _set: 9

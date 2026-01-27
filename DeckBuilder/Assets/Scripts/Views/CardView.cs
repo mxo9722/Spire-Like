@@ -11,6 +11,7 @@ public class CardView : MonoBehaviour
     [SerializeField] private TMPro.TMP_Text _title;
     [SerializeField] private TMPro.TMP_Text _description;
     [SerializeField] private TMPro.TMP_Text _mana;
+    [SerializeField] private SpriteRenderer _background;
     [SerializeField] private SpriteRenderer _imageSR;
     [SerializeField] private SpriteRenderer _glowSR;
     [SerializeField] private GameObject _wrapper;
@@ -42,10 +43,20 @@ public class CardView : MonoBehaviour
 
         _originalLayerOrder = SortingGroup.sortingOrder;
 
-        _title.text = card.Title;
+        if (card.Owner != null)
+            _background.color = card.Owner.Color;
+        else
+            _background.color = Color.white;
+
+        string title = card.Title;
+        string[] split = title.Split("_");
+        if (split.Length > 1)
+            title = title.Substring(title.IndexOf("_") + 1);
+
+        _title.text = title;
 
         if (!treatAsButton)
-            UpdateDynamicDescription(EffectContext.CreateHeroEC());
+            UpdateDynamicDescription(new(card.GetOwnerView()));
         else
             UpdateDynamicDescription();
 
@@ -66,6 +77,11 @@ public class CardView : MonoBehaviour
     {
         _dragStartPosition = position;
         _dragStartRotation = quat;
+    }
+
+    private void OnDisable()
+    {
+        //transform.DOKill();
     }
 
     private void OnMouseEnter()
@@ -111,7 +127,7 @@ public class CardView : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (!_treatAsButton && !Interactions.Instance.PlayerCanInteract()) return;
+        //if (!_treatAsButton && !Interactions.Instance.PlayerCanInteract()) return;
 
 
         if (!_treatAsButton && IsPlayable())
@@ -166,7 +182,7 @@ public class CardView : MonoBehaviour
         if (Card.ManualTargetType != ManualTargetType.NONE)
         {
 
-            EffectContext context = EffectContext.CreateHeroEC();
+            EffectContext context = new(Card.GetOwnerView());
 
             switch (Card.ManualTargetType)
             {
@@ -228,7 +244,7 @@ public class CardView : MonoBehaviour
         transform.rotation = _dragStartRotation;
 
         Interactions.Instance.playerIsDragging = false;
-        TargetPreviewSystem.Instance.HideTargetPreviews();
+        TargetPreviewSystem.Instance.HideTargetPreviews(true);
 
         SortingGroup.sortingOrder = _originalLayerOrder;
     }
@@ -359,7 +375,7 @@ public class CardView : MonoBehaviour
         _showTips = faceUp;
     }
 
-    public bool IsPlayable(CombatantView caster = null) => Card.IsPlayable();
+    public bool IsPlayable(CombatantView caster = null) => Card.IsPlayable(caster);
     public bool IsHighlighted() => Card.IsHighlighted();
     public bool IsHighlighted(EffectContext context) => Card.IsHighlighted(context);
 }

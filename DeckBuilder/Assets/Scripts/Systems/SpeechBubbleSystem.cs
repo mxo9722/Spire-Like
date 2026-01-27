@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -6,6 +7,8 @@ public class SpeechBubbleSystem : Singleton<SpeechBubbleSystem>
 {
     [SerializeField] private SpeechBubbleUI _speechBubblePrefab;
     [SerializeField] private RectTransform _bubbleParent;
+
+    private List<SpeechBubbleUI> _speechBubbles = new();
 
     private void OnEnable()
     {
@@ -19,15 +22,17 @@ public class SpeechBubbleSystem : Singleton<SpeechBubbleSystem>
 
     private IEnumerator SpeechBubblePerformer(SpeechBubbleGA speechBubbleGA)
     {
-        yield return DisplaySpeechBubble(speechBubbleGA.Speakers.First(), speechBubbleGA.Text, speechBubbleGA.Duration);
+        yield return DisplaySpeechBubble(speechBubbleGA.Speakers.First(), speechBubbleGA.Text, speechBubbleGA.Duration, speechBubbleGA.WaitDuration);
     }
 
-    public IEnumerator DisplaySpeechBubble(CombatantView combatantView, string text, float displayTime)
+    public IEnumerator DisplaySpeechBubble(CombatantView combatantView, string text, float displayTime, float pauseTime)
     {
         SpeechBubbleUI speechBubble = DisplaySpeechBubble(combatantView.transform.position + Vector3.up, text, Vector3.one);
 
         if (displayTime > 0)
-            yield return speechBubble.PlayWordBubble(displayTime);
+            speechBubble.PlayWordBubble(displayTime);
+
+        yield return new WaitForSeconds(pauseTime);
     }
 
     public SpeechBubbleUI DisplaySpeechBubble(Vector3 pos, string text, Vector3 scale)
@@ -39,4 +44,8 @@ public class SpeechBubbleSystem : Singleton<SpeechBubbleSystem>
         return speechBubble;
     }
 
+    public void RemoveBubble(SpeechBubbleUI speechBubble)
+    {
+        _speechBubbles.Remove(speechBubble);
+    }
 }

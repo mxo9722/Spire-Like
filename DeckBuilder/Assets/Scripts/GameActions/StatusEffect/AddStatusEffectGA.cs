@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class AddStatusEffectGA : CombinableGameAction<AddStatusEffectGA>, IHaveCaster
 {
-    public StatusEffectType StatusEffectType { get; private set; }
+    public StatusEffect StatusEffectType { get; private set; }
     public int StackCount { get; private set; }
     public List<CombatantView> Targets { get; private set; }
     public CombatantView Caster { get; private set; }
 
     public bool SkipAnimation { get; private set; } = false;
 
-    public AddStatusEffectGA(StatusEffectType statusEffectType, int stackCount, List<CombatantView> targets, CombatantView caster = null, bool skipAnimation = false)
+    public AddStatusEffectGA(StatusEffect statusEffectType, int stackCount, List<CombatantView> targets, CombatantView caster = null, bool skipAnimation = false)
     {
         StatusEffectType = statusEffectType;
         StackCount = stackCount;

@@ -10,5 +10,5 @@ using XNode;
 public abstract class EventAction
 {
 
-    public abstract IEnumerator Invoke();
+    public abstract IEnumerator Invoke(EffectContext context);
 }   

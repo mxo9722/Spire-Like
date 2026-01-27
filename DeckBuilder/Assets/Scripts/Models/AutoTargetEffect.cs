@@ -4,12 +4,19 @@ using System.Collections.Generic;
 [System.Serializable]
 public abstract class AutoTargetEffect
 {
-    public abstract Effect Effect { get; }
+    public abstract Effect[] Effects { get; }
 
     public abstract GameAction GetGameAction(EffectContext targetModeContext);
     public virtual IDynamicEffectText[] GetDynamicTextEffects()
     {
-        return Effect.GetDynamicTextEffects();
+        List<IDynamicEffectText> dets = new();
+
+        foreach(Effect effect in Effects)
+        {
+            dets.AddRange(effect.GetDynamicTextEffects());
+        }
+
+        return dets.ToArray();
     }
 
     public virtual bool HasDynamicTextEffects()
@@ -30,8 +37,13 @@ public abstract class AutoTargetEffect
         return description;
     }
 
+    public virtual NPCTargetTypes GetTargetIntent()
+    {
+        return NPCTargetTypes.NONE;
+    }
+
     public abstract bool RequiresUserInput();
     public abstract IEnumerator WaitForUserInput();
 
-    public abstract List<StatusEffectType> GetAllStatusEffects();
+    public abstract List<StatusEffect> GetAllStatusEffects();
 }

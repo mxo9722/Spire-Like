@@ -15,7 +15,7 @@ public class AddRewardsEA : EventAction
 
     private bool _rewardsCollected = false;
 
-    public override IEnumerator Invoke()
+    public override IEnumerator Invoke(EffectContext context)
     {
         _rewardsCollected = false;
 

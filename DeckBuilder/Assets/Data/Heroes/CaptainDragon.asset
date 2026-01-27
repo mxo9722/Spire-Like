@@ -26,8 +26,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c3589d9f857f04f46877befe398f5cf8, type: 2}
   - {fileID: 11400000, guid: 9b170048756697247b90db3e3e81d739, type: 2}
   - {fileID: 11400000, guid: 637a882dceefb134c8204a03c43e2de4, type: 2}
-  - {fileID: 11400000, guid: 38fc92e12a67eae438b947d869f2bdd2, type: 2}
-  <StartingPerk>k__BackingField: {fileID: 0}
+  <StartingPerk>k__BackingField: {fileID: 11400000, guid: 63c765e5b9c1cde48b905695b665f8f9, type: 2}
+  <Color>k__BackingField: {r: 1, g: 0.6194968, b: 0.6194968, a: 1}
   _allCards:
   - {fileID: 11400000, guid: 9b170048756697247b90db3e3e81d739, type: 2}
   - {fileID: 11400000, guid: 35fa6d2bd2b0855468de7edced4352ed, type: 2}
@@ -47,4 +47,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ef80eff6523595b43b0bc4d31717e172, type: 2}
   - {fileID: 11400000, guid: fc28d5a5f5d130d48b1c7bdfeaffc920, type: 2}
   - {fileID: 11400000, guid: fc5370e69fac9e44680b09879fc0e5f5, type: 2}
+  - {fileID: 11400000, guid: 638d91a5b1b710541892f900106ce41f, type: 2}
   _perks: []

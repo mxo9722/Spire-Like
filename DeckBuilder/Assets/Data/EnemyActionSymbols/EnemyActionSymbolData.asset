@@ -41,7 +41,7 @@ MonoBehaviour:
     - Key: 6
       Value:
         <Sprite>k__BackingField: {fileID: 21300000, guid: e28e09ba5ffef5348843fd5392484a4b, type: 3}
-        <Text>k__BackingField: someting different
+        <Text>k__BackingField: something different to
   EnemyTargetTypes:
     _serializedList:
     - Key: 0
@@ -50,8 +50,8 @@ MonoBehaviour:
         <Text>k__BackingField: 
     - Key: 1
       Value:
-        <Sprite>k__BackingField: {fileID: 0}
-        <Text>k__BackingField: the front foe in their lane
+        <Sprite>k__BackingField: {fileID: 21300000, guid: 0f966f9fc88dad349b020c65dde89380, type: 3}
+        <Text>k__BackingField: the closest aligned foe
     - Key: 2
       Value:
         <Sprite>k__BackingField: {fileID: 21300000, guid: 090e407d1f10e854c82a061f2dc8c635, type: 3}
@@ -67,4 +67,8 @@ MonoBehaviour:
     - Key: 5
       Value:
         <Sprite>k__BackingField: {fileID: 21300000, guid: 8ad2c6a33363cec469f2394615d9c422, type: 3}
-        <Text>k__BackingField: all foes in this lane
+        <Text>k__BackingField: all aligned foes
+    - Key: 6
+      Value:
+        <Sprite>k__BackingField: {fileID: 21300000, guid: 090e407d1f10e854c82a061f2dc8c635, type: 3}
+        <Text>k__BackingField: the hero

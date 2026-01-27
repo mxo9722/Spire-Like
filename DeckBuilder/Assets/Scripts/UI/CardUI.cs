@@ -9,6 +9,7 @@ public class CardUI : MonoBehaviour
     [SerializeField] private TMPro.TMP_Text _description;
     [SerializeField] private TMPro.TMP_Text _mana;
     [SerializeField] private Image _image;
+    [SerializeField] private Image _background;
     [SerializeField] private GameObject _selectGlow;
     [SerializeField] private Button _button;
 
@@ -30,7 +31,10 @@ public class CardUI : MonoBehaviour
             _mana.text = "";
         else
             _mana.text = card.Mana.ToString();
-        
+
+        if (card.Owner != null)
+            _background.color = card.Owner.Color;
+
         _image.sprite = card.Image;
     }
 

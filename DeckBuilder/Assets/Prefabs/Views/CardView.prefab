@@ -51,6 +51,7 @@ MonoBehaviour:
   _title: {fileID: 3939068831486901912}
   _description: {fileID: 7746418177705357814}
   _mana: {fileID: 2007321130936991819}
+  _background: {fileID: 4635103846031430483}
   _imageSR: {fileID: 4859069011502491931}
   _glowSR: {fileID: 6734084909450697215}
   _wrapper: {fileID: 3428812059647023721}

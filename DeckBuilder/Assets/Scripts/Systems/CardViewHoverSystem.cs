@@ -42,18 +42,18 @@ public class CardViewHoverSystem : Singleton<CardViewHoverSystem>
         _helpBoxesUI.Hide();
     }
 
-    public void UpdateDynamicDescription()
+    public void UpdateDynamicDescription(Card card)
     {
-        CardViewHover.UpdateDynamicDescription(EffectContext.CreateHeroEC());
+        CardViewHover.UpdateDynamicDescription(new(card.GetOwnerView()));
     }
     
-    public void UpdateDynamicDescription(CombatantView targetCombatant)
+    public void UpdateDynamicDescription(CombatantView caster,CombatantView targetCombatant)
     {
-        CardViewHover.UpdateDynamicDescription(EffectContext.CreateHeroEC(targetCombatant));
+        CardViewHover.UpdateDynamicDescription(new(caster, manualTargetCombatant: targetCombatant));
     }
     
-    public void UpdateDynamicDescription(LaneView targetLane)
+    public void UpdateDynamicDescription(CombatantView caster, LaneView targetLane)
     {
-        CardViewHover.UpdateDynamicDescription(EffectContext.CreateHeroEC(targetLane));
+        CardViewHover.UpdateDynamicDescription(new(caster, manualTargetLane: targetLane));
     }
 }

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class TargHasStatusEffect : CombatantFilter
 {
-    [SerializeField] private StatusEffectType _statusEffectType;
+    [SerializeField] private StatusEffect _statusEffectType;
 
     protected override bool TargetIsValid(EffectContext context, CombatantView target)
     {

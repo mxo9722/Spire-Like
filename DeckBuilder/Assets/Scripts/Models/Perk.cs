@@ -19,7 +19,7 @@ public class Perk
 
     public void OnAdd()
     {
-        foreach(PerkReaction reaction in _reactions)
+        foreach (PerkReaction reaction in _reactions)
             reaction.SubscribeCondition(Reaction);
     }
 
@@ -33,22 +33,20 @@ public class Perk
     {
         if (reaction.PerkCondition.SubConditionIsMet(gameAction))
         {
-            foreach (AutoCombatantTargetEffect autoTargetEffect in reaction.AutoTargetEffects)
+            CombatantView targets = null;
+
+            if (reaction.UseActionCasterAsTarget && gameAction is IHaveCaster haveCaster)
             {
-                List<CombatantView> targets = new();
+                targets = haveCaster.Caster;
+            }
 
-                if (reaction.UseActionCasterAsTarget && gameAction is IHaveCaster haveCaster)
-                {
-                    targets.Add(haveCaster.Caster);
-                }
-                else
-                {
-                    EffectContext targetModeContext = new();
+            EffectContext context = new(manualTargetCombatant: targets);
 
-                    targets.AddRange(autoTargetEffect.TargetMode.GetTargets(targetModeContext));
-                }
+            reaction.PerkCondition.SaveTargetData(context, gameAction);
 
-                GameAction perkEffectAction = autoTargetEffect.Effect.GetGameAction(EffectContext.CreateHeroEC(), combatantTargets: targets);
+            foreach (AutoTargetEffect autoTargetEffect in reaction.AutoTargetEffects)
+            {
+                GameAction perkEffectAction = autoTargetEffect.GetGameAction(context);
                 ActionSystem.Instance.AddReaction(perkEffectAction);
             }
         }

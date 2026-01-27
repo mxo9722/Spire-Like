@@ -9,6 +9,8 @@ public class RewardsUI : MonoBehaviour
     [SerializeField] private GameObject _wrapper;
     [SerializeField] private RewardUI _rewardUIPrefab;
 
+    public bool IsOpen { get => _wrapper.activeSelf; }
+
     private List<SetReward> _rewards = new();
     private List<RewardUI> _rewardUIs = new();
     private Action _onClose;
@@ -77,6 +79,14 @@ public class RewardsUI : MonoBehaviour
     public void Close()
     {
         Hide();
+
+        foreach (RewardUI rewardUI in _rewardUIs)
+        {
+            Destroy(rewardUI.gameObject);
+        }
+
+        _rewardUIs.Clear();
+
         _onClose?.Invoke();
         _onClose = null;
     }

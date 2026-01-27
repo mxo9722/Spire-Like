@@ -1,0 +1,134 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4049c0b1badbe8947a15364491cb1ac9, type: 3}
+  m_Name: Crosshairs
+  m_EditorClassIdentifier: 
+  <Image>k__BackingField: {fileID: 21300000, guid: a355811836018854e91359718f3710f6, type: 3}
+  <Health>k__BackingField: 45
+  <RandomHealthMod>k__BackingField: 10
+  <StatusEffects>k__BackingField:
+    _serializedList:
+    - Key: 1001
+      Value: 1
+  <ActionPattern>k__BackingField:
+  - <Name>k__BackingField: Hide
+    <Symbol>k__BackingField: 2
+    <Symbol2>k__BackingField: 4
+    <Weight>k__BackingField: 1
+    <Priority>k__BackingField: 2
+    <ConsecutiveMax>k__BackingField: 0
+    <Conditions>k__BackingField:
+    - rid: 262420774327156849
+    - rid: 262420774327156903
+    <Effects>k__BackingField:
+    - rid: 262420774327156816
+    - rid: 262421021838540877
+  - <Name>k__BackingField: Aim
+    <Symbol>k__BackingField: 2
+    <Symbol2>k__BackingField: 5
+    <Weight>k__BackingField: 1
+    <Priority>k__BackingField: 1
+    <ConsecutiveMax>k__BackingField: 0
+    <Conditions>k__BackingField: []
+    <Effects>k__BackingField:
+    - rid: 262420840209711502
+  references:
+    version: 2
+    RefIds:
+    - rid: 262420774327156816
+      type: {class: ConditionalAutoTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _conditions:
+        - rid: 262420774327156817
+        _successEffects:
+        - rid: 262420840209711339
+        _failEffects: []
+    - rid: 262420774327156817
+      type: {class: InHeroLaneCondition, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
+    - rid: 262420774327156849
+      type: {class: InHeroLaneCondition, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
+    - rid: 262420774327156903
+      type: {class: QuantityCompareCondition, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
+        _a:
+          rid: 262420774327156904
+        _is: 2
+        _orEqualTo: 0
+        _b:
+          rid: 262420774327156905
+    - rid: 262420774327156904
+      type: {class: LaneCountQ, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 262420774327156905
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 1
+    - rid: 262420840209711339
+      type: {class: AutoLaneTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 262420840209711340
+        _laneEffect:
+          rid: 262420840209711343
+    - rid: 262420840209711340
+      type: {class: RandomLTM, ns: , asm: Assembly-CSharp}
+      data:
+        _count: 1
+        <Filters>k__BackingField:
+        - rid: 262420840209711341
+        - rid: 262420840209711342
+    - rid: 262420840209711341
+      type: {class: CasterInLaneFilter, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 1
+    - rid: 262420840209711342
+      type: {class: SpaceInAllyLaneFilter, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
+    - rid: 262420840209711343
+      type: {class: MoveTowardLaneEffect, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 262420840209711502
+      type: {class: AutoCardTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 262420840209711503
+        _cardEffect:
+          rid: 262420840209711504
+    - rid: 262420840209711503
+      type: {class: NewCardsFromDataCaTM, ns: , asm: Assembly-CSharp}
+      data:
+        _cards:
+        - {fileID: 11400000, guid: aabb1635e2f4b0146a1e22edffb05b66, type: 2}
+    - rid: 262420840209711504
+      type: {class: AddCardsToDiscardEffect, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 262421021838540877
+      type: {class: AutoCardTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 262421021838540878
+        _cardEffect:
+          rid: 262421021838540879
+    - rid: 262421021838540878
+      type: {class: NewCardsFromDataCaTM, ns: , asm: Assembly-CSharp}
+      data:
+        _cards:
+        - {fileID: 11400000, guid: aabb1635e2f4b0146a1e22edffb05b66, type: 2}
+    - rid: 262421021838540879
+      type: {class: AddCardsToDiscardEffect, ns: , asm: Assembly-CSharp}
+      data: 

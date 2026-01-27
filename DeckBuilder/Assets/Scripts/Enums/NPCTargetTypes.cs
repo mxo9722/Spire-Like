@@ -7,5 +7,6 @@ public enum NPCTargetTypes
     FOCUS_TARGET,
     ALL_LANES,
     SELF,
-    WHOLE_LANE
+    WHOLE_LANE,
+    FOCUS_HERO
 }

@@ -9,6 +9,9 @@ public class PerkReward : SetReward
 
     public override string RewardName => _perkData.name;
 
+    public override string RewardDescription => _perkData.Description;
+    public override bool ShowTip => true;
+
     public void SetPerk(PerkData perkData)
     {
         _perkData = perkData;

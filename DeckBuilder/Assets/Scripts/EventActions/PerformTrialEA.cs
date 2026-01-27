@@ -14,7 +14,7 @@ public class PerformTrialEA : EventAction
     [SerializeReference, SR] private List<EventAction> _failureActions;
 
 
-    public override IEnumerator Invoke()
+    public override IEnumerator Invoke(EffectContext context)
     {
         TrialView.Instance.StartTrial(_winFilters, _successesNeeded, _trialText);
 
@@ -25,9 +25,9 @@ public class PerformTrialEA : EventAction
         if (!TrialView.Instance.TrialSucceeded())
             actions = _failureActions;
 
-        foreach(EventAction action in actions)
+        foreach (EventAction action in actions)
         {
-            yield return action.Invoke();
+            yield return action.Invoke(context);
         }
     }
 }

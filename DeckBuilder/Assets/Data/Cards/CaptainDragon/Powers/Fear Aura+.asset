@@ -18,7 +18,7 @@ MonoBehaviour:
   <Mana>k__BackingField: 1
   <Type>k__BackingField: 2
   <Image>k__BackingField: {fileID: 21300000, guid: 749b28abad5c5494ca5e182878471a1b, type: 3}
-  <Description>k__BackingField: Apply {v0} weak to all nearby foes after you move.
+  <Description>k__BackingField: Apply {v0} weak to all aligned foes after you move.
   <RequiredConditions>k__BackingField: []
   <HighlightConditions>k__BackingField: []
   <ExhuastOnUse>k__BackingField: 1

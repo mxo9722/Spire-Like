@@ -72,4 +72,9 @@ public class SlotView : MonoBehaviour, ITargetPreviewable
     {
         _targetPreviewSR.color = Color.clear;
     }
+
+    public bool IsSelectable()
+    {
+        return true;
+    }
 }

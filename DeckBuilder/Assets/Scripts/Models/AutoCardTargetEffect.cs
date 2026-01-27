@@ -7,15 +7,15 @@ public class AutoCardTargetEffect : AutoTargetEffect
 {
     [field: SerializeReference, SR] public CardTargetMode TargetMode { get; private set; }
 
-    public override Effect Effect { get => _cardEffect; }
+    public override Effect[] Effects { get => new Effect[] { _cardEffect }; }
 
     [field: SerializeReference, SR] private CardTargetEffect _cardEffect;
 
-    public override List<StatusEffectType> GetAllStatusEffects()
+    public override List<StatusEffect> GetAllStatusEffects()
     {
-        List<StatusEffectType> statusEffects = new();
+        List<StatusEffect> statusEffects = new();
 
-        List<StatusEffectType> oStatusEffects = TargetMode.GetAllStatusEffects();
+        List<StatusEffect> oStatusEffects = TargetMode.GetAllStatusEffects();
 
         if (oStatusEffects != null)
             statusEffects.AddRange(oStatusEffects);
@@ -44,5 +44,10 @@ public class AutoCardTargetEffect : AutoTargetEffect
     {
         if (TargetMode is IUserInputTM userInputTM)
             yield return userInputTM.WaitForUserInput();
+    }
+
+    public override NPCTargetTypes GetTargetIntent()
+    {
+        return TargetMode.GetTargetIntent();
     }
 }

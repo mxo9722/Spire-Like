@@ -1,5 +1,6 @@
 using SerializeReferenceEditor;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class RepeatEffectsEffect : NoTargetEffect
@@ -13,7 +14,7 @@ public class RepeatEffectsEffect : NoTargetEffect
 
         foreach(AutoTargetEffect autoTargetEffect in _autoTargetEffects)
         {
-            dynamicEffectTexts.AddRange(autoTargetEffect.Effect.GetDynamicTextEffects());
+            dynamicEffectTexts.AddRange(autoTargetEffect.Effects.SelectMany(e => e.GetDynamicTextEffects()));
         }
 
         return dynamicEffectTexts.ToArray();

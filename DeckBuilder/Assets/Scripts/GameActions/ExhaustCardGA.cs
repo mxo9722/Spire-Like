@@ -1,11 +1,17 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ExhaustCardGA : GameAction
 {
-    public Card Card { get; private set; }
+    public List<Card> Cards { get; private set; }
 
     public ExhaustCardGA(Card card)
     {
-        Card = card;
+        Cards = new() { card };
+    }
+    
+    public ExhaustCardGA(List<Card> cards)
+    {
+        Cards = cards;
     }
 }

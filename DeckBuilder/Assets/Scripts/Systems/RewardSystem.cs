@@ -8,6 +8,8 @@ public class RewardSystem : Singleton<RewardSystem>
     [field: SerializeField] public Sprite CreditSprite { get; private set; }
     [field: SerializeField] public Sprite CardSprite { get; private set; }
 
+    public bool RewardsUIOpened { get => _rewardsUI.IsOpen; }
+
     public void DisplayRewards(List<SetReward> rewards, Action onClose) => _rewardsUI.SetUp(rewards, onClose);
     public void RemoveReward(SetReward reward) => _rewardsUI.RemoveReward(reward);
 

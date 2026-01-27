@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class CasterHasStatusEffectCondition : Condition
 {
-    [SerializeField] private StatusEffectType _statusEffectType;
+    [SerializeField] private StatusEffect _statusEffectType;
 
     protected override bool IsConditionMet(EffectContext context)
     {

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public enum StatusEffectType
+public enum StatusEffect
 {
     [InspectorName("Basic/Block")]
     BLOCK = 0,
@@ -25,10 +25,14 @@ public enum StatusEffectType
 
     [InspectorName("Enemy/Ninja Math")]
     NINJA_MATH = 1000,
-    [InspectorName("Enemy/Blend In")]
-    BLEND_IN,
+    [InspectorName("Enemy/Stealth")]
+    STEALTH,
+    [InspectorName("Enemy/Taunt")]
+    TAUNT,
+    [InspectorName("Enemy/Guard")]
+    GUARD,
     
-    
+        
     [InspectorName("CaptainDragon/Chaos")]
     CHAOS = 2000,
     [InspectorName("CaptainDragon/Jabberwocky")]

@@ -8,6 +8,6 @@ public class InHeroLaneCondition : Condition
     {
         LaneView laneView = BoardSystem.Instance.GetCurrentLaneView(context.Caster);
 
-        return laneView?.HeroViews.Length > 0;
+        return laneView?.HeroView != null;
     }
 }

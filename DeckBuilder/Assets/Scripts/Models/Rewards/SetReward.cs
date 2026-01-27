@@ -5,6 +5,8 @@ public abstract class SetReward : Reward
 {
     public abstract Sprite RewardImage { get; }
     public abstract string RewardName { get; }
+    public virtual string RewardDescription { get => ""; }
+    public virtual bool ShowTip { get => false; }
 
     public SetReward() { }
 

@@ -56,9 +56,13 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
     - rid: 4055347793743315016
       type: {class: RestoreHealthEA, ns: , asm: Assembly-CSharp}
       data:
+        TargetMode:
+          rid: -2
         _amount:
           rid: 4055347793743315018
     - rid: 4055347793743315018
@@ -69,7 +73,9 @@ MonoBehaviour:
           rid: 4055347793743315020
     - rid: 4055347793743315020
       type: {class: MaxHealthQ, ns: , asm: Assembly-CSharp}
-      data: 
+      data:
+        TargetMode:
+          rid: -2
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0

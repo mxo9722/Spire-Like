@@ -6,14 +6,32 @@ public class EffectContext : IHoldData
     public CombatantView Caster { get; private set; }
     public LaneView TargetLane { get; private set; }
     public CombatantView TargetCombatant { get; private set; }
+    public Card PlayedCard { get; private set; }
 
     private Dictionary<string, object> _data = null;
 
-    public EffectContext(CombatantView caster = null, LaneView manualTargetLane = null, CombatantView manualTargetCombatant = null)
+    public EffectContext(CombatantView caster = null, LaneView manualTargetLane = null, CombatantView manualTargetCombatant = null, Card playedCard = null)
     {
         Caster = caster;
         TargetLane = manualTargetLane;
         TargetCombatant = manualTargetCombatant;
+        PlayedCard = playedCard;
+    }
+
+    public EffectContext(EffectContext copySource)
+    {
+        Caster = copySource.Caster;
+        TargetLane = copySource.TargetLane;
+        TargetCombatant = copySource.TargetCombatant;
+        PlayedCard = copySource.PlayedCard;
+
+        if (copySource._data != null)
+            _data = new(copySource._data);
+    }
+
+    public void SetCaster(CombatantView caster)
+    {
+        Caster = caster;
     }
 
     public void AddData(string key, object data)
@@ -46,25 +64,4 @@ public class EffectContext : IHoldData
         return _data.ContainsKey(key);
     }
 
-    #region CREATION_UTILITY
-    public static EffectContext CreateHeroEC()
-    {
-        return new(HeroSystem.Instance.HeroView);
-    }
-
-    public static EffectContext CreateHeroEC(CombatantView target)
-    {
-        return new(HeroSystem.Instance.HeroView, manualTargetCombatant: target);
-    }
-
-    public static EffectContext CreateHeroEC(LaneView target)
-    {
-        return new(HeroSystem.Instance.HeroView, manualTargetLane: target);
-    }
-
-    public static EffectContext CreateNpcEC(CombatantView caster)
-    {
-        return new(caster);
-    }
-    #endregion
 }

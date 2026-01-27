@@ -7,7 +7,7 @@ using UnityEngine;
 public class StatusEffectGainedByOwnerSER : StatusEffectReaction
 {
 
-    [SerializeField] private StatusEffectType _targetType;
+    [SerializeField] private StatusEffect _targetType;
     [SerializeReference, SR] private List<CombatantFilter> _combatantFilters;
 
 

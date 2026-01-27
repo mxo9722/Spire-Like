@@ -18,7 +18,7 @@ MonoBehaviour:
   <Mana>k__BackingField: 1
   <Type>k__BackingField: 0
   <Image>k__BackingField: {fileID: 21300000, guid: 12a6545f52907144b8e1fc4b3a652606, type: 3}
-  <Description>k__BackingField: Push your lane's front foe to a random lane. Deal
+  <Description>k__BackingField: Move the closest aligned foe to a random lane. Deal
     {v0} damage to it. Exhaust.
   <RequiredConditions>k__BackingField: []
   <HighlightConditions>k__BackingField: []

@@ -10,9 +10,9 @@ public class RemoveCardFromDeckEA : EventAction
 {
     [SerializeField, Min(1)] private int _amount = 1;
 
-    public override IEnumerator Invoke()
+    public override IEnumerator Invoke(EffectContext context)
     {
-        List<Card> deck = RunSystem.Instance.Deck.ConvertAll( cd => new Card(cd));
+        List<Card> deck = new(RunSystem.Instance.Deck);
         CardCollectionSystem.Instance.SelectionDisplay(deck, _amount, false);
         yield return new WaitUntil(() => !CardCollectionSystem.Instance.WaitingForSelection);
         List<Card> selection = CardCollectionSystem.Instance.GetCardSelections();

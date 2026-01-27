@@ -50,13 +50,13 @@ public class BoardSystem : Singleton<BoardSystem>
         else if (combatantView is NPCView enemyView)
             return BoardView.GetCurrentLaneView(enemyView);
 
-        throw new System.Exception();
+        Debug.LogError("LaneNotFound!");
+        return null;
     }
 
     public LaneView GetCurrentLaneView(HeroView heroView) => BoardView.GetCurrentLaneView(heroView);
     public LaneView GetCurrentLaneView(NPCView enemyView) => BoardView.GetCurrentLaneView(enemyView);
     public List<NPCView> GetAllEnemies() => BoardView.GetAllEnemies();
-    public List<NPCView> GetAllSideKicks() => BoardView.GetAllSideKicks();
     public List<CombatantView> GetAllCombatants() => BoardView.GetAllCombatants();
     public List<CombatantView> GetAllFoes(CombatantView caster) => BoardView.GetAllFoes(caster);
     public List<LaneView> GetAllLanes() => BoardView.GetAllLanes();

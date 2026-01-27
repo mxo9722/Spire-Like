@@ -18,7 +18,7 @@ MonoBehaviour:
   <Mana>k__BackingField: 1
   <Type>k__BackingField: 0
   <Image>k__BackingField: {fileID: 21300000, guid: b7e5c794ed69626448c8d968a8dd2762, type: 3}
-  <Description>k__BackingField: Deal {v0} damage and apply {v1} burn to a nearby
+  <Description>k__BackingField: Deal {v0} damage and apply {v1} burn to an aligned
     unit.
   <RequiredConditions>k__BackingField: []
   <HighlightConditions>k__BackingField: []

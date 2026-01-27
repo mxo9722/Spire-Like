@@ -1,11 +1,12 @@
 using System;
+using System.Linq;
 using UnityEngine;
 
-public class OnEnemyAttackPC : PerkCondition
+public class OnEnemyAttackPC : ReactionCondition
 {
     public override bool SubConditionIsMet(GameAction gameAction)
     {
-        return gameAction is AttackHeroGA attackHeroGA && attackHeroGA.Targets.IndexOf(HeroSystem.Instance.HeroView) != -1;
+        return gameAction is AttackHeroGA attackHeroGA && attackHeroGA.Targets.Any(t => t is HeroView);
     }
 
     public override void SubscribeCondition(Action<GameAction> reaction)

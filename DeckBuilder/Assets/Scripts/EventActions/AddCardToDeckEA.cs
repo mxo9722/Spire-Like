@@ -9,16 +9,16 @@ public class AddCardToDeckEA : EventAction
 {
     [SerializeField] private List<CardData> _cards = new();
 
-    public override IEnumerator Invoke()
+    public override IEnumerator Invoke(EffectContext context)
     {
-        foreach(var card in _cards)
+        foreach(CardData card in _cards)
             RunSystem.Instance.AddCard(new(card));
 
         List<CardView> cardViews = new();
 
-        foreach (var card in _cards)
+        foreach (CardData card in _cards)
         {
-            var cardView = CardViewCreator.Instance.CreateCardView(new(card), Vector3.zero, Quaternion.identity, true);
+            CardView cardView = CardViewCreator.Instance.CreateCardView(new(card), Vector3.zero, Quaternion.identity, true);
             cardView.SortingGroup.sortingLayerID = SortingLayer.layers.Last().id;
             cardViews.Add(cardView);
             yield return new WaitForSeconds(0.3f);

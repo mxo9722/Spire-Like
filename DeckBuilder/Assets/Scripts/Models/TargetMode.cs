@@ -6,7 +6,7 @@ using UnityEngine;
 public abstract class TargetMode<T>
 {
     public abstract List<T> GetTargets(EffectContext context);
-    public virtual List<StatusEffectType> GetAllStatusEffects() { return null; }
+    public virtual List<StatusEffect> GetAllStatusEffects() { return null; }
     public virtual List<T> AllPossibleTargets(EffectContext context, Card card = null)
     {
         return GetTargets(context);
@@ -16,4 +16,8 @@ public abstract class TargetMode<T>
 
     public virtual bool IsRandom => false;
 
+    public virtual NPCTargetTypes GetTargetIntent()
+    {
+        return NPCTargetTypes.NONE;
+    }
 }

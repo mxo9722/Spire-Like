@@ -9,9 +9,9 @@ public abstract class StatusEffectReaction
     [SerializeField] protected ReactionTiming _reactionTiming;
     [field: SerializeReference, SR] public List<AutoTargetEffect> Effects { get; private set; } = new();
 
-    protected StatusEffectType _type;
+    protected StatusEffect _type;
 
-    public void SetUp(StatusEffectType type)
+    public void SetUp(StatusEffect type)
     {
         _type = type;
     }

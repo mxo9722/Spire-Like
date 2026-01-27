@@ -9,6 +9,9 @@ public class SpeechBubbleUI : MonoBehaviour
     [SerializeField] private TMPro.TMP_Text _text;
     [SerializeField] private CanvasGroup _canvasGroup;
 
+    private float _duration;
+    private Coroutine _coroutine = null;
+
     public void SetUp(Vector3 position, string text, Vector3 scale)
     {
         transform.position = position;
@@ -19,16 +22,32 @@ public class SpeechBubbleUI : MonoBehaviour
         _text.text = text;
     }
 
-    public IEnumerator PlayWordBubble(float duration)
+    private void OnDisable()
+    {
+        SpeechBubbleSystem.Instance.RemoveBubble(this);
+        _canvasGroup.DOKill();
+
+        if (_coroutine != null)
+            StopCoroutine(_coroutine);
+    }
+
+    public void PlayWordBubble(float duration)
+    {
+        _duration = duration;
+        _coroutine = StartCoroutine(PlayWordBubble());
+    }
+
+    public IEnumerator PlayWordBubble()
     {
         _canvasGroup.alpha = 0;
         
         var tween = _canvasGroup.DOFade(1, 0.15f);
         yield return tween.WaitForCompletion();
 
-        yield return new WaitForSeconds(duration);
+        yield return new WaitForSeconds(_duration);
 
         tween = _canvasGroup.DOFade(0f, 0.15f);
+
         yield return tween.WaitForCompletion();
 
         Destroy(gameObject);

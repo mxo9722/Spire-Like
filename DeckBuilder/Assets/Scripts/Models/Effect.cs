@@ -5,7 +5,7 @@ public abstract class Effect
 {
     public abstract GameAction GetGameAction(EffectContext context, List<CombatantView> combatantTargets = null, List<LaneView> laneTargets = null, List<Card> cardTargets = null);
 
-    public virtual List<StatusEffectType> GetAllStatusEffects() { return null; }
+    public virtual List<StatusEffect> GetAllStatusEffects() { return null; }
 
     public virtual IDynamicEffectText[] GetDynamicTextEffects() 
     {

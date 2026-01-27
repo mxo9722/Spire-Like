@@ -27,7 +27,8 @@ public class RoomView : MonoBehaviour
 
     private void OnMouseDown()
     {
-        RunSystem.Instance.RunData.EnterRoom(Room);
+        if(!RewardSystem.Instance.RewardsUIOpened)
+            RunSystem.Instance.RunData.EnterRoom(Room);
     }
 
     private void Update()

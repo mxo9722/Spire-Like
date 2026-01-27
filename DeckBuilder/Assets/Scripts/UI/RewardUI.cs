@@ -1,11 +1,13 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class RewardUI : MonoBehaviour
+public class RewardUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private Button _button;
     [SerializeField] private Image _image;
     [SerializeField] private TMPro.TMP_Text _text;
+    [SerializeField] private HelpBoxUI _helpBox;
 
     public SetReward Reward { get; private set; }
 
@@ -30,5 +32,17 @@ public class RewardUI : MonoBehaviour
         }
 
         RunSystem.Instance.SaveRun();
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if(Reward.ShowTip)
+            _helpBox.SetUpFromText(Reward.RewardName, Reward.RewardDescription);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if(Reward.ShowTip)
+            _helpBox.Hide();
     }
 }

@@ -16,22 +16,22 @@ public class ShopView : MonoBehaviour
 
     public void SetUp()
     {
-        CardData[] cards = RewardCreator.Instance.GetRandomCards(_shopCardViews.Count);
+        Card[] cards = RewardCreator.Instance.GetRandomCards(_shopCardViews.Count);
 
         int saleIndex = RNG.Random.Next(_shopCardViews.Count);
 
         for(int i=0;i<_shopCardViews.Count;i++)
         {
-            CardData cardData = cards[i];
+            Card card = cards[i];
 
-            Vector2Int priceRange = _cardPrices[cardData.Rarity];
+            Vector2Int priceRange = _cardPrices[card.Rarity];
             int price = RNG.Random.Next(priceRange.x, priceRange.y+1);
 
             if (i == saleIndex)
                 price /= 2;
 
             ShopCardView shopCard = _shopCardViews[i];
-            shopCard.SetUp(new(cardData), price, _shopKeeper.transform.position);
+            shopCard.SetUp(new(card), price, _shopKeeper.transform.position);
             
             if (i == saleIndex)
                 shopCard.AddSaleBanner();
@@ -40,7 +40,7 @@ public class ShopView : MonoBehaviour
         }
 
         SpeechBubbleUI speechBubble = SpeechBubbleSystem.Instance.DisplaySpeechBubble(_shopKeeperSpeechTrans.position + Vector3.up, _shopKeeperDialogue, Vector3.one * 3);
-        StartCoroutine(speechBubble.PlayWordBubble(10));
+        speechBubble.PlayWordBubble(10);
     }
 
     private void OnCardPressed(ShopCardView shopCardView)
@@ -48,7 +48,7 @@ public class ShopView : MonoBehaviour
         if (RenownSystem.Instance.TrySpend(shopCardView.Cost))
         {
             CardReward cardReward = new();
-            cardReward.SetCards(shopCardView.Card.data);
+            cardReward.SetCards(shopCardView.Card);
             cardReward.CollectReward();
             shopCardView.SetUp(null, 0, _shopKeeper.transform.position);
         }

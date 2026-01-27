@@ -11,11 +11,11 @@ public class StatusEffectUI : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     private CombatantView _owner;
     private int _stackCount = 0;
-    private StatusEffectType _statusEffectType;
+    private StatusEffect _statusEffectType;
 
     private bool _started = false;
 
-    public void Set(CombatantView owner, Sprite sprite, int stackCount, StatusEffectType statusEffectType)
+    public void Set(CombatantView owner, Sprite sprite, int stackCount, StatusEffect statusEffectType)
     {
         _owner = owner;
         _image.sprite = sprite;

@@ -1,11 +1,16 @@
 using DG.Tweening;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TopBarUI : Singleton<TopBarUI>
 {
     [SerializeField] private TMPro.TMP_Text _renownText;
-    [SerializeField] private TMPro.TMP_Text _healthText;
+
+    [SerializeField] private Image _heroSymbol1;
+    [SerializeField] private TMPro.TMP_Text _healthText1;
+    [SerializeField] private Image _heroSymbol2;
+    [SerializeField] private TMPro.TMP_Text _healthText2;
     [SerializeField] private CardPileUI _deckUI;
 
     public Vector3 DeckUIPos { get => (_deckUI.transform.position); }
@@ -14,7 +19,10 @@ public class TopBarUI : Singleton<TopBarUI>
     {
         _deckUI.SetUp(RunSystem.Instance.RunData.Deck);
         _renownText.text = RenownSystem.Instance.Renown.ToString();
-        
+
+        _heroSymbol1.sprite = RunSystem.Instance.Hero1.Image;
+        _heroSymbol2.sprite = RunSystem.Instance.Hero2.Image;
+
         UpdateHealth();
     }
 
@@ -24,14 +32,10 @@ public class TopBarUI : Singleton<TopBarUI>
         StartCoroutine(LerpCredits(credits-prevAmount, 0.5f));
     }
 
-    public void UpdateHealth()
+    public void UpdateHealth(int health = 0)
     {
-        _healthText.text = RunSystem.Instance.CurrentHealth + "/" + RunSystem.Instance.MaxHealth;
-    }
-
-    public void UpdateHealth(HeroView hero)
-    {
-        _healthText.text = hero.CurrentHealth + "/" + hero.MaxHealth;
+        _healthText1.text = RunSystem.Instance.Hero1.CurrentHealth + "/" + RunSystem.Instance.Hero1.MaxHealth;
+        _healthText2.text = RunSystem.Instance.Hero2.CurrentHealth + "/" + RunSystem.Instance.Hero2.MaxHealth;
     }
 
     private IEnumerator LerpCredits(int amount, float duration)

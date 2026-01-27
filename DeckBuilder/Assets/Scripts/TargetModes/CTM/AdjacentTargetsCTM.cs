@@ -59,7 +59,7 @@ public class AdjacentTargetsCTM : CombatantTargetMode
     {
         if (lane == null) return null;
         if (index < 0) return null;
-        SlotView[] slots = isEvil ? lane.EnemySlots : lane.HeroSlots;
+        SlotView[] slots = isEvil ? lane.EnemySlots : new[] { lane.HeroSlot };
         if (slots.Length <= index) return null;
 
         SlotView slot = slots[index];

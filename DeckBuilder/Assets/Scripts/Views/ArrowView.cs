@@ -12,7 +12,7 @@ public class ArrowView : MonoBehaviour
     [SerializeField] private Color _highlightHoverColor;
 
     private Vector3 _startPosition;
-
+    private CombatantView _caster;
 
     private void Update()
     {
@@ -36,11 +36,11 @@ public class ArrowView : MonoBehaviour
             {
                 case ManualTargetType.COMBATANT:
                     CombatantView combatantView = target.GetComponent<CombatantView>();
-                    isValid = ManualTargetSystem.Instance.CombatantIsValid(EffectContext.CreateHeroEC(combatantView), combatantView);
+                    isValid = ManualTargetSystem.Instance.CombatantIsValid( new( _caster, manualTargetCombatant: combatantView), combatantView);
                     break;
                 case ManualTargetType.LANE:
                     LaneView laneView = target.GetComponent<LaneView>();
-                    isValid = ManualTargetSystem.Instance.LaneIsValid(EffectContext.CreateHeroEC(laneView), laneView);
+                    isValid = ManualTargetSystem.Instance.LaneIsValid( new( _caster, manualTargetLane: laneView), laneView);
                     break;
             }
 
@@ -54,33 +54,33 @@ public class ArrowView : MonoBehaviour
                     case ManualTargetType.COMBATANT:
 
                         CombatantView ct = target.GetComponent<CombatantView>();
-                        CardViewHoverSystem.Instance.UpdateDynamicDescription(ct);
+                        CardViewHoverSystem.Instance.UpdateDynamicDescription(_caster, ct);
 
                         TargetPreviewSystem.Instance.SetTargetPreviewsManual(card, ct);
 
-                        if (card.IsHighlighted(EffectContext.CreateHeroEC(ct)))
+                        if (card.IsHighlighted(new(_caster, manualTargetCombatant:ct)))
                             color = _highlightHoverColor;
                         break;
                     case ManualTargetType.LANE:
                         LaneView lt = target.GetComponent<LaneView>();
-                        CardViewHoverSystem.Instance.UpdateDynamicDescription(lt);
+                        CardViewHoverSystem.Instance.UpdateDynamicDescription(_caster, lt);
 
                         TargetPreviewSystem.Instance.SetTargetPreviewsManual(card, lt);
 
-                        if (card.IsHighlighted(EffectContext.CreateHeroEC(lt)))
+                        if (card.IsHighlighted(new(_caster, manualTargetLane: lt)))
                             color = _highlightHoverColor;
                         break;
                 }
             }
             else
             {
-                CardViewHoverSystem.Instance.UpdateDynamicDescription();
+                CardViewHoverSystem.Instance.UpdateDynamicDescription(card);
                 ManualTargetSystem.Instance.HighlightManualTargets(card);
             }
         }
         else
         {
-            CardViewHoverSystem.Instance.UpdateDynamicDescription();
+            CardViewHoverSystem.Instance.UpdateDynamicDescription(card);
 
             ManualTargetSystem.Instance.HighlightManualTargets(card);
         }
@@ -89,10 +89,12 @@ public class ArrowView : MonoBehaviour
         _arrowHead.color = color;
     }
 
-    public void SetupArrow(Vector3 startPosition)
+    public void SetupArrow(Vector3 startPosition, CombatantView caster)
     {
         _startPosition = startPosition;
         _lineRenderer.SetPosition(0, startPosition);
         _lineRenderer.SetPosition(1, MouseUtil.GetMousePositionInWorldSpace());
+
+        _caster = caster;
     }
 }

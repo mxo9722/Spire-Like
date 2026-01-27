@@ -34,9 +34,10 @@ public class DialogueNode : BaseDialogueNode
 
 	public IEnumerator PerformActions(SerializedDictionary<int, object> dict)
     {
+		EffectContext context = new();
 		foreach(EventAction action in Actions)
         {
-			yield return action.Invoke();
+			yield return action.Invoke(context);
         }
     }
 

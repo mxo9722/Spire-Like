@@ -36,6 +36,15 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
+    - rid: 262420840209711233
+      type: {class: AutoTargetlessEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _noTargetEffect:
+          rid: 262420840209711234
+    - rid: 262420840209711234
+      type: {class: DrawCardsEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _drawAmount: 1
     - rid: 4055348078608908524
       type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
       data:
@@ -62,18 +71,10 @@ MonoBehaviour:
       data:
         _conditions:
         - rid: 4055348078608908530
-        _successEffect:
-          rid: 4055348078608908531
+        _successEffects:
+        - rid: 262420840209711233
+        _failEffects: []
     - rid: 4055348078608908530
       type: {class: CasterMovedThisTurnCondition, ns: , asm: Assembly-CSharp}
       data:
         _invert: 0
-    - rid: 4055348078608908531
-      type: {class: AutoTargetlessEffect, ns: , asm: Assembly-CSharp}
-      data:
-        _noTargetEffect:
-          rid: 4055348078608908532
-    - rid: 4055348078608908532
-      type: {class: DrawCardsEffect, ns: , asm: Assembly-CSharp}
-      data:
-        _drawAmount: 1

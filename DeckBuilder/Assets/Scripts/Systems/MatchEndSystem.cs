@@ -19,7 +19,8 @@ public class MatchEndSystem : Singleton<MatchEndSystem>
         combatRoom?.SetCompleted();
         RewardSystem.Instance.DisplayRewards(combatRoom.Rewards, ReturnToMap);
 
-        RunSystem.Instance.RunData.SetHealth(HeroSystem.Instance.HeroView.CurrentHealth);
+        RunSystem.Instance.Hero1.SetCurrentHealth(HeroSystem.Instance.HeroViews[0].CurrentHealth);
+        RunSystem.Instance.Hero2.SetCurrentHealth(HeroSystem.Instance.HeroViews[1].CurrentHealth);
         RunSystem.Instance.SaveRun();
     }
 

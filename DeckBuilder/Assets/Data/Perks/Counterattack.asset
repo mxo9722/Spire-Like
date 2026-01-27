@@ -26,7 +26,7 @@ MonoBehaviour:
     - rid: 262420752671178857
       type: {class: OnEnemyAttackPC, ns: , asm: Assembly-CSharp}
       data:
-        reactionTiming: 0
+        reactionTiming: 1
     - rid: 262420752671178858
       type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
       data:

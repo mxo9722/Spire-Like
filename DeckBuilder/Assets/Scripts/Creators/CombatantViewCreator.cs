@@ -6,7 +6,7 @@ public class CombatantViewCreator : Singleton<CombatantViewCreator>
     [SerializeField] private NPCView _enemyViewPrefab;
     [SerializeField] private NPCView _sideKickViewPrefab;
 
-    public HeroView CreateHeroView(HeroData heroData, SlotView slot)
+    public HeroView CreateHeroView(Hero heroData, SlotView slot)
     {
         HeroView heroView = Instantiate(_heroViewPrefab, slot.transform.position, slot.transform.rotation);
         heroView.Setup(heroData, slot);

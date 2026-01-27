@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class HeroSystem : Singleton<HeroSystem>
 {
-    public HeroView HeroView { get; private set; }
+    public HeroView[] HeroViews { get; private set; }
 
     private void OnEnable()
     {
@@ -20,9 +20,11 @@ public class HeroSystem : Singleton<HeroSystem>
         ActionSystem.DetachPerformer<AfterPlayerTurnGA>();
     }
 
-    public void Setup(HeroData heroData)
+    public void Setup(Hero heroData1, Hero heroData2)
     {
-        HeroView = BoardSystem.Instance.BoardView.CreateHero(heroData, 1);
+        HeroViews = new HeroView[2];
+        HeroViews[0] = BoardSystem.Instance.BoardView.CreateHero(heroData1, 0);
+        HeroViews[1] = BoardSystem.Instance.BoardView.CreateHero(heroData2, 2);
     }
 
     private IEnumerator AfterPlayerTurnPerformer(AfterPlayerTurnGA afterPlayerTurnGA)
@@ -30,17 +32,11 @@ public class HeroSystem : Singleton<HeroSystem>
         DiscardAllCardsGA discardAllCardsGA = new(true);
         ActionSystem.Instance.AddReaction(discardAllCardsGA);
 
-        StatusEffectSystem.Instance.PrePostModifyStatusEffect(HeroView, ReactionTiming.POST);
+        foreach(HeroView heroView in HeroViews)
+            StatusEffectSystem.Instance.PrePostModifyStatusEffect(heroView, ReactionTiming.POST);
         yield return null;
         
         NPCTurnGA enemyTurnGA;
-        List<NPCView> sideKicks = BoardSystem.Instance.GetAllSideKicks();
-
-        if (sideKicks.Count > 0)
-        {
-            enemyTurnGA = new NPCTurnGA(sideKicks);
-            ActionSystem.Instance.AddReaction(enemyTurnGA);
-        }
 
         enemyTurnGA = new NPCTurnGA(BoardSystem.Instance.GetAllEnemies());
         ActionSystem.Instance.AddReaction(enemyTurnGA);
@@ -51,7 +47,8 @@ public class HeroSystem : Singleton<HeroSystem>
 
     private IEnumerator BeforePlayerTurnPerformer(BeforePlayerTurnGA beforePlayerTurnGA)
     {
-        StatusEffectSystem.Instance.PrePostModifyStatusEffect(HeroView, ReactionTiming.PRE);
+        foreach (HeroView heroView in HeroViews)
+            StatusEffectSystem.Instance.PrePostModifyStatusEffect(heroView, ReactionTiming.PRE);
 
         //RedistributeEnemiesGA redistributeEnemiesGA = new RedistributeEnemiesGA();
         //ActionSystem.Instance.AddReaction(redistributeEnemiesGA);
@@ -60,25 +57,5 @@ public class HeroSystem : Singleton<HeroSystem>
         ActionSystem.Instance.AddReaction(drawCardsGA);
 
         yield return null;
-    }
-
-    public int GetHealth()
-    {
-        if(HeroView == null)
-        {
-            return RunSystem.Instance.CurrentHealth;
-        }
-
-        return HeroView.CurrentHealth;
-    }
-    
-    public int GetMaxHealth()
-    {
-        if(HeroView == null)
-        {
-            return RunSystem.Instance.MaxHealth;
-        }
-
-        return HeroView.MaxHealth;
     }
 }

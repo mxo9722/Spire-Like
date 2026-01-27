@@ -8,14 +8,14 @@ public class CardReward : SetReward
 
     public override string RewardName => "Take a card!";
 
-    [field: SerializeField] public List<CardData> Cards { get; private set; }
+    [field: SerializeField] public List<Card> Cards { get; private set; }
 
-    public void SetCards(CardData card)
+    public void SetCards(Card card)
     {
         Cards = new() { card };
     }
     
-    public void SetCards(List<CardData> cards)
+    public void SetCards(List<Card> cards)
     {
         Cards = cards;
     }
@@ -30,7 +30,7 @@ public class CardReward : SetReward
         }
         else if(Cards.Count == 1)
         {
-            RunSystem.Instance.AddCard(new(Cards[0]));
+            RunSystem.Instance.AddCard(Cards[0]);
         }
     }
 }

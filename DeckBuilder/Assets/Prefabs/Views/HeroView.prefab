@@ -48,7 +48,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _healthText: {fileID: 6059462798660690059}
   _spriteRenderer: {fileID: 3457946559073860843}
-  _targetPreviewSR: {fileID: 2571372944303216735}
   _statusEffectsUI: {fileID: 2092989458510580752}
   _helpBoxesUI: {fileID: 8430266420643578030}
 --- !u!61 &2508848647540134203
@@ -95,7 +94,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1.5, y: 1.5}
+  m_Size: {x: 2.5, y: 2}
   m_EdgeRadius: 0
 --- !u!1001 &536118233919566640
 PrefabInstance:
@@ -205,11 +204,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfc20e95b514199479f5255e0e40b0a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!212 &2571372944303216735 stripped
-SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 2657113475588615023, guid: e39150cff9e8faa4b8a646dfd6ae19f1, type: 3}
-  m_PrefabInstance: {fileID: 536118233919566640}
-  m_PrefabAsset: {fileID: 0}
 --- !u!212 &3457946559073860843 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 2922190342914772955, guid: e39150cff9e8faa4b8a646dfd6ae19f1, type: 3}

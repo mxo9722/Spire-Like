@@ -21,7 +21,7 @@ public abstract class CombatantView : MonoBehaviour, ITargetPreviewable, IHoldDa
 
     public bool TargetPreviewActive => Slot.TargetPreviewActive;
 
-    private Dictionary<StatusEffectType, int> _statusEffects = new();
+    private Dictionary<StatusEffect, int> _statusEffects = new();
 
     public Action<int> OnHealthChanged;
     public Action<int> OnMaxHealthChanged;
@@ -56,11 +56,13 @@ public abstract class CombatantView : MonoBehaviour, ITargetPreviewable, IHoldDa
         ActionSystem.UnsubscribeReaction<BeforePlayerTurnGA>(this, BeforePlayerTurn, ReactionTiming.PRE);
 
         transform.DOKill();
+        _spriteRenderer.DOKill();
+        HideTargetPreview();
     }
 
     public virtual void OnMouseEnter()
     {
-        if(!ManualTargetSystem.Instance.IsTargetting && !CardCollectionSystem.Instance.Opened)
+        if (!ManualTargetSystem.Instance.IsTargetting && !CardCollectionSystem.Instance.Opened)
             LoadHelpBoxes(_helpBoxesUI);
     }
 
@@ -71,9 +73,9 @@ public abstract class CombatantView : MonoBehaviour, ITargetPreviewable, IHoldDa
 
     protected virtual void LoadHelpBoxes(HelpBoxesUI helpBoxesUI)
     {
-        List<StatusEffectType> allStatusEffects = GetAllActiveStatusEffects();
+        List<StatusEffect> allStatusEffects = GetAllActiveStatusEffects();
 
-        foreach (StatusEffectType statusEffect in allStatusEffects)
+        foreach (StatusEffect statusEffect in allStatusEffects)
         {
             _helpBoxesUI.AddHelpBoxFromStatusEffect(statusEffect, _statusEffects[statusEffect]);
         }
@@ -87,7 +89,7 @@ public abstract class CombatantView : MonoBehaviour, ITargetPreviewable, IHoldDa
     public (int UnblockedDamage, int Overkill) Damage(int damageAmount, bool ignoreBlock = false)
     {
         int remainingDamage = damageAmount;
-        int currentArmor = GetStatusEffectStacks(StatusEffectType.BLOCK);
+        int currentArmor = GetStatusEffectStacks(StatusEffect.BLOCK);
 
         if (remainingDamage == 0 || IsInvincible())
             return (0, 0);
@@ -96,12 +98,12 @@ public abstract class CombatantView : MonoBehaviour, ITargetPreviewable, IHoldDa
         {
             if (currentArmor >= remainingDamage)
             {
-                RemoveStatusEffect(StatusEffectType.BLOCK, remainingDamage);
+                RemoveStatusEffect(StatusEffect.BLOCK, remainingDamage);
                 remainingDamage = 0;
             }
             else if (currentArmor > 0)
             {
-                RemoveStatusEffect(StatusEffectType.BLOCK, currentArmor);
+                RemoveStatusEffect(StatusEffect.BLOCK, currentArmor);
                 remainingDamage -= currentArmor;
             }
         }
@@ -139,16 +141,32 @@ public abstract class CombatantView : MonoBehaviour, ITargetPreviewable, IHoldDa
             UpdateHealthText();
         }
     }
+    
+    public bool IsSelectable()
+    {
+        if (GetStatusEffectStacks(StatusEffect.STEALTH) > 0)
+        {
+            if (Lane.GetFriendlyCombatants(this).Where(c => c.GetStatusEffectStacks(StatusEffect.STEALTH) == 0).Count() > 0)
+                return false;
+        }
+
+        return true;
+    }
 
     public bool IsInvincible()
     {
-        if (GetStatusEffectStacks(StatusEffectType.BLEND_IN) > 0 && Lane.GetFriendlyCount(this) > 1)
-            return true;
+        
+
+        if (GetStatusEffectStacks(StatusEffect.TAUNT) == 0)
+        {
+            if (Lane.GetFriendlyCombatants(this).Where(c => c.GetStatusEffectStacks(StatusEffect.TAUNT) > 0).Count() > 0)
+                return true;
+        }
 
         return false;
     }
 
-    public void AddStatusEffect(StatusEffectType type, int stackCount)
+    public void AddStatusEffect(StatusEffect type, int stackCount)
     {
         if (_statusEffects.ContainsKey(type))
         {
@@ -162,7 +180,7 @@ public abstract class CombatantView : MonoBehaviour, ITargetPreviewable, IHoldDa
         _statusEffectsUI.UpdateStatusEffectsUI(type, _statusEffects[type]);
     }
 
-    public void RemoveStatusEffect(StatusEffectType type, int stackCount)
+    public void RemoveStatusEffect(StatusEffect type, int stackCount)
     {
         if (_statusEffects.ContainsKey(type))
         {
@@ -171,24 +189,18 @@ public abstract class CombatantView : MonoBehaviour, ITargetPreviewable, IHoldDa
                 _statusEffects[type] = 0;
         }
 
-        if(CurrentHealth > 0)
+        if (CurrentHealth > 0)
             _statusEffectsUI.UpdateStatusEffectsUI(type, _statusEffects[type]);
     }
 
-    public void SetUpStatusEffect(StatusEffectType type)
+    public List<StatusEffect> GetAllActiveStatusEffects()
     {
-        StatusEffectInfo info = StatusEffectSystem.Instance.GetStatusEffectInfo(type);
-        //info.
-    }
-
-    public List<StatusEffectType> GetAllActiveStatusEffects()
-    {
-        List<StatusEffectType> allTypes = new(_statusEffects.Keys);
+        List<StatusEffect> allTypes = new(_statusEffects.Keys);
 
         return allTypes.FindAll(e => _statusEffects[e] > 0);
     }
 
-    public int GetStatusEffectStacks(StatusEffectType statusEffectType)
+    public int GetStatusEffectStacks(StatusEffect statusEffectType)
     {
         if (_statusEffects.ContainsKey(statusEffectType)) return _statusEffects[statusEffectType];
         return 0;
@@ -200,7 +212,7 @@ public abstract class CombatantView : MonoBehaviour, ITargetPreviewable, IHoldDa
             yield break;
 
         List<Tween> tweens = DOTween.TweensByTarget(transform, true);
-        if(tweens != null)
+        if (tweens != null)
             foreach (Tween t in tweens)
                 yield return t.WaitForCompletion();
     }
@@ -211,7 +223,7 @@ public abstract class CombatantView : MonoBehaviour, ITargetPreviewable, IHoldDa
         OnHealthChanged?.Invoke(CurrentHealth);
         UpdateHealthText();
     }
-    
+
     public void SetMaxHealth(int maxHealth)
     {
         MaxHealth = maxHealth;
@@ -234,15 +246,29 @@ public abstract class CombatantView : MonoBehaviour, ITargetPreviewable, IHoldDa
         Slot.HideTargetPreview();
     }
 
+    public void SetImageAlpha(float alpha, float duration)
+    {
+        if (_spriteRenderer.color.a == alpha)
+            return;
+        _spriteRenderer.DOKill();
+        _spriteRenderer.DOFade(alpha, duration);
+    }
+
     public void SetSlot(SlotView slotView)
     {
         Slot = slotView;
     }
 
-    public int GetSortValue()
+    public virtual int GetSortValue()
     {
-        if (GetStatusEffectStacks(StatusEffectType.BLEND_IN) > 0)
+        if (GetStatusEffectStacks(StatusEffect.STEALTH) > 0)
+            return 1;
+
+        if (GetStatusEffectStacks(StatusEffect.GUARD) > 0)
             return -1;
+        
+        if (GetStatusEffectStacks(StatusEffect.TAUNT) > 0)
+            return -2;
 
         return 0;
     }

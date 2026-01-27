@@ -7,5 +7,5 @@ using UnityEngine;
 public class StatusEffectsData : ScriptableObject
 {
     [SerializedDictionary("Status Effect Type", "Properties")]
-    [SerializeField] public SerializedDictionary<StatusEffectType, StatusEffectInfo> Map = new();
+    [SerializeField] public SerializedDictionary<StatusEffect, StatusEffectInfo> Map = new();
 }

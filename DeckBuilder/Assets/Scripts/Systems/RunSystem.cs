@@ -3,16 +3,19 @@ using UnityEngine;
 
 public class RunSystem : PersistentSingleton<RunSystem>, IHoldData
 {
-    [SerializeField] private HeroData _defaultHeroData;
+    [SerializeField] private HeroData _defaultHeroData1;
+    [SerializeField] private HeroData _defaultHeroData2;
     
     public RunData RunData { get; private set; }
 
     [SerializeField] private bool _debugStartNew = false;
 
     private const string SaveKey = "Run1";
-    public int CurrentHealth => RunData.CurrentHealth;
-    public int MaxHealth => RunData.MaxHealth;
-    public List<CardData> Deck => RunData.Deck;
+
+    public Hero Hero1 => RunData.Hero1;
+    public Hero Hero2 => RunData.Hero2;
+
+    public List<Card> Deck => RunData.Deck;
     public List<Perk> Perks => RunData.Perks;
     public List<PerkData> UsedPerks => RunData.UsedPerks;
 
@@ -76,7 +79,7 @@ public class RunSystem : PersistentSingleton<RunSystem>, IHoldData
 
     public RunData GenerateNewRun()
     {
-        RunData runData = new(_defaultHeroData);
+        RunData runData = new(_defaultHeroData1, _defaultHeroData2);
 
         return runData;
     }
@@ -89,31 +92,29 @@ public class RunSystem : PersistentSingleton<RunSystem>, IHoldData
 
     public void AddCard(Card card)
     {
-        RunData.Deck.Add(card.data);
+        RunData.Deck.Add(card);
         SaveRun();
     }
 
     public void RemoveCard(Card card)
     {
-        Deck.Remove(card.data);
+        Deck.Remove(card);
         SaveRun();
     }
 
-    public void UpgradeCard(CardData card)
+    public void UpgradeCard(Card card)
     {
         int index = Deck.IndexOf(card);
 
         if (index == -1)
             return;
 
-        Deck[index] = card.Upgrade;
+        Deck[index] = new(card.Upgrade, card.Owner);
     }
 
     public Room GetRoom() => RunData.Room;
-    public HeroData GetHeroData() => RunData.Hero;
     public void SetMap(Map map) => RunData.SetMap(map);
     public void MarkPerkUsed(PerkData perkData) => RunData.MarkPerkDataUsed(perkData);
-    public void SetHealth(int amount) => RunData.SetHealth(amount);
 
     public void AddData(string key, object data) => RunData.AddData(key, data);
     public T GetData<T>(string key) => RunData.GetData<T>(key);

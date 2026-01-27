@@ -35,7 +35,7 @@ public class HelpBoxesUI : MonoBehaviour
         _helpBoxes.Add(helpBoxUI);
     }
     
-    public void AddHelpBoxFromStatusEffect(StatusEffectType statusEffectType, int stacks)
+    public void AddHelpBoxFromStatusEffect(StatusEffect statusEffectType, int stacks)
     {
         HelpBoxUI helpBoxUI = Instantiate(_helpBoxPrefab,_wrapper);
         helpBoxUI.SetUpFromStatusEffect(statusEffectType, stacks);

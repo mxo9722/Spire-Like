@@ -5,9 +5,21 @@ public class HeroView : CombatantView
 
     public virtual bool IsProtagonist { get => true; }
 
-    public void Setup(HeroData heroData, SlotView slot)
+    public Hero Hero { get; private set; }
+
+    public void Setup(Hero hero, SlotView slot)
     {
-        SetupBase(heroData.StartingMaxHealth, heroData.Image, slot);
+        SetupBase(hero.StartingMaxHealth, hero.Image, slot);
+
+        Hero = hero;
+        SetHealth(hero.CurrentHealth);
+
+        OnHealthChanged += TopBarUI.Instance.UpdateHealth;
+    }
+
+    private void OnDisable()
+    {
+
     }
 
     public override void Die()

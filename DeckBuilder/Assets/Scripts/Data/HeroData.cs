@@ -9,6 +9,7 @@ public class HeroData : ScriptableObject
     [field:SerializeField] public int StartingMaxHealth { get; private set; }
     [field:SerializeField] public List<CardData> StartingDeck { get; private set; }
     [field:SerializeField] public PerkData StartingPerk { get; private set; }
+    [field:SerializeField] public Color Color { get; private set; }
 
     [SerializeField] private List<CardData> _allCards;
     [SerializeField] private List<PerkData> _perks;

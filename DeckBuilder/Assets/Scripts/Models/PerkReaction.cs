@@ -8,15 +8,16 @@ using UnityEngine;
 [System.Serializable]
 public class PerkReaction
 {
-    [field: SerializeReference, SR] public PerkCondition PerkCondition { get; private set; }
+    [field: SerializeReference, SR] public ReactionCondition PerkCondition { get; private set; }
 
     [field: SerializeField] public bool UseActionCasterAsTarget { get; private set; } = true;
-    [field: SerializeReference, SR] public List<AutoCombatantTargetEffect> AutoTargetEffects { get; private set; }
+    [field: SerializeReference, SR] public List<AutoTargetEffect> AutoTargetEffects { get; private set; }
 
     private Action<PerkReaction, GameAction> _reaction;
 
     public void SubscribeCondition(Action<PerkReaction, GameAction> reaction)
     {
+        _reaction = reaction;
         PerkCondition.SubscribeCondition(Reaction);
     }
 

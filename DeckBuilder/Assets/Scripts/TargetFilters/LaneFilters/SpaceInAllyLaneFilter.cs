@@ -7,7 +7,7 @@ public class SpaceInAllyLaneFilter : LaneFilter
     {
         if(context.Caster is HeroView || (context.Caster is NPCView npc && !npc.IsEvil))
         {
-            return target.HeroSlots.Any(s => s.Combatant == null);
+            return target.HeroSlot.Combatant == null;
         }
         return target.EnemySlots.Any(s => s.Combatant == null);
     }

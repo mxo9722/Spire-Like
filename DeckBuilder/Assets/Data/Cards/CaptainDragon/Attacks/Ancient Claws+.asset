@@ -18,8 +18,8 @@ MonoBehaviour:
   <Mana>k__BackingField: 2
   <Type>k__BackingField: 0
   <Image>k__BackingField: {fileID: 21300000, guid: b1f588608ad0d3e4b99ea775c0f3eb30, type: 3}
-  <Description>k__BackingField: Deal {v0} damage to a nearby unit a number of times
-    equal to your hand size.
+  <Description>k__BackingField: Deal {v0} damage to an aligned unit for each card
+    in your hand.
   <RequiredConditions>k__BackingField: []
   <HighlightConditions>k__BackingField: []
   <ExhuastOnUse>k__BackingField: 0

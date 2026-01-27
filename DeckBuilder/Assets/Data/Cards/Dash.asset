@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62bf69310631aa94896652d3f8be392c, type: 3}
   m_Name: Dash
   m_EditorClassIdentifier: 
-  <Upgrade>k__BackingField: {fileID: 0}
+  <Rarity>k__BackingField: 0
+  <Upgrade>k__BackingField: {fileID: 11400000, guid: d6ebe7508df28e044a1ecbe9bb13eeef, type: 2}
   <Unplayable>k__BackingField: 0
   <Mana>k__BackingField: 1
   <Type>k__BackingField: 1

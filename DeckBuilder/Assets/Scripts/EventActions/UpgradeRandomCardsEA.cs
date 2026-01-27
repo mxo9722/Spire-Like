@@ -9,9 +9,9 @@ public class UpgradeRandomCardsEA : EventAction
 
     [SerializeField] private int cardCount = 1;
 
-    public override IEnumerator Invoke()
+    public override IEnumerator Invoke(EffectContext context)
     {
-        List<Card> cards = RunSystem.Instance.Deck.Select(cd => new Card(cd)).ToList();
+        List<Card> cards = new(RunSystem.Instance.Deck);
         cards.RemoveAll(c => c.Upgrade == null);
         cards.Shuffle();
 
@@ -36,8 +36,8 @@ public class UpgradeRandomCardsEA : EventAction
             tween.onComplete += () => 
             {
                 cardView.transform.DORotate(Vector3.zero, 0.25f);
-                RunSystem.Instance.UpgradeCard(cardView.Card.data);
-                cardView.Setup(new(cardView.Card.Upgrade),true);
+                RunSystem.Instance.UpgradeCard(cardView.Card);
+                cardView.Setup(new(cardView.Card.Upgrade,cardView.Card.Owner),true);
                 cardView.SetGlow(Color.clear);
             };
             yield return new WaitForSeconds(0.15f);

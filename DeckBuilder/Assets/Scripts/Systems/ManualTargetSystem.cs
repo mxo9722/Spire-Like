@@ -14,14 +14,16 @@ public class ManualTargetSystem : Singleton<ManualTargetSystem>
 
     private List<CombatantFilter> _combatantFilters = null;
     private List<LaneFilter> _laneFilters = null;
+    private Card _card;
 
     public void StartTargeting(Vector3 startPosition, Card card)
     {
         _arrowView.gameObject.SetActive(true);
-        _arrowView.SetupArrow(startPosition);
+        _arrowView.SetupArrow(startPosition, card.GetOwnerView());
         ManualTargetType = card.ManualTargetType;
         _combatantFilters = card.CombatantFilters;
         _laneFilters = card.LaneFilters;
+        _card = card;
 
         HighlightManualTargets(card);
     }
@@ -33,18 +35,18 @@ public class ManualTargetSystem : Singleton<ManualTargetSystem>
         switch (card.ManualTargetType)
         {
             case ManualTargetType.COMBATANT:
-                TargetPreviewSystem.Instance.SetTargetPreviewsManual<CombatantView, CombatantFilter>(card.CombatantFilters, highlightConditionals);
+                TargetPreviewSystem.Instance.SetTargetPreviewsManual<CombatantView, CombatantFilter>(card.CombatantFilters, highlightConditionals, card.GetOwnerView());
                 break;
 
             case ManualTargetType.LANE:
-                TargetPreviewSystem.Instance.SetTargetPreviewsManual<LaneView, LaneFilter>(card.LaneFilters, highlightConditionals);
+                TargetPreviewSystem.Instance.SetTargetPreviewsManual<LaneView, LaneFilter>(card.LaneFilters, highlightConditionals, card.GetOwnerView());
                 break;
         }
     }
 
     public CombatantView EndEnemyTargeting(Vector3 endPosition)
     {
-        TargetPreviewSystem.Instance.HideTargetPreviews();
+        TargetPreviewSystem.Instance.HideTargetPreviews(true);
 
         if (!_arrowView.gameObject.activeSelf)
             return null;
@@ -54,9 +56,9 @@ public class ManualTargetSystem : Singleton<ManualTargetSystem>
         if (hit.collider != null
             && hit.transform.TryGetComponent(out CombatantView target))
         {
-            EffectContext context = EffectContext.CreateHeroEC(target);
+            EffectContext context = new(_card.GetOwnerView(), manualTargetCombatant:target);
 
-            TargetPreviewSystem.Instance.HideTargetPreviews();
+            TargetPreviewSystem.Instance.HideTargetPreviews(true);
 
             return CombatantIsValid(context, target) ? target : null;
         }
@@ -66,7 +68,7 @@ public class ManualTargetSystem : Singleton<ManualTargetSystem>
 
     public LaneView EndLaneTargeting(Vector3 endPosition)
     {
-        TargetPreviewSystem.Instance.HideTargetPreviews();
+        TargetPreviewSystem.Instance.HideTargetPreviews(true);
 
         if (!_arrowView.gameObject.activeSelf)
             return null;
@@ -76,9 +78,9 @@ public class ManualTargetSystem : Singleton<ManualTargetSystem>
         if (hit.collider != null
             && hit.transform.TryGetComponent(out LaneView target))
         {
-            EffectContext context = EffectContext.CreateHeroEC(target);
+            EffectContext context = new(_card.GetOwnerView(), manualTargetLane: target);
 
-            TargetPreviewSystem.Instance.HideTargetPreviews();
+            TargetPreviewSystem.Instance.HideTargetPreviews(true);
 
             return LaneIsValid(context, target) ? target : null;
         }
@@ -110,8 +112,14 @@ public class ManualTargetSystem : Singleton<ManualTargetSystem>
 
     public static bool CombatantIsValid(EffectContext context, CombatantView target, List<CombatantFilter> filters)
     {
+        if (target == null)
+            return false;
+
         if (filters != null)
         {
+            if (!target.IsSelectable())
+                return false;
+
             foreach (CombatantFilter filter in filters)
             {
                 if (!filter.TestTarget(context, target))
@@ -129,6 +137,9 @@ public class ManualTargetSystem : Singleton<ManualTargetSystem>
 
     public static bool LaneIsValid(EffectContext context, LaneView target, List<LaneFilter> filters)
     {
+        if (!target.IsSelectable())
+            return false;
+
         if (filters != null)
         {
             foreach (LaneFilter filter in filters)

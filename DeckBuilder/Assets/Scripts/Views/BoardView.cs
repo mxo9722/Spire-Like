@@ -26,7 +26,7 @@ public class BoardView : MonoBehaviour
         _originalScale = _wrapper.localScale;
         _originalLaneCount = _laneViews.Count;
 
-        for (int i=0;i<_laneViews.Count;i++)
+        for (int i = 0; i < _laneViews.Count; i++)
         {
             LaneView laneView = _laneViews[i];
             _lanePositions.Add(laneView.transform.localPosition);
@@ -34,19 +34,16 @@ public class BoardView : MonoBehaviour
         }
     }
 
-    public HeroView CreateHero(HeroData heroData, int laneIndex = 0)
+    public HeroView CreateHero(Hero heroData, int laneIndex = 0)
     {
         LaneView laneView = _laneViews[laneIndex];
-        SlotView slot = laneView.FirstAvailableHeroSlot();
+        SlotView slot = laneView.HeroSlot;
         HeroView heroView = CombatantViewCreator.Instance.CreateHeroView(heroData, slot);
 
         laneView.SetHero(heroView);
 
         slot.AddCombatant(heroView);
         heroView.transform.localScale = Vector3.one;
-
-        if(RunSystem.Instance.CurrentHealth > 0)
-            heroView.SetHealth(RunSystem.Instance.CurrentHealth);
 
         return heroView;
     }
@@ -60,7 +57,7 @@ public class BoardView : MonoBehaviour
         NPCView enemyView = CombatantViewCreator.Instance.CreateEnemyView(enemyData, slot);
         enemyView.transform.localScale = Vector3.one;
 
-        EnemySystem.DetermineEnemyBehaviour(enemyView);
+        EnemySystem.DetermineNPCBehaviour(enemyView);
 
         return enemyView;
     }
@@ -80,19 +77,9 @@ public class BoardView : MonoBehaviour
         List<CombatantView> allHeroes = new();
 
         foreach (LaneView laneView in _laneViews)
-            allHeroes.AddRange(laneView.HeroViews);
+            allHeroes.Add(laneView.HeroView);
 
         return allHeroes;
-    }
-    
-    public List<NPCView> GetAllSideKicks()
-    {
-        List<NPCView> allSideKicks = new();
-
-        foreach (LaneView laneView in _laneViews)
-            allSideKicks.AddRange(laneView.HeroViews.Where(h => h is NPCView).Cast<NPCView>());
-
-        return allSideKicks;
     }
 
     public List<CombatantView> GetAllCombatants()
@@ -102,7 +89,8 @@ public class BoardView : MonoBehaviour
         foreach (LaneView laneView in _laneViews)
         {
             allCombatants.AddRange(laneView.EnemyViews);
-            allCombatants.AddRange(laneView.HeroViews);
+            if(laneView.HeroView != null)
+                allCombatants.Add(laneView.HeroView);
         }
 
         return allCombatants;
@@ -112,9 +100,9 @@ public class BoardView : MonoBehaviour
     {
         if (caster is HeroView)
             return GetAllEnemies().Cast<CombatantView>().ToList();
-        else if(caster is NPCView npcView)
+        else if (caster is NPCView npcView)
         {
-            if(!npcView.IsEvil)
+            if (!npcView.IsEvil)
                 return GetAllEnemies().Cast<CombatantView>().ToList();
         }
 
@@ -125,24 +113,24 @@ public class BoardView : MonoBehaviour
 
     public LaneView GetCurrentLaneView(CombatantView combatantView)
     {
-        return _laneViews.Find(e => e.HeroViews.Contains(combatantView) || e.EnemyViews.Contains(combatantView));
+        return _laneViews.Find(e => e.HeroView == combatantView || e.EnemyViews.Contains(combatantView));
     }
 
     public LaneView GetCurrentLaneView(NPCView npcView)
     {
-        return _laneViews.Find(e => e.EnemyViews.Contains(npcView) || e.HeroViews.Contains(npcView));
+        return _laneViews.Find(e => e.EnemyViews.Contains(npcView) || e.HeroView == npcView);
     }
 
     public LaneView GetCurrentLaneView(HeroView heroView)
     {
-        return _laneViews.Find(e => e.HeroViews.Contains(heroView));
+        return _laneViews.Find(e => e.HeroView == (CombatantView)heroView);
     }
 
     public IEnumerator RemoveEnemy(NPCView enemyView)
     {
         LaneView laneView = GetCurrentLaneView(enemyView);
 
-        yield return laneView.RemoveEnemy(enemyView);
+        yield return laneView.RemoveNPC(enemyView);
     }
 
     public IEnumerator RedistributeEnemies()
@@ -213,18 +201,21 @@ public class BoardView : MonoBehaviour
 
         Tween tween = null;
 
-        foreach(CombatantView target in GetAllCombatants())
+        foreach (CombatantView target in GetAllCombatants())
         {
             yield return target.WaitForTweensComplete();
 
             if (moveEnemyGA.Moves.Keys.Contains(target))
             {
                 if (moveEnemyGA.JumpValue > 0)
+                {
                     tween = target.transform.DOLocalJump(Vector3.zero, moveEnemyGA.JumpValue, 1, moveEnemyGA.AnimationDuration);
+                    tween.SetEase(Ease.Linear);
+                }
                 else
                     tween = target.transform.DOLocalMove(Vector3.zero, moveEnemyGA.AnimationDuration);
             }
-            else if(target.transform.localPosition != Vector3.zero)
+            else if (target.transform.localPosition != Vector3.zero)
             {
                 target.transform.DOLocalMove(Vector3.zero, duration);
             }
@@ -240,9 +231,9 @@ public class BoardView : MonoBehaviour
     {
         bool unmoved = false;
 
-        if (target.GetStatusEffectStacks(StatusEffectType.ANCHORED) > 0 && caster != target && caster != null)
+        if (target.GetStatusEffectStacks(StatusEffect.ANCHORED) > 0 && caster != target && caster != null)
             unmoved = true;
-        else if (target.GetStatusEffectStacks(StatusEffectType.HAMSTRUNG) > 0 && caster == target)
+        else if (target.GetStatusEffectStacks(StatusEffect.HAMSTRUNG) > 0 && caster == target)
             unmoved = true;
 
         if (unmoved)
@@ -284,16 +275,16 @@ public class BoardView : MonoBehaviour
         if (hero.CurrentHealth == 0)
             return false;
 
-        if (destination.HeroViews.Length >= MAX_HERO_COUNT)
-            return false;
+        if (destination.HeroView != null)
+        {
+            //TODO: add a swap functionality
+            return true;
+        }
 
         LaneView originalLaneView = GetCurrentLaneView(hero);
 
-        SlotView slot = destination.FirstAvailableHeroSlot();
+        SlotView slot = destination.HeroSlot;
         slot.AddCombatant(hero, false);
-
-        originalLaneView.SlideHeroesRight();
-        destination.SlideHeroesRight();
 
         return true;
     }
@@ -310,12 +301,12 @@ public class BoardView : MonoBehaviour
         do
         {
             index = _laneViews.FindIndex(index + 1, e => !e.EnemyViews.Any());
-            if(index != -1)
+            if (index != -1)
                 emptyIndexes.Add(index);
-        } 
+        }
         while (index != -1 && index < _laneViews.Count - 1);
 
-        int heroIndex = _laneViews.FindIndex(e => e.HeroViews.Any(h => h is HeroView));
+        int heroIndex = _laneViews.FindIndex(e => e.HeroView != null);
 
         foreach (int emptyIndex in emptyIndexes)
         {
@@ -398,32 +389,47 @@ public class BoardView : MonoBehaviour
 
         int removeIndex = _laneViews.IndexOf(laneView);
 
-        CombatantView[] heroViews = laneView.HeroViews;
+        CombatantView heroView = laneView.HeroView;
 
-        if (heroViews.Length > 0)
+        if (heroView != null)
         {
-            foreach (CombatantView heroView in heroViews)
-            {
+            int moved = 0;
+
                 int middleIndex = _laneViews.Count / 2;
 
                 MoveUnitsGA moveHeroGA;
 
-                RemoveLaneGA removeLaneGA = new(laneView);
+
+                LaneView moveTo = null;
 
                 if (removeIndex >= middleIndex)
                 {
-                    moveHeroGA = new(_laneViews[removeIndex - 1], heroView, null);
+                    moveTo = _laneViews[removeIndex - 1];
                 }
                 else
                 {
-                    moveHeroGA = new(_laneViews[removeIndex + 1], heroView, null);
+                    moveTo = _laneViews[removeIndex + 1];
                 }
 
-                if (heroView != null)
-                    ActionSystem.Instance.AddReaction(moveHeroGA);
-                ActionSystem.Instance.AddReaction(removeLaneGA);
-            }
-            
+                if (moveTo.HeroView != null)
+                {
+
+                    moveHeroGA = new(moveTo, heroView, null);
+
+                    moved++;
+
+                    if (heroView != null)
+                        ActionSystem.Instance.AddReaction(moveHeroGA);
+                }
+                else if (heroView is NPCView npc)
+                {
+                    KillNpcGA killNPCGA = new(npc);
+                    ActionSystem.Instance.AddReaction(killNPCGA);
+                }
+
+            RemoveLaneGA removeLaneGA = new(laneView);
+
+            ActionSystem.Instance.AddReaction(removeLaneGA);
             yield break;
         }
 
@@ -431,15 +437,15 @@ public class BoardView : MonoBehaviour
 
         float lerpAmount = (_laneViews.Count - 2.0f) / (_originalLaneCount - 1.0f);
 
-        _wrapper.DOScale(Vector3.Lerp(_singleLaneTransform.localScale,_originalScale,(lerpAmount)),duration);
-        _wrapper.DOLocalMove(Vector3.Lerp(_singleLaneTransform.localPosition,_originalPosition,(lerpAmount)),duration);
+        _wrapper.DOScale(Vector3.Lerp(_singleLaneTransform.localScale, _originalScale, (lerpAmount)), duration);
+        _wrapper.DOLocalMove(Vector3.Lerp(_singleLaneTransform.localPosition, _originalPosition, (lerpAmount)), duration);
 
         Tween tween = null;
 
         for (int i = _laneViews.Count - 1; i > removeIndex; i--)
         {
             LaneView moveLaneView = _laneViews[i];
-            LaneView positionLaneView = _laneViews[i-1];
+            LaneView positionLaneView = _laneViews[i - 1];
             tween = moveLaneView.transform.DOLocalMove(positionLaneView.transform.localPosition, duration);
         }
 
@@ -454,9 +460,9 @@ public class BoardView : MonoBehaviour
 
     public HeroView GetMainHero()
     {
-        foreach(LaneView lane in _laneViews)
+        foreach (LaneView lane in _laneViews)
         {
-            CombatantView heroView = lane.HeroViews.First(h => h is HeroView);
+            CombatantView heroView = lane.HeroView;
             if (heroView != null)
                 return (HeroView)heroView;
         }

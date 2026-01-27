@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AddStatusEffectEffect : CombatantTargetEffect, IDynamicEffectText
 {
-    [SerializeField] private StatusEffectType _statusEffectType;
+    [SerializeField] private StatusEffect _statusEffectType;
     [SerializeReference, SR] private Quantity _stackCount = new SetQ();
     [SerializeField] private bool _skipAnimation;
 
@@ -23,7 +23,7 @@ public class AddStatusEffectEffect : CombatantTargetEffect, IDynamicEffectText
         return StatusEffectSystem.StackAdditionValueFromEffect(_statusEffectType, _stackCount.GetAmount(context), context.Caster, targetCombatants);
     }
 
-    public override List<StatusEffectType> GetAllStatusEffects()
+    public override List<StatusEffect> GetAllStatusEffects()
     {
         return new() { _statusEffectType };
     }

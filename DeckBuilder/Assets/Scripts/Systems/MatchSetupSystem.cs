@@ -5,7 +5,8 @@ using UnityEngine;
 
 public class MatchSetUpSystem : Singleton<MatchSetUpSystem>
 {
-    [SerializeField] private HeroData _heroData;
+    [SerializeField] private HeroData _heroData1;
+    [SerializeField] private HeroData _heroData2;
     [SerializeField] private PerkData _perkData;
 
     [field: SerializeField] public CombatRoom Room { get; private set; }
@@ -31,12 +32,16 @@ public class MatchSetUpSystem : Singleton<MatchSetUpSystem>
         }
         else
         {
-            HeroData runHero = RunSystem.Instance.GetHeroData();
+            Hero runHero1 = RunSystem.Instance.Hero1;
+            Hero runHero2 = RunSystem.Instance.Hero2;
 
-            if (runHero != null)
-                _heroData = runHero;
+            if (runHero1 != null)
+                _heroData1 = runHero1.Data;
+            if (runHero2 != null)
+                _heroData2 = runHero1.Data;
 
-            HeroSystem.Instance.Setup(_heroData);
+
+            HeroSystem.Instance.Setup(runHero1, runHero2);
 
             EnemySystem.Instance.Setup(Room.TopRow, 0);
             EnemySystem.Instance.Setup(Room.MiddleRow, 1);

@@ -125,9 +125,9 @@ public class StatusEffectSystem : Singleton<StatusEffectSystem>
 
     public void PrePostModifyStatusEffect(CombatantView combatantView, ReactionTiming reactionTiming)
     {
-        List<StatusEffectType> activeStatusEffects = combatantView.GetAllActiveStatusEffects();
+        List<StatusEffect> activeStatusEffects = combatantView.GetAllActiveStatusEffects();
 
-        foreach (StatusEffectType statusEffectType in activeStatusEffects)
+        foreach (StatusEffect statusEffectType in activeStatusEffects)
         {
             StatusEffectModification modification = StatusEffectModification.NONE;
 
@@ -166,9 +166,9 @@ public class StatusEffectSystem : Singleton<StatusEffectSystem>
 
     public void PrePostModifyStatusEffect(List<CombatantView> combatantViews, ReactionTiming reactionTiming)
     {
-        IEnumerable<StatusEffectType> activeStatusEffects = combatantViews.SelectMany(c => c.GetAllActiveStatusEffects()).Distinct();
+        IEnumerable<StatusEffect> activeStatusEffects = combatantViews.SelectMany(c => c.GetAllActiveStatusEffects()).Distinct();
 
-        foreach (StatusEffectType statusEffectType in activeStatusEffects)
+        foreach (StatusEffect statusEffectType in activeStatusEffects)
         {
             IEnumerable<CombatantView> relevantTargets = combatantViews.Where(c => c.GetStatusEffectStacks(statusEffectType) != 0);
             StatusEffectModification modification = StatusEffectModification.NONE;
@@ -205,7 +205,7 @@ public class StatusEffectSystem : Singleton<StatusEffectSystem>
         }
     }
 
-    public static string StackAdditionValueFromEffect(StatusEffectType type, int baseStacks, CombatantView caster, List<CombatantView> targets = null)
+    public static string StackAdditionValueFromEffect(StatusEffect type, int baseStacks, CombatantView caster, List<CombatantView> targets = null)
     {
         int modifiedValue = ModifiedStackValue(type, baseStacks, caster, targets);
 
@@ -221,17 +221,17 @@ public class StatusEffectSystem : Singleton<StatusEffectSystem>
         return baseStacks.ToString();
     }
 
-    private static int ModifiedStackValue(StatusEffectType type, int baseStacks, CombatantView caster, List<CombatantView> targets = null)
+    private static int ModifiedStackValue(StatusEffect type, int baseStacks, CombatantView caster, List<CombatantView> targets = null)
     {
-        if (type == StatusEffectType.BLOCK)
+        if (type == StatusEffect.BLOCK)
         {
             if (baseStacks > 0)
             {
-                baseStacks = Mathf.Max(0, baseStacks + caster.GetStatusEffectStacks(StatusEffectType.DEXTERITY));
+                baseStacks = Mathf.Max(0, baseStacks + caster.GetStatusEffectStacks(StatusEffect.DEXTERITY));
 
                 float modifier = 1.0f;
 
-                if (caster.GetStatusEffectStacks(StatusEffectType.FRAIL) > 0)
+                if (caster.GetStatusEffectStacks(StatusEffect.FRAIL) > 0)
                     modifier *= FRAIL_MULITPLIER;
 
                 return Mathf.FloorToInt(baseStacks * modifier);
@@ -241,7 +241,7 @@ public class StatusEffectSystem : Singleton<StatusEffectSystem>
         return baseStacks;
     }
 
-    public StatusEffectInfo GetStatusEffectInfo(StatusEffectType statusEffectType)
+    public StatusEffectInfo GetStatusEffectInfo(StatusEffect statusEffectType)
     {
         return _statusEffectData.Map[statusEffectType];
     }

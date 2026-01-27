@@ -7,7 +7,7 @@ public class AddRenownEA : EventAction
 {
     [SerializeField, Min(1)] private int _amount;
 
-    public override IEnumerator Invoke()
+    public override IEnumerator Invoke(EffectContext context)
     {
         RenownSystem.Instance.Add(_amount);
         yield return null;

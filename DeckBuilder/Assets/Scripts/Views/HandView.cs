@@ -13,7 +13,12 @@ public class HandView : MonoBehaviour
 
     public IEnumerator AddCard(CardView card)
     {
-        _cards.Add(card);
+        yield return InsertCard(card, _cards.Count);
+    }
+    
+    public IEnumerator InsertCard(CardView card,int position)
+    {
+        _cards.Insert(position, card);
         yield return UpdateCardPositions(0.15f);
         card.SetTreatAsButton(false);
     }
@@ -23,6 +28,7 @@ public class HandView : MonoBehaviour
         CardView cardView = GetCardView(card);
         if (cardView == null) return null;
         _cards.Remove(cardView);
+
         StartCoroutine(UpdateCardPositions(0.15f));
         return cardView;
     }
@@ -35,6 +41,18 @@ public class HandView : MonoBehaviour
         }
     }
 
+    public IEnumerator ApplyCardThrob(Card card, float duration)
+    {
+        CardView cardView = _cards.Find(c => c.Card == card);
+
+        if(cardView == null)
+        {
+            Vector3 scale = cardView.transform.localScale;
+            yield return cardView.transform.DOScale(scale * 1.25f, duration/2.0f).WaitForCompletion();
+            yield return cardView.transform.DOScale(scale, duration/2.0f).WaitForCompletion();
+        }
+    }
+
     private CardView GetCardView(Card card)
     {
         return _cards.Where(cardView => cardView.Card == card).FirstOrDefault();
@@ -44,7 +62,7 @@ public class HandView : MonoBehaviour
     {
         if (_cards.Count == 0) yield break;
 
-        float cardSpacing = 1f / 10f;
+        float cardSpacing = Mathf.Lerp( 0.2f, 0.1f, _cards.Count / (float)CardSystem.MAX_HAND_SIZE);
         float firstCardPos = 0.5f - (_cards.Count - 1) * cardSpacing / 2;
         Spline spline = _splineContainer.Spline;
 
@@ -69,7 +87,7 @@ public class HandView : MonoBehaviour
     {
         foreach(CardView card in _cards)
         {
-            card.UpdateDynamicDescription(EffectContext.CreateHeroEC());
+            card.UpdateDynamicDescription(new(card.Card.GetOwnerView()));
 
             card.UpdateGlow();
         }

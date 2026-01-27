@@ -5,7 +5,7 @@ public class GoToConnectedNodeEA : EventAction
 {
     [SerializeField] private string _optionName = "";
 
-    public override IEnumerator Invoke()
+    public override IEnumerator Invoke(EffectContext context)
     {
         XNode.Node baseNode = EventSystem.Instance.DefaultRoom.CurrentNode;
 

@@ -39,7 +39,7 @@ public class TrialView : Singleton<TrialView>
 
     private IEnumerator SpawnCards(int drawCount)
     {
-        List<Card> deck = new(RunSystem.Instance.Deck.Select(cd => new Card(cd)));
+        List<Card> deck = new(RunSystem.Instance.Deck);
         deck.Shuffle();
 
         for (int i = 0; i < drawCount; i++)

@@ -18,13 +18,14 @@ MonoBehaviour:
   <Mana>k__BackingField: 1
   <Type>k__BackingField: 1
   <Image>k__BackingField: {fileID: 21300000, guid: 573edf3356ffc3b489f11bcf431cdf66, type: 3}
-  <Description>k__BackingField: Move yourself and a nearby foe down a lane. Apply
+  <Description>k__BackingField: Move yourself and an aligned foe up a lane. Apply
     {v0} vulnerable to them.
   <RequiredConditions>k__BackingField: []
   <HighlightConditions>k__BackingField: []
   <ExhuastOnUse>k__BackingField: 0
   <ManualTargetType>k__BackingField: 0
-  <CombatantFilters>k__BackingField: []
+  <CombatantFilters>k__BackingField:
+  - rid: 262420774327156906
   <LaneFilters>k__BackingField: []
   <ManualTargetEffect>k__BackingField:
     rid: -2
@@ -41,7 +42,7 @@ MonoBehaviour:
     - rid: 262420752671178862
       type: {class: RelativeDirectionLTM, ns: , asm: Assembly-CSharp}
       data:
-        _direction: 1
+        _direction: 0
         _moveCount: 1
         _loopAround: 0
     - rid: 262420752671178863
@@ -50,11 +51,20 @@ MonoBehaviour:
     - rid: 262420752671178864
       type: {class: RelativeDirectionLTM, ns: , asm: Assembly-CSharp}
       data:
-        _direction: 1
+        _direction: 0
         _moveCount: 1
         _loopAround: 0
     - rid: 262420752671178865
       type: {class: ManualTargetCTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 262420774327156906
+      type: {class: TargIsInLaneFilter, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
+        _lane:
+          rid: 262420774327156907
+    - rid: 262420774327156907
+      type: {class: CurrentLTM, ns: , asm: Assembly-CSharp}
       data: 
     - rid: 4055348103697924292
       type: {class: AutoLaneTargetEffect, ns: , asm: Assembly-CSharp}

@@ -59,9 +59,11 @@ public class EventSystem : Singleton<EventSystem>
 
     public IEnumerator PerformActions(DialogueNode node)
     {
+        EffectContext context = new();
+
         foreach (EventAction action in node.Actions)
         {
-            yield return action.Invoke();
+            yield return action.Invoke(context);
         }
 
         if (DefaultRoom.CurrentNode != node)

@@ -12,10 +12,13 @@ public class AllFoesInLanesCTM : CombatantTargetMode
     {
         List<LaneView> laneViews = _laneTargetMode.GetTargets(context);
 
+        if (laneViews == null || laneViews.Count == 0)
+            return new();
+
         List<CombatantView> foes;
         
         if(context.Caster is NPCView npc && npc.IsEvil)
-            foes = laneViews.SelectMany(l => l.HeroViews).ToList();
+            foes = laneViews.Select(l => l.HeroView).ToList();
         else
             foes = laneViews.SelectMany(l => l.EnemyViews).Cast<CombatantView>().ToList();
 

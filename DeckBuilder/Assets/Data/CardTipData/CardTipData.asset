@@ -31,9 +31,7 @@ MonoBehaviour:
       Value: Target takes 50% more damage.
     - Key: WEAK
       Value: Target deals 25% less damage.
-    - Key: NINJA_MATH
-      Value: 
-    - Key: AFTERTHOUGHT
+    - Key: LINGER
       Value: Effect activates if the card is in your hand when you end your turn.
     - Key: CHAOTIC
       Value: Effect activates if the hero has Chaos.
@@ -45,9 +43,7 @@ MonoBehaviour:
       Value: Target is immune to movement from other units for a number of turns.
     - Key: HAMSTRUNG
       Value: Target can't move itself for a number of turns.
-    - Key: JABBERWOCKY
-      Value: 
-    - Key: FEAR_AURA
-      Value: 
-    - Key: nearby
-      Value: A unit is nearby if it is in the same lane as you
+    - Key: ALIGNED
+      Value: A unit is aligned if it is in the same lane as you
+    - Key: GAURD
+      Value: Unit remains in the front of the lane potentially blocking enemy attacks.
