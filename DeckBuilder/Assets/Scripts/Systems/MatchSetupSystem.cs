@@ -57,9 +57,10 @@ public class MatchSetUpSystem : Singleton<MatchSetUpSystem>
 
     private IEnumerator CombatStartPerformer(CombatStartGA combatStartGA)
     {
-        var combatants = BoardSystem.Instance.GetAllCombatants();
+        ShuffleGA shuffleGA = new();
+        ActionSystem.Instance.AddReaction(shuffleGA);
 
-        DrawCardsGA drawCardsGA = new(5);
+        DrawCardsGA drawCardsGA = new(7);
         ActionSystem.Instance.AddReaction(drawCardsGA);
         yield return null;
     }

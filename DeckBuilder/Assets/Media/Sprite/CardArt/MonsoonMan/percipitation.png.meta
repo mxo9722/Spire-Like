@@ -1,0 +1,585 @@
+fileFormatVersion: 2
+guid: f9d39b929414d56409e975151c7a4b83
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -5973469695393807120
+    second: percipitation_0
+  - first:
+      213: -1100730506810916417
+    second: percipitation_1
+  - first:
+      213: -3501475274390066532
+    second: percipitation_2
+  - first:
+      213: 1914508588110237461
+    second: percipitation_3
+  - first:
+      213: 7882635517791894496
+    second: percipitation_4
+  - first:
+      213: 2003142348792564689
+    second: percipitation_5
+  - first:
+      213: 2521190483517164496
+    second: percipitation_6
+  - first:
+      213: 1046721738218649615
+    second: percipitation_7
+  - first:
+      213: -5719363343737342113
+    second: percipitation_8
+  - first:
+      213: -7289770922433517124
+    second: percipitation_9
+  - first:
+      213: -276386627894408033
+    second: percipitation_10
+  - first:
+      213: 7694866529577200305
+    second: percipitation_11
+  - first:
+      213: 6081775761916694976
+    second: percipitation_12
+  - first:
+      213: 1179078008188944792
+    second: percipitation_13
+  - first:
+      213: -6756756912602229606
+    second: percipitation_14
+  - first:
+      213: -1153066724771087941
+    second: percipitation_15
+  - first:
+      213: -2453805247870983169
+    second: percipitation_16
+  - first:
+      213: -2251899768454199364
+    second: percipitation_17
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: percipitation_0
+      rect:
+        serializedVersion: 2
+        x: 14
+        y: 226
+        width: 485
+        height: 271
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0f4cd79f5f8f91da0800000000000000
+      internalID: -5973469695393807120
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: percipitation_1
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 171
+        width: 42
+        height: 56
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fb1891c9f6b69b0f0800000000000000
+      internalID: -1100730506810916417
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: percipitation_2
+      rect:
+        serializedVersion: 2
+        x: 129
+        y: 191
+        width: 39
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c9aaa202ac2486fc0800000000000000
+      internalID: -3501475274390066532
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: percipitation_3
+      rect:
+        serializedVersion: 2
+        x: 323
+        y: 197
+        width: 38
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 51fceb9da63b19a10800000000000000
+      internalID: 1914508588110237461
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: percipitation_4
+      rect:
+        serializedVersion: 2
+        x: 392
+        y: 175
+        width: 44
+        height: 63
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0ebfcdb4d3fb46d60800000000000000
+      internalID: 7882635517791894496
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: percipitation_5
+      rect:
+        serializedVersion: 2
+        x: 195
+        y: 175
+        width: 40
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1db82566a579ccb10800000000000000
+      internalID: 2003142348792564689
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: percipitation_6
+      rect:
+        serializedVersion: 2
+        x: 267
+        y: 141
+        width: 46
+        height: 77
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0dbc22d03611df220800000000000000
+      internalID: 2521190483517164496
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: percipitation_7
+      rect:
+        serializedVersion: 2
+        x: 87
+        y: 78
+        width: 45
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f08b33900e3b68e00800000000000000
+      internalID: 1046721738218649615
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: percipitation_8
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 117
+        width: 39
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f573523675db0a0b0800000000000000
+      internalID: -5719363343737342113
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: percipitation_9
+      rect:
+        serializedVersion: 2
+        x: 216
+        y: 74
+        width: 48
+        height: 77
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cb9e06a08f785da90800000000000000
+      internalID: -7289770922433517124
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: percipitation_10
+      rect:
+        serializedVersion: 2
+        x: 343
+        y: 119
+        width: 40
+        height: 53
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f9c8fa783d31a2cf0800000000000000
+      internalID: -276386627894408033
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: percipitation_11
+      rect:
+        serializedVersion: 2
+        x: 417
+        y: 90
+        width: 43
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1baed79e658a9ca60800000000000000
+      internalID: 7694866529577200305
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: percipitation_12
+      rect:
+        serializedVersion: 2
+        x: 114
+        y: 12
+        width: 39
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0c110a435dec66450800000000000000
+      internalID: 6081775761916694976
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: percipitation_13
+      rect:
+        serializedVersion: 2
+        x: 171
+        y: 43
+        width: 40
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 891c390933dec5010800000000000000
+      internalID: 1179078008188944792
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: percipitation_14
+      rect:
+        serializedVersion: 2
+        x: 245
+        y: 12
+        width: 39
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a94dda6036d2b32a0800000000000000
+      internalID: -6756756912602229606
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: percipitation_15
+      rect:
+        serializedVersion: 2
+        x: 295
+        y: 42
+        width: 46
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bb932bb4ceb7fffe0800000000000000
+      internalID: -1153066724771087941
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: percipitation_16
+      rect:
+        serializedVersion: 2
+        x: 365
+        y: 46
+        width: 39
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ff329acb02552fdd0800000000000000
+      internalID: -2453805247870983169
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: percipitation_17
+      rect:
+        serializedVersion: 2
+        x: 442
+        y: 12
+        width: 42
+        height: 56
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cb7c0877715afb0e0800000000000000
+      internalID: -2251899768454199364
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      percipitation_0: -5973469695393807120
+      percipitation_1: -1100730506810916417
+      percipitation_10: -276386627894408033
+      percipitation_11: 7694866529577200305
+      percipitation_12: 6081775761916694976
+      percipitation_13: 1179078008188944792
+      percipitation_14: -6756756912602229606
+      percipitation_15: -1153066724771087941
+      percipitation_16: -2453805247870983169
+      percipitation_17: -2251899768454199364
+      percipitation_2: -3501475274390066532
+      percipitation_3: 1914508588110237461
+      percipitation_4: 7882635517791894496
+      percipitation_5: 2003142348792564689
+      percipitation_6: 2521190483517164496
+      percipitation_7: 1046721738218649615
+      percipitation_8: -5719363343737342113
+      percipitation_9: -7289770922433517124
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

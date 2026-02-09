@@ -20,7 +20,13 @@ public class AddStatusEffectEffect : CombatantTargetEffect, IDynamicEffectText
 
     public string GetDynamicText(EffectContext context, List<CombatantView> targetCombatants = null, List<LaneView> targetLanes = null)
     {
-        return StatusEffectSystem.StackAdditionValueFromEffect(_statusEffectType, _stackCount.GetAmount(context), context.Caster, targetCombatants);
+        if (context.Caster == null && context.PlayedCard != null)
+        {
+            context = context.Clone();
+            context.SetCaster(context.PlayedCard.GetOwnerView(context));
+        }
+
+        return StatusEffectSystem.StackAdditionValueFromEffect(_statusEffectType, _stackCount.GetAmount(context), context, targetCombatants);
     }
 
     public override List<StatusEffect> GetAllStatusEffects()

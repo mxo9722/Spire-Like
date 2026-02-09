@@ -44,10 +44,10 @@ public class AutoLaneTargetEffect : AutoTargetEffect
         return TargetMode is IUserInputTM;
     }
 
-    public override IEnumerator WaitForUserInput()
+    public override IEnumerator WaitForUserInput(EffectContext context)
     {
         if (TargetMode is IUserInputTM userInputTM)
-            yield return userInputTM.WaitForUserInput();
+            yield return userInputTM.WaitForUserInput(context);
     }
 
     public override string ApplyDynamicTextEffect(string description, int startIndex, EffectContext context, Card card)

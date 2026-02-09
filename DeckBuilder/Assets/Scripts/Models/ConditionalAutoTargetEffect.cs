@@ -22,7 +22,7 @@ public class ConditionalAutoTargetEffect : AutoTargetEffect
 
     public override GameAction GetGameAction(EffectContext context)
     {
-        if(_conditions.TrueForAll(c => c.TestCondition(context)))
+        if (AllConditionsMet(context))
         {
             MultipleEffectsGA successEffectsGA = new(context, _successEffects);
             return successEffectsGA;
@@ -34,17 +34,44 @@ public class ConditionalAutoTargetEffect : AutoTargetEffect
 
     public override bool RequiresUserInput() => _successEffects.Any(e => e.RequiresUserInput()) || _failEffects.Any(e => e.RequiresUserInput());
 
-    public override IEnumerator WaitForUserInput()
+    public override IEnumerator WaitForUserInput(EffectContext context)
     {
-        //This probably won't work correctly under specific fail conditions
-        foreach(AutoTargetEffect effect in _successEffects)
-        {
-            yield return effect.WaitForUserInput();
-        }
+        if (AllConditionsMet(context))
+            foreach (AutoTargetEffect effect in _successEffects)
+            {
+                yield return effect.WaitForUserInput(context);
+            }
+        else
+            foreach (AutoTargetEffect effect in _failEffects)
+            {
+                yield return effect.WaitForUserInput(context);
+            }
+    }
+
+    public bool AllConditionsMet(EffectContext context)
+    {
+        return _conditions.TrueForAll(c => c.TestCondition(context));
     }
 
     public bool ConditionIsMeetable(EffectContext context, Card card)
     {
-        return _conditions.TrueForAll(c => c.IsConditionMeetable(context,card));
+        return _conditions.TrueForAll(c => c.IsConditionMeetable(context, card));
+    }
+
+    public override IDynamicEffectText[] GetDynamicTextEffects()
+    {
+        List<IDynamicEffectText> textEffects = new();
+
+        foreach (AutoTargetEffect effect in _successEffects)
+        {
+            textEffects.AddRange(effect.GetDynamicTextEffects());
+        }
+
+        foreach (AutoTargetEffect effect in _failEffects)
+        {
+            textEffects.AddRange(effect.GetDynamicTextEffects());
+        }
+
+        return textEffects.ToArray();
     }
 }

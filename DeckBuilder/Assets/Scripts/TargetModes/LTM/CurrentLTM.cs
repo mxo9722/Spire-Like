@@ -7,6 +7,20 @@ public class CurrentLTM : LaneTargetMode
     {
         if(context.Caster != null)
             return new() { BoardSystem.Instance.GetCurrentLaneView(context.Caster) };
+        
+
+        if(context.PlayedCard != null)
+        {
+            List<LaneView> lanes = new();
+
+            foreach(HeroView hero in HeroSystem.Instance.HeroViews)
+            {
+                lanes.AddRange(GetTargets(new(hero, context.TargetLane, context.TargetCombatant, context.PlayedCard)));
+            }
+
+            return lanes;
+        }
+
         return new();
     }
 }

@@ -56,7 +56,7 @@ public class ManualTargetSystem : Singleton<ManualTargetSystem>
         if (hit.collider != null
             && hit.transform.TryGetComponent(out CombatantView target))
         {
-            EffectContext context = new(_card.GetOwnerView(), manualTargetCombatant:target);
+            EffectContext context = new(_card.GetOwnerView(new(null, manualTargetCombatant: target)), manualTargetCombatant:target);
 
             TargetPreviewSystem.Instance.HideTargetPreviews(true);
 
@@ -78,7 +78,7 @@ public class ManualTargetSystem : Singleton<ManualTargetSystem>
         if (hit.collider != null
             && hit.transform.TryGetComponent(out LaneView target))
         {
-            EffectContext context = new(_card.GetOwnerView(), manualTargetLane: target);
+            EffectContext context = new(_card.GetOwnerView(new(null, manualTargetLane: target)), manualTargetLane: target);
 
             TargetPreviewSystem.Instance.HideTargetPreviews(true);
 

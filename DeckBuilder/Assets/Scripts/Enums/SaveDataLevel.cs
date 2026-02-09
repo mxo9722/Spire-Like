@@ -4,5 +4,6 @@ public enum SaveDataLevel
 {
     CONTEXT,
     COMBATANT,
-    RUN
+    RUN,
+    CARD
 }

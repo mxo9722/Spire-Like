@@ -19,7 +19,7 @@ MonoBehaviour:
   <Type>k__BackingField: 0
   <Image>k__BackingField: {fileID: 21300000, guid: 818e0d21b9b053842b2f233a03967ea3, type: 3}
   <Description>k__BackingField: Deal {v0} damage to an aligned foe. Foes adjacent
-    take {v1} damage. Gain {v2} chaos.
+    take {v1} damage. Gain {v2} heat.
   <RequiredConditions>k__BackingField: []
   <HighlightConditions>k__BackingField: []
   <ExhuastOnUse>k__BackingField: 0
@@ -35,7 +35,7 @@ MonoBehaviour:
   - rid: 4055348102891569248
   - rid: 4055348102891569156
   - rid: 4055348102891569238
-  <TurnEndEffects>k__BackingField: []
+  <InHandReactions>k__BackingField: []
   references:
     version: 2
     RefIds:
@@ -77,14 +77,14 @@ MonoBehaviour:
     - rid: 4055348102891569240
       type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
       data:
-        _statusEffectType: 2000
+        _statusEffectType: 2003
         _stackCount:
           rid: 4055348102891569241
         _skipAnimation: 0
     - rid: 4055348102891569241
       type: {class: SetQ, ns: , asm: Assembly-CSharp}
       data:
-        _set: 3
+        _set: 7
     - rid: 4055348102891569243
       type: {class: SaveCombatantsAsDataEffect, ns: , asm: Assembly-CSharp}
       data:

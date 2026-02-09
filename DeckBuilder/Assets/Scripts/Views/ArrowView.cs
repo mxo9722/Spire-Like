@@ -14,6 +14,17 @@ public class ArrowView : MonoBehaviour
     private Vector3 _startPosition;
     private CombatantView _caster;
 
+
+
+    public void SetupArrow(Vector3 startPosition, CombatantView caster)
+    {
+        _startPosition = startPosition;
+        _lineRenderer.SetPosition(0, startPosition);
+        _lineRenderer.SetPosition(1, MouseUtil.GetMousePositionInWorldSpace());
+
+        _caster = caster;
+    }
+
     private void Update()
     {
         Vector3 endPosition = MouseUtil.GetMousePositionInWorldSpace();
@@ -36,11 +47,11 @@ public class ArrowView : MonoBehaviour
             {
                 case ManualTargetType.COMBATANT:
                     CombatantView combatantView = target.GetComponent<CombatantView>();
-                    isValid = ManualTargetSystem.Instance.CombatantIsValid( new( _caster, manualTargetCombatant: combatantView), combatantView);
+                    isValid = ManualTargetSystem.Instance.CombatantIsValid( new( _caster, manualTargetCombatant: combatantView, playedCard: card), combatantView);
                     break;
                 case ManualTargetType.LANE:
                     LaneView laneView = target.GetComponent<LaneView>();
-                    isValid = ManualTargetSystem.Instance.LaneIsValid( new( _caster, manualTargetLane: laneView), laneView);
+                    isValid = ManualTargetSystem.Instance.LaneIsValid( new( _caster, manualTargetLane: laneView, playedCard: card), laneView);
                     break;
             }
 
@@ -54,20 +65,25 @@ public class ArrowView : MonoBehaviour
                     case ManualTargetType.COMBATANT:
 
                         CombatantView ct = target.GetComponent<CombatantView>();
-                        CardViewHoverSystem.Instance.UpdateDynamicDescription(_caster, ct);
+
+                        EffectContext cContext = new EffectContext(_caster, manualTargetCombatant: ct, playedCard: card);
+
+                        CardViewHoverSystem.Instance.UpdateDynamicDescription(cContext);
 
                         TargetPreviewSystem.Instance.SetTargetPreviewsManual(card, ct);
 
-                        if (card.IsHighlighted(new(_caster, manualTargetCombatant:ct)))
+                        if (card.IsHighlighted(cContext))
                             color = _highlightHoverColor;
                         break;
                     case ManualTargetType.LANE:
                         LaneView lt = target.GetComponent<LaneView>();
-                        CardViewHoverSystem.Instance.UpdateDynamicDescription(_caster, lt);
+                        EffectContext lContext = new EffectContext(_caster, manualTargetLane: lt, playedCard: card);
+
+                        CardViewHoverSystem.Instance.UpdateDynamicDescription(lContext);
 
                         TargetPreviewSystem.Instance.SetTargetPreviewsManual(card, lt);
 
-                        if (card.IsHighlighted(new(_caster, manualTargetLane: lt)))
+                        if (card.IsHighlighted(lContext))
                             color = _highlightHoverColor;
                         break;
                 }
@@ -87,14 +103,5 @@ public class ArrowView : MonoBehaviour
         _lineRenderer.startColor = color;
         _lineRenderer.endColor = color;
         _arrowHead.color = color;
-    }
-
-    public void SetupArrow(Vector3 startPosition, CombatantView caster)
-    {
-        _startPosition = startPosition;
-        _lineRenderer.SetPosition(0, startPosition);
-        _lineRenderer.SetPosition(1, MouseUtil.GetMousePositionInWorldSpace());
-
-        _caster = caster;
     }
 }

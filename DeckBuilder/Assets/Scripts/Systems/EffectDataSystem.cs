@@ -23,6 +23,8 @@ public class EffectDataSystem : Singleton<EffectDataSystem>
         IHoldData dataHolder = IHoldData.GetDataHolder(saveDataGA.Context, saveDataGA.DataLevel);
 
         dataHolder.AddData(saveDataGA.Key, saveDataGA.Data);
+
+        CardSystem.Instance.UpdateCardViews();
         yield return null;
     }
 

@@ -39,4 +39,9 @@ public enum StatusEffect
     JABBERWOCKY,
     [InspectorName("CaptainDragon/Fear Aura")]
     FEAR_AURA,
+    [InspectorName("CaptainDragon/Heat")]
+    HEAT,
+
+    [InspectorName("MonsoonMan/Cold Shock")]
+    COLD_SHOCK = 3000,
 }

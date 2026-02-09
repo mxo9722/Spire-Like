@@ -108,8 +108,9 @@ public class StatusEffectSystem : Singleton<StatusEffectSystem>
         //        addStatusEffectGA.SetStackCount(stackCount);
         //    }
         //}
+        EffectContext context = new(addStatusEffectGA.Caster);
 
-        int nStacks = ModifiedStackValue(addStatusEffectGA.StatusEffectType, addStatusEffectGA.StackCount, addStatusEffectGA.Caster);
+        int nStacks = ModifiedStackValue(addStatusEffectGA.StatusEffectType, addStatusEffectGA.StackCount, context);
         addStatusEffectGA.SetStackCount(nStacks);
     }
 
@@ -205,9 +206,9 @@ public class StatusEffectSystem : Singleton<StatusEffectSystem>
         }
     }
 
-    public static string StackAdditionValueFromEffect(StatusEffect type, int baseStacks, CombatantView caster, List<CombatantView> targets = null)
+    public static string StackAdditionValueFromEffect(StatusEffect type, int baseStacks, EffectContext context, List<CombatantView> targets = null)
     {
-        int modifiedValue = ModifiedStackValue(type, baseStacks, caster, targets);
+        int modifiedValue = ModifiedStackValue(type, baseStacks, context, targets);
 
         if (baseStacks > modifiedValue)
         {
@@ -221,17 +222,22 @@ public class StatusEffectSystem : Singleton<StatusEffectSystem>
         return baseStacks.ToString();
     }
 
-    private static int ModifiedStackValue(StatusEffect type, int baseStacks, CombatantView caster, List<CombatantView> targets = null)
+    private static int ModifiedStackValue(StatusEffect type, int baseStacks, EffectContext context, List<CombatantView> targets = null)
     {
+        if (context.Caster == null && context.PlayedCard != null)
+            context.SetCaster(context.PlayedCard.GetOwnerView(context));
+        if (context.Caster == null)
+            return baseStacks;
+
         if (type == StatusEffect.BLOCK)
         {
             if (baseStacks > 0)
             {
-                baseStacks = Mathf.Max(0, baseStacks + caster.GetStatusEffectStacks(StatusEffect.DEXTERITY));
+                baseStacks = Mathf.Max(0, baseStacks + context.Caster.GetStatusEffectStacks(StatusEffect.DEXTERITY));
 
                 float modifier = 1.0f;
 
-                if (caster.GetStatusEffectStacks(StatusEffect.FRAIL) > 0)
+                if (context.Caster.GetStatusEffectStacks(StatusEffect.FRAIL) > 0)
                     modifier *= FRAIL_MULITPLIER;
 
                 return Mathf.FloorToInt(baseStacks * modifier);

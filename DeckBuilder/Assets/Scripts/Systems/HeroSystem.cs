@@ -53,7 +53,7 @@ public class HeroSystem : Singleton<HeroSystem>
         //RedistributeEnemiesGA redistributeEnemiesGA = new RedistributeEnemiesGA();
         //ActionSystem.Instance.AddReaction(redistributeEnemiesGA);
 
-        DrawCardsGA drawCardsGA = new(5);
+        DrawCardsGA drawCardsGA = new(7);
         ActionSystem.Instance.AddReaction(drawCardsGA);
 
         yield return null;

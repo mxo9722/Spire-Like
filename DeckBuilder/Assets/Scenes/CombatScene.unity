@@ -2336,6 +2336,7 @@ Transform:
   - {fileID: 1055422075}
   - {fileID: 847779407}
   - {fileID: 454567774}
+  - {fileID: 1993639195}
   - {fileID: 1189293582}
   - {fileID: 897077367}
   - {fileID: 1539628665}
@@ -2386,7 +2387,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _defaultHeroData1: {fileID: 11400000, guid: 2541e923a5fe0dc42b43a17cfcfb2235, type: 2}
-  _defaultHeroData2: {fileID: 11400000, guid: f9b6815cec2606a42b6526a08ab62151, type: 2}
+  _defaultHeroData2: {fileID: 11400000, guid: 92393e5e17c967743b9396c943427a9b, type: 2}
+  _startingDeck: {fileID: 11400000, guid: 66da856259a4250428b04fd3835ca704, type: 2}
   _debugStartNew: 1
 --- !u!1 &875981754
 GameObject:
@@ -3154,18 +3156,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _heroData1: {fileID: 11400000, guid: 2541e923a5fe0dc42b43a17cfcfb2235, type: 2}
-  _heroData2: {fileID: 11400000, guid: f9b6815cec2606a42b6526a08ab62151, type: 2}
+  _heroData2: {fileID: 11400000, guid: 92393e5e17c967743b9396c943427a9b, type: 2}
   _perkData: {fileID: 11400000, guid: 71bb6f63bf726ec428ee2128242df268, type: 2}
   <Room>k__BackingField:
     <IsCompleted>k__BackingField: 0
     <Seed>k__BackingField: 0
     <TopRow>k__BackingField:
     - {fileID: 11400000, guid: 819e5372a26ebe446955b2e4749d3370, type: 2}
+    - {fileID: 11400000, guid: 819e5372a26ebe446955b2e4749d3370, type: 2}
     <MiddleRow>k__BackingField:
+    - {fileID: 11400000, guid: 819e5372a26ebe446955b2e4749d3370, type: 2}
     - {fileID: 11400000, guid: 819e5372a26ebe446955b2e4749d3370, type: 2}
     <BottomRow>k__BackingField:
     - {fileID: 11400000, guid: 819e5372a26ebe446955b2e4749d3370, type: 2}
-    - {fileID: 11400000, guid: 18c20b7f2e695444f8d991478c856d87, type: 2}
+    - {fileID: 11400000, guid: 819e5372a26ebe446955b2e4749d3370, type: 2}
     <Rewards>k__BackingField: []
   references:
     version: 2
@@ -4425,6 +4429,50 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 403aac4f38727c947afec725574fb346, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &1993639194
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1993639195}
+  - component: {fileID: 1993639196}
+  m_Layer: 0
+  m_Name: SoakSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1993639195
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1993639194}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 824803057}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1993639196
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1993639194}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ebe455dcf0f5414493f9419d78f6c06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &2009800671

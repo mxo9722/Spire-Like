@@ -18,33 +18,38 @@ MonoBehaviour:
   <Mana>k__BackingField: 1
   <Type>k__BackingField: 1
   <Image>k__BackingField: {fileID: 21300000, guid: e9d68632d6d3e0047a7bcfab3347ea67, type: 3}
-  <Description>k__BackingField: Apply {v0} block.
+  <Description>k__BackingField: Apply {v0} block to a hero.
   <RequiredConditions>k__BackingField: []
   <HighlightConditions>k__BackingField: []
   <ExhuastOnUse>k__BackingField: 0
-  <ManualTargetType>k__BackingField: 2
-  <CombatantFilters>k__BackingField: []
+  <ManualTargetType>k__BackingField: 0
+  <CombatantFilters>k__BackingField:
+  - rid: 262421164024660158
   <LaneFilters>k__BackingField: []
   <ManualTargetEffect>k__BackingField:
     rid: -2
   <OtherEffects>k__BackingField:
   - rid: 1228494508162810027
-  <TurnEndEffects>k__BackingField: []
+  <InHandReactions>k__BackingField: []
   references:
     version: 2
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
+    - rid: 262421164024660157
+      type: {class: ManualTargetCTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 262421164024660158
+      type: {class: TargIsHeroFilter, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
     - rid: 1228494508162810027
       type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
       data:
         <TargetMode>k__BackingField:
-          rid: 1228494508162810028
+          rid: 262421164024660157
         _combatantEffect:
           rid: 1228494508162810029
-    - rid: 1228494508162810028
-      type: {class: CasterCTM, ns: , asm: Assembly-CSharp}
-      data: 
     - rid: 1228494508162810029
       type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
       data:

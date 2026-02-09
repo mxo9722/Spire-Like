@@ -33,48 +33,52 @@ MonoBehaviour:
   <ManualTargetEffect>k__BackingField:
     rid: -2
   <OtherEffects>k__BackingField: []
-  <TurnEndEffects>k__BackingField:
-  - rid: 262421011183697998
-  - rid: 262421021838540880
+  <InHandReactions>k__BackingField:
+  - rid: 262421115933556813
   references:
     version: 2
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 262421011183697998
+    - rid: 262421115933556813
+      type: {class: CardReaction, ns: , asm: Assembly-CSharp}
+      data:
+        _reactionCondition:
+          rid: 262421115933556814
+        _effects:
+        - rid: 262421115933556819
+    - rid: 262421115933556814
+      type: {class: LingerCRC, ns: , asm: Assembly-CSharp}
+      data:
+        reactionTiming: 0
+    - rid: 262421115933556819
       type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
       data:
         <TargetMode>k__BackingField:
-          rid: 262421011183697999
+          rid: 262421115933556820
         _combatantEffect:
-          rid: 262421011183698000
-    - rid: 262421011183697999
+          rid: 262421115933556821
+    - rid: 262421115933556820
       type: {class: AllNPCsOfTypeCTM, ns: , asm: Assembly-CSharp}
       data:
         _npcType: {fileID: 11400000, guid: 18c20b7f2e695444f8d991478c856d87, type: 2}
-    - rid: 262421011183698000
+    - rid: 262421115933556821
       type: {class: MakeAnotherUnitAttackFoeEffect, ns: , asm: Assembly-CSharp}
       data:
         _targetMode:
-          rid: 262421011183698001
+          rid: 262421115933556822
         _effect:
           <Damage>k__BackingField: 10
           _unblockedKey: 
           _overkillKey: 
           _onHit: 
-    - rid: 262421011183698001
-      type: {class: HeroCTM, ns: , asm: Assembly-CSharp}
-      data: 
-    - rid: 262421021838540880
-      type: {class: AutoCardTargetEffect, ns: , asm: Assembly-CSharp}
+    - rid: 262421115933556822
+      type: {class: RandomCTM, ns: , asm: Assembly-CSharp}
       data:
-        <TargetMode>k__BackingField:
-          rid: 262421021838540881
-        _cardEffect:
-          rid: 262421021838540882
-    - rid: 262421021838540881
-      type: {class: PlayedCardCaTM, ns: , asm: Assembly-CSharp}
-      data: 
-    - rid: 262421021838540882
-      type: {class: ExhaustCardsEffect, ns: , asm: Assembly-CSharp}
-      data: 
+        _targetCount: 1
+        <Filters>k__BackingField:
+        - rid: 262421115933556823
+    - rid: 262421115933556823
+      type: {class: TargIsHeroFilter, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0

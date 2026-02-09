@@ -131,7 +131,7 @@ public class NPCView : CombatantView
                 {
                     List<CombatantView> targets = combatantTargetEffect.TargetMode.GetTargets(context);
 
-                    string attackText = DamageSystem.EnemyDamageTextFromAttack(attackHeroEffect.Damage, this, targets);
+                    string attackText = DamageSystem.EnemyDamageTextFromAttack(attackHeroEffect.Damage, context, targets);
 
                     _behaviorValue.text = attackText;
 
@@ -141,7 +141,7 @@ public class NPCView : CombatantView
                 {
                     List<CombatantView> targets = combatantTargetEffect.TargetMode.GetTargets(context);
 
-                    string attackText = DamageSystem.EnemyDamageTextFromAttack(multiAttackFoeEffect.Damage.GetAmount(context), this, targets);
+                    string attackText = DamageSystem.EnemyDamageTextFromAttack(multiAttackFoeEffect.Damage.GetAmount(context), context, targets);
 
                     _behaviorValue.text = multiAttackFoeEffect.AttackCount.GetAmount(context) + "x" + attackText;
 
@@ -181,15 +181,15 @@ public class NPCView : CombatantView
                     EffectContext targetContext = new(this);
 
                     List<CombatantView> targets = combatantTargetEffect.TargetMode.GetTargets(targetContext);
-                    helpBoxText = helpBoxText + " for " + DamageSystem.GetDamageFromAttack(attackHeroEffect.Damage, this, targets).ToString() + " damage";
+                    helpBoxText = helpBoxText + " for " + DamageSystem.GetDamageFromAttack(attackHeroEffect.Damage, targetContext, targets).ToString() + " damage";
                 }
                 else if (combatantTargetEffect.Effect is MultiAttackFoeEffect multiAttackFoeEffect)
                 {
-                    EffectContext targetContext = new(this);
+                    EffectContext context = new(this);
 
-                    List<CombatantView> targets = combatantTargetEffect.TargetMode.GetTargets(targetContext);
-                    helpBoxText = helpBoxText + " for " + DamageSystem.GetDamageFromAttack(multiAttackFoeEffect.Damage.GetAmount(targetContext), this, targets).ToString() 
-                        + " damage " + multiAttackFoeEffect.AttackCount.GetAmount(targetContext) + " times";
+                    List<CombatantView> targets = combatantTargetEffect.TargetMode.GetTargets(context);
+                    helpBoxText = helpBoxText + " for " + DamageSystem.GetDamageFromAttack(multiAttackFoeEffect.Damage.GetAmount(context), context, targets).ToString() 
+                        + " damage " + multiAttackFoeEffect.AttackCount.GetAmount(context) + " times";
                 }
             }
 

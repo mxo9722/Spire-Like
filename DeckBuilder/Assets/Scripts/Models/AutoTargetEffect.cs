@@ -43,7 +43,7 @@ public abstract class AutoTargetEffect
     }
 
     public abstract bool RequiresUserInput();
-    public abstract IEnumerator WaitForUserInput();
+    public abstract IEnumerator WaitForUserInput(EffectContext context);
 
     public abstract List<StatusEffect> GetAllStatusEffects();
 }

@@ -64,4 +64,10 @@ public class EffectContext : IHoldData
         return _data.ContainsKey(key);
     }
 
+    public EffectContext Clone()
+    {
+        EffectContext context = new(Caster, TargetLane, TargetCombatant, PlayedCard);
+
+        return context;
+    }
 }

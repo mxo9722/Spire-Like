@@ -24,4 +24,9 @@ public class PlayCardGA : GameAction
         this.card = card;
         ManualLaneTarget = manualTarget;
     }
+
+    public EffectContext GetEffectContext()
+    {
+        return new EffectContext(card.GetOwnerView(new(null, ManualLaneTarget, ManualEnemyTarget, card)), ManualLaneTarget, ManualEnemyTarget, card);
+    }
 }

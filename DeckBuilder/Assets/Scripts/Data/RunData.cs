@@ -20,12 +20,13 @@ public class RunData : IHoldData
 
     private SerializedDictionary<string, object> _data = null;
 
-    public RunData(HeroData heroData1, HeroData heroData2)
+    public RunData(HeroData heroData1, HeroData heroData2, List<CardData> colorlessCards)
     {
         Hero1 = new(heroData1);
         Hero2 = new(heroData2);
 
-        Deck = Hero1.StartingDeck.Select(c => new Card(c, Hero1.Data)).ToList();
+        Deck = colorlessCards.Select(c => new Card(c, null)).ToList();
+        Deck.AddRange(Hero1.StartingDeck.Select(c => new Card(c, Hero1.Data)));
         Deck.AddRange(Hero2.StartingDeck.Select(c => new Card(c, Hero2.Data)));
     }
 

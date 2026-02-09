@@ -38,7 +38,7 @@ public class NPCAction
 
                     else if (effect is AttackHeroEffect attackHeroEffect)
                     {
-                        damage += DamageSystem.GetDamageFromAttack(attackHeroEffect.Damage, context.Caster, targets);
+                        damage += DamageSystem.GetDamageFromAttack(attackHeroEffect.Damage, context, targets);
                     }
                     else if (effect is MultiAttackFoeEffect multiAttackFoeEffect)
                     {

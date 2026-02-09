@@ -22,7 +22,7 @@ MonoBehaviour:
 
     Linger:
 
-    Gain {v0} weak.'
+    Gain 1 weak.'
   <RequiredConditions>k__BackingField: []
   <HighlightConditions>k__BackingField: []
   <ExhuastOnUse>k__BackingField: 0
@@ -32,31 +32,43 @@ MonoBehaviour:
   <ManualTargetEffect>k__BackingField:
     rid: -2
   <OtherEffects>k__BackingField: []
-  <TurnEndEffects>k__BackingField:
-  - rid: 262420932800282707
+  <TurnEndEffects>k__BackingField: []
+  <InHandReactions>k__BackingField:
+  - rid: 262421091924049997
   references:
     version: 2
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 262420932800282707
+    - rid: 262421091924049997
+      type: {class: CardReaction, ns: , asm: Assembly-CSharp}
+      data:
+        _reactionCondition:
+          rid: 262421091924049998
+        _effects:
+        - rid: 262421091924049999
+    - rid: 262421091924049998
+      type: {class: LingerCRC, ns: , asm: Assembly-CSharp}
+      data:
+        reactionTiming: 0
+    - rid: 262421091924049999
       type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
       data:
         <TargetMode>k__BackingField:
-          rid: 262420932800282708
+          rid: 262421091924050000
         _combatantEffect:
-          rid: 262420932800282709
-    - rid: 262420932800282708
+          rid: 262421091924050001
+    - rid: 262421091924050000
       type: {class: CasterCTM, ns: , asm: Assembly-CSharp}
       data: 
-    - rid: 262420932800282709
+    - rid: 262421091924050001
       type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
       data:
         _statusEffectType: 6
         _stackCount:
-          rid: 262420932800282710
+          rid: 262421091924050002
         _skipAnimation: 0
-    - rid: 262420932800282710
+    - rid: 262421091924050002
       type: {class: SetQ, ns: , asm: Assembly-CSharp}
       data:
         _set: 1

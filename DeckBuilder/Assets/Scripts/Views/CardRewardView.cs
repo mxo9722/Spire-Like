@@ -31,7 +31,7 @@ public class CardRewardView : MonoBehaviour
 
             Vector3 position = spline.EvaluatePosition(p);
 
-            CardView cardView = CardViewCreator.Instance.CreateCardView(card, position, Quaternion.identity, true);
+            CardView cardView = CardViewCreator.Instance.CreateCardView(card, position, Quaternion.identity, true, _wrapper.transform);
 
             cardView.HideGlow();
 
@@ -40,8 +40,6 @@ public class CardRewardView : MonoBehaviour
             cardView.OnButtonPressed += action;
 
             _cards.Add(cardView);
-
-            cardView.transform.parent = _wrapper.transform;
             cardView.SortingGroup.sortingLayerID = SortingLayer.layers[3].id;
         }
 

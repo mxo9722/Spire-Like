@@ -28,6 +28,6 @@ public class AttackHeroEffect : CombatantTargetEffect, IDynamicEffectText
 
     public string GetDynamicText(EffectContext context, List<CombatantView> targetCombatants = null, List<LaneView> targetLanes = null)
     {
-        return DamageSystem.CardDamageTextFromAttack(Damage, context.Caster, targetCombatants);
+        return DamageSystem.CardDamageTextFromAttack(Damage, context, targetCombatants);
     }
 }

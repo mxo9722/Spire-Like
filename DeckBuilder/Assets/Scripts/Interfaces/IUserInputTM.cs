@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface IUserInputTM
 {
-    public abstract IEnumerator WaitForUserInput();
+    public abstract IEnumerator WaitForUserInput(EffectContext context);
 }

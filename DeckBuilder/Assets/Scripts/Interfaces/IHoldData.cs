@@ -16,6 +16,8 @@ public interface IHoldData
                 return context;
             case SaveDataLevel.COMBATANT:
                 return context.Caster;
+            case SaveDataLevel.CARD:
+                return context.PlayedCard;
             default:
                 return RunSystem.Instance;
         }

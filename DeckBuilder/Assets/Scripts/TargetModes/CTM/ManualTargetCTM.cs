@@ -5,7 +5,9 @@ public class ManualTargetCTM : CombatantTargetMode
 {
     public override List<CombatantView> GetTargets(EffectContext targetModeContext)
     {
-        return new() { targetModeContext.TargetCombatant };
+        if(targetModeContext.TargetCombatant != null)
+            return new() { targetModeContext.TargetCombatant };
+        return new();
     }
 
     public override List<CombatantView> AllPossibleTargets(EffectContext context, Card card)

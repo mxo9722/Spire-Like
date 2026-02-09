@@ -18,8 +18,8 @@ MonoBehaviour:
   <Mana>k__BackingField: 1
   <Type>k__BackingField: 0
   <Image>k__BackingField: {fileID: 21300000, guid: 9b6ae141954ada14faa3c4df11b657c5, type: 3}
-  <Description>k__BackingField: Deal {v0} damage to a foe with burn. Move to their
-    lane.
+  <Description>k__BackingField: Deal {v0} damage to any foe with burn and move to
+    their lane. Gain {v1} heat.
   <RequiredConditions>k__BackingField: []
   <HighlightConditions>k__BackingField: []
   <ExhuastOnUse>k__BackingField: 0
@@ -32,7 +32,8 @@ MonoBehaviour:
   <OtherEffects>k__BackingField:
   - rid: 4055348011206443280
   - rid: 4055348103697924192
-  <TurnEndEffects>k__BackingField: []
+  - rid: 6673085688012341415
+  <InHandReactions>k__BackingField: []
   references:
     version: 2
     RefIds:
@@ -41,6 +42,10 @@ MonoBehaviour:
       data:
         _invert: 0
         _statusEffectType: 1
+        _is: 2
+        _orEqualTo: 0
+        _b:
+          rid: 6673085688012341384
     - rid: 4055348011206443280
       type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
       data:
@@ -82,3 +87,28 @@ MonoBehaviour:
       data:
         _dataKey: TargetUnits
         _dataLevel: 0
+    - rid: 6673085688012341384
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 0
+    - rid: 6673085688012341415
+      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 6673085688012341416
+        _combatantEffect:
+          rid: 6673085688012341417
+    - rid: 6673085688012341416
+      type: {class: CasterCTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 6673085688012341417
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _statusEffectType: 2003
+        _stackCount:
+          rid: 6673085688012341418
+        _skipAnimation: 0
+    - rid: 6673085688012341418
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 3

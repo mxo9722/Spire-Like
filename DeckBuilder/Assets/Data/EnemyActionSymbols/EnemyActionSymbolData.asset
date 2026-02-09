@@ -50,7 +50,7 @@ MonoBehaviour:
         <Text>k__BackingField: 
     - Key: 1
       Value:
-        <Sprite>k__BackingField: {fileID: 21300000, guid: 0f966f9fc88dad349b020c65dde89380, type: 3}
+        <Sprite>k__BackingField: {fileID: 0}
         <Text>k__BackingField: the closest aligned foe
     - Key: 2
       Value:

@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: Fire Breath
   m_EditorClassIdentifier: 
   <Rarity>k__BackingField: 0
-  <Upgrade>k__BackingField: {fileID: 0}
+  <Upgrade>k__BackingField: {fileID: 11400000, guid: b543920860d92f1438256f44998d4cf4, type: 2}
   <Unplayable>k__BackingField: 0
   <Mana>k__BackingField: 1
   <Type>k__BackingField: 1
   <Image>k__BackingField: {fileID: 21300000, guid: 79925ed458d403a4387668c56d12e9f5, type: 3}
-  <Description>k__BackingField: Apply {v0} burn to all aligned foes.
+  <Description>k__BackingField: Apply {v0} burn to all aligned foes. Gain {v1} heat.
   <RequiredConditions>k__BackingField: []
   <HighlightConditions>k__BackingField: []
   <ExhuastOnUse>k__BackingField: 0
@@ -29,7 +29,8 @@ MonoBehaviour:
     rid: -2
   <OtherEffects>k__BackingField:
   - rid: 4055347968798621771
-  <TurnEndEffects>k__BackingField: []
+  - rid: 6673085688012341373
+  <InHandReactions>k__BackingField: []
   references:
     version: 2
     RefIds:
@@ -60,4 +61,25 @@ MonoBehaviour:
     - rid: 4055347968798621775
       type: {class: SetQ, ns: , asm: Assembly-CSharp}
       data:
-        _set: 3
+        _set: 4
+    - rid: 6673085688012341373
+      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 6673085688012341374
+        _combatantEffect:
+          rid: 6673085688012341375
+    - rid: 6673085688012341374
+      type: {class: CasterCTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 6673085688012341375
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _statusEffectType: 2003
+        _stackCount:
+          rid: 6673085688012341376
+        _skipAnimation: 0
+    - rid: 6673085688012341376
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 5

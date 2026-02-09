@@ -1,10 +1,11 @@
+using SerializeReferenceEditor;
 using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
 public class DrawCardsEffect : NoTargetEffect, IDynamicEffectText
 {
-    [SerializeField] private int _drawAmount;
+    [SerializeReference, SR] private Quantity _drawAmount = new SetQ(1);
 
     public string GetDynamicText(EffectContext context, List<CombatantView> targetCombatants = null, List<LaneView> targetLanes = null)
     {
@@ -18,7 +19,8 @@ public class DrawCardsEffect : NoTargetEffect, IDynamicEffectText
 
     protected override GameAction GetGameAction(EffectContext context)
     {
-        DrawCardsGA drawCardGA = new DrawCardsGA(_drawAmount);
+        int amount = _drawAmount.GetAmount(context);
+        DrawCardsGA drawCardGA = new DrawCardsGA(amount);
         return drawCardGA;
     }
 }

@@ -56,9 +56,9 @@ public class CardView : MonoBehaviour
         _title.text = title;
 
         if (!treatAsButton)
-            UpdateDynamicDescription(new(card.GetOwnerView()));
+            UpdateDynamicDescription(new(card.GetOwnerView(), playedCard: card));
         else
-            UpdateDynamicDescription();
+            UpdateDynamicDescription(new(null, playedCard: card));
 
         if (card.Unplayable)
             _mana.text = "";
@@ -81,7 +81,11 @@ public class CardView : MonoBehaviour
 
     private void OnDisable()
     {
-        //transform.DOKill();
+        transform.DOKill();
+        _glowSR.DOKill();
+        _glowSR.transform.DOKill();
+        _maskTransform.DOKill();
+        _burnVFX.transform.DOKill();
     }
 
     private void OnMouseEnter()
@@ -127,10 +131,10 @@ public class CardView : MonoBehaviour
 
     private void OnMouseDown()
     {
-        //if (!_treatAsButton && !Interactions.Instance.PlayerCanInteract()) return;
+        //if (!_treatAsButton && !) return;
 
 
-        if (!_treatAsButton && IsPlayable())
+        if (!_treatAsButton && IsPlayable() && Interactions.Instance.PlayerCanInteract())
         {
             Cursor.visible = false;
 
@@ -233,6 +237,7 @@ public class CardView : MonoBehaviour
 
                 if (Card.ExhuastOnUse)
                 {
+                    transform.DOKill();
                     transform.DOMove(_dragStartPosition + new Vector3(0, 2, 0), 0.15f);
                     SortingGroup.sortingOrder++;
                 }
@@ -317,7 +322,7 @@ public class CardView : MonoBehaviour
 
         if (IsPlayable())
         {
-            if (IsHighlighted())
+            if (IsHighlighted(new(Card.GetOwnerView(), playedCard: Card)))
                 SetGlow(CardSystem.Instance.HighlightColor);
             else
                 SetGlow(CardSystem.Instance.PlayableColor);

@@ -7,6 +7,8 @@ public class ManuallySelectedLTM : LaneTargetMode
 {
     public override List<LaneView> GetTargets(EffectContext targetModeContext)
     {
-        return new() { targetModeContext.TargetLane };
+        if(targetModeContext.TargetLane != null)
+            return new() { targetModeContext.TargetLane };
+        return new();
     }
 }

@@ -38,10 +38,10 @@ public class CardUI : MonoBehaviour
         _image.sprite = card.Image;
     }
 
-    public void SetUp(Card card, Action<Card> onSelected)
+    public void SetUp(Card card, Action<Card> onSelected, bool selectable)
     {
         SetUp(card);
-        _selectable = true;
+        _selectable = selectable;
         _onSelected = onSelected;
     }
 
@@ -51,7 +51,13 @@ public class CardUI : MonoBehaviour
         {
             Selected = !Selected;
             _selectGlow.SetActive(Selected);
-            _onSelected.Invoke(Card);
         }
+
+        _onSelected?.Invoke(Card);
+    }
+
+    public void Select()
+    {
+        
     }
 }

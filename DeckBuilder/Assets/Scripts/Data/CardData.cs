@@ -22,5 +22,5 @@ public class CardData : ScriptableObject
     [field: SerializeReference, SR] public List<LaneFilter> LaneFilters { get; private set; } = null;
     [field: SerializeReference, SR] public Effect ManualTargetEffect { get; private set; } = null;
     [field: SerializeReference, SR] public List<AutoTargetEffect> OtherEffects { get; private set; } = null;
-    [field: SerializeReference, SR] public List<AutoTargetEffect> TurnEndEffects { get; private set; } = null;
+    [field: SerializeReference, SR] public List<CardReaction> InHandReactions { get; private set; } = null;
 }

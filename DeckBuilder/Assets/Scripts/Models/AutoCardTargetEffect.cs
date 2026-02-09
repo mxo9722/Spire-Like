@@ -11,6 +11,20 @@ public class AutoCardTargetEffect : AutoTargetEffect
 
     [field: SerializeReference, SR] private CardTargetEffect _cardEffect;
 
+    public override IDynamicEffectText[] GetDynamicTextEffects()
+    {
+        List<IDynamicEffectText> dets = new();
+
+        dets.AddRange(TargetMode.GetDynamicTextEffects());
+
+        foreach (Effect effect in Effects)
+        {
+            dets.AddRange(effect.GetDynamicTextEffects());
+        }
+
+        return dets.ToArray();
+    }
+
     public override List<StatusEffect> GetAllStatusEffects()
     {
         List<StatusEffect> statusEffects = new();
@@ -40,10 +54,10 @@ public class AutoCardTargetEffect : AutoTargetEffect
         return TargetMode is IUserInputTM;
     }
 
-    public override IEnumerator WaitForUserInput()
+    public override IEnumerator WaitForUserInput(EffectContext context)
     {
         if (TargetMode is IUserInputTM userInputTM)
-            yield return userInputTM.WaitForUserInput();
+            yield return userInputTM.WaitForUserInput(context);
     }
 
     public override NPCTargetTypes GetTargetIntent()

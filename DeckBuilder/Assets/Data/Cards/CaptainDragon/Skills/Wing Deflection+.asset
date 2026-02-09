@@ -31,7 +31,7 @@ MonoBehaviour:
   <OtherEffects>k__BackingField:
   - rid: 4055348078608908524
   - rid: 4055348078608908528
-  <TurnEndEffects>k__BackingField: []
+  <InHandReactions>k__BackingField: []
   references:
     version: 2
     RefIds:
@@ -41,11 +41,7 @@ MonoBehaviour:
       type: {class: AutoTargetlessEffect, ns: , asm: Assembly-CSharp}
       data:
         _noTargetEffect:
-          rid: 262420840209711236
-    - rid: 262420840209711236
-      type: {class: DrawCardsEffect, ns: , asm: Assembly-CSharp}
-      data:
-        _drawAmount: 2
+          rid: 6673085778750079072
     - rid: 4055348078608908524
       type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
       data:
@@ -79,3 +75,12 @@ MonoBehaviour:
       type: {class: CasterMovedThisTurnCondition, ns: , asm: Assembly-CSharp}
       data:
         _invert: 0
+    - rid: 6673085778750079072
+      type: {class: DrawCardsEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _drawAmount:
+          rid: 6673085778750079073
+    - rid: 6673085778750079073
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 2

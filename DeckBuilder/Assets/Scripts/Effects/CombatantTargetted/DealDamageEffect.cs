@@ -19,6 +19,12 @@ public class DealDamageEffect : CombatantTargetEffect, IDynamicEffectText
 
     public string GetDynamicText(EffectContext context, List<CombatantView> targetCombatants = null, List<LaneView> targetLanes = null)
     {
-        return DamageSystem.CardDamageTextFromAttack(_damage.GetAmount(context), context.Caster, targetCombatants);
+        //if (context.Caster == null && context.PlayedCard != null)
+        //{
+        //    context = context.Clone();
+        //    context.SetCaster(context.PlayedCard.GetOwnerView(context));
+        //}
+
+        return DamageSystem.CardDamageTextFromAttack(_damage.GetAmount(context), context, targetCombatants);
     }
 }

@@ -11,12 +11,14 @@ public class LaneView : MonoBehaviour, ITargetPreviewable
     [field: SerializeField] public SlotView[] EnemySlots { get; private set; }
 
     [SerializeField] private SpriteRenderer _targetPreviewSR;
+    [SerializeField] private SpriteRenderer _soakedStatus;
 
     public NPCView[] EnemyViews { get => EnemySlots.Select(e => (NPCView)(e.Combatant)).Where(c => c != null).ToArray(); }
     public CombatantView HeroView { get => HeroSlot.Combatant; }
     public bool Dead { get; private set; } = false;
     public BoardView Board { get; private set; }
     public int Index { get; private set; }
+    public bool IsSoaked { get; private set; } = false;
 
     public bool TargetPreviewActive => _targetPreviewSR.color != Color.clear;
 
@@ -33,6 +35,8 @@ public class LaneView : MonoBehaviour, ITargetPreviewable
 
     public void Start()
     {
+        _soakedStatus.transform.localScale = Vector3.zero;
+
         _targetPreviewSR.transform.DORotate(new(0, 0, 180.0f), 2f, RotateMode.Fast).SetLoops(-1).SetEase(Ease.Linear);
         HideTargetPreview();
         for (int i = 0; i < EnemySlots.Length; i++)
@@ -153,6 +157,28 @@ public class LaneView : MonoBehaviour, ITargetPreviewable
         {
             heroSlot.AddCombatant(heroView, false);
             yield return heroSlot.PullCombatant(0.4f);
+        }
+    }
+
+    public IEnumerator SetSoaked(bool state, float duration = 1)
+    {
+        if (IsSoaked == state)
+            yield break;
+
+        IsSoaked = state;
+
+        _soakedStatus.transform.DOKill();
+
+        Tween tween = null;
+
+        if (state)
+            tween = _soakedStatus.transform.DOScale(Vector3.one, duration).SetEase(Ease.OutCirc);
+        else
+            tween = _soakedStatus.transform.DOScale(Vector3.zero, duration).SetEase(Ease.OutCirc);
+
+        if (tween != null)
+        {
+            yield return tween.WaitForCompletion();
         }
     }
 

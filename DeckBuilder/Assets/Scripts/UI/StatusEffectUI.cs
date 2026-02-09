@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -74,9 +75,14 @@ public class StatusEffectUI : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         {
             int count = reaction.SubConditionIsMet(_owner, gameAction);
 
+            EffectContext context = new(_owner);
+
+            context.AddData("stacks",_stackCount);
+            reaction.SaveTargetData(context, gameAction);
+
             for (int i = 0; i < count; i++)
             {
-                reaction.InvokeEffects(_owner);
+                reaction.InvokeEffects(context);
             }
         }
     }

@@ -17,6 +17,8 @@ public abstract class Condition
 
     public virtual bool IsConditionMeetable(EffectContext context, Card card)
     {
+        if (_invert)
+            return !IsConditionMet(context);
         return IsConditionMet(context);
     }
 }

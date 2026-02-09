@@ -7,6 +7,7 @@ using UnityEngine;
 public abstract class StatusEffectReaction
 {
     [SerializeField] protected ReactionTiming _reactionTiming;
+
     [field: SerializeReference, SR] public List<AutoTargetEffect> Effects { get; private set; } = new();
 
     protected StatusEffect _type;
@@ -16,17 +17,15 @@ public abstract class StatusEffectReaction
         _type = type;
     }
 
-    public virtual void InvokeEffects(CombatantView owner)
+    public virtual void InvokeEffects(EffectContext context)
     {
-        EffectContext context = new EffectContext(owner);
-
         foreach (AutoTargetEffect effect in Effects)
         {
             GameAction gameAction = effect.GetGameAction(context);
 
             if (gameAction is PerformEffectsGA performEffectGA)
             {
-                GameAction effectAcion = performEffectGA.Effect.GetGameAction(new(performEffectGA.Caster), performEffectGA.CombatantTargets, performEffectGA.LaneTargets, performEffectGA.CardTargets);
+                GameAction effectAcion = performEffectGA.Effect.GetGameAction(context, performEffectGA.CombatantTargets, performEffectGA.LaneTargets, performEffectGA.CardTargets);
                 
                 if(effectAcion != null)
                     ActionSystem.Instance.AddReaction(effectAcion);
@@ -39,4 +38,5 @@ public abstract class StatusEffectReaction
     public abstract void SubscribeCondition(object subscriber, Action<GameAction> reaction);
     public abstract void UnsubscribeCondition(object subscriber, Action<GameAction> reaction);
     public abstract int SubConditionIsMet(CombatantView owner, GameAction gameAction);
+    public virtual void SaveTargetData(EffectContext context, GameAction gameAction) { }
 }

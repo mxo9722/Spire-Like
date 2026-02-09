@@ -5,6 +5,8 @@ public class RunSystem : PersistentSingleton<RunSystem>, IHoldData
 {
     [SerializeField] private HeroData _defaultHeroData1;
     [SerializeField] private HeroData _defaultHeroData2;
+
+    [SerializeField] private DeckData _startingDeck;
     
     public RunData RunData { get; private set; }
 
@@ -79,7 +81,7 @@ public class RunSystem : PersistentSingleton<RunSystem>, IHoldData
 
     public RunData GenerateNewRun()
     {
-        RunData runData = new(_defaultHeroData1, _defaultHeroData2);
+        RunData runData = new(_defaultHeroData1, _defaultHeroData2, _startingDeck.Deck);
 
         return runData;
     }

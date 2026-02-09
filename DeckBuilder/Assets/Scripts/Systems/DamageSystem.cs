@@ -79,9 +79,9 @@ public class DamageSystem : Singleton<DamageSystem>
         yield return new WaitForSeconds(1);
     }
 
-    public static string CardDamageTextFromAttack(int baseDamage, CombatantView attacker, List<CombatantView> targets = null)
+    public static string CardDamageTextFromAttack(int baseDamage, EffectContext context, List<CombatantView> targets = null)
     {
-        int damage = GetDamageFromAttack(baseDamage, attacker, targets);
+        int damage = GetDamageFromAttack(baseDamage, context, targets);
 
         if(baseDamage > damage)
         {
@@ -95,9 +95,9 @@ public class DamageSystem : Singleton<DamageSystem>
         return baseDamage.ToString();
     }
     
-    public static string EnemyDamageTextFromAttack(int baseDamage, CombatantView attacker, List<CombatantView> targets)
+    public static string EnemyDamageTextFromAttack(int baseDamage, EffectContext context, List<CombatantView> targets)
     {
-        int damage = GetDamageFromAttack(baseDamage, attacker, targets);
+        int damage = GetDamageFromAttack(baseDamage, context, targets);
 
         if(targets.Count > 0)
         {
@@ -107,13 +107,18 @@ public class DamageSystem : Singleton<DamageSystem>
         return damage.ToString();
     }
 
-    public static int GetDamageFromAttack(int damage, CombatantView attacker, List<CombatantView> targets = null)
+    public static int GetDamageFromAttack(int damage, EffectContext context, List<CombatantView> targets = null)
     {
-        damage = Mathf.Max(0, damage + attacker.GetStatusEffectStacks(StatusEffect.STRENGTH));
+        if (context.Caster == null && context.PlayedCard != null)
+            context.SetCaster(context.PlayedCard.GetOwnerView(context));
+        if (context.Caster == null)
+            return damage;
+
+        damage = Mathf.Max(0, damage + context.Caster.GetStatusEffectStacks(StatusEffect.STRENGTH));
 
         float multiplier = 1.0f;
 
-        if (attacker.GetStatusEffectStacks(StatusEffect.WEAK) > 0)
+        if (context.Caster.GetStatusEffectStacks(StatusEffect.WEAK) > 0)
             multiplier *= WEAK_MULITPLIER;
 
         if (targets != null && targets.TrueForAll(e => e.GetStatusEffectStacks(StatusEffect.VULNERABLE) > 0) && targets.Count > 0)

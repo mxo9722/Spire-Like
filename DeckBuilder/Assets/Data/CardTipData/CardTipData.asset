@@ -33,6 +33,14 @@ MonoBehaviour:
       Value: Target deals 25% less damage.
     - Key: LINGER
       Value: Effect activates if the card is in your hand when you end your turn.
+    - Key: SOAK
+      Value: Effect activates if the hero is in a soaked lane.
+    - Key: FLOOD
+      Value: Gives a lane the soaked condition.
+    - Key: DRY
+      Value: Removes the soaked condition from a lane.
+    - Key: DRIED
+      Value: Effect activates if the hero is in a lane without the soaked condition.
     - Key: CHAOTIC
       Value: Effect activates if the hero has Chaos.
     - Key: CHAOS
@@ -47,3 +55,8 @@ MonoBehaviour:
       Value: A unit is aligned if it is in the same lane as you
     - Key: GAURD
       Value: Unit remains in the front of the lane potentially blocking enemy attacks.
+    - Key: HEAT
+      Value: Decreases by 1 whenever you play a card. At 10+ stacks converts to burn.
+    - Key: CYCLE
+      Value: Discard up to a certain number of cards from your hand then draw that
+        many cards.

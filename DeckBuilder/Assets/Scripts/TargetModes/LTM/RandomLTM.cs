@@ -1,5 +1,6 @@
 using SerializeReferenceEditor;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class RandomLTM : LaneTargetMode
@@ -41,6 +42,20 @@ public class RandomLTM : LaneTargetMode
     public override List<LaneView> AllPossibleTargets(EffectContext context, Card card = null)
     {
         List<LaneView> possible = BoardSystem.Instance.GetAllLanes();
+
+        if(context.Caster == null)
+        {
+            List<LaneView> ret = new();
+
+            foreach(HeroView hero in HeroSystem.Instance.HeroViews)
+            {
+                EffectContext heroContext = new(hero, context.TargetLane, context.TargetCombatant, context.PlayedCard);
+                ret.AddRange(possible.ApplyFilters(Filters, heroContext));
+            }
+
+            return ret.Distinct().ToList();
+        }
+
 
         possible = new(possible.ApplyFilters(Filters, context));
 

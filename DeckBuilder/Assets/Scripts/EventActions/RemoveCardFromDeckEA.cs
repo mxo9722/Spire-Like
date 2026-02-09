@@ -13,7 +13,7 @@ public class RemoveCardFromDeckEA : EventAction
     public override IEnumerator Invoke(EffectContext context)
     {
         List<Card> deck = new(RunSystem.Instance.Deck);
-        CardCollectionSystem.Instance.SelectionDisplay(deck, _amount, false);
+        CardCollectionSystem.Instance.SelectionDisplay(deck, _amount, _amount, false);
         yield return new WaitUntil(() => !CardCollectionSystem.Instance.WaitingForSelection);
         List<Card> selection = CardCollectionSystem.Instance.GetCardSelections();
 

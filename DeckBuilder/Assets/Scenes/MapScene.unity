@@ -1625,7 +1625,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 134afdd4bfce8cc48b14e33096e6e01e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _defaultHeroData: {fileID: 11400000, guid: 2541e923a5fe0dc42b43a17cfcfb2235, type: 2}
+  _defaultHeroData1: {fileID: 11400000, guid: 2541e923a5fe0dc42b43a17cfcfb2235, type: 2}
+  _defaultHeroData2: {fileID: 11400000, guid: 92393e5e17c967743b9396c943427a9b, type: 2}
+  _startingDeck: {fileID: 11400000, guid: 66da856259a4250428b04fd3835ca704, type: 2}
   _debugStartNew: 1
 --- !u!1 &1551244069
 GameObject:

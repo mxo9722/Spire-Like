@@ -12,11 +12,6 @@ public class CardCollectionSystem : Singleton<CardCollectionSystem>
     public bool Opened => _cardCollectionUI.Opened;
     public bool WaitingForSelection => _cardCollectionUI.WaitingForSelection;
 
-    public void Display(List<CardData> cardCollection, bool hideOrder)
-    {
-        Display(cardCollection.Select(c => new Card(c)).ToList(), hideOrder);
-    }
-
     public void Display(List<Card> cardCollection, bool hideOrder)
     {
         if (Opened)
@@ -35,7 +30,7 @@ public class CardCollectionSystem : Singleton<CardCollectionSystem>
         _cardCollectionUI.SetUp(cardCollection);
     }
 
-    public void SelectionDisplay(List<Card> cardCollection, int amount, bool hideOrder)
+    public void SelectionDisplay(List<Card> cardCollection, int minAmount, int maxAmount, bool hideOrder)
     {
         if (Opened)
         {
@@ -50,7 +45,7 @@ public class CardCollectionSystem : Singleton<CardCollectionSystem>
             cardCollection.Sort((a, b) => string.Compare(a.Title, b.Title));
         }
 
-        _cardCollectionUI.SetUpSelection(cardCollection, amount);
+        _cardCollectionUI.SetUpSelection(cardCollection, minAmount, maxAmount);
     }
 
     public void UpgradeDisplay()

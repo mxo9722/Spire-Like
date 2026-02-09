@@ -9,11 +9,13 @@ public class BurnSystem : Singleton<BurnSystem>
     private void OnEnable()
     {
         ActionSystem.AttachPerformer<InvokeBurnGA>(ApplyBurnPerformer);
+        ActionSystem.AttachPerformer<TransferHeatGA>(TransferHeatPerformer);
     }
 
     private void OnDisable()
     {
         ActionSystem.DetachPerformer<InvokeBurnGA>();
+        ActionSystem.AttachPerformer<TransferHeatGA>(TransferHeatPerformer);
     }
 
     private IEnumerator ApplyBurnPerformer(InvokeBurnGA applyBurnGA)
@@ -34,5 +36,23 @@ public class BurnSystem : Singleton<BurnSystem>
         }
 
         yield return new WaitForSeconds(1f);
+    }
+
+    private IEnumerator TransferHeatPerformer(TransferHeatGA transferHeatGA)
+    {
+        List<GameAction> gameActions = new();
+
+        foreach (CombatantView target in transferHeatGA.Targets)
+        {
+            int stacks = target.GetStatusEffectStacks(StatusEffect.HEAT);
+            gameActions.Add(new AddStatusEffectGA(StatusEffect.BURN, stacks, new() { target }));
+            gameActions.Add(new RemoveAllStatusEffectGA(StatusEffect.HEAT, new() { target }));
+        }
+
+
+        MultipleGameActionsGA multipleGameActionsGA = new(gameActions);
+        ActionSystem.Instance.AddReaction(multipleGameActionsGA);
+
+        yield return null;
     }
 }

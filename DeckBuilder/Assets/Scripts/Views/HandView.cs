@@ -1,4 +1,5 @@
 using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,11 +12,14 @@ public class HandView : MonoBehaviour
     
     private readonly List<CardView> _cards = new();
 
-    public IEnumerator AddCard(CardView card)
+    public IEnumerator AddCard(CardView card, int index = -1)
     {
-        yield return InsertCard(card, _cards.Count);
+        if(index == -1)
+            yield return InsertCard(card, _cards.Count);
+        else
+            yield return InsertCard(card, Math.Min(_cards.Count, index));
     }
-    
+
     public IEnumerator InsertCard(CardView card,int position)
     {
         _cards.Insert(position, card);

@@ -26,7 +26,7 @@ public class AutoTargetlessEffect : AutoTargetEffect
         return false;
     }
 
-    public override IEnumerator WaitForUserInput()
+    public override IEnumerator WaitForUserInput(EffectContext context)
     {
         yield return null;
     }

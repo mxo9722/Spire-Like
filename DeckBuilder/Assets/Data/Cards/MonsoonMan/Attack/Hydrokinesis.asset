@@ -1,0 +1,111 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62bf69310631aa94896652d3f8be392c, type: 3}
+  m_Name: Hydrokinesis
+  m_EditorClassIdentifier: 
+  <Rarity>k__BackingField: 0
+  <Upgrade>k__BackingField: {fileID: 11400000, guid: 2b3914e9b1ac55140b04608c48502781, type: 2}
+  <Unplayable>k__BackingField: 0
+  <Mana>k__BackingField: 2
+  <Type>k__BackingField: 0
+  <Image>k__BackingField: {fileID: 21300000, guid: 70bfc4efe8a8e35488f4378a6ff10797, type: 3}
+  <Description>k__BackingField: 'Deal {v0} damage to an aligned foe.
+
+    Soak:
+
+    Dry
+    your lane and gain 1 mana.'
+  <RequiredConditions>k__BackingField: []
+  <HighlightConditions>k__BackingField: []
+  <ExhuastOnUse>k__BackingField: 0
+  <ManualTargetType>k__BackingField: 0
+  <CombatantFilters>k__BackingField:
+  - rid: 262421164024660116
+  - rid: 262421164024660117
+  <LaneFilters>k__BackingField: []
+  <ManualTargetEffect>k__BackingField:
+    rid: 262421164024660061
+  <OtherEffects>k__BackingField:
+  - rid: 262421164024660063
+  <InHandReactions>k__BackingField: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 262421164024660061
+      type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _damage:
+          rid: 262421164024660062
+    - rid: 262421164024660062
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 14
+    - rid: 262421164024660063
+      type: {class: ConditionalAutoTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _conditions:
+        - rid: 262421164024660064
+        _successEffects:
+        - rid: 262421164024660066
+        - rid: 262421164024660069
+        _failEffects: []
+    - rid: 262421164024660064
+      type: {class: LanesSoakedCondition, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
+        _targetMode:
+          rid: 262421164024660065
+        _checkForSoaked: 1
+    - rid: 262421164024660065
+      type: {class: CurrentLTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 262421164024660066
+      type: {class: AutoTargetlessEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _noTargetEffect:
+          rid: 262421164024660067
+    - rid: 262421164024660067
+      type: {class: GainManaEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _amount:
+          rid: 262421164024660068
+    - rid: 262421164024660068
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 1
+    - rid: 262421164024660069
+      type: {class: AutoLaneTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 262421164024660070
+        _laneEffect:
+          rid: 262421164024660071
+    - rid: 262421164024660070
+      type: {class: CurrentLTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 262421164024660071
+      type: {class: SetSoakEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _setSoaked: 0
+    - rid: 262421164024660116
+      type: {class: TargIsEvilFilter, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
+    - rid: 262421164024660117
+      type: {class: TargIsInLaneFilter, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
+        _lane:
+          rid: 262421164024660118
+    - rid: 262421164024660118
+      type: {class: CurrentLTM, ns: , asm: Assembly-CSharp}
+      data: 

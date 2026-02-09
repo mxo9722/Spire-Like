@@ -1,0 +1,141 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62bf69310631aa94896652d3f8be392c, type: 3}
+  m_Name: Flash Flood+
+  m_EditorClassIdentifier: 
+  <Rarity>k__BackingField: 0
+  <Upgrade>k__BackingField: {fileID: 0}
+  <Unplayable>k__BackingField: 0
+  <Mana>k__BackingField: 2
+  <Type>k__BackingField: 1
+  <Image>k__BackingField: {fileID: 21300000, guid: ebbcbef66d7e3ea44b8728589ed41b70, type: 3}
+  <Description>k__BackingField: 'Apply {v0} block to an ally.
+
+    If that lane is
+    dry then soak it and apply {v1} weak.'
+  <RequiredConditions>k__BackingField: []
+  <HighlightConditions>k__BackingField: []
+  <ExhuastOnUse>k__BackingField: 0
+  <ManualTargetType>k__BackingField: 0
+  <CombatantFilters>k__BackingField:
+  - rid: 6673085800182448197
+  <LaneFilters>k__BackingField: []
+  <ManualTargetEffect>k__BackingField:
+    rid: -2
+  <OtherEffects>k__BackingField:
+  - rid: 262421164024660045
+  - rid: 262421164024660049
+  <InHandReactions>k__BackingField: []
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 262421164024660045
+      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 6673085778750079104
+        _combatantEffect:
+          rid: 262421164024660047
+    - rid: 262421164024660047
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _statusEffectType: 0
+        _stackCount:
+          rid: 262421164024660048
+        _skipAnimation: 0
+    - rid: 262421164024660048
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 8
+    - rid: 262421164024660049
+      type: {class: ConditionalAutoTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _conditions:
+        - rid: 262421164024660050
+        _successEffects:
+        - rid: 262421164024660053
+        - rid: 262421164024660056
+        _failEffects: []
+    - rid: 262421164024660050
+      type: {class: LanesSoakedCondition, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
+        _targetMode:
+          rid: 6673085778750079107
+        _checkForSoaked: 0
+    - rid: 262421164024660053
+      type: {class: AutoLaneTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 6673085778750079109
+        _laneEffect:
+          rid: 262421164024660055
+    - rid: 262421164024660055
+      type: {class: SetSoakEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _setSoaked: 1
+    - rid: 262421164024660056
+      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 262421164024660057
+        _combatantEffect:
+          rid: 262421164024660059
+    - rid: 262421164024660057
+      type: {class: AllFoesInLanesCTM, ns: , asm: Assembly-CSharp}
+      data:
+        _laneTargetMode:
+          rid: 6673085778750079145
+    - rid: 262421164024660059
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _statusEffectType: 6
+        _stackCount:
+          rid: 262421164024660060
+        _skipAnimation: 0
+    - rid: 262421164024660060
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 1
+    - rid: 6673085778750079104
+      type: {class: ManualTargetCTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 6673085778750079107
+      type: {class: ContainsUnitsLTM, ns: , asm: Assembly-CSharp}
+      data:
+        _combatantTargetMode:
+          rid: 6673085778750079108
+    - rid: 6673085778750079108
+      type: {class: ManualTargetCTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 6673085778750079109
+      type: {class: ContainsUnitsLTM, ns: , asm: Assembly-CSharp}
+      data:
+        _combatantTargetMode:
+          rid: 6673085778750079110
+    - rid: 6673085778750079110
+      type: {class: ManualTargetCTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 6673085778750079145
+      type: {class: ContainsUnitsLTM, ns: , asm: Assembly-CSharp}
+      data:
+        _combatantTargetMode:
+          rid: 6673085778750079146
+    - rid: 6673085778750079146
+      type: {class: ManualTargetCTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 6673085800182448197
+      type: {class: TargIsEvilFilter, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 1

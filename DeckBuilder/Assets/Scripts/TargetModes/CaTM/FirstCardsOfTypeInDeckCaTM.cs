@@ -22,7 +22,7 @@ public class FirstCardsOfTypeInDeckCaTM : CardTargetMode
             if (curCount == countNeeded)
                 break;
 
-            if (Cards.Contains(card.data))
+            if (Cards.Contains(card.CardData))
             {
                 targets.Add(card);
                 curCount++;

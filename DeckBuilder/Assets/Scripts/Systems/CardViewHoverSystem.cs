@@ -47,13 +47,8 @@ public class CardViewHoverSystem : Singleton<CardViewHoverSystem>
         CardViewHover.UpdateDynamicDescription(new(card.GetOwnerView()));
     }
     
-    public void UpdateDynamicDescription(CombatantView caster,CombatantView targetCombatant)
+    public void UpdateDynamicDescription(EffectContext context)
     {
-        CardViewHover.UpdateDynamicDescription(new(caster, manualTargetCombatant: targetCombatant));
-    }
-    
-    public void UpdateDynamicDescription(CombatantView caster, LaneView targetLane)
-    {
-        CardViewHover.UpdateDynamicDescription(new(caster, manualTargetLane: targetLane));
+        CardViewHover.UpdateDynamicDescription(context);
     }
 }

@@ -277,11 +277,17 @@ public class BoardView : MonoBehaviour
 
         if (destination.HeroView != null)
         {
-            //TODO: add a swap functionality
+
+            SlotView holder = hero.Slot;
+            CombatantView other = destination.HeroView;
+
+            destination.HeroSlot.RemoveCombatant();
+            destination.HeroSlot.AddCombatant(hero, false);
+
+            holder.AddCombatant(other, false);
+            
             return true;
         }
-
-        LaneView originalLaneView = GetCurrentLaneView(hero);
 
         SlotView slot = destination.HeroSlot;
         slot.AddCombatant(hero, false);

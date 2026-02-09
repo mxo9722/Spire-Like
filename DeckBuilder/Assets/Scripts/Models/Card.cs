@@ -5,50 +5,59 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
-public class Card
+public class Card : IHoldData
 {
-    public string Title => data.name;
-    public CardData Upgrade => data.Upgrade;
-    public bool Unplayable => data.Unplayable;
-    public CardType Type => data.Type;
-    public Sprite Image => data.Image;
-    public string Description => data.Description;
-    public List<Condition> RequiredConditions => data.RequiredConditions;
-    public List<Condition> HighlightConditions => data.HighlightConditions;
+    public string Title => CardData.name;
+    public CardData Upgrade => CardData.Upgrade;
+    public bool Unplayable => CardData.Unplayable;
+    public CardType Type => CardData.Type;
+    public Sprite Image => CardData.Image;
+    public string Description => CardData.Description;
+    public List<Condition> RequiredConditions => CardData.RequiredConditions;
+    public List<Condition> HighlightConditions => CardData.HighlightConditions;
 
-    public ManualTargetType ManualTargetType => data.ManualTargetType;
-    public Effect ManualTargetEffect => data.ManualTargetEffect;
-    public List<AutoTargetEffect> OtherEffects => data.OtherEffects;
-    public List<AutoTargetEffect> TurnEndEffect => data.TurnEndEffects;
-    public List<CombatantFilter> CombatantFilters => data.CombatantFilters;
-    public List<LaneFilter> LaneFilters => data.LaneFilters;
-    public bool ExhuastOnUse => data.ExhuastOnUse;
-    public Rarity Rarity => data.Rarity;
+    public ManualTargetType ManualTargetType => CardData.ManualTargetType;
+    public Effect ManualTargetEffect => CardData.ManualTargetEffect;
+    public List<AutoTargetEffect> OtherEffects => CardData.OtherEffects;
+    public List<CombatantFilter> CombatantFilters => CardData.CombatantFilters;
+    public List<LaneFilter> LaneFilters => CardData.LaneFilters;
+    public bool ExhuastOnUse => CardData.ExhuastOnUse;
+    public Rarity Rarity => CardData.Rarity;
 
     public int Mana { get; private set; }
     public HeroData Owner { get; private set; } = null;
 
-    public readonly CardData data;
 
+    public readonly CardData CardData;
+
+    private List<CardReaction> _inHandReactions = new();
     private List<string> _allKeyWords = null;
+
+    private Dictionary<string, object> _data = null;
 
     public Card(Card card)
     {
-        data = card.data;
+        CardData = card.CardData;
         Mana = card.Mana;
         Owner = card.Owner;
+
+        _data = new(card._data);
+
+        SetUp();
     }
 
     public Card(CardData cardData, HeroData owner)
     {
-        data = cardData;
+        CardData = cardData;
         Mana = cardData.Mana;
         Owner = owner;
+
+        SetUp();
     }
 
     public Card(CardData cardData)
     {
-        data = cardData;
+        CardData = cardData;
         Mana = cardData.Mana;
 
         RunData runData = RunSystem.Instance.RunData;
@@ -57,15 +66,29 @@ public class Card
         Hero possibleOwner2 = runData.Hero2;
 
         SetOwner(possibleOwner1, possibleOwner2);
+        SetUp();
+    }
+
+    private void SetUp()
+    {
+        if (_data == null)
+            _data = new();
+
+        foreach (CardReaction cardReaction in CardData.InHandReactions)
+        {
+            CardReaction reaction = cardReaction.Clone();
+            _inHandReactions.Add(reaction);
+            reaction.SetUp(this);
+        }
     }
 
     private void SetOwner(Hero possibleOwner1, Hero possibleOwner2)
     {
-        if (possibleOwner1.ClassCards.Contains(data) && possibleOwner2.ClassCards.Contains(data))
+        if (possibleOwner1.ClassCards.Contains(CardData) && possibleOwner2.ClassCards.Contains(CardData))
             Owner = null;
-        else if (possibleOwner1.ClassCards.Contains(data))
+        else if (possibleOwner1.ClassCards.Contains(CardData))
             Owner = possibleOwner1.Data;
-        else if (possibleOwner2.ClassCards.Contains(data))
+        else if (possibleOwner2.ClassCards.Contains(CardData))
             Owner = possibleOwner2.Data;
         else
             Owner = null;
@@ -88,15 +111,15 @@ public class Card
         {
             dynamicTextEffects.AddRange(effect.GetDynamicTextEffects());
         }
-        
-        foreach (AutoTargetEffect effect in TurnEndEffect)
+
+        foreach (CardReaction reaction in _inHandReactions)
         {
-            dynamicTextEffects.AddRange(effect.GetDynamicTextEffects());
+            dynamicTextEffects.AddRange(reaction.GetDynamicTextEffects());
         }
 
         for (int i = 0; i < dynamicTextEffects.Count; i++)
         {
-            string value = dynamicTextEffects[i].GetStaticText();
+            string value = dynamicTextEffects[i].GetDynamicText( new(null, playedCard: this));
             description = description.Replace("{v" + i.ToString() + "}", value);
         }
 
@@ -138,20 +161,20 @@ public class Card
         {
             IDynamicEffectText[] dtes = effect.GetDynamicTextEffects();
 
-            if(dtes.Length > 0)
+            if (dtes.Length > 0)
             {
                 description = effect.ApplyDynamicTextEffect(description, index, context, this);
                 index += dtes.Length;
             }
         }
-        
-        foreach (AutoTargetEffect effect in TurnEndEffect)
-        {
-            IDynamicEffectText[] dtes = effect.GetDynamicTextEffects();
 
-            if(dtes.Length > 0)
+        foreach (CardReaction reaction in _inHandReactions)
+        {
+            IDynamicEffectText[] dtes = reaction.GetDynamicTextEffects();
+
+            if (dtes.Length > 0)
             {
-                description = effect.ApplyDynamicTextEffect(description, index, context, this);
+                description = reaction.ApplyDynamicTextEffect(description, index, context, this);
                 index += dtes.Length;
             }
         }
@@ -180,7 +203,7 @@ public class Card
 
             int index = match.Index;
 
-            if(_allKeyWords.Count == 0)
+            if (_allKeyWords.Count == 0)
             {
                 _allKeyWords.Add(key);
                 foundPositions.Add(index);
@@ -189,7 +212,7 @@ public class Card
 
             bool inserted = false;
 
-            for(int i = 0; i < foundPositions.Count; i++)
+            for (int i = 0; i < foundPositions.Count; i++)
             {
                 if (index < foundPositions[i])
                 {
@@ -200,7 +223,7 @@ public class Card
                 }
             }
 
-            if (!inserted) 
+            if (!inserted)
             {
                 foundPositions.Add(index);
                 _allKeyWords.Add(key);
@@ -210,10 +233,24 @@ public class Card
         return _allKeyWords;
     }
 
-    public HeroView GetOwnerView()
+    public HeroView GetOwnerView(EffectContext context = null)
     {
-        if (HeroSystem.Instance == null || Owner == null)
+        if (HeroSystem.Instance == null || (context == null && Owner == null))
             return null;
+
+        if(Owner == null)
+        {
+            switch (ManualTargetType)
+            {
+                case ManualTargetType.COMBATANT:
+                    return (HeroView)context.TargetCombatant?.Slot.Lane.HeroView;
+                case ManualTargetType.LANE:
+                    return (HeroView)context.TargetLane?.HeroView;
+                case ManualTargetType.NONE:
+                    return null;
+            }
+        }
+
         HeroView heroView = HeroSystem.Instance.HeroViews.First(h => h.Hero.Data == Owner);
         return heroView;
     }
@@ -227,7 +264,7 @@ public class Card
         foreach (string key in keyWords)
         {
             string pattern = string.Format(@"\b{0}\b", key);
-            string replaceWith = string.Format("<b><color=#{0}>{1}</color></b>",ColorUtility.ToHtmlStringRGB(CardTipSystem.Instance.KeyWordColor), textInfo.ToTitleCase(key.ToLower()));
+            string replaceWith = string.Format("<b><color=#{0}>{1}</color></b>", ColorUtility.ToHtmlStringRGB(CardTipSystem.Instance.KeyWordColor), textInfo.ToTitleCase(key.ToLower()));
 
             description = Regex.Replace(description, pattern, replaceWith, RegexOptions.IgnoreCase);
         }
@@ -300,7 +337,7 @@ public class Card
 
         return true;
     }
-    
+
     public bool IsHighlighted()
     {
         return IsHighlighted(new EffectContext(GetOwnerView()));
@@ -314,9 +351,9 @@ public class Card
         {
             HeroView[] heroViews = HeroSystem.Instance.HeroViews;
 
-            foreach(HeroView heroView in heroViews)
+            foreach (HeroView heroView in heroViews)
             {
-                EffectContext newContext = new(heroView);
+                EffectContext newContext = new(heroView, context.TargetLane, context.TargetCombatant, context.PlayedCard);
                 if (IsHighlighted(newContext))
                     return true;
             }
@@ -339,10 +376,10 @@ public class Card
 
         foreach (ConditionalAutoTargetEffect conditional in conditionals)
         {
-           if(conditional.ConditionIsMeetable(context, this))
-           {
+            if (conditional.ConditionIsMeetable(context, this))
+            {
                 return true;
-           }
+            }
 
             if (conditionals.Last() == conditional)
                 return false;
@@ -358,9 +395,23 @@ public class Card
 
         List<CombatantView> combatants = BoardSystem.Instance.GetAllCombatants();
 
+        if (context.Caster == null) 
+        {
+
+            List<EffectContext> contexts = new();
+
+            foreach(HeroView hero in HeroSystem.Instance.HeroViews)
+            {
+                contexts.Add(new(hero, context.TargetLane, context.TargetCombatant, this));
+            }
+
+            return combatants.FindAll(c => contexts.Any(heroContext => c.IsValid(heroContext, CombatantFilters))).ToArray();
+
+        }
+
         return combatants.FindAll(c => c.IsValid(context, CombatantFilters)).ToArray();
     }
-    
+
     public LaneView[] AllValidLanes(EffectContext context)
     {
         if (ManualTargetType != ManualTargetType.LANE)
@@ -371,8 +422,32 @@ public class Card
         return lanes.FindAll(c => c.IsValid(context, LaneFilters)).ToArray();
     }
 
+    public void UnsubscribeAllReactions()
+    {
+        UnsubscribeReactions(_inHandReactions);
+    }
+
+    private void UnsubscribeReactions(List<CardReaction> reactions)
+    {
+        foreach (CardReaction reaction in reactions)
+        {
+            reaction.Unsubscribe();
+        }
+    }
+
+    public void SubscribeInHand()
+    {
+        foreach (CardReaction reaction in _inHandReactions)
+        {
+            reaction.Subscribe();
+        }
+    }
+
     public bool IsChaotic()
     {
+        if (GetOwnerView() == null)
+            return false;
+
         return GetOwnerView().GetStatusEffectStacks(StatusEffect.CHAOS) > 0 && ManualTargetType != ManualTargetType.NONE && Type == CardType.ATTACK;
     }
 
@@ -398,5 +473,30 @@ public class Card
         return null;
     }
 
-    
+
+    public override string ToString()
+    {
+        return CardData.name;
+    }
+
+    public void AddData(string key, object data)
+    {
+        if (!_data.ContainsKey(key))
+            _data.Add(key, data);
+        else
+            _data[key] = data;
+    }
+
+    public T GetData<T>(string key)
+    {
+        if (_data.ContainsKey(key))
+            return (T)_data[key];
+
+        return default(T);
+    }
+
+    public bool ContainsKey(string key)
+    {
+        return _data.ContainsKey(key);
+    }
 }

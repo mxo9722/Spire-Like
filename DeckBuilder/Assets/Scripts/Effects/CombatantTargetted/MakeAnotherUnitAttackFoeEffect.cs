@@ -29,7 +29,7 @@ public class MakeAnotherUnitAttackFoeEffect : CombatantTargetEffect, IDynamicEff
 
     public string GetDynamicText(EffectContext context, List<CombatantView> targetCombatants = null, List<LaneView> targetLanes = null)
     {
-        CombatantView caster = targetCombatants.First();
+        CombatantView caster = targetCombatants.First();    
 
         if (caster == null)
             return GetStaticText();
@@ -37,7 +37,7 @@ public class MakeAnotherUnitAttackFoeEffect : CombatantTargetEffect, IDynamicEff
         EffectContext newContext = new(context);
         newContext.SetCaster(caster);
 
-        List<CombatantView> targets = _targetMode.GetTargets(newContext);
+        List<CombatantView> targets = _targetMode.AllPossibleTargets(newContext);
 
         return _effect.GetDynamicText(newContext, targets);
     }
