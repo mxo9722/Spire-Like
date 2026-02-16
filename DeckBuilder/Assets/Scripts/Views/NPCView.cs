@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class NPCView : CombatantView
 {
+    [Header("NPC Attributes")]
     [SerializeField] private NPCActionView _actionView1;
     [SerializeField] private NPCActionView _actionView2;
     [SerializeField] private NPCTargetView _targetView;
@@ -17,6 +18,7 @@ public class NPCView : CombatantView
     public List<NPCAction> PreviousActions { get; private set; } = new();
 
     public bool IsEvil { get; private set; } = false;
+    public bool IsDead { get; private set; } = false;
 
     private bool _highlighted = false;
 
@@ -35,19 +37,25 @@ public class NPCView : CombatantView
 
         if (enemyData.StatusEffects.Count > 0) 
         {
+            EffectContext context = new(this);
+
             if (ActionSystem.Instance.IsPerforming)
             {
-                foreach (KeyValuePair<StatusEffect, int> se in enemyData.StatusEffects) 
+                foreach (KeyValuePair<StatusEffect, QuantityHolder> se in enemyData.StatusEffects) 
                 {
-                    AddStatusEffectGA addStatusEffectGA = new(se.Key,se.Value,new() { this });
+                    int value = se.Value.Quantity.GetAmount(context);
+
+                    AddStatusEffectGA addStatusEffectGA = new(se.Key, value, new() { this });
                     ActionSystem.Instance.AddReaction(addStatusEffectGA);
                 }
             }
             else
             {
-                foreach (KeyValuePair<StatusEffect, int> se in enemyData.StatusEffects)
+                foreach (KeyValuePair<StatusEffect, QuantityHolder> se in enemyData.StatusEffects)
                 {
-                    AddStatusEffect(se.Key, se.Value);
+                    int value = se.Value.Quantity.GetAmount(context);
+
+                    AddStatusEffect(se.Key, value);
                 }
             }
         }
@@ -204,6 +212,11 @@ public class NPCView : CombatantView
     {
         KillNpcGA killEnemyGA = new(this);
         ActionSystem.Instance.AddReaction(killEnemyGA);
+    }
+
+    public void SetDead()
+    {
+        IsDead = true;
     }
 
     public IEnumerator ApplyBehaviorText(string behaviorName, float duration)

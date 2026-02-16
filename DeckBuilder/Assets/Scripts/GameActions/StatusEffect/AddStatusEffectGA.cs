@@ -15,7 +15,7 @@ public class AddStatusEffectGA : CombinableGameAction<AddStatusEffectGA>, IHaveC
     {
         StatusEffectType = statusEffectType;
         StackCount = stackCount;
-        Targets = targets.Where(t => t.CurrentHealth > 0).ToList();
+        Targets = targets.Where(t => t != null && t.CurrentHealth > 0).ToList();
         Caster = caster;
         SkipAnimation = skipAnimation;
     }

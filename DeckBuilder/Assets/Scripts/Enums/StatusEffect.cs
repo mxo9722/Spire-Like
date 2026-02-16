@@ -23,8 +23,8 @@ public enum StatusEffect
 
 
 
-    [InspectorName("Enemy/Ninja Math")]
-    NINJA_MATH = 1000,
+    [InspectorName("Enemy/Bushido")]
+    BUSHIDO = 1000,
     [InspectorName("Enemy/Stealth")]
     STEALTH,
     [InspectorName("Enemy/Taunt")]

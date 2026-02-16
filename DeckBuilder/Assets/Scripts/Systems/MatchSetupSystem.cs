@@ -50,6 +50,7 @@ public class MatchSetUpSystem : Singleton<MatchSetUpSystem>
             CardSystem.Instance.SetUp(RunSystem.Instance.RunData.Deck);
 
             ManaSystem.Instance.UpdateManaText();
+            DashSystem.Instance.UpdateDashText();
 
             ActionSystem.Instance.Perform(new CombatStartGA());
         }
@@ -60,7 +61,7 @@ public class MatchSetUpSystem : Singleton<MatchSetUpSystem>
         ShuffleGA shuffleGA = new();
         ActionSystem.Instance.AddReaction(shuffleGA);
 
-        DrawCardsGA drawCardsGA = new(7);
+        DrawCardsGA drawCardsGA = new(6);
         ActionSystem.Instance.AddReaction(drawCardsGA);
         yield return null;
     }

@@ -6,6 +6,8 @@ public class EndTurnButtonUI : MonoBehaviour
     public void OnClick()
     {
         AfterPlayerTurnGA afterPlayerTurnGA = new();
-        ActionSystem.Instance.Perform(afterPlayerTurnGA);
+
+        if (!ActionSystem.Instance.IsPerforming)
+            ActionSystem.Instance.Perform(afterPlayerTurnGA);
     }
 }

@@ -61,5 +61,7 @@ public class ManaSystem : Singleton<ManaSystem>
     {
         RefillManaGA refillManaGA = new();
         ActionSystem.Instance.AddReaction(refillManaGA);
+        RefillDashesGA refillDashesGA = new();
+        ActionSystem.Instance.AddReaction(refillDashesGA);
     }
 }

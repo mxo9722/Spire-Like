@@ -32,6 +32,7 @@ public class CardCollectionUI : MonoBehaviour
         _wrapper.SetActive(true);
         _returnButton.gameObject.SetActive(true);
         _selectionText.gameObject.SetActive(false);
+        UpdateConfirmSelectionUI();
 
         foreach (Card card in cardCollection)
         {
@@ -146,6 +147,12 @@ public class CardCollectionUI : MonoBehaviour
 
     public void UpdateConfirmSelectionUI()
     {
+        if(_selections == null)
+        {
+            _confirmSelectionButton.gameObject.SetActive(false);
+            return;
+        }
+
         bool active = WaitingForSelection;
         int count = _selections.Count;
         active = active && count >= _selectionsNeededMin && count <= _selectionsNeededMax;

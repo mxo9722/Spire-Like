@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 2631822112917199064}
   - component: {fileID: 2863590501795665833}
   - component: {fileID: 5967971827409913335}
+  - component: {fileID: 4170045102901757390}
+  - component: {fileID: 7758676995072954368}
   m_Layer: 0
   m_Name: StatusEffectUI
   m_TagString: Untagged
@@ -63,6 +65,7 @@ MonoBehaviour:
   _image: {fileID: 5967971827409913335}
   _stackCountText: {fileID: 2256074814538820246}
   _helpBoxUI: {fileID: 6820202486671879955}
+  _layoutElement: {fileID: 4170045102901757390}
 --- !u!114 &5967971827409913335
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -93,6 +96,72 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &4170045102901757390
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 649436444942560057}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreLayout: 0
+  m_MinWidth: -1
+  m_MinHeight: -1
+  m_PreferredWidth: -1
+  m_PreferredHeight: -1
+  m_FlexibleWidth: -1
+  m_FlexibleHeight: -1
+  m_LayoutPriority: 1
+--- !u!61 &7758676995072954368
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 649436444942560057}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 60, y: 60}
+  m_EdgeRadius: 0
 --- !u!1 &5332001000852762054
 GameObject:
   m_ObjectHideFlags: 0
@@ -160,8 +229,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 99
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: e5a8833625423114b9a873af718f68cf, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: e5a8833625423114b9a873af718f68cf, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: d9c3f0408890a3049a35bfbe222af688, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: d9c3f0408890a3049a35bfbe222af688, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

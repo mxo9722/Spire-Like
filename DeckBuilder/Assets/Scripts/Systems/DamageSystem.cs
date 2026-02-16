@@ -6,6 +6,7 @@ public class DamageSystem : Singleton<DamageSystem>
 {
     [SerializeField] private GameObject _damageVFX;
     [SerializeField] private GameObject _healVFX;
+    [field: SerializeField] public Gradient HealthGradiant;
 
     public const float VULNERABLE_MULITPLIER = 1.5f;
     public const float WEAK_MULITPLIER = 0.75f;

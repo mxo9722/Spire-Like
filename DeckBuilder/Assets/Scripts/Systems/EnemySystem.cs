@@ -130,7 +130,7 @@ public class EnemySystem : Singleton<EnemySystem>
 
     private IEnumerator AttackHeroPerformer(AttackHeroGA attackHeroGA)
     {
-        if (attackHeroGA.Caster.CurrentHealth == 0 || attackHeroGA.Targets.Count == 0)
+        if ((attackHeroGA.Caster is NPCView npc && npc.IsDead) || attackHeroGA.Targets.Count == 0)
         {
             attackHeroGA.Context.AddData(attackHeroGA.OnHitKey, false);
             yield return null;
@@ -172,6 +172,7 @@ public class EnemySystem : Singleton<EnemySystem>
         foreach (NPCView npc in killEnemyGA.NPCViews)
         {
             npc.SetHealth(0);
+            npc.SetDead();
             coroutine = StartCoroutine(_boardView.RemoveEnemy(npc));
         }
 

@@ -21,7 +21,7 @@ MonoBehaviour:
   <Description>k__BackingField: 'Apply {v0} block to an ally.
 
     If that lane is
-    dry then soak it and apply {v1} weak.'
+    dry then soak it and apply {v1} weak to aligned foes.'
   <RequiredConditions>k__BackingField: []
   <HighlightConditions>k__BackingField: []
   <ExhuastOnUse>k__BackingField: 0

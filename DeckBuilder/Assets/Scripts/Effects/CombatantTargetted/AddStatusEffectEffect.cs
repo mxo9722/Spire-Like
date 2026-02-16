@@ -8,6 +8,9 @@ public class AddStatusEffectEffect : CombatantTargetEffect, IDynamicEffectText
     [SerializeReference, SR] private Quantity _stackCount = new SetQ();
     [SerializeField] private bool _skipAnimation;
 
+    public StatusEffect StatusEffectType { get => _statusEffectType; }
+    public Quantity StackCount { get => _stackCount; }
+
     protected override GameAction GetGameAction(EffectContext context, List<CombatantView> combatantTargets)
     {
         return new AddStatusEffectGA(_statusEffectType, _stackCount.GetAmount(context), combatantTargets, context.Caster, _skipAnimation);

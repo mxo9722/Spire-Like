@@ -12,6 +12,10 @@ public class LaneView : MonoBehaviour, ITargetPreviewable
 
     [SerializeField] private SpriteRenderer _targetPreviewSR;
     [SerializeField] private SpriteRenderer _soakedStatus;
+    
+    //[SerializeField] private SpriteRenderer _totalDamageImg;
+    //[SerializeField] private TMPro.TMP_Text _totalDamageText;
+    //[SerializeField] private LineRenderer _aimLineRenderer;
 
     public NPCView[] EnemyViews { get => EnemySlots.Select(e => (NPCView)(e.Combatant)).Where(c => c != null).ToArray(); }
     public CombatantView HeroView { get => HeroSlot.Combatant; }
@@ -194,7 +198,10 @@ public class LaneView : MonoBehaviour, ITargetPreviewable
 
     public void SetTargetPreview(Color color)
     {
-        _targetPreviewSR.color = color;
+        if (_targetPreviewSR.color == Color.clear)
+        {
+            _targetPreviewSR.color = color;
+        }
     }
 
     public void HideTargetPreview()

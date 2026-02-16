@@ -5,13 +5,16 @@ using TMPro;
 using System.Linq;
 using UnityEngine;
 using System;
+using UnityEngine.UI;
 
 public abstract class CombatantView : MonoBehaviour, ITargetPreviewable, IHoldData, IComparable
 {
+    [SerializeField] private Image _healthBox;
     [SerializeField] private TMP_Text _healthText;
     [SerializeField] private SpriteRenderer _spriteRenderer;
     [SerializeField] private StatusEffectsUI _statusEffectsUI;
     [SerializeField] private HelpBoxesUI _helpBoxesUI;
+    [SerializeField] private Transform _blockPosition;
 
     public int MaxHealth { get; private set; }
     public int CurrentHealth { get; private set; }
@@ -28,7 +31,6 @@ public abstract class CombatantView : MonoBehaviour, ITargetPreviewable, IHoldDa
 
     public bool MovedThisRound { get; private set; } = false;
 
-
     private Dictionary<string, object> _data = null;
 
     protected void SetupBase(int health, Sprite sprite, SlotView slotView)
@@ -41,7 +43,7 @@ public abstract class CombatantView : MonoBehaviour, ITargetPreviewable, IHoldDa
         Vector2 size = _spriteRenderer.size;
         _spriteRenderer.sprite = sprite;
         _spriteRenderer.size = size;
-        _statusEffectsUI.SetUp(this);
+        _statusEffectsUI.SetUp(this, _blockPosition);
 
         UpdateHealthText();
     }
@@ -83,7 +85,10 @@ public abstract class CombatantView : MonoBehaviour, ITargetPreviewable, IHoldDa
 
     private void UpdateHealthText()
     {
-        _healthText.text = "HP: " + CurrentHealth;
+        float fillAmount = (float)CurrentHealth / (float)MaxHealth;
+        _healthBox.fillAmount = fillAmount;
+        _healthBox.color = DamageSystem.Instance.HealthGradiant.Evaluate(fillAmount);
+        _healthText.text = CurrentHealth.ToString() + "/" + MaxHealth.ToString();
     }
 
     public (int UnblockedDamage, int Overkill) Damage(int damageAmount, bool ignoreBlock = false)
@@ -155,8 +160,6 @@ public abstract class CombatantView : MonoBehaviour, ITargetPreviewable, IHoldDa
 
     public bool IsInvincible()
     {
-        
-
         if (GetStatusEffectStacks(StatusEffect.TAUNT) == 0)
         {
             if (Lane.GetFriendlyCombatants(this).Where(c => c.GetStatusEffectStacks(StatusEffect.TAUNT) > 0).Count() > 0)

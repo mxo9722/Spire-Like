@@ -3,16 +3,24 @@ using UnityEngine;
 
 public class StatusEffectsUI : MonoBehaviour
 {
+    [SerializeField] private Canvas _canvas;
     [SerializeField] private StatusEffectUI _statusEffectUIPrefab;
     [SerializeField] private StatusEffectsData _statusEffectsData;
 
     private Dictionary<StatusEffect, StatusEffectUI> _statusEffectUIs = new();
 
     private CombatantView _owner;
+    private Transform _blockPosition;
 
-    public void SetUp(CombatantView owner)
+    public void SetUp(CombatantView owner, Transform blockPosition)
     {
         _owner = owner;
+        _blockPosition = blockPosition;
+    }
+
+    private void OnEnable()
+    {
+        _canvas.worldCamera = Camera.main;
     }
 
     public void UpdateStatusEffectsUI(StatusEffect statusEffectType, int stackCount)
@@ -32,6 +40,13 @@ public class StatusEffectsUI : MonoBehaviour
             {
                 StatusEffectUI statusEffectUI = Instantiate(_statusEffectUIPrefab, transform);
                 _statusEffectUIs.Add(statusEffectType, statusEffectUI);
+
+                switch (statusEffectType)
+                {
+                    case StatusEffect.BLOCK:
+                        statusEffectUI.SetPositionOverride(_blockPosition.position);
+                        break;
+                }
             }
 
             Sprite sprite = GetSpriteByType(statusEffectType);

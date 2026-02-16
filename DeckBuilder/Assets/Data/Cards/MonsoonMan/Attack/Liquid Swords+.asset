@@ -10,20 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 62bf69310631aa94896652d3f8be392c, type: 3}
-  m_Name: Hydrokinesis+
+  m_Name: Liquid Swords+
   m_EditorClassIdentifier: 
   <Rarity>k__BackingField: 0
   <Upgrade>k__BackingField: {fileID: 0}
   <Unplayable>k__BackingField: 0
   <Mana>k__BackingField: 2
   <Type>k__BackingField: 0
-  <Image>k__BackingField: {fileID: 21300000, guid: 70bfc4efe8a8e35488f4378a6ff10797, type: 3}
+  <Image>k__BackingField: {fileID: 21300000, guid: 50714c8537704e14d9ef89c0187d96ac, type: 3}
   <Description>k__BackingField: 'Deal {v0} damage to an aligned foe.
 
     Soak:
 
     Dry
-    your lane and gain 1 mana.'
+    your lane and gain 2 mana.'
   <RequiredConditions>k__BackingField: []
   <HighlightConditions>k__BackingField: []
   <ExhuastOnUse>k__BackingField: 0
@@ -48,7 +48,7 @@ MonoBehaviour:
     - rid: 262421164024660062
       type: {class: SetQ, ns: , asm: Assembly-CSharp}
       data:
-        _set: 17
+        _set: 15
     - rid: 262421164024660063
       type: {class: ConditionalAutoTargetEffect, ns: , asm: Assembly-CSharp}
       data:
@@ -81,7 +81,7 @@ MonoBehaviour:
     - rid: 262421164024660068
       type: {class: SetQ, ns: , asm: Assembly-CSharp}
       data:
-        _set: 1
+        _set: 2
     - rid: 262421164024660069
       type: {class: AutoLaneTargetEffect, ns: , asm: Assembly-CSharp}
       data:

@@ -56,7 +56,6 @@ MonoBehaviour:
     - Key: GAURD
       Value: Unit remains in the front of the lane potentially blocking enemy attacks.
     - Key: HEAT
-      Value: Decreases by 1 whenever you play a card. At 10+ stacks converts to burn.
-    - Key: CYCLE
-      Value: Discard up to a certain number of cards from your hand then draw that
-        many cards.
+      Value: At 10+ stacks converts to burn. Reduces by 1 when a card is played.
+    - Key: CYCLE X
+      Value: Discard up to X cards from your hand then draw that many cards.

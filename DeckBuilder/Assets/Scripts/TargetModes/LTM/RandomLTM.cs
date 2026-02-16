@@ -9,6 +9,8 @@ public class RandomLTM : LaneTargetMode
     [SerializeField] private int _count = 1;
     [field: SerializeReference, SR] public List<LaneFilter> Filters { get; private set; } = new();
 
+    public override bool IsRandom => true;
+
     public override List<LaneView> GetTargets(EffectContext context)
     {
         return GetTargets(context,RNG.Random);
@@ -61,4 +63,5 @@ public class RandomLTM : LaneTargetMode
 
         return possible;
     }
+
 }

@@ -60,9 +60,12 @@ public class ManualTargetSystem : Singleton<ManualTargetSystem>
 
             TargetPreviewSystem.Instance.HideTargetPreviews(true);
 
+            _card = null;
+
             return CombatantIsValid(context, target) ? target : null;
         }
 
+        _card = null;
         return null;
     }
 
@@ -70,7 +73,7 @@ public class ManualTargetSystem : Singleton<ManualTargetSystem>
     {
         TargetPreviewSystem.Instance.HideTargetPreviews(true);
 
-        if (!_arrowView.gameObject.activeSelf)
+        if (!_arrowView.gameObject.activeSelf && _card != null)
             return null;
 
         _arrowView.gameObject.SetActive(false);
@@ -78,13 +81,23 @@ public class ManualTargetSystem : Singleton<ManualTargetSystem>
         if (hit.collider != null
             && hit.transform.TryGetComponent(out LaneView target))
         {
-            EffectContext context = new(_card.GetOwnerView(new(null, manualTargetLane: target)), manualTargetLane: target);
+            if (_card != null)
+            {
+                EffectContext context = new(_card.GetOwnerView(new(null, manualTargetLane: target)), manualTargetLane: target);
 
-            TargetPreviewSystem.Instance.HideTargetPreviews(true);
+                TargetPreviewSystem.Instance.HideTargetPreviews(true);
 
-            return LaneIsValid(context, target) ? target : null;
+                _card = null;
+
+                return LaneIsValid(context, target) ? target : null;
+            }
+            else
+            {
+                return target;
+            }
         }
 
+        _card = null;
         return null;
     }
 

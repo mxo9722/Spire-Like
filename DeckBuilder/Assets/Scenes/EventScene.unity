@@ -1089,6 +1089,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 170047696}
     m_Modifications:
+    - target: {fileID: 5377329351577317980, guid: c1f635ee2bbe09d45a4f740b2b5ec667, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5377329351577317980, guid: c1f635ee2bbe09d45a4f740b2b5ec667, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5377329351577317980, guid: c1f635ee2bbe09d45a4f740b2b5ec667, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: -17
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867029302803107995, guid: c1f635ee2bbe09d45a4f740b2b5ec667, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867029302803107995, guid: c1f635ee2bbe09d45a4f740b2b5ec667, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8038437790511764217, guid: c1f635ee2bbe09d45a4f740b2b5ec667, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8502130293819567526, guid: c1f635ee2bbe09d45a4f740b2b5ec667, type: 3}
       propertyPath: m_Name
       value: CardCollectionUI
@@ -3287,7 +3311,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 134afdd4bfce8cc48b14e33096e6e01e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _defaultHeroData: {fileID: 11400000, guid: 2541e923a5fe0dc42b43a17cfcfb2235, type: 2}
+  _defaultHeroData1: {fileID: 0}
+  _defaultHeroData2: {fileID: 0}
+  _startingDeck: {fileID: 0}
   _debugStartNew: 1
 --- !u!1 &1408124911
 GameObject:

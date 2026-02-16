@@ -1,5 +1,6 @@
 using DG.Tweening;
 using System.Collections;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -54,13 +55,25 @@ public class HelpBoxUI : MonoBehaviour
         _title.text = title;
         _description.text = description;
 
+
+        gameObject.SetActive(true);
+        gameObject.SetActive(false);
         gameObject.SetActive(true);
     }
 
     public void SetUpFromKeyWord(string keyWord)
     {
         _title.text = System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(keyWord.ToLower());
-        _description.text = CardTipSystem.Instance.CardTipData.Map[keyWord];
+
+        Match match = Regex.Match(keyWord, "([0-9]+)");
+        keyWord = Regex.Replace(keyWord, "([0-9]+)", "X").ToUpper();
+
+        string description = CardTipSystem.Instance.CardTipData.Map[keyWord];
+
+        if(match.Groups.Count > 0)
+            description = description.Replace("X", match.Groups[0].Value);
+
+        _description.text = description;
 
         gameObject.SetActive(true);
 

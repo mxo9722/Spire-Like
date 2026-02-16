@@ -17,7 +17,7 @@ MonoBehaviour:
     - Key: 0
       Value:
         <Name>k__BackingField: Block
-        <Sprite>k__BackingField: {fileID: 21300000, guid: 7a879c578ca567842b71f284faeba24b, type: 3}
+        <Sprite>k__BackingField: {fileID: 21300000, guid: b74d20f77575bb749b5164fa977bc0d2, type: 3}
         <Stackable>k__BackingField: 1
         <Type>k__BackingField: 0
         <PreTurnModification>k__BackingField: 1
@@ -104,20 +104,18 @@ MonoBehaviour:
           turns.
     - Key: 1000
       Value:
-        <Name>k__BackingField: Ninja Math
-        <Sprite>k__BackingField: {fileID: 21300000, guid: 59cf9ff4dc809344d9d54ecdfb430198, type: 3}
-        <Stackable>k__BackingField: 0
-        <Type>k__BackingField: 3
+        <Name>k__BackingField: Bushido
+        <Sprite>k__BackingField: {fileID: 21300000, guid: 287f3f24a04549144a4c005c32524583, type: 3}
+        <Stackable>k__BackingField: 1
+        <Type>k__BackingField: 0
         <PreTurnModification>k__BackingField: 0
         <PostTurnModification>k__BackingField: 0
         <Effect>k__BackingField:
           rid: -2
         <Reactions>k__BackingField:
-        - rid: 4055347921024450605
-        - rid: 4055347943555465679
-        - rid: 4055347943555465298
-        <Description>k__BackingField: -1 strength for every other combatant with
-          this status.
+        - rid: 6673085831428440171
+        <Description>k__BackingField: When defeated, the target attacks the aligned
+          hero for X damage.
     - Key: 2000
       Value:
         <Name>k__BackingField: Chaos
@@ -193,8 +191,8 @@ MonoBehaviour:
         <Effect>k__BackingField:
           rid: -2
         <Reactions>k__BackingField: []
-        <Description>k__BackingField: Unselectable while allies are in lane. Moves
-          to back of lane.
+        <Description>k__BackingField: Unselectable while un-stealthed allies are
+          in lane. Moves to back of lane.
     - Key: 1002
       Value:
         <Name>k__BackingField: Taunt
@@ -233,8 +231,8 @@ MonoBehaviour:
         <Reactions>k__BackingField:
         - rid: 6673085688012341337
         - rid: 6673085688012341342
-        <Description>k__BackingField: Decreases by 1 when a card is played. At 10+
-          stacks converts to burn.
+        <Description>k__BackingField: At 10+ stacks converts to burn. Reduces by
+          1 when a card is played.
     - Key: 3000
       Value:
         <Name>k__BackingField: Cold Shock
@@ -293,218 +291,6 @@ MonoBehaviour:
     - rid: 4055347921024450584
       type: {class: InvokeBurnEffect, ns: , asm: Assembly-CSharp}
       data: 
-    - rid: 4055347921024450605
-      type: {class: CombatStartSER, ns: , asm: Assembly-CSharp}
-      data:
-        _reactionTiming: 1
-        <Effects>k__BackingField:
-        - rid: 4055347921024450606
-    - rid: 4055347921024450606
-      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
-      data:
-        <TargetMode>k__BackingField:
-          rid: 4055347921024450607
-        _combatantEffect:
-          rid: 4055347921024450608
-    - rid: 4055347921024450607
-      type: {class: CasterCTM, ns: , asm: Assembly-CSharp}
-      data: 
-    - rid: 4055347921024450608
-      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
-      data:
-        _statusEffectType: 4
-        _stackCount:
-          rid: 4055347921024450610
-        _skipAnimation: 0
-    - rid: 4055347921024450610
-      type: {class: AddQ, ns: , asm: Assembly-CSharp}
-      data:
-        _a:
-          rid: 4055347921024450613
-        _b:
-          rid: 4055347921024450611
-    - rid: 4055347921024450611
-      type: {class: SetQ, ns: , asm: Assembly-CSharp}
-      data:
-        _set: 1
-    - rid: 4055347921024450613
-      type: {class: MultiplyQ, ns: , asm: Assembly-CSharp}
-      data:
-        _a:
-          rid: 4055347921024450616
-        _b:
-          rid: 4055347921024450615
-    - rid: 4055347921024450615
-      type: {class: SetQ, ns: , asm: Assembly-CSharp}
-      data:
-        _set: -1
-    - rid: 4055347921024450616
-      type: {class: CombatantCountQ, ns: , asm: Assembly-CSharp}
-      data:
-        _targetMode:
-          rid: 4055347921024450617
-        _filters:
-        - rid: 4055347921024450618
-    - rid: 4055347921024450617
-      type: {class: AllEnemiesCTM, ns: , asm: Assembly-CSharp}
-      data: 
-    - rid: 4055347921024450618
-      type: {class: TargHasStatusEffect, ns: , asm: Assembly-CSharp}
-      data:
-        _invert: 0
-        _statusEffectType: 1000
-        _is: 2
-        _orEqualTo: 0
-        _b:
-          rid: 6673085688012341387
-    - rid: 4055347943555465298
-      type: {class: StatusEffectAppliedSER, ns: , asm: Assembly-CSharp}
-      data:
-        _reactionTiming: 1
-        <Effects>k__BackingField:
-        - rid: 4055347943555465301
-        - rid: 4055347943555465309
-        _targetType: 1000
-        _repeatPerStack: 1
-        _combatantFilters:
-        - rid: 4055347943555465300
-    - rid: 4055347943555465300
-      type: {class: TargIsCasterFilter, ns: , asm: Assembly-CSharp}
-      data:
-        _invert: 0
-    - rid: 4055347943555465301
-      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
-      data:
-        <TargetMode>k__BackingField:
-          rid: 4055347943555465304
-        _combatantEffect:
-          rid: 4055347943555465307
-    - rid: 4055347943555465304
-      type: {class: CombatantsWithFilterCTM, ns: , asm: Assembly-CSharp}
-      data:
-        _filters:
-        - rid: 4055347943555465305
-        - rid: 4055347943555465306
-    - rid: 4055347943555465305
-      type: {class: TargHasStatusEffect, ns: , asm: Assembly-CSharp}
-      data:
-        _invert: 0
-        _statusEffectType: 1000
-        _is: 2
-        _orEqualTo: 0
-        _b:
-          rid: 6673085688012341386
-    - rid: 4055347943555465306
-      type: {class: TargIsCasterFilter, ns: , asm: Assembly-CSharp}
-      data:
-        _invert: 1
-    - rid: 4055347943555465307
-      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
-      data:
-        _statusEffectType: 4
-        _stackCount:
-          rid: 4055347943555465308
-        _skipAnimation: 0
-    - rid: 4055347943555465308
-      type: {class: SetQ, ns: , asm: Assembly-CSharp}
-      data:
-        _set: -1
-    - rid: 4055347943555465309
-      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
-      data:
-        <TargetMode>k__BackingField:
-          rid: 4055347943555465310
-        _combatantEffect:
-          rid: 4055347943555465311
-    - rid: 4055347943555465310
-      type: {class: CasterCTM, ns: , asm: Assembly-CSharp}
-      data: 
-    - rid: 4055347943555465311
-      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
-      data:
-        _statusEffectType: 4
-        _stackCount:
-          rid: 4055347943555465313
-        _skipAnimation: 0
-    - rid: 4055347943555465313
-      type: {class: AddQ, ns: , asm: Assembly-CSharp}
-      data:
-        _a:
-          rid: 4055347943555465317
-        _b:
-          rid: 4055347943555465315
-    - rid: 4055347943555465315
-      type: {class: SetQ, ns: , asm: Assembly-CSharp}
-      data:
-        _set: 1
-    - rid: 4055347943555465317
-      type: {class: MultiplyQ, ns: , asm: Assembly-CSharp}
-      data:
-        _a:
-          rid: 4055347943555465320
-        _b:
-          rid: 4055347943555465319
-    - rid: 4055347943555465319
-      type: {class: SetQ, ns: , asm: Assembly-CSharp}
-      data:
-        _set: -1
-    - rid: 4055347943555465320
-      type: {class: CombatantCountQ, ns: , asm: Assembly-CSharp}
-      data:
-        _targetMode:
-          rid: 4055347943555465321
-        _filters:
-        - rid: 4055347943555465322
-    - rid: 4055347943555465321
-      type: {class: AllEnemiesCTM, ns: , asm: Assembly-CSharp}
-      data: 
-    - rid: 4055347943555465322
-      type: {class: TargHasStatusEffect, ns: , asm: Assembly-CSharp}
-      data:
-        _invert: 0
-        _statusEffectType: 1000
-        _is: 2
-        _orEqualTo: 0
-        _b:
-          rid: 6673085688012341388
-    - rid: 4055347943555465679
-      type: {class: OnOwnerKilledSER, ns: , asm: Assembly-CSharp}
-      data:
-        _reactionTiming: 0
-        <Effects>k__BackingField:
-        - rid: 4055347943555465680
-    - rid: 4055347943555465680
-      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
-      data:
-        <TargetMode>k__BackingField:
-          rid: 4055347943555465681
-        _combatantEffect:
-          rid: 4055347943555465683
-    - rid: 4055347943555465681
-      type: {class: CombatantsWithFilterCTM, ns: , asm: Assembly-CSharp}
-      data:
-        _filters:
-        - rid: 4055347943555465682
-    - rid: 4055347943555465682
-      type: {class: TargHasStatusEffect, ns: , asm: Assembly-CSharp}
-      data:
-        _invert: 0
-        _statusEffectType: 1000
-        _is: 2
-        _orEqualTo: 0
-        _b:
-          rid: 6673085688012341385
-    - rid: 4055347943555465683
-      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
-      data:
-        _statusEffectType: 4
-        _stackCount:
-          rid: 4055347943555465684
-        _skipAnimation: 0
-    - rid: 4055347943555465684
-      type: {class: SetQ, ns: , asm: Assembly-CSharp}
-      data:
-        _set: 1
     - rid: 4055348042688888910
       type: {class: OnTargetCardPlayedSER, ns: , asm: Assembly-CSharp}
       data:
@@ -592,22 +378,6 @@ MonoBehaviour:
         _targetType: 2003
         _combatantFilters:
         - rid: 6673085688012341397
-    - rid: 6673085688012341385
-      type: {class: SetQ, ns: , asm: Assembly-CSharp}
-      data:
-        _set: 0
-    - rid: 6673085688012341386
-      type: {class: SetQ, ns: , asm: Assembly-CSharp}
-      data:
-        _set: 0
-    - rid: 6673085688012341387
-      type: {class: SetQ, ns: , asm: Assembly-CSharp}
-      data:
-        _set: 0
-    - rid: 6673085688012341388
-      type: {class: SetQ, ns: , asm: Assembly-CSharp}
-      data:
-        _set: 0
     - rid: 6673085688012341394
       type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
       data:
@@ -686,3 +456,47 @@ MonoBehaviour:
       data:
         _level: 0
         _key: stacks
+    - rid: 6673085831428440171
+      type: {class: OnOwnerKilledSER, ns: , asm: Assembly-CSharp}
+      data:
+        _reactionTiming: 0
+        <Effects>k__BackingField:
+        - rid: 6673085831428440172
+    - rid: 6673085831428440172
+      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 6673085831428440173
+        _combatantEffect:
+          rid: 6673085831428440176
+    - rid: 6673085831428440173
+      type: {class: FrontFoeInLaneCTM, ns: , asm: Assembly-CSharp}
+      data:
+        _laneTargetMode:
+          rid: 6673085831428440174
+    - rid: 6673085831428440174
+      type: {class: CurrentLTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 6673085831428440176
+      type: {class: MultiAttackFoeEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <AttackCount>k__BackingField:
+          rid: 6673085831428440177
+        <Damage>k__BackingField:
+          rid: 6673085831428440179
+        _unblockedKey: 
+        _overkillKey: 
+        _onHitKey: 
+    - rid: 6673085831428440177
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 1
+    - rid: 6673085831428440179
+      type: {class: StatusEffectStacksQ, ns: , asm: Assembly-CSharp}
+      data:
+        _target:
+          rid: 6673085831428440180
+        _type: 1000
+    - rid: 6673085831428440180
+      type: {class: CasterCTM, ns: , asm: Assembly-CSharp}
+      data: 

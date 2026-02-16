@@ -279,6 +279,7 @@ GameObject:
   - component: {fileID: 6198858977629524831}
   - component: {fileID: 2209989927384066217}
   - component: {fileID: 3642243633772767698}
+  - component: {fileID: 5289372590855527374}
   m_Layer: 0
   m_Name: HelpBoxUIPrefab
   m_TagString: Untagged
@@ -339,6 +340,29 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!223 &5289372590855527374
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3069580748157791548}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 1
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_UpdateRectTransformForStandalone: 0
+  m_SortingLayerID: -711945035
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
 --- !u!1 &5628193065507370100
 GameObject:
   m_ObjectHideFlags: 0

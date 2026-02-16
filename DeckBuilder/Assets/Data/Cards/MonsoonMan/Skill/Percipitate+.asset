@@ -21,7 +21,7 @@ MonoBehaviour:
   <Description>k__BackingField: 'Unplayable.
 
     On Discard: Draw 2 cards and flood
-    a random dry lane.'
+    a random unsoaked lane.'
   <RequiredConditions>k__BackingField: []
   <HighlightConditions>k__BackingField: []
   <ExhuastOnUse>k__BackingField: 0

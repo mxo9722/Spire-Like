@@ -193,10 +193,13 @@ public class Card : IHoldData
         List<int> foundPositions = new();
         List<string> allKeys = new(CardTipSystem.Instance.CardTipData.Map.Keys);
 
+        string description = GetStaticDescription();
+
         foreach (string key in allKeys)
         {
-            string pattern = string.Format(@"\b{0}\b", key);
-            Match match = Regex.Match(Description, pattern, RegexOptions.IgnoreCase);
+            string newKey = key.Replace(" X", " ([0-9]+)");
+            string pattern = string.Format(@"\b{0}\b", newKey);
+            Match match = Regex.Match(description, pattern, RegexOptions.IgnoreCase);
 
             if (!match.Success)
                 continue;
@@ -205,7 +208,7 @@ public class Card : IHoldData
 
             if (_allKeyWords.Count == 0)
             {
-                _allKeyWords.Add(key);
+                _allKeyWords.Add(match.Value);
                 foundPositions.Add(index);
                 continue;
             }
@@ -263,6 +266,7 @@ public class Card : IHoldData
 
         foreach (string key in keyWords)
         {
+            key.Replace(" X", " ([0-9]+)");
             string pattern = string.Format(@"\b{0}\b", key);
             string replaceWith = string.Format("<b><color=#{0}>{1}</color></b>", ColorUtility.ToHtmlStringRGB(CardTipSystem.Instance.KeyWordColor), textInfo.ToTitleCase(key.ToLower()));
 
@@ -338,33 +342,52 @@ public class Card : IHoldData
         return true;
     }
 
-    public bool IsHighlighted()
-    {
-        return IsHighlighted(new EffectContext(GetOwnerView()));
-    }
-
     public bool IsHighlighted(EffectContext context)
     {
         CombatantView caster = context.Caster;
 
         if (caster == null)
         {
-            HeroView[] heroViews = HeroSystem.Instance.HeroViews;
-
-            foreach (HeroView heroView in heroViews)
-            {
-                EffectContext newContext = new(heroView, context.TargetLane, context.TargetCombatant, context.PlayedCard);
-                if (IsHighlighted(newContext))
-                    return true;
-            }
-
-            return false;
+            caster = GetOwnerView(context);
         }
 
         IEnumerable<ConditionalAutoTargetEffect> conditionals = OtherEffects.Where(e => e is ConditionalAutoTargetEffect).Select(e => (ConditionalAutoTargetEffect)e);
 
         if (HighlightConditions.Count == 0 && !OtherEffects.Any(e => e is ConditionalAutoTargetEffect))
             return false;
+
+        switch (CardData.ManualTargetType)
+        {
+            case ManualTargetType.COMBATANT:
+                if(context.TargetCombatant == null)
+                {
+                    CombatantView[] pTargets = AllValidCombatants(context);
+
+                    foreach(CombatantView target in pTargets)
+                    {
+                        EffectContext targetContext = new(caster, manualTargetCombatant: target, playedCard: this);
+
+                        if (IsHighlighted(targetContext))
+                            return true;
+                    }
+                }
+                break;
+
+            case ManualTargetType.LANE:
+                if (context.TargetLane == null)
+                {
+                    LaneView[] pTargets = AllValidLanes(context);
+
+                    foreach (LaneView target in pTargets)
+                    {
+                        EffectContext targetContext = new(caster, manualTargetLane: target, playedCard: this);
+
+                        if (IsHighlighted(targetContext))
+                            return true;
+                    }
+                }
+                break;
+        }
 
         foreach (Condition condition in HighlightConditions)
         {
@@ -406,7 +429,6 @@ public class Card : IHoldData
             }
 
             return combatants.FindAll(c => contexts.Any(heroContext => c.IsValid(heroContext, CombatantFilters))).ToArray();
-
         }
 
         return combatants.FindAll(c => c.IsValid(context, CombatantFilters)).ToArray();
@@ -449,6 +471,35 @@ public class Card : IHoldData
             return false;
 
         return GetOwnerView().GetStatusEffectStacks(StatusEffect.CHAOS) > 0 && ManualTargetType != ManualTargetType.NONE && Type == CardType.ATTACK;
+    }
+
+    public bool IsHeatWarning(EffectContext context)
+    {
+        CombatantView owner = GetOwnerView(context);
+
+        if (owner == null)
+            return false;
+
+        int heatValue = owner.GetStatusEffectStacks(StatusEffect.HEAT);
+
+        if (heatValue > 0)
+            heatValue--;
+
+        foreach(AutoTargetEffect effect in OtherEffects)
+        {
+            if(effect is AutoCombatantTargetEffect actEffect && actEffect.Effect is AddStatusEffectEffect addStatusEffectEffect)
+            {
+                if (addStatusEffectEffect.StatusEffectType != StatusEffect.HEAT)
+                    continue;
+
+                List<CombatantView> targets = actEffect.TargetMode.AllPossibleTargets(context);
+
+                if (targets.Contains(owner))
+                    heatValue += addStatusEffectEffect.StackCount.GetAmount(context);
+            }
+        }
+
+        return heatValue >= 10;
     }
 
     public TargetMode<T> GetChaosTargetMode<T>()

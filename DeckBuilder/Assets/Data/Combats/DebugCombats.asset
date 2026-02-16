@@ -14,13 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Fights>k__BackingField:
   - <TopLane>k__BackingField:
-    - {fileID: 11400000, guid: 8124eb6e60fe0d042bbfd798c0cbd281, type: 2}
-    - {fileID: 11400000, guid: 8124eb6e60fe0d042bbfd798c0cbd281, type: 2}
-    <MiddleLane>k__BackingField:
-    - {fileID: 11400000, guid: 8124eb6e60fe0d042bbfd798c0cbd281, type: 2}
-    - {fileID: 11400000, guid: 8124eb6e60fe0d042bbfd798c0cbd281, type: 2}
+    - {fileID: 11400000, guid: 55ec9e6685eb0054b97c0d25fe951198, type: 2}
+    - {fileID: 11400000, guid: d6edbab7d94e40941986fdea26a6c122, type: 2}
+    <MiddleLane>k__BackingField: []
     <BottomLane>k__BackingField:
-    - {fileID: 11400000, guid: 8124eb6e60fe0d042bbfd798c0cbd281, type: 2}
+    - {fileID: 11400000, guid: 55ec9e6685eb0054b97c0d25fe951198, type: 2}
+    - {fileID: 11400000, guid: d6edbab7d94e40941986fdea26a6c122, type: 2}
     <LaneOrderMatters>k__BackingField: 0
   - <TopLane>k__BackingField:
     - {fileID: 11400000, guid: 819e5372a26ebe446955b2e4749d3370, type: 2}

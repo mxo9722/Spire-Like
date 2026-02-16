@@ -16,9 +16,9 @@ MonoBehaviour:
   <Image>k__BackingField: {fileID: 21300000, guid: c4e0b83b00b673a4491f403aa8f928ed, type: 3}
   <StartingMaxHealth>k__BackingField: 80
   <StartingDeck>k__BackingField:
-  - {fileID: 11400000, guid: c3589d9f857f04f46877befe398f5cf8, type: 2}
   - {fileID: 11400000, guid: 9b170048756697247b90db3e3e81d739, type: 2}
   - {fileID: 11400000, guid: 637a882dceefb134c8204a03c43e2de4, type: 2}
+  - {fileID: 11400000, guid: c3589d9f857f04f46877befe398f5cf8, type: 2}
   <StartingPerk>k__BackingField: {fileID: 11400000, guid: 63c765e5b9c1cde48b905695b665f8f9, type: 2}
   <Color>k__BackingField: {r: 1, g: 0.6194968, b: 0.6194968, a: 1}
   _allCards:
@@ -31,4 +31,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 38fc92e12a67eae438b947d869f2bdd2, type: 2}
   - {fileID: 11400000, guid: d512ff62c0bb0024eb6e15665889c354, type: 2}
   - {fileID: 11400000, guid: 7c67ca1fb9508b7448ab52bcc6712537, type: 2}
+  - {fileID: 11400000, guid: 612fcaeda816148469c38ee4da334b53, type: 2}
   _perks: []

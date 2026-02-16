@@ -20,6 +20,7 @@ public class CardView : MonoBehaviour
     [SerializeField] private Transform _bottomOfCardTransform;
     [SerializeField] private HelpBoxesUI _helpBoxesUI;
     [SerializeField] private ParticleSystem _burnVFX;
+    [SerializeField] private ParticleSystem _heatWarning;
 
     [field: SerializeField] public SortingGroup SortingGroup { get; private set; }
 
@@ -70,6 +71,7 @@ public class CardView : MonoBehaviour
         _imageSR.sprite = card.Image;
         _imageSR.size = prevSize;
 
+        _heatWarning.gameObject.SetActive(false);
         UpdateGlow();
     }
 
@@ -79,6 +81,11 @@ public class CardView : MonoBehaviour
         _dragStartRotation = quat;
     }
 
+    private void OnEnable()
+    {
+        _heatWarning.Play();
+    }
+
     private void OnDisable()
     {
         transform.DOKill();
@@ -86,6 +93,8 @@ public class CardView : MonoBehaviour
         _glowSR.transform.DOKill();
         _maskTransform.DOKill();
         _burnVFX.transform.DOKill();
+
+        _heatWarning.Stop();
     }
 
     private void OnMouseEnter()
@@ -331,6 +340,9 @@ public class CardView : MonoBehaviour
         {
             SetGlow(Color.clear);
         }
+
+        bool heatWarning = Card.IsHeatWarning(new(Card.GetOwnerView(),playedCard: Card));
+        _heatWarning.gameObject.SetActive(heatWarning);
     }
 
     public void SetGlow(Color color)
@@ -381,6 +393,5 @@ public class CardView : MonoBehaviour
     }
 
     public bool IsPlayable(CombatantView caster = null) => Card.IsPlayable(caster);
-    public bool IsHighlighted() => Card.IsHighlighted();
     public bool IsHighlighted(EffectContext context) => Card.IsHighlighted(context);
 }

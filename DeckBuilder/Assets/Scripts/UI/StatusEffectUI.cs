@@ -6,9 +6,11 @@ using UnityEngine.UI;
 
 public class StatusEffectUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
+
     [SerializeField] private Image _image;
     [SerializeField] private TMP_Text _stackCountText;
     [SerializeField] private HelpBoxUI _helpBoxUI;
+    [SerializeField] private LayoutElement _layoutElement;
 
     private CombatantView _owner;
     private int _stackCount = 0;
@@ -87,4 +89,9 @@ public class StatusEffectUI : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         }
     }
 
+    public void SetPositionOverride(Vector3 position)
+    {
+        _layoutElement.ignoreLayout = true;
+        transform.position = position;
+    }
 }

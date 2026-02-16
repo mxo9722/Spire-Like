@@ -18,7 +18,9 @@ MonoBehaviour:
   <StatusEffects>k__BackingField:
     _serializedList:
     - Key: 1001
-      Value: 1
+      Value:
+        <Quantity>k__BackingField:
+          rid: 6673085831428440206
   <ActionPattern>k__BackingField:
   - <Name>k__BackingField: Hide
     <Symbol>k__BackingField: 2
@@ -132,3 +134,7 @@ MonoBehaviour:
     - rid: 262421021838540879
       type: {class: AddCardsToDiscardEffect, ns: , asm: Assembly-CSharp}
       data: 
+    - rid: 6673085831428440206
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 1

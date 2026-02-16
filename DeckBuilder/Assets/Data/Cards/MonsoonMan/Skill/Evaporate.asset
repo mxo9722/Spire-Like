@@ -15,7 +15,7 @@ MonoBehaviour:
   <Rarity>k__BackingField: 0
   <Upgrade>k__BackingField: {fileID: 11400000, guid: 947bc646157347743895ec56de5ec5d9, type: 2}
   <Unplayable>k__BackingField: 0
-  <Mana>k__BackingField: 0
+  <Mana>k__BackingField: 1
   <Type>k__BackingField: 0
   <Image>k__BackingField: {fileID: 21300000, guid: effc2d2718d1b2e4e8b3e134ac6d0654, type: 3}
   <Description>k__BackingField: Apply {v0} block to a friendly unit. If their lane

@@ -8,7 +8,6 @@ public class StatusEffectAppliedPC : ReactionCondition
 {
 
     [SerializeField] private StatusEffect _targetType;
-    [SerializeField] private bool _repeatPerStack = true;
     [SerializeReference, SR] private List<CombatantFilter> _combatantFilters;
 
     [SerializeField] private string _targetsDataKey = "";

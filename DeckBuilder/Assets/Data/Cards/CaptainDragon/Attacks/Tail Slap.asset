@@ -1,0 +1,93 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62bf69310631aa94896652d3f8be392c, type: 3}
+  m_Name: Tail Slap
+  m_EditorClassIdentifier: 
+  <Rarity>k__BackingField: 0
+  <Upgrade>k__BackingField: {fileID: 0}
+  <Unplayable>k__BackingField: 0
+  <Mana>k__BackingField: 0
+  <Type>k__BackingField: 0
+  <Image>k__BackingField: {fileID: 21300000, guid: 8e5d8fdcbcbfce944ba802bf67fff81c, type: 3}
+  <Description>k__BackingField: Deal 7 damage to an aligned foe. Gain 7 heat.
+  <RequiredConditions>k__BackingField: []
+  <HighlightConditions>k__BackingField: []
+  <ExhuastOnUse>k__BackingField: 0
+  <ManualTargetType>k__BackingField: 0
+  <CombatantFilters>k__BackingField:
+  - rid: 6673085937081122906
+  - rid: 6673085937081122907
+  <LaneFilters>k__BackingField: []
+  <ManualTargetEffect>k__BackingField:
+    rid: -2
+  <OtherEffects>k__BackingField:
+  - rid: 6673085937081122896
+  - rid: 6673085937081122900
+  <InHandReactions>k__BackingField: []
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 6673085937081122896
+      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 6673085937081122897
+        _combatantEffect:
+          rid: 6673085937081122898
+    - rid: 6673085937081122897
+      type: {class: ManualTargetCTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 6673085937081122898
+      type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _damage:
+          rid: 6673085937081122899
+    - rid: 6673085937081122899
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 7
+    - rid: 6673085937081122900
+      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 6673085937081122901
+        _combatantEffect:
+          rid: 6673085937081122902
+    - rid: 6673085937081122901
+      type: {class: CasterCTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 6673085937081122902
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _statusEffectType: 2003
+        _stackCount:
+          rid: 6673085937081122903
+        _skipAnimation: 0
+    - rid: 6673085937081122903
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 7
+    - rid: 6673085937081122906
+      type: {class: TargIsEvilFilter, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
+    - rid: 6673085937081122907
+      type: {class: TargIsInLaneFilter, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
+        _lane:
+          rid: 6673085937081122908
+    - rid: 6673085937081122908
+      type: {class: CurrentLTM, ns: , asm: Assembly-CSharp}
+      data: 
