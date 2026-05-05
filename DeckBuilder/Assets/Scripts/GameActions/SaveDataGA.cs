@@ -18,6 +18,6 @@ public class SaveDataGA : GameAction
     public void SimulatedPerform()
     {
         IHoldData dataHolder = IHoldData.GetDataHolder(Context, DataLevel);
-        dataHolder.AddData(Key, Data);
+        dataHolder.SetData(Key, Data);
     }
 }

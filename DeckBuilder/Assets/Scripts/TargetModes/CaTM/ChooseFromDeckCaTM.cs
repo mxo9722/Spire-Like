@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ChooseFromDeckCaTM : CardTargetMode, IUserInputTM
+public class ChooseFromDeckCaTM : CardTargetMode, INeedsUserInput
 {
     [Tooltip("Leave min amount to null if min should be the same amount as the max")]
     [SerializeReference, SR] private Quantity _minAmount = null;

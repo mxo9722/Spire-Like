@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a61ecd2afb9bcb0469ae465c6809506c, type: 3}
+  m_Name: SE_STEALTH
+  m_EditorClassIdentifier: 
+  <Info>k__BackingField:
+    <EnumKey>k__BackingField: 1001
+    <Name>k__BackingField: Stealth
+    <Sprite>k__BackingField: {fileID: 21300000, guid: f3e30eee8348a814d9207d022ef73ab0, type: 3}
+    <Stackable>k__BackingField: 0
+    <RemoveAtZero>k__BackingField: 1
+    <Type>k__BackingField: 0
+    <PreTurnModification>k__BackingField: 0
+    <PostTurnModification>k__BackingField: 0
+    <Effect>k__BackingField:
+      rid: -2
+    <Reactions>k__BackingField: []
+    <Description>k__BackingField: Unselectable while un-stealthed allies are in lane.
+      Moves to back of lane.
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }

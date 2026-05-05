@@ -4,16 +4,16 @@ using UnityEngine;
 
 public class AddStatusEffectGA : CombinableGameAction<AddStatusEffectGA>, IHaveCaster
 {
-    public StatusEffect StatusEffectType { get; private set; }
+    public StatusEffectInfo StatusEffectInfo { get; private set; }
     public int StackCount { get; private set; }
     public List<CombatantView> Targets { get; private set; }
     public CombatantView Caster { get; private set; }
 
     public bool SkipAnimation { get; private set; } = false;
 
-    public AddStatusEffectGA(StatusEffect statusEffectType, int stackCount, List<CombatantView> targets, CombatantView caster = null, bool skipAnimation = false)
+    public AddStatusEffectGA(StatusEffectInfo statusEffectInfo, int stackCount, List<CombatantView> targets, CombatantView caster = null, bool skipAnimation = false)
     {
-        StatusEffectType = statusEffectType;
+        StatusEffectInfo = statusEffectInfo;
         StackCount = stackCount;
         Targets = targets.Where(t => t != null && t.CurrentHealth > 0).ToList();
         Caster = caster;
@@ -29,7 +29,7 @@ public class AddStatusEffectGA : CombinableGameAction<AddStatusEffectGA>, IHaveC
     {
         if(other is AddStatusEffectGA addStatusEffectGA)
         {
-            if (addStatusEffectGA.StatusEffectType != StatusEffectType) return false;
+            if (addStatusEffectGA.StatusEffectInfo != StatusEffectInfo) return false;
 
             if (!addStatusEffectGA.Targets.Any(t => Targets.Contains(t)) && addStatusEffectGA.StackCount == StackCount) 
             {

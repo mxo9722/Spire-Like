@@ -16,7 +16,8 @@ MonoBehaviour:
   - <TopLane>k__BackingField:
     - {fileID: 11400000, guid: 55ec9e6685eb0054b97c0d25fe951198, type: 2}
     - {fileID: 11400000, guid: d6edbab7d94e40941986fdea26a6c122, type: 2}
-    <MiddleLane>k__BackingField: []
+    <MiddleLane>k__BackingField:
+    - {fileID: 11400000, guid: d6edbab7d94e40941986fdea26a6c122, type: 2}
     <BottomLane>k__BackingField:
     - {fileID: 11400000, guid: 55ec9e6685eb0054b97c0d25fe951198, type: 2}
     - {fileID: 11400000, guid: d6edbab7d94e40941986fdea26a6c122, type: 2}

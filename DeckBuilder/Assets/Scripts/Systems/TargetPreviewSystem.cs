@@ -115,11 +115,11 @@ public class TargetPreviewSystem : Singleton<TargetPreviewSystem>
         targets.ForEach(t => t.SetTargetPreview(_defaultColor));
     }
 
-    public void SetTargetPreviewsManual<T, F>(List<F> filters, List<ConditionalAutoTargetEffect> highlightConditionals, CombatantView caster) where T : ITargetPreviewable where F : TargetFilter<T>
+    public void SetTargetPreviewsManual<T, F>(List<F> filters, List<ConditionalAutoTargetEffect> highlightConditionals, EffectContext context) where T : ITargetPreviewable where F : TargetFilter<T>
     {
-        if(caster == null)
+        if(context.Caster == null)
         {
-            SetTargetPreviewsManual<T, F>(filters, highlightConditionals);
+            SetTargetPreviewsManualNoCaster<T, F>(filters, highlightConditionals, context);
             return;
         }
 
@@ -130,23 +130,21 @@ public class TargetPreviewSystem : Singleton<TargetPreviewSystem>
 
         HighLighted = true;
 
-        EffectContext context = new(caster);
-
         IEnumerable<T> allTargets = BoardSystem.Instance.GetAllViews<T>().Where(l => filters.TrueForAll(f => f.TestTarget(context, l)));
 
         foreach (T target in allTargets)
         {
-            context = new(caster);
+            context = new(context);
 
             if (target is CombatantView combatant)
             {
-                context = new(caster, manualTargetCombatant: combatant);
+                context.SetManualCombatant(combatant);
 
                 if (!combatant.IsSelectable())
                     combatant.SetImageAlpha(0.5f, 0.75f);
             }
             else if (target is LaneView laneView)
-                context = new(caster, manualTargetLane: laneView);
+                context.SetManualLane(laneView);
 
             if (!target.IsSelectable())
                 continue;
@@ -160,7 +158,7 @@ public class TargetPreviewSystem : Singleton<TargetPreviewSystem>
         }
     }
 
-    private void SetTargetPreviewsManual<T, F>(List<F> filters, List<ConditionalAutoTargetEffect> highlightConditionals) where T : ITargetPreviewable where F : TargetFilter<T>
+    private void SetTargetPreviewsManualNoCaster<T, F>(List<F> filters, List<ConditionalAutoTargetEffect> highlightConditionals, EffectContext context) where T : ITargetPreviewable where F : TargetFilter<T>
     {
         if (HighLighted)
         {
@@ -169,33 +167,31 @@ public class TargetPreviewSystem : Singleton<TargetPreviewSystem>
 
         HighLighted = true;
 
-        
-
         foreach (HeroView caster in HeroSystem.Instance.HeroViews)
         {
+            EffectContext nContext = new(context);
+            nContext.SetCaster(caster);
 
-            EffectContext context = new(caster);
-
-            IEnumerable<T> allTargets = BoardSystem.Instance.GetAllViews<T>().Where(l => filters.TrueForAll(f => f.TestTarget(context, l)));
+            IEnumerable<T> allTargets = BoardSystem.Instance.GetAllViews<T>().Where(l => filters.TrueForAll(f => f.TestTarget(nContext, l)));
 
             foreach (T target in allTargets)
             {
-                context = new(caster);
+                nContext = new(caster);
 
                 if (target is CombatantView combatantView)
                 {
-                    context = new(caster, manualTargetCombatant: combatantView);
+                    nContext = new(caster, manualTargetCombatant: combatantView);
 
                     if (!combatantView.IsSelectable())
                         combatantView.SetImageAlpha(0.5f, 0.75f);
                 }
                 else if (target is LaneView laneView)
-                    context = new(caster, manualTargetLane: laneView);
+                    nContext = new(caster, manualTargetLane: laneView);
 
                 if (!target.IsSelectable())
                     continue;
 
-                bool highlight = highlightConditionals.Any(h => h.Conditions.TrueForAll(c => c.TestCondition(context)));
+                bool highlight = highlightConditionals.Any(h => h.Conditions.TrueForAll(c => c.TestCondition(nContext)));
 
                 if (highlight)
                     target.SetTargetPreview(_highlightColor);
@@ -236,6 +232,22 @@ public class TargetPreviewSystem : Singleton<TargetPreviewSystem>
         }
     }
 
+    public void SetEnemyLaneAttackPreview(LaneView lane)
+    {
+        if (HighLighted)
+        {
+            HideTargetPreviews(false);
+        }
+
+        HighLighted = true;
+
+        List<NPCView> enemyViews = BoardSystem.Instance.GetAllEnemies();
+
+        enemyViews.RemoveAll(e => !e.IsHostileTargetLane(lane));
+
+        enemyViews.ForEach(t => t.SetTargetPreview(_defaultColor));
+    }
+
     public void HideTargetPreviews(bool temporary)
     {
         if (!HighLighted)
@@ -264,10 +276,13 @@ public class TargetPreviewSystem : Singleton<TargetPreviewSystem>
 
     private List<ITargetPreviewable> GetTargets(AutoTargetEffect effect, EffectContext context, Card card)
     {
+        if (effect == null)
+            return new();
+
         List<ITargetPreviewable> targets = new();
 
         if (context == null)
-            context = new(card.GetOwnerView());
+            context = new(card.GetOwnerView(), playedCard: card);
 
         if (effect is AutoCombatantTargetEffect cEffect && (!cEffect.TargetMode.IsRandom || !_randomCycleTargets))
         {
@@ -283,6 +298,13 @@ public class TargetPreviewSystem : Singleton<TargetPreviewSystem>
             {
                 return GetTargets(conditional.SuccessEffect, context, card);
             }
+        }
+
+        AutoTargetEffect[] nestedEffects = effect.GetNestedEffects();
+
+        foreach(AutoTargetEffect nestedEffect in nestedEffects)
+        {
+            targets.AddRange(GetTargets(nestedEffect, context, card));
         }
 
         return targets;
@@ -313,7 +335,7 @@ public class TargetPreviewSystem : Singleton<TargetPreviewSystem>
 
         List<Coroutine> coroutines = new();
 
-        EffectContext context = new();
+        EffectContext context = new(caster);
 
         if (effect is AutoCombatantTargetEffect cEffect && cEffect.TargetMode.IsRandom)
         {
@@ -330,6 +352,16 @@ public class TargetPreviewSystem : Singleton<TargetPreviewSystem>
                 return GetRandomTargetCoroutines(conditional.SuccessEffect, caster, _highlightColor);
             }
         }
+
+        if (effect != null)
+        {
+            AutoTargetEffect[] nestedEffects = effect.GetNestedEffects();
+
+            foreach (AutoTargetEffect nestedEffect in nestedEffects)
+            {
+                coroutines.AddRange(GetRandomTargetCoroutines(nestedEffect, caster, color));
+            }
+        } 
 
         return coroutines;
     }

@@ -64,7 +64,10 @@ public class CardView : MonoBehaviour
         if (card.Unplayable)
             _mana.text = "";
         else
-            _mana.text = card.Mana.ToString();
+        {
+            int manaCost = card.GetDynamicManaValue(new(card.GetOwnerView(), playedCard: card));
+            _mana.text = manaCost.ToString();
+        }
 
         Vector2 prevSize = _imageSR.size;
 
@@ -308,13 +311,24 @@ public class CardView : MonoBehaviour
 
     public void UpdateDynamicDescription(EffectContext context = null)
     {
-        if (context == null || _treatAsButton)
+        if (_treatAsButton)
         {
             _description.text = Card.GetStaticDescription();
         }
         else
         {
+            if (context == null)
+                context = new(null, playedCard: Card);
+
             _description.text = Card.GetDynamicDescription(context);
+
+            if (Card.Unplayable)
+                _mana.text = "";
+            else
+            {
+                int manaCost = Card.GetDynamicManaValue(context);
+                _mana.text = manaCost.ToString();
+            }
         }
     }
 

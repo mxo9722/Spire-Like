@@ -8,5 +8,6 @@ public enum NPCActionType
     DEFEND,
     MOVE,
     NONE,
-    OTHER
+    OTHER,
+    CARD
 }

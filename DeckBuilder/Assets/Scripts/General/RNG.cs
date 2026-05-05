@@ -41,4 +41,11 @@ public class RNG
         _seed = seed;
         _random = new Random(Seed);
     }
+
+    public static T SelectRandom<T>(T[] array)
+    {
+        int index = _random.Next(array.Length);
+
+        return array[index];
+    }
 }

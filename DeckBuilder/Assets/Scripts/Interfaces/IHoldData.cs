@@ -4,7 +4,7 @@ using UnityEngine;
 public interface IHoldData
 {
 
-    public abstract void AddData(string key, object data);
+    public abstract void SetData(string key, object data);
     public abstract T GetData<T>(string key);
     public abstract bool ContainsKey(string key);
     

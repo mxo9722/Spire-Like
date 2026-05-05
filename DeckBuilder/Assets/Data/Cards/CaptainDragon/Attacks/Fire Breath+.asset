@@ -16,7 +16,7 @@ MonoBehaviour:
   <Upgrade>k__BackingField: {fileID: 0}
   <Unplayable>k__BackingField: 0
   <Mana>k__BackingField: 1
-  <Type>k__BackingField: 0
+  <Type>k__BackingField: 1
   <Image>k__BackingField: {fileID: 21300000, guid: 79925ed458d403a4387668c56d12e9f5, type: 3}
   <Description>k__BackingField: Apply {v0} burn to all aligned foes. Gain {v1} heat.
   <RequiredConditions>k__BackingField: []

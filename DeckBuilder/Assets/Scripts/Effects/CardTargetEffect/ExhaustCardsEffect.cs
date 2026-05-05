@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class ExhaustCardsEffect : CardTargetEffect
 {
-    protected override GameAction GetGameAction(CombatantView caster, List<Card> cardTargets)
+    protected override GameAction GetGameAction(EffectContext context, List<Card> cardTargets)
     {
         ExhaustCardGA exhaustCardGA = new(cardTargets);
 

@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public interface IUserInputTM
+public interface INeedsUserInput
 {
     public abstract IEnumerator WaitForUserInput(EffectContext context);
 }

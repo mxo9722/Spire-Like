@@ -12,8 +12,8 @@ public class NewCardsFromDataCaTM : CardTargetMode
         foreach(CardData data in _cards)
         {
             Card card = new(data);
-              
-            if(context.PlayedCard != null)
+
+            if (context.PlayedCard != null)
                 card = new(data, context.PlayedCard.Owner);
 
             cards.Add(card);

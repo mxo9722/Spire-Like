@@ -22,31 +22,14 @@ public class AutoLaneTargetEffect : AutoTargetEffect
         return performEffectsGA;
     }
 
-    public override List<StatusEffect> GetAllStatusEffects()
-    {
-        List<StatusEffect> statusEffects = new();
-
-        var oStatusEffects = TargetMode.GetAllStatusEffects();
-
-        if(oStatusEffects != null)
-            statusEffects.AddRange(oStatusEffects);
-
-        oStatusEffects = _laneEffect.GetAllStatusEffects();
-
-        if(oStatusEffects != null)
-            statusEffects.AddRange(oStatusEffects);
-
-        return statusEffects;
-    }
-
     public override bool RequiresUserInput()
     {
-        return TargetMode is IUserInputTM;
+        return TargetMode is INeedsUserInput;
     }
 
     public override IEnumerator WaitForUserInput(EffectContext context)
     {
-        if (TargetMode is IUserInputTM userInputTM)
+        if (TargetMode is INeedsUserInput userInputTM)
             yield return userInputTM.WaitForUserInput(context);
     }
 

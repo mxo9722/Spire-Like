@@ -79,10 +79,8 @@ public class HelpBoxUI : MonoBehaviour
 
     }
 
-    public void SetUpFromStatusEffect(StatusEffect statusEffectType, int stacks)
+    public void SetUpFromStatusEffect(StatusEffectInfo statusEffectInfo, int stacks)
     {
-        StatusEffectInfo statusEffectInfo = StatusEffectSystem.Instance.GetStatusEffectInfo(statusEffectType);
-
         _title.text = statusEffectInfo.Name;
         _description.text = statusEffectInfo.Description.Replace(" X"," "+stacks.ToString());
 

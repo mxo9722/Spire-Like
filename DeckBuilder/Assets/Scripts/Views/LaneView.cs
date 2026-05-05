@@ -9,13 +9,11 @@ public class LaneView : MonoBehaviour, ITargetPreviewable
 {
     [field: SerializeField] public SlotView HeroSlot { get; private set; }
     [field: SerializeField] public SlotView[] EnemySlots { get; private set; }
+    [field: SerializeField] public IncomingDamageView IncomingDamageView { get; private set; }
 
     [SerializeField] private SpriteRenderer _targetPreviewSR;
     [SerializeField] private SpriteRenderer _soakedStatus;
-    
-    //[SerializeField] private SpriteRenderer _totalDamageImg;
-    //[SerializeField] private TMPro.TMP_Text _totalDamageText;
-    //[SerializeField] private LineRenderer _aimLineRenderer;
+    [SerializeField] private LaneArrowView _laneArrowView;
 
     public NPCView[] EnemyViews { get => EnemySlots.Select(e => (NPCView)(e.Combatant)).Where(c => c != null).ToArray(); }
     public CombatantView HeroView { get => HeroSlot.Combatant; }
@@ -37,8 +35,11 @@ public class LaneView : MonoBehaviour, ITargetPreviewable
         return null;
     }
 
-    public void Start()
+    public void SetUp(BoardView board, int index)
     {
+        Board = board;
+        Index = index;
+        
         _soakedStatus.transform.localScale = Vector3.zero;
 
         _targetPreviewSR.transform.DORotate(new(0, 0, 180.0f), 2f, RotateMode.Fast).SetLoops(-1).SetEase(Ease.Linear);
@@ -51,12 +52,9 @@ public class LaneView : MonoBehaviour, ITargetPreviewable
 
         SlotView heroSlot = HeroSlot;
         heroSlot.SetUp(this, 0);
-    }
 
-    public void SetUp(BoardView board, int index)
-    {
-        Board = board;
-        Index = index;
+        IncomingDamageView.SetUp(this);
+        _laneArrowView.SetUp(this);
     }
 
     private void OnDestroy()
@@ -252,5 +250,26 @@ public class LaneView : MonoBehaviour, ITargetPreviewable
     public bool IsSelectable()
     {
         return true;
+    }
+
+    public void UpdateView()
+    {
+        IncomingDamageView.UpdateView();
+        _laneArrowView.UpdateView();
+
+        foreach (NPCView enemy in EnemyViews)
+            enemy.UpdateView();
+    }
+
+    public List<CombatantView> GetAllUnits()
+    {
+        List<CombatantView> combatantViews = new();
+
+        if (HeroView != null)
+            combatantViews.Add(HeroView);
+
+        combatantViews.AddRange(EnemyViews);
+
+        return combatantViews;
     }
 }

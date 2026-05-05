@@ -1,0 +1,117 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62bf69310631aa94896652d3f8be392c, type: 3}
+  m_Name: Demolition
+  m_EditorClassIdentifier: 
+  <Rarity>k__BackingField: 0
+  <Upgrade>k__BackingField: {fileID: 11400000, guid: 00063c87080b04a42a732f701d2f91a7, type: 2}
+  <Unplayable>k__BackingField: 0
+  <Mana>k__BackingField: 2
+  <Type>k__BackingField: 0
+  <Image>k__BackingField: {fileID: 21300000, guid: a717af6e09f3bb84e852491c4c330b20, type: 3}
+  <Description>k__BackingField: Exhaust any of the top 3 cards from your deck. Deal
+    {v0} damage to an aligned foe for each card selected.
+  <RequiredConditions>k__BackingField: []
+  <HighlightConditions>k__BackingField: []
+  <ExhuastOnUse>k__BackingField: 0
+  <ManualTargetType>k__BackingField: 0
+  <CombatantFilters>k__BackingField:
+  - rid: 6120430483144179822
+  - rid: 6120430483144179823
+  <LaneFilters>k__BackingField: []
+  <ManualTargetEffect>k__BackingField:
+    rid: -2
+  <OtherEffects>k__BackingField:
+  - rid: 6120430483144179807
+  - rid: 6120430483144179824
+  <InHandReactions>k__BackingField: []
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 6120430483144179807
+      type: {class: AutoCardTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 6120430483144179811
+        _cardEffect:
+          rid: 6120430483144179815
+    - rid: 6120430483144179811
+      type: {class: ChooseFromTopOfDeckCaTM, ns: , asm: Assembly-CSharp}
+      data:
+        _numberFromTop:
+          rid: 6120430483144179812
+        _minAmount:
+          rid: 6120430483144179814
+        _amount:
+          rid: 6120430483144179813
+        _selectedCountKey: selectionCount
+    - rid: 6120430483144179812
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 3
+    - rid: 6120430483144179813
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 3
+    - rid: 6120430483144179814
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 0
+    - rid: 6120430483144179815
+      type: {class: ExhaustCardsEffect, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 6120430483144179822
+      type: {class: AlignedFilter, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
+    - rid: 6120430483144179823
+      type: {class: FoeFilter, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
+    - rid: 6120430483144179824
+      type: {class: AutoTargetlessEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _noTargetEffect:
+          rid: 6120430483144179825
+    - rid: 6120430483144179825
+      type: {class: RepeatEffectsEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _repeatCount:
+          rid: 6120430483144179827
+        _autoTargetEffects:
+        - rid: 6120430483144179828
+    - rid: 6120430483144179827
+      type: {class: SavedDataQ, ns: , asm: Assembly-CSharp}
+      data:
+        _level: 0
+        _key: selectionCount
+    - rid: 6120430483144179828
+      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 6120430483144179829
+        _combatantEffect:
+          rid: 6120430483144179830
+    - rid: 6120430483144179829
+      type: {class: ManualTargetCTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 6120430483144179830
+      type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _damage:
+          rid: 6120430483144179831
+    - rid: 6120430483144179831
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 6

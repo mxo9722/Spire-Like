@@ -13,16 +13,16 @@ MonoBehaviour:
   m_Name: Suplex
   m_EditorClassIdentifier: 
   <Rarity>k__BackingField: 2
-  <Upgrade>k__BackingField: {fileID: 11400000, guid: bfba6365af56b784eb78968c0e68126d, type: 2}
+  <Upgrade>k__BackingField: {fileID: 11400000, guid: b85f15a709ef36c48b71737b1d8ecd24, type: 2}
   <Unplayable>k__BackingField: 0
-  <Mana>k__BackingField: 1
+  <Mana>k__BackingField: 2
   <Type>k__BackingField: 0
   <Image>k__BackingField: {fileID: 21300000, guid: d8fada25936230d4d8b1152215f0720c, type: 3}
-  <Description>k__BackingField: Deal damage to the closest aligned foe equal to your
-    Chaos. (Current total is {v0} damage)
+  <Description>k__BackingField: Deal 4 times your heat to the front aligned foe.
+    Halve your heat. Exhaust. ({v0} total damage)
   <RequiredConditions>k__BackingField: []
   <HighlightConditions>k__BackingField: []
-  <ExhuastOnUse>k__BackingField: 0
+  <ExhuastOnUse>k__BackingField: 1
   <ManualTargetType>k__BackingField: 2
   <CombatantFilters>k__BackingField: []
   <LaneFilters>k__BackingField: []
@@ -30,7 +30,7 @@ MonoBehaviour:
     rid: -2
   <OtherEffects>k__BackingField:
   - rid: 4055348103697924322
-  <TurnEndEffects>k__BackingField: []
+  <InHandReactions>k__BackingField: []
   references:
     version: 2
     RefIds:
@@ -55,13 +55,24 @@ MonoBehaviour:
       type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
       data:
         _damage:
-          rid: 4055348103697924327
-    - rid: 4055348103697924327
+          rid: 6120430415865970790
+    - rid: 6120430415865970790
+      type: {class: MultiplyQ, ns: , asm: Assembly-CSharp}
+      data:
+        _a:
+          rid: 6120430415865970791
+        _b:
+          rid: 6120430415865970793
+    - rid: 6120430415865970791
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 4
+    - rid: 6120430415865970793
       type: {class: StatusEffectStacksQ, ns: , asm: Assembly-CSharp}
       data:
         _target:
-          rid: 4055348103697924328
-        _type: 2000
-    - rid: 4055348103697924328
+          rid: 6120430415865970794
+        _type: 2003
+    - rid: 6120430415865970794
       type: {class: CasterCTM, ns: , asm: Assembly-CSharp}
       data: 

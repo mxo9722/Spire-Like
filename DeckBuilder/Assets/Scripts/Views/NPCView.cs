@@ -1,4 +1,5 @@
 using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -15,6 +16,7 @@ public class NPCView : CombatantView
 
     public NPCData Data { get; private set; }
     public NPCAction CurrentAction { get; private set; } = null;
+
     public List<NPCAction> PreviousActions { get; private set; } = new();
 
     public bool IsEvil { get; private set; } = false;
@@ -26,7 +28,7 @@ public class NPCView : CombatantView
     {
         Data = enemyData;
         IsEvil = isEvil;
-        UpdateBehaviorIndicator();
+        UpdateView();
 
         int health = enemyData.Health + RNG.Random.Next(enemyData.RandomHealthMod);
 
@@ -45,7 +47,7 @@ public class NPCView : CombatantView
                 {
                     int value = se.Value.Quantity.GetAmount(context);
 
-                    AddStatusEffectGA addStatusEffectGA = new(se.Key, value, new() { this });
+                    AddStatusEffectGA addStatusEffectGA = new(StatusEffectSystem.GetDictionaryEntry(se.Key), value, new() { this });
                     ActionSystem.Instance.AddReaction(addStatusEffectGA);
                 }
             }
@@ -55,7 +57,7 @@ public class NPCView : CombatantView
                 {
                     int value = se.Value.Quantity.GetAmount(context);
 
-                    AddStatusEffect(se.Key, value);
+                    AddStatusEffect(StatusEffectSystem.GetDictionaryEntry(se.Key), value);
                 }
             }
         }
@@ -89,11 +91,9 @@ public class NPCView : CombatantView
         if (CurrentAction != null)
             PreviousActions.Add(CurrentAction);
         CurrentAction = enemyAction;
-
-        UpdateBehaviorIndicator();
     }
 
-    public void UpdateBehaviorIndicator(NPCAction npcAction = null)
+    public void UpdateView(NPCAction npcAction = null)
     {
         if (npcAction == null)
             npcAction = CurrentAction;
@@ -139,7 +139,7 @@ public class NPCView : CombatantView
                 {
                     List<CombatantView> targets = combatantTargetEffect.TargetMode.GetTargets(context);
 
-                    string attackText = DamageSystem.EnemyDamageTextFromAttack(attackHeroEffect.Damage, context, targets);
+                    string attackText = DamageSystem.EnemyDamageTextFromAttack(attackHeroEffect.Damage, context, targets, false);
 
                     _behaviorValue.text = attackText;
 
@@ -149,9 +149,13 @@ public class NPCView : CombatantView
                 {
                     List<CombatantView> targets = combatantTargetEffect.TargetMode.GetTargets(context);
 
-                    string attackText = DamageSystem.EnemyDamageTextFromAttack(multiAttackFoeEffect.Damage.GetAmount(context), context, targets);
+                    string attackText = DamageSystem.EnemyDamageTextFromAttack(multiAttackFoeEffect.Damage.GetAmount(context), context, targets, false);
+                    int attackCount = multiAttackFoeEffect.AttackCount.GetAmount(context);
 
-                    _behaviorValue.text = multiAttackFoeEffect.AttackCount.GetAmount(context) + "x" + attackText;
+                    if(attackCount != 1)
+                        _behaviorValue.text =  attackText + "x" + attackCount;
+                    else
+                        _behaviorValue.text = attackText;
 
                     break;
                 }
@@ -173,6 +177,9 @@ public class NPCView : CombatantView
             NPCActionType action = CurrentAction.Symbol;
 
             string helpBoxText = Data.name + " intends to";
+
+            if (Data.TheDeterminer)
+                helpBoxText = "The " + helpBoxText;
 
             helpBoxText = helpBoxText + ' ' + EnemySystem.Instance.GetEnemyActionDescription(action);
 
@@ -196,8 +203,14 @@ public class NPCView : CombatantView
                     EffectContext context = new(this);
 
                     List<CombatantView> targets = combatantTargetEffect.TargetMode.GetTargets(context);
-                    helpBoxText = helpBoxText + " for " + DamageSystem.GetDamageFromAttack(multiAttackFoeEffect.Damage.GetAmount(context), context, targets).ToString() 
-                        + " damage " + multiAttackFoeEffect.AttackCount.GetAmount(context) + " times";
+
+                    int attackTimes = multiAttackFoeEffect.AttackCount.GetAmount(context);
+                    string damage = DamageSystem.GetDamageFromAttack(multiAttackFoeEffect.Damage.GetAmount(context), context, targets).ToString();
+
+                    if(attackTimes != 1)
+                        helpBoxText = helpBoxText + " for " + damage + " damage " + attackTimes + " times";
+                    else
+                        helpBoxText = helpBoxText + " for " + damage + " damage";
                 }
             }
 
@@ -205,6 +218,7 @@ public class NPCView : CombatantView
 
             helpBoxesUI.AddHelpBoxFromText(action.ToString().Replace('_', ' ').ToUpper(), helpBoxText);
         }
+
         base.LoadHelpBoxes(helpBoxesUI);
     }
 
@@ -231,5 +245,85 @@ public class NPCView : CombatantView
         yield return tween.WaitForCompletion();
         _behaviorName.alpha = 1f;
         _behaviorName.text = "";
+    }
+
+    public int GetTotalDamage(LaneView lane, CombatantView target)
+    {
+        if (CurrentAction == null)
+            return 0;
+
+        int total = 0;
+        EffectContext context = new(this);
+
+        foreach (AutoTargetEffect effect in CurrentAction.Effects)
+        {
+            if (effect is AutoCombatantTargetEffect autoCombatantTargetEffect) 
+            {
+                if (!autoCombatantTargetEffect.TargetMode.LaneRelevant(context, lane))
+                    continue;
+
+                switch (autoCombatantTargetEffect.Effect)
+                {
+                    case AttackHeroEffect attackHeroEffect:
+                        total += attackHeroEffect.GetTotalDamage(context, target);
+                        break;
+                    case MultiAttackFoeEffect multiAttackFoeEffect:
+                        total += multiAttackFoeEffect.GetTotalDamage(context, target);
+                        break;
+                }
+            }
+        }
+
+        return total;
+    }
+
+    public bool IsHostileTargetLane(LaneView lane, bool includeDebuff = true)
+    {
+        if (CurrentAction == null)
+            return false;
+
+        EffectContext context = new(this);
+
+        foreach (AutoTargetEffect effect in CurrentAction.Effects)
+        {
+            if (effect is AutoCombatantTargetEffect autoCombatantTargetEffect)
+            {
+                if (!autoCombatantTargetEffect.TargetMode.LaneRelevant(context, lane))
+                    continue;
+
+                switch (autoCombatantTargetEffect.Effect)
+                {
+                    case AttackHeroEffect:
+                        return true;
+                    case MultiAttackFoeEffect:
+                        return true;
+                    case AddStatusEffectEffect:
+                        if (autoCombatantTargetEffect.TargetMode.HostileTargetting(context) && includeDebuff)
+                            return true;
+                        break;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public bool IsAttackingUnit(CombatantView target, EffectContext context)
+    {
+        foreach (AutoTargetEffect effect in CurrentAction.Effects)
+        {
+            if (effect is AutoCombatantTargetEffect acte) 
+            {
+                if (!(acte.Effect is AttackHeroEffect || acte.Effect is MultiAttackFoeEffect))
+                    continue;
+
+                List<CombatantView> targets = acte.TargetMode.GetTargets(new(this));
+
+                if (targets.Contains(target))
+                    return true;
+            }
+        }
+
+        return false;
     }
 }

@@ -42,6 +42,10 @@ MonoBehaviour:
       Value:
         <Sprite>k__BackingField: {fileID: 21300000, guid: e28e09ba5ffef5348843fd5392484a4b, type: 3}
         <Text>k__BackingField: something different to
+    - Key: 7
+      Value:
+        <Sprite>k__BackingField: {fileID: 21300000, guid: 9cab55ca4ddd01948a418d35e807a891, type: 3}
+        <Text>k__BackingField: add cards to your deck
   EnemyTargetTypes:
     _serializedList:
     - Key: 0

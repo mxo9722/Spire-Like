@@ -21,7 +21,7 @@ public class StatusEffectAppliedSER : StatusEffectReaction
                 count = addStatusEffectGA.Targets.ApplyFilters(_combatantFilters).Count();
 
             int trueVal = _repeatPerStack ? count : 1;
-            bool success = addStatusEffectGA.StatusEffectType == _targetType;
+            bool success = addStatusEffectGA.StatusEffectInfo.EnumKey == _targetType;
 
             return success ? trueVal : 0;
         }

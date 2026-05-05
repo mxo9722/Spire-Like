@@ -5,8 +5,8 @@ public abstract class CardTargetEffect : Effect
 {
     public override GameAction GetGameAction(EffectContext context, List<CombatantView> combatantTargets = null, List<LaneView> laneTargets = null, List<Card> cardTargets = null)
     {
-        return GetGameAction(context.Caster, cardTargets);
+        return GetGameAction(context, cardTargets);
     }
 
-    protected abstract GameAction GetGameAction(CombatantView caster, List<Card> cardTargets);
+    protected abstract GameAction GetGameAction(EffectContext context, List<Card> cardTargets);
 }

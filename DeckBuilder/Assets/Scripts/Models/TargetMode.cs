@@ -7,7 +7,6 @@ using UnityEngine;
 public abstract class TargetMode<T>
 {
     public abstract List<T> GetTargets(EffectContext context);
-    public virtual List<StatusEffect> GetAllStatusEffects() { return null; }
     public virtual List<T> AllPossibleTargets(EffectContext context, Card card = null)
     {
         if(context.Caster != null)

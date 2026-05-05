@@ -30,7 +30,7 @@ public class CardUI : MonoBehaviour
         if (card.Unplayable)
             _mana.text = "";
         else
-            _mana.text = card.Mana.ToString();
+            _mana.text = card.GetStaticManaValue().ToString();
 
         if (card.Owner != null)
             _background.color = card.Owner.Color;

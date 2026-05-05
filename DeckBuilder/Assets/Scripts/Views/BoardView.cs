@@ -1,5 +1,6 @@
 using AYellowpaper.SerializedCollections;
 using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,7 @@ public class BoardView : MonoBehaviour
     public readonly int MAX_HERO_COUNT = 2;
     public readonly int MAX_ENEMY_COUNT = 3;
 
-    public void OnEnable()
+    public void SetUp()
     {
         _originalPosition = _wrapper.localPosition;
         _originalScale = _wrapper.localScale;
@@ -77,7 +78,8 @@ public class BoardView : MonoBehaviour
         List<CombatantView> allHeroes = new();
 
         foreach (LaneView laneView in _laneViews)
-            allHeroes.Add(laneView.HeroView);
+            if(laneView.HeroView != null)
+                allHeroes.Add(laneView.HeroView);
 
         return allHeroes;
     }
@@ -107,6 +109,19 @@ public class BoardView : MonoBehaviour
         }
 
         return GetAllHeroes().Cast<CombatantView>().ToList();
+    }
+
+    public List<CombatantView> GetAllAllies(CombatantView caster)
+    {
+        if (caster is HeroView)
+            return GetAllHeroes().Where(h => h != caster).Cast<CombatantView>().ToList();
+        else if (caster is NPCView npcView)
+        {
+            if (!npcView.IsEvil)
+                return GetAllHeroes().Where(h => h != caster).Cast<CombatantView>().ToList();
+        }
+
+        return GetAllEnemies().Where(e => e != caster).Cast<CombatantView>().ToList();
     }
 
     public List<LaneView> GetAllLanes() => _laneViews;
@@ -233,12 +248,12 @@ public class BoardView : MonoBehaviour
 
         if (target.GetStatusEffectStacks(StatusEffect.ANCHORED) > 0 && caster != target && caster != null)
             unmoved = true;
-        else if (target.GetStatusEffectStacks(StatusEffect.HAMSTRUNG) > 0 && caster == target)
+        else if (target.GetStatusEffectStacks(StatusEffect.PINNED) > 0 && caster == target)
             unmoved = true;
 
         if (unmoved)
         {
-            target.transform.DOPunchPosition(Random.insideUnitCircle, 1);
+            target.transform.DOPunchPosition(UnityEngine.Random.insideUnitCircle, 1);
             return false;
         }
 
@@ -464,15 +479,19 @@ public class BoardView : MonoBehaviour
         yield return null;
     }
 
-    public HeroView GetMainHero()
-    {
-        foreach (LaneView lane in _laneViews)
-        {
-            CombatantView heroView = lane.HeroView;
-            if (heroView != null)
-                return (HeroView)heroView;
-        }
 
-        return null;
+    public void UpdateView()
+    {
+        foreach (LaneView laneView in _laneViews)
+            laneView.UpdateView();
+    }
+
+    public int GetLaneDistance(LaneView laneA, LaneView laneB)
+    {
+        int indexA = _laneViews.IndexOf(laneA);
+        int indexB = _laneViews.IndexOf(laneB);
+
+        int distance = Math.Abs(indexA - indexB);
+        return distance;
     }
 }

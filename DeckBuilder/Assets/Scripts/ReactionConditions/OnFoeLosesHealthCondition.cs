@@ -33,7 +33,7 @@ public class OnFoeLosesHealthGA : ReactionCondition
         if (!string.IsNullOrEmpty(_dataKey) && gameAction is DealDamageGA dealDamageGA)
         {
             List<CombatantView> combatantViews = dealDamageGA.Targets.Where(t => t is NPCView npc && npc.IsEvil).ToList();
-            context.AddData(_dataKey, combatantViews);
+            context.SetData(_dataKey, combatantViews);
         }
     }
 }

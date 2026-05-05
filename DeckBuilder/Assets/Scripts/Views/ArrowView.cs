@@ -14,8 +14,6 @@ public class ArrowView : MonoBehaviour
     private Vector3 _startPosition;
     private CombatantView _caster;
 
-
-
     public void SetupArrow(Vector3 startPosition, CombatantView caster)
     {
         _startPosition = startPosition;
@@ -47,7 +45,13 @@ public class ArrowView : MonoBehaviour
             {
                 case ManualTargetType.COMBATANT:
                     CombatantView combatantView = target.GetComponent<CombatantView>();
-                    isValid = ManualTargetSystem.Instance.CombatantIsValid( new( _caster, manualTargetCombatant: combatantView, playedCard: card), combatantView);
+
+                    EffectContext context = new(_caster, manualTargetCombatant: combatantView, playedCard: card);
+
+                    if (context.Caster == null)
+                        context.SetCaster(card.GetOwnerView(context));
+
+                    isValid = ManualTargetSystem.Instance.CombatantIsValid( context, combatantView);
                     break;
                 case ManualTargetType.LANE:
                     LaneView laneView = target.GetComponent<LaneView>();
@@ -75,6 +79,7 @@ public class ArrowView : MonoBehaviour
                         if (card.IsHighlighted(cContext))
                             color = _highlightHoverColor;
                         break;
+
                     case ManualTargetType.LANE:
                         LaneView lt = target.GetComponent<LaneView>();
                         EffectContext lContext = new EffectContext(_caster, manualTargetLane: lt, playedCard: card);

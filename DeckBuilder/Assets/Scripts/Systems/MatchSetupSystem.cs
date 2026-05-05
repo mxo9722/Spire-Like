@@ -23,6 +23,8 @@ public class MatchSetUpSystem : Singleton<MatchSetUpSystem>
 
     private void Start()
     {
+        BoardSystem.Instance.SetUp();
+
         if (RunSystem.Instance.GetRoom() is CombatRoom combatRoom)
             Room = combatRoom;
 

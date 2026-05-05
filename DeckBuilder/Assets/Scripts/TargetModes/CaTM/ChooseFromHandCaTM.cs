@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ChooseFromHandCaTM : CardTargetMode, IUserInputTM, IDynamicEffectText
+public class ChooseFromHandCaTM : CardTargetMode, INeedsUserInput, IDynamicEffectText
 {
     [Tooltip("Leave min amount to null if min should be the same amount as the max")]
     [SerializeReference, SR] private Quantity _minAmount = null;
@@ -43,7 +43,7 @@ public class ChooseFromHandCaTM : CardTargetMode, IUserInputTM, IDynamicEffectTe
 
         _selected = CardCollectionSystem.Instance.GetCardSelections();
         if (!string.IsNullOrEmpty(_cardCountKey))
-            context.AddData(_cardCountKey, _selected.Count);
+            context.SetData(_cardCountKey, _selected.Count);
     }
 
     public string GetDynamicText(EffectContext context, List<CombatantView> targetCombatants = null, List<LaneView> targetLanes = null)

@@ -1,0 +1,80 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a61ecd2afb9bcb0469ae465c6809506c, type: 3}
+  m_Name: SE_BUSHIDO
+  m_EditorClassIdentifier: 
+  <Info>k__BackingField:
+    <EnumKey>k__BackingField: 1000
+    <Name>k__BackingField: Bushido
+    <Sprite>k__BackingField: {fileID: 21300000, guid: 287f3f24a04549144a4c005c32524583, type: 3}
+    <Stackable>k__BackingField: 1
+    <RemoveAtZero>k__BackingField: 1
+    <Type>k__BackingField: 0
+    <PreTurnModification>k__BackingField: 0
+    <PostTurnModification>k__BackingField: 0
+    <Effect>k__BackingField:
+      rid: -2
+    <Reactions>k__BackingField:
+    - rid: 1464362980912660827
+    <Description>k__BackingField: When defeated, the target attacks the aligned hero
+      for X damage.
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 1464362980912660827
+      type: {class: OnOwnerKilledSER, ns: , asm: Assembly-CSharp}
+      data:
+        _reactionTiming: 0
+        <Effects>k__BackingField:
+        - rid: 1464362980912660828
+    - rid: 1464362980912660828
+      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 1464362980912660829
+        _combatantEffect:
+          rid: 1464362980912660830
+    - rid: 1464362980912660829
+      type: {class: FrontFoeInLaneCTM, ns: , asm: Assembly-CSharp}
+      data:
+        _laneTargetMode:
+          rid: 1464362980912660831
+    - rid: 1464362980912660830
+      type: {class: MultiAttackFoeEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <AttackCount>k__BackingField:
+          rid: 1464362980912660832
+        <Damage>k__BackingField:
+          rid: 1464362980912660833
+        IndirectReduction: 1
+        _unblockedKey: 
+        _overkillKey: 
+        _onHitKey: 
+        _hitCountKey: 
+    - rid: 1464362980912660831
+      type: {class: CurrentLTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1464362980912660832
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 1
+    - rid: 1464362980912660833
+      type: {class: StatusEffectStacksQ, ns: , asm: Assembly-CSharp}
+      data:
+        _target:
+          rid: 1464362980912660834
+        _type: 1000
+    - rid: 1464362980912660834
+      type: {class: CasterCTM, ns: , asm: Assembly-CSharp}
+      data: 

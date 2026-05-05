@@ -17,7 +17,7 @@ public class StatusEffectAppliedPC : ReactionCondition
         if (gameAction is AddStatusEffectGA addStatusEffectGA)
         {
             if (!string.IsNullOrEmpty(_targetsDataKey))
-                context.AddData(_targetsDataKey, addStatusEffectGA.Targets);
+                context.SetData(_targetsDataKey, addStatusEffectGA.Targets);
         }
     }
 
@@ -30,7 +30,7 @@ public class StatusEffectAppliedPC : ReactionCondition
             if (_combatantFilters.Count > 0)
                 count = addStatusEffectGA.Targets.ApplyFilters(_combatantFilters).Count();
 
-            bool success = addStatusEffectGA.StatusEffectType == _targetType;
+            bool success = addStatusEffectGA.StatusEffectInfo.EnumKey == _targetType;
 
             return success;
         }

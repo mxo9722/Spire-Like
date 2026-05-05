@@ -8,6 +8,7 @@ using UnityEngine;
 public class CardSystem : Singleton<CardSystem>
 {
     [SerializeField] private HandView _handView;
+    [SerializeField] private List<CardView> _viewsInPlay = new();
     [SerializeField] private CardPileView _drawPileView;
     [SerializeField] private CardPileView _discardPileView;
     [SerializeField] private CardPileView _exhaustedPileView;
@@ -15,10 +16,13 @@ public class CardSystem : Singleton<CardSystem>
     [field: SerializeField] public Color PlayableColor { get; private set; }
     [field: SerializeField] public Color HighlightColor { get; private set; }
 
+    [field: SerializeField] public Transform PlayCardPosition { get; private set; }
+
     private List<Card> _drawPile = new();
     private List<Card> _discardPile = new();
     private List<Card> _hand = new();
     private List<Card> _exhaustPile = new();
+    private List<Card> _cardsInPlay = new();
 
 
     public const int MAX_HAND_SIZE = 10;
@@ -69,7 +73,7 @@ public class CardSystem : Singleton<CardSystem>
     {
         _drawPile.AddRange(deckData);
 
-        foreach(Card card in _drawPile)
+        foreach (Card card in _drawPile)
         {
             SetCardReactions(card);
         }
@@ -152,7 +156,7 @@ public class CardSystem : Singleton<CardSystem>
 
     private IEnumerator CyclePerformer(CycleGA cycleGA)
     {
-        foreach(Card card in cycleGA.Cards)
+        foreach (Card card in cycleGA.Cards)
         {
             DiscardCardGA discardCardGA = new(card);
             ActionSystem.Instance.AddReaction(discardCardGA);
@@ -222,10 +226,18 @@ public class CardSystem : Singleton<CardSystem>
         {
             cardView = _handView.RemoveCard(discardCardGA.Target);
 
-            if(cardView == null && SpotlightSystem.Instance.SpotlightCardViews.Any(cv => cv.Card == discardCardGA.Target))
+            if (cardView == null)
             {
-                cardView = SpotlightSystem.Instance.SpotlightCardViews.Find(cv => cv.Card == discardCardGA.Target);
-                SpotlightSystem.Instance.RemoveSpotlightCardView(cardView);
+                if (SpotlightSystem.Instance.SpotlightCardViews.Any(cv => cv.Card == discardCardGA.Target))
+                {
+                    cardView = SpotlightSystem.Instance.SpotlightCardViews.Find(cv => cv.Card == discardCardGA.Target);
+                    SpotlightSystem.Instance.RemoveSpotlightCardView(cardView);
+                }
+                else if (_cardsInPlay.Contains(discardCardGA.Target))
+                {
+                    cardView = GetInPlayCardView(discardCardGA.Target,true);
+                    _cardsInPlay.Remove(discardCardGA.Target);
+                }
             }
 
             _hand.Remove(discardCardGA.Target);
@@ -236,11 +248,23 @@ public class CardSystem : Singleton<CardSystem>
 
     private IEnumerator PlayCardPerformer(PlayCardGA playCardGA)
     {
-        SpendManaGA spendManaGA = new(playCardGA.card.Mana);
+        CardView cardView = GetCardView(playCardGA.card);
+
+        var context = playCardGA.GetEffectContext();
+        int manaCost = playCardGA.card.GetDynamicManaValue(context);
+        Debug.Log("ManaCost: "+manaCost);
+        SpendManaGA spendManaGA = new(manaCost);
         ActionSystem.Instance.AddReaction(spendManaGA);
 
-        HeroView heroView = playCardGA.card.GetOwnerView(playCardGA.GetEffectContext());
-        EffectContext context = new(heroView, playCardGA.ManualLaneTarget, playCardGA.ManualEnemyTarget, playCardGA.card);
+        _viewsInPlay.Add(cardView);
+        _cardsInPlay.Add(playCardGA.card);
+        _hand.Remove(playCardGA.card);
+
+        cardView.transform.DOKill();
+        cardView.transform.DOMove(PlayCardPosition.position, 0.15f);
+        yield return cardView.transform.DORotate(Vector3.zero, 0.15f).WaitForCompletion();
+
+        HeroView heroView = playCardGA.card.GetOwnerView(context);
 
         if (playCardGA.card.ManualTargetEffect != null)
         {
@@ -291,7 +315,9 @@ public class CardSystem : Singleton<CardSystem>
 
             yield return cardView.ActivateExhaustVFX();
 
+            _cardsInPlay.Remove(cardView.Card);
             _exhaustPile.Add(cardView.Card);
+
             SetCardReactions(card);
             UpdateUI();
         }
@@ -299,7 +325,7 @@ public class CardSystem : Singleton<CardSystem>
 
     private IEnumerator HandCardThrobPerformer(HandCardThrobGA handCardThrobGA)
     {
-        yield return _handView.ApplyCardThrob(handCardThrobGA.Card, 0.5f);
+        yield return HandCardThrob(handCardThrobGA.Card);
     }
 
     private IEnumerator ShufflePerformer(ShuffleGA shuffleGA)
@@ -322,6 +348,14 @@ public class CardSystem : Singleton<CardSystem>
     private IEnumerator DrawCard(DrawCardGA drawCardGA)
     {
         Card card = _drawPile.Draw();
+        
+        if(card == null)
+        {
+            SpeechBubbleGA speechBubbleGA = new("No more cards left to draw!", new() { HeroSystem.Instance.HeroViews[0] }, 5, 0);
+            ActionSystem.Instance.AddReaction(speechBubbleGA);
+            yield break;
+        }
+        
         UpdateUI();
 
         _hand.Add(card);
@@ -370,6 +404,44 @@ public class CardSystem : Singleton<CardSystem>
         yield return null;
     }
 
+    private CardView GetCardView(Card card)
+    {
+        CardView cardView = null;
+
+        if (_drawPile.Contains(card))
+        {
+            _drawPile.Remove(card);
+            _drawPileView.UpdateUI();
+        }
+        else if (_discardPile.Contains(card))
+        {
+            _discardPile.Remove(card);
+            _discardPileView.UpdateUI();
+        }
+        else if (_exhaustPile.Contains(card))
+        {
+            _exhaustPile.Remove(card);
+            _exhaustedPileView.UpdateUI();
+        }
+        else if (_hand.Contains(card))
+        {
+            cardView = _handView.RemoveCard(card);
+            _hand.Remove(card);
+        }
+        else if (_cardsInPlay.Contains(card))
+        {
+            cardView = GetInPlayCardView(card, true);
+            _cardsInPlay.Remove(card);
+        }
+        else if (SpotlightSystem.Instance.SpotlightCardViews.Any(cv => cv.Card == card))
+        {
+            cardView = SpotlightSystem.Instance.SpotlightCardViews.First(cv => cv.Card == card);
+            SpotlightSystem.Instance.RemoveSpotlightCardView(cardView);
+        }
+
+        return cardView;
+    }
+
     private CardView GetCardViewForEffect(Card card, float duration)
     {
         Transform pileView = default;
@@ -400,6 +472,11 @@ public class CardSystem : Singleton<CardSystem>
         {
             cardView = _handView.RemoveCard(card);
             _hand.Remove(card);
+        }
+        else if (_cardsInPlay.Contains(card))
+        {
+            cardView = GetInPlayCardView(card, true);
+            _cardsInPlay.Remove(card);
         }
         else if (SpotlightSystem.Instance.SpotlightCardViews.Any(cv => cv.Card == card))
         {
@@ -440,7 +517,12 @@ public class CardSystem : Singleton<CardSystem>
     {
         return new(_drawPile);
     }
-    
+
+    public List<Card> GetDiscardPile()
+    {
+        return new(_discardPile);
+    }
+
     public List<Card> GetHand()
     {
         return new(_hand);
@@ -471,18 +553,45 @@ public class CardSystem : Singleton<CardSystem>
         return cards.Sum(c => _hand.Contains(c) ? 1 : 0);
     }
 
-    public CardView GetViewFromHand(Card card, bool remove = true)
+    public CardView GetInPlayCardView(Card card, bool remove)
     {
-        if (_hand.Contains(card))
-        {
-            CardView cardView = _handView.RemoveCard(card);
+        CardView cardView = _viewsInPlay.Find(cv => cv.Card == card);
 
-            if(remove)
-                _hand.Remove(card);
-            
+        if (cardView != null)
+        {
+            if (remove)
+            {
+                _cardsInPlay.Remove(card);
+                _viewsInPlay.Remove(cardView);
+            }
+
             return cardView;
         }
+
         return null;
+    }
+
+    public CardView GetViewFromHand(Card card, bool remove = true)
+    {
+        CardView cardView = _handView.RemoveCard(card);
+
+        if (cardView != null)
+        {
+            if (remove)
+                _hand.Remove(card);
+
+            return cardView;
+        }
+
+        return null;
+    }
+
+    public IEnumerator ReturnViewToHand(CardView cardView)
+    {
+        int index = _hand.IndexOf(cardView.Card);
+        yield return _handView.AddCard(cardView, index);
+
+        UpdateCardViews();
     }
 
     public int GetCardCount()
@@ -498,5 +607,10 @@ public class CardSystem : Singleton<CardSystem>
             card.SubscribeInHand();
             return;
         }
+    }
+
+    public IEnumerator HandCardThrob(Card card)
+    {
+        yield return _handView.ApplyCardThrob(card, 0.5f);
     }
 }

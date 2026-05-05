@@ -8,13 +8,15 @@ public class StatusEffectSystem : Singleton<StatusEffectSystem>
 {
 
     [SerializeField] private ParticleSystem _defendVFX;
-    [SerializeField] private StatusEffectsData _statusEffectData;
+    [SerializeField] private StatusEffectsDictionary _statusEffectData;
 
     public const float FRAIL_MULITPLIER = 0.75f;
 
     private void OnEnable()
     {
         ActionSystem.AttachPerformer<AddStatusEffectGA>(AddStatusEffectPerformer);
+        ActionSystem.AttachPerformer<ConvertStatusEffectGA>(ConvertStatusEffectPerformer);
+        ActionSystem.AttachPerformer<MultiplyStatusEffectGA>(MultiplyStatusEffectPerformer);
         ActionSystem.AttachPerformer<RemoveAllStatusEffectGA>(RemoveAllStatusEffectPerformer);
 
         ActionSystem.SubscribeReaction<AddStatusEffectGA>(this, PreStatusEffectReaction, ReactionTiming.PRE);
@@ -41,16 +43,14 @@ public class StatusEffectSystem : Singleton<StatusEffectSystem>
         {
             if (target.CurrentHealth <= 0)
                 continue;
-            switch (addStatusEffectGA.StatusEffectType)
+            switch (addStatusEffectGA.StatusEffectInfo)
             {
                 default:
                     if (addStatusEffectGA.StackCount > 0)
                     {
                         ParticleSystem effect = Instantiate(_defendVFX, target.transform);
 
-                        StatusEffectInfo data = _statusEffectData.Map[addStatusEffectGA.StatusEffectType];
-
-                        effect.textureSheetAnimation.SetSprite(0, data.Sprite);
+                        effect.textureSheetAnimation.SetSprite(0, addStatusEffectGA.StatusEffectInfo.Sprite);
 
                         effect.transform.localPosition = Vector3.zero;
                         effect.transform.localScale = Vector3.one;
@@ -68,7 +68,7 @@ public class StatusEffectSystem : Singleton<StatusEffectSystem>
         {
             if (target.CurrentHealth <= 0)
                 continue;
-            target.AddStatusEffect(addStatusEffectGA.StatusEffectType, addStatusEffectGA.StackCount);
+            target.AddStatusEffect(addStatusEffectGA.StatusEffectInfo, addStatusEffectGA.StackCount);
             ///TODO: Add a special effect
 
             yield return null;
@@ -77,12 +77,55 @@ public class StatusEffectSystem : Singleton<StatusEffectSystem>
         DynamicViewsSystem.Instance.UpdateDynamicValues();
     }
 
+    private IEnumerator ConvertStatusEffectPerformer(ConvertStatusEffectGA convertStatusEffectGA)
+    {
+        foreach(CombatantView target in convertStatusEffectGA.Targets)
+        {
+            int stackCount = target.GetStatusEffectStacks(convertStatusEffectGA.From);
+
+            if (convertStatusEffectGA.UpTo >= 0)
+                stackCount = Mathf.Min(convertStatusEffectGA.UpTo, stackCount);
+
+            AddStatusEffectGA removeStatusEffect = new(convertStatusEffectGA.From, -stackCount, convertStatusEffectGA.Targets);
+            ActionSystem.Instance.AddReaction(removeStatusEffect);
+            
+            AddStatusEffectGA addStatusEffect = new(convertStatusEffectGA.To, stackCount, convertStatusEffectGA.Targets);
+            ActionSystem.Instance.AddReaction(addStatusEffect);
+        }
+
+        yield return null;
+    }
+
+    private IEnumerator MultiplyStatusEffectPerformer(MultiplyStatusEffectGA multiplyStatusEffectGA)
+    {
+        foreach(CombatantView unit in multiplyStatusEffectGA.Targets)
+        {
+            if (unit == null || unit.CurrentHealth == 0)
+                continue;
+
+            int amount = unit.GetStatusEffectStacks(multiplyStatusEffectGA.StatusEffect);
+            if(multiplyStatusEffectGA.Multiplier > 1)
+                amount = Mathf.CeilToInt(amount * multiplyStatusEffectGA.Multiplier - amount);
+            else
+                amount = Mathf.FloorToInt(amount * multiplyStatusEffectGA.Multiplier - amount);
+
+
+            if (amount == 0)
+                continue;
+            
+            AddStatusEffectGA addStatusEffect = new(multiplyStatusEffectGA.StatusEffect, amount, new() { unit });
+            ActionSystem.Instance.AddReaction(addStatusEffect);
+        }
+
+        yield return null;
+    }
+
     private IEnumerator RemoveAllStatusEffectPerformer(RemoveAllStatusEffectGA removeAllStatusEffect)
     {
         foreach (CombatantView target in removeAllStatusEffect.Targets)
         {
-            int stackCount = target.GetStatusEffectStacks(removeAllStatusEffect.StatusEffectType);
-            target.RemoveStatusEffect(removeAllStatusEffect.StatusEffectType, stackCount);
+            int stackCount = target.GetStatusEffectStacks(removeAllStatusEffect.StatusEffectInfo);
+            target.RemoveStatusEffect(removeAllStatusEffect.StatusEffectInfo, stackCount);
         }
 
         yield return null;
@@ -110,7 +153,7 @@ public class StatusEffectSystem : Singleton<StatusEffectSystem>
         //}
         EffectContext context = new(addStatusEffectGA.Caster);
 
-        int nStacks = ModifiedStackValue(addStatusEffectGA.StatusEffectType, addStatusEffectGA.StackCount, context);
+        int nStacks = ModifiedStackValue(addStatusEffectGA.StatusEffectInfo, addStatusEffectGA.StackCount, context);
         addStatusEffectGA.SetStackCount(nStacks);
     }
 
@@ -126,19 +169,19 @@ public class StatusEffectSystem : Singleton<StatusEffectSystem>
 
     public void PrePostModifyStatusEffect(CombatantView combatantView, ReactionTiming reactionTiming)
     {
-        List<StatusEffect> activeStatusEffects = combatantView.GetAllActiveStatusEffects();
+        List<StatusEffectInfo> activeStatusEffects = combatantView.GetAllActiveStatusEffects();
 
-        foreach (StatusEffect statusEffectType in activeStatusEffects)
+        foreach (StatusEffectInfo statusEffectInfo in activeStatusEffects)
         {
             StatusEffectModification modification = StatusEffectModification.NONE;
 
             switch (reactionTiming)
             {
                 case ReactionTiming.PRE:
-                    modification = _statusEffectData.Map[statusEffectType].PreTurnModification;
+                    modification = statusEffectInfo.PreTurnModification;
                     break;
                 case ReactionTiming.POST:
-                    modification = _statusEffectData.Map[statusEffectType].PostTurnModification;
+                    modification = statusEffectInfo.PostTurnModification;
                     break;
             }
 
@@ -149,16 +192,19 @@ public class StatusEffectSystem : Singleton<StatusEffectSystem>
                 case StatusEffectModification.NONE:
                     break;
                 case StatusEffectModification.REMOVE_ALL:
-                    int stack = combatantView.GetStatusEffectStacks(statusEffectType);
-                    addStatusEffectGA = new(statusEffectType, -stack, new() { combatantView });
+                    int stack = combatantView.GetStatusEffectStacks(statusEffectInfo);
+
+
+                    addStatusEffectGA = new(statusEffectInfo, -stack, new() { combatantView });
+                    
                     ActionSystem.Instance.AddReaction(addStatusEffectGA);
                     break;
                 case StatusEffectModification.REMOVE_ONE:
-                    addStatusEffectGA = new(statusEffectType, -1, new() { combatantView });
+                    addStatusEffectGA = new(statusEffectInfo, -1, new() { combatantView });
                     ActionSystem.Instance.AddReaction(addStatusEffectGA);
                     break;
                 case StatusEffectModification.APPLY_EFFECT:
-                    GameAction gameAction = _statusEffectData.Map[statusEffectType].Effect.GetGameAction(null, new() { combatantView });
+                    GameAction gameAction = statusEffectInfo.Effect.GetGameAction(null, new() { combatantView });
                     ActionSystem.Instance.AddReaction(gameAction);
                     break;
             }
@@ -167,20 +213,21 @@ public class StatusEffectSystem : Singleton<StatusEffectSystem>
 
     public void PrePostModifyStatusEffect(List<CombatantView> combatantViews, ReactionTiming reactionTiming)
     {
-        IEnumerable<StatusEffect> activeStatusEffects = combatantViews.SelectMany(c => c.GetAllActiveStatusEffects()).Distinct();
+        IEnumerable<StatusEffectInfo> activeStatusEffects = combatantViews.SelectMany(c => c.GetAllActiveStatusEffects()).Distinct();
 
-        foreach (StatusEffect statusEffectType in activeStatusEffects)
+        foreach (StatusEffectInfo statusEffectTypeInfo in activeStatusEffects)
         {
-            IEnumerable<CombatantView> relevantTargets = combatantViews.Where(c => c.GetStatusEffectStacks(statusEffectType) != 0);
+
+            IEnumerable<CombatantView> relevantTargets = combatantViews.Where(c => c.GetStatusEffectStacks(statusEffectTypeInfo) != 0);
             StatusEffectModification modification = StatusEffectModification.NONE;
 
             switch (reactionTiming)
             {
                 case ReactionTiming.PRE:
-                    modification = _statusEffectData.Map[statusEffectType].PreTurnModification;
+                    modification = statusEffectTypeInfo.PreTurnModification;
                     break;
                 case ReactionTiming.POST:
-                    modification = _statusEffectData.Map[statusEffectType].PostTurnModification;
+                    modification = statusEffectTypeInfo.PostTurnModification;
                     break;
             }
 
@@ -191,24 +238,24 @@ public class StatusEffectSystem : Singleton<StatusEffectSystem>
                 case StatusEffectModification.NONE:
                     break;
                 case StatusEffectModification.REMOVE_ALL:
-                    RemoveAllStatusEffectGA removeAllStatusEffect = new(statusEffectType, relevantTargets.ToList());
+                    RemoveAllStatusEffectGA removeAllStatusEffect = new(statusEffectTypeInfo, relevantTargets.ToList());
                     ActionSystem.Instance.AddReaction(removeAllStatusEffect);
                     break;
                 case StatusEffectModification.REMOVE_ONE:
-                    addStatusEffectGA = new(statusEffectType, -1, relevantTargets.ToList());
+                    addStatusEffectGA = new(statusEffectTypeInfo, -1, relevantTargets.ToList());
                     ActionSystem.Instance.AddReaction(addStatusEffectGA);
                     break;
                 case StatusEffectModification.APPLY_EFFECT:
-                    GameAction gameAction = _statusEffectData.Map[statusEffectType].Effect.GetGameAction(null, relevantTargets.ToList());
+                    GameAction gameAction = statusEffectTypeInfo.Effect.GetGameAction(null, relevantTargets.ToList());
                     ActionSystem.Instance.AddReaction(gameAction);
                     break;
             }
         }
     }
 
-    public static string StackAdditionValueFromEffect(StatusEffect type, int baseStacks, EffectContext context, List<CombatantView> targets = null)
+    public static string StackAdditionValueFromEffect(StatusEffectInfo info, int baseStacks, EffectContext context, List<CombatantView> targets = null)
     {
-        int modifiedValue = ModifiedStackValue(type, baseStacks, context, targets);
+        int modifiedValue = ModifiedStackValue(info, baseStacks, context, targets);
 
         if (baseStacks > modifiedValue)
         {
@@ -222,14 +269,14 @@ public class StatusEffectSystem : Singleton<StatusEffectSystem>
         return baseStacks.ToString();
     }
 
-    private static int ModifiedStackValue(StatusEffect type, int baseStacks, EffectContext context, List<CombatantView> targets = null)
+    private static int ModifiedStackValue(StatusEffectInfo info, int baseStacks, EffectContext context, List<CombatantView> targets = null)
     {
         if (context.Caster == null && context.PlayedCard != null)
             context.SetCaster(context.PlayedCard.GetOwnerView(context));
         if (context.Caster == null)
             return baseStacks;
 
-        if (type == StatusEffect.BLOCK)
+        if (info.EnumKey == StatusEffect.BLOCK)
         {
             if (baseStacks > 0)
             {
@@ -247,8 +294,8 @@ public class StatusEffectSystem : Singleton<StatusEffectSystem>
         return baseStacks;
     }
 
-    public StatusEffectInfo GetStatusEffectInfo(StatusEffect statusEffectType)
+    public static StatusEffectInfo GetDictionaryEntry(StatusEffect statusEffectType)
     {
-        return _statusEffectData.Map[statusEffectType];
+        return Instance._statusEffectData.NewMap[statusEffectType].Info;
     }
 }

@@ -118,7 +118,7 @@ public class RunSystem : PersistentSingleton<RunSystem>, IHoldData
     public void SetMap(Map map) => RunData.SetMap(map);
     public void MarkPerkUsed(PerkData perkData) => RunData.MarkPerkDataUsed(perkData);
 
-    public void AddData(string key, object data) => RunData.AddData(key, data);
+    public void SetData(string key, object data) => RunData.SetData(key, data);
     public T GetData<T>(string key) => RunData.GetData<T>(key);
     public bool ContainsKey(string key) => RunData.ContainsKey(key);
 }

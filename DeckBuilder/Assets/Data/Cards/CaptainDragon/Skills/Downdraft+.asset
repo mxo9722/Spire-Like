@@ -24,13 +24,14 @@ MonoBehaviour:
   <HighlightConditions>k__BackingField: []
   <ExhuastOnUse>k__BackingField: 1
   <ManualTargetType>k__BackingField: 0
-  <CombatantFilters>k__BackingField: []
+  <CombatantFilters>k__BackingField:
+  - rid: 6673086057952575581
   <LaneFilters>k__BackingField: []
   <ManualTargetEffect>k__BackingField:
     rid: 4055348011206443284
   <OtherEffects>k__BackingField:
   - rid: 4055347990049325142
-  <TurnEndEffects>k__BackingField: []
+  <InHandReactions>k__BackingField: []
   references:
     version: 2
     RefIds:
@@ -55,3 +56,7 @@ MonoBehaviour:
     - rid: 4055348103697924209
       type: {class: AddCardsToDeckEffect, ns: , asm: Assembly-CSharp}
       data: 
+    - rid: 6673086057952575581
+      type: {class: MoveableByCasterFilter, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0

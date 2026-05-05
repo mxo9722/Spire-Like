@@ -42,8 +42,11 @@ public abstract class AutoTargetEffect
         return NPCTargetTypes.NONE;
     }
 
+    public virtual AutoTargetEffect[] GetNestedEffects()
+    {
+        return new AutoTargetEffect[0];
+    }
+
     public abstract bool RequiresUserInput();
     public abstract IEnumerator WaitForUserInput(EffectContext context);
-
-    public abstract List<StatusEffect> GetAllStatusEffects();
 }

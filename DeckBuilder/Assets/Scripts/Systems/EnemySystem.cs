@@ -9,6 +9,7 @@ using UnityEngine;
 public class EnemySystem : Singleton<EnemySystem>
 {
     [field: SerializeField] public EnemyActionData EnemyActionSymbolData { get; private set; }
+    [field: SerializeField] public float IndirectReduction { get; private set; } = 0.5f;
 
     private BoardView _boardView;
 
@@ -47,6 +48,8 @@ public class EnemySystem : Singleton<EnemySystem>
         {
             _boardView.CreateEnemy(enemyData, index);
         }
+
+        DynamicViewsSystem.Instance.UpdateDynamicValues();
     }
 
     private IEnumerator NPCTurnPerformer(NPCTurnGA enemyTurnGA)
@@ -125,6 +128,9 @@ public class EnemySystem : Singleton<EnemySystem>
     {
         if (hideEnemyPreviewGA.EnemyView.CurrentHealth > 0)
             hideEnemyPreviewGA.EnemyView.SetCurrentAction(null);
+
+        DynamicViewsSystem.Instance.UpdateDynamicValues();
+
         yield return null;
     }
 
@@ -132,13 +138,19 @@ public class EnemySystem : Singleton<EnemySystem>
     {
         if ((attackHeroGA.Caster is NPCView npc && npc.IsDead) || attackHeroGA.Targets.Count == 0)
         {
-            attackHeroGA.Context.AddData(attackHeroGA.OnHitKey, false);
+            attackHeroGA.Context.SetData(attackHeroGA.OnHitKey, false);
             yield return null;
         }
         else
         {
             CombatantView attacker = attackHeroGA.Caster;
-            attackHeroGA.Context.AddData(attackHeroGA.OnHitKey, true);
+            attackHeroGA.Context.SetData(attackHeroGA.OnHitKey, true);
+
+            if (!string.IsNullOrWhiteSpace(attackHeroGA.HitCountKey))
+            {
+                int hitCount = attackHeroGA.Context.GetData<int>(attackHeroGA.HitCountKey);
+                attackHeroGA.Context.SetData(attackHeroGA.HitCountKey, hitCount + 1);
+            }
 
             yield return attacker.WaitForTweensComplete();
 
@@ -146,12 +158,41 @@ public class EnemySystem : Singleton<EnemySystem>
             yield return tween.WaitForCompletion();
             tween = attacker.transform.DOMoveX(attacker.transform.position.x + 1.0f, 0.25f);
 
-            DealDamageGA dealDamageGA = new(attackHeroGA.Damage, attackHeroGA.Targets, attackHeroGA.Context);
-            dealDamageGA.SetUnblockedKey(attackHeroGA.UnblockedKey);
-            dealDamageGA.SetOverkillKey(attackHeroGA.OverkillKey);
+            int damage = attackHeroGA.Damage;
 
-            ActionSystem.Instance.AddReaction(dealDamageGA);
-            yield return tween.WaitForCompletion();
+            if (attackHeroGA.IndirectReduction)
+            {
+                List<CombatantView> directTargets = attackHeroGA.Targets.FindAll(t => t.GetLaneDistance(attackHeroGA.Caster) == 0);
+                List<CombatantView> indirectTargets = new(attackHeroGA.Targets.Except(directTargets));
+
+                if(directTargets.Count > 0)
+                {
+                    DealDamageGA dealDamageGA = new(damage, directTargets, attackHeroGA.Context);
+                    dealDamageGA.SetUnblockedKey(attackHeroGA.UnblockedKey);
+                    dealDamageGA.SetOverkillKey(attackHeroGA.OverkillKey);
+
+                    ActionSystem.Instance.AddReaction(dealDamageGA);
+                }
+                if (indirectTargets.Count > 0)
+                {
+                    DealDamageGA dealDamageGA = new(damage, indirectTargets, attackHeroGA.Context);
+                    dealDamageGA.SetUnblockedKey(attackHeroGA.UnblockedKey);
+                    dealDamageGA.SetOverkillKey(attackHeroGA.OverkillKey);
+
+                    ActionSystem.Instance.AddReaction(dealDamageGA);
+                }
+
+                yield return tween.WaitForCompletion();
+            }
+            else
+            {
+                DealDamageGA dealDamageGA = new(damage, attackHeroGA.Targets, attackHeroGA.Context);
+                dealDamageGA.SetUnblockedKey(attackHeroGA.UnblockedKey);
+                dealDamageGA.SetOverkillKey(attackHeroGA.OverkillKey);
+
+                ActionSystem.Instance.AddReaction(dealDamageGA);
+                yield return tween.WaitForCompletion();
+            }
         }
     }
 
@@ -159,7 +200,11 @@ public class EnemySystem : Singleton<EnemySystem>
     {
         for (int i = 0; i < arg.AttackTimes; i++)
         {
-            AttackHeroGA attackHeroGA = new(arg.Damage, arg.Targets, arg.Context, arg.UnblockedKey, arg.OverkillKey, arg.OnHitKey);
+            AttackHeroGA attackHeroGA = new(arg.Damage, arg.Targets, arg.Context, arg.IndirectReduction, arg.UnblockedKey, arg.OverkillKey, arg.OnHitKey, arg.HitCountKey);
+
+            if (!string.IsNullOrWhiteSpace(arg.HitCountKey))
+                arg.Context.SetData(arg.HitCountKey, 0);
+            
             ActionSystem.Instance.AddReaction(attackHeroGA);
         }
         yield return 0;
@@ -183,6 +228,8 @@ public class EnemySystem : Singleton<EnemySystem>
         {
             MatchEndSystem.Instance.EndCombat();
         }
+
+        DynamicViewsSystem.Instance.UpdateDynamicValues();
     }
 
     public Sprite GetEnemyActionSymbol(NPCActionType enemyActionSymbolType)
@@ -212,7 +259,7 @@ public class EnemySystem : Singleton<EnemySystem>
         List<NPCView> enemies = BoardSystem.Instance.BoardView.GetAllEnemies();
         foreach (NPCView enemyView in enemies)
         {
-            enemyView.UpdateBehaviorIndicator();
+            enemyView.UpdateView();
         }
     }
 
@@ -256,6 +303,8 @@ public class EnemySystem : Singleton<EnemySystem>
                 break;
             }
         }
+
+        DynamicViewsSystem.Instance.UpdateDynamicValues();
     }
 
     private static bool IsEnemyActionValid(NPCAction enemyAction, NPCView enemyView)
@@ -277,5 +326,21 @@ public class EnemySystem : Singleton<EnemySystem>
         }
 
         return true;
+    }
+
+    public int ApplyIndirectModifiers(int damage, CombatantView attacker, CombatantView target)
+    {
+        if (attacker == null) return 0;
+        if (target == null) return damage;
+
+        if (target.GetLaneDistance(attacker) == 0)
+            return damage;
+
+        return ApplyIndirectModifiers(damage);
+    }
+
+    public int ApplyIndirectModifiers(int damage)
+    {
+        return Mathf.FloorToInt(damage * IndirectReduction);
     }
 }

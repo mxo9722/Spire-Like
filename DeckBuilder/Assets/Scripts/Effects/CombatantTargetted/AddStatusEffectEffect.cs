@@ -10,10 +10,11 @@ public class AddStatusEffectEffect : CombatantTargetEffect, IDynamicEffectText
 
     public StatusEffect StatusEffectType { get => _statusEffectType; }
     public Quantity StackCount { get => _stackCount; }
+    public StatusEffectInfo SEInfo => StatusEffectSystem.GetDictionaryEntry(_statusEffectType);
 
     protected override GameAction GetGameAction(EffectContext context, List<CombatantView> combatantTargets)
     {
-        return new AddStatusEffectGA(_statusEffectType, _stackCount.GetAmount(context), combatantTargets, context.Caster, _skipAnimation);
+        return new AddStatusEffectGA(SEInfo, _stackCount.GetAmount(context), combatantTargets, context.Caster, _skipAnimation);
     }
 
     public string GetStaticText()
@@ -29,7 +30,7 @@ public class AddStatusEffectEffect : CombatantTargetEffect, IDynamicEffectText
             context.SetCaster(context.PlayedCard.GetOwnerView(context));
         }
 
-        return StatusEffectSystem.StackAdditionValueFromEffect(_statusEffectType, _stackCount.GetAmount(context), context, targetCombatants);
+        return StatusEffectSystem.StackAdditionValueFromEffect(SEInfo, _stackCount.GetAmount(context), context, targetCombatants);
     }
 
     public override List<StatusEffect> GetAllStatusEffects()

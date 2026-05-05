@@ -25,23 +25,6 @@ public class AutoCardTargetEffect : AutoTargetEffect
         return dets.ToArray();
     }
 
-    public override List<StatusEffect> GetAllStatusEffects()
-    {
-        List<StatusEffect> statusEffects = new();
-
-        List<StatusEffect> oStatusEffects = TargetMode.GetAllStatusEffects();
-
-        if (oStatusEffects != null)
-            statusEffects.AddRange(oStatusEffects);
-
-        oStatusEffects = _cardEffect.GetAllStatusEffects();
-
-        if (oStatusEffects != null)
-            statusEffects.AddRange(oStatusEffects);
-
-        return statusEffects;
-    }
-
     public override GameAction GetGameAction(EffectContext context)
     {
         List<Card> cards = TargetMode.GetTargets(context);
@@ -51,12 +34,12 @@ public class AutoCardTargetEffect : AutoTargetEffect
 
     public override bool RequiresUserInput()
     {
-        return TargetMode is IUserInputTM;
+        return TargetMode is INeedsUserInput;
     }
 
     public override IEnumerator WaitForUserInput(EffectContext context)
     {
-        if (TargetMode is IUserInputTM userInputTM)
+        if (TargetMode is INeedsUserInput userInputTM)
             yield return userInputTM.WaitForUserInput(context);
     }
 

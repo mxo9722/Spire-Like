@@ -34,10 +34,23 @@ public class EffectContext : IHoldData
         Caster = caster;
     }
 
-    public void AddData(string key, object data)
+    public void SetManualCombatant(CombatantView combatant)
+    {
+        TargetCombatant = combatant;
+    }
+    
+    public void SetManualLane(LaneView combatant)
+    {
+        TargetLane = combatant;
+    }
+
+    public void SetData(string key, object data)
     {
         if (_data == null)
             _data = new();
+
+        if (string.IsNullOrWhiteSpace(key))
+            return;
 
         if (_data.ContainsKey(key))
             _data[key] = data;

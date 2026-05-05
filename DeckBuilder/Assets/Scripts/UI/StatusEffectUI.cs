@@ -14,31 +14,37 @@ public class StatusEffectUI : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     private CombatantView _owner;
     private int _stackCount = 0;
-    private StatusEffect _statusEffectType;
+    public StatusEffectInfo Info { get; private set; }
+    public StatusEffect StatusEffectType { get => Info.EnumKey; }
 
     private bool _started = false;
 
-    public void Set(CombatantView owner, Sprite sprite, int stackCount, StatusEffect statusEffectType)
+    public void Set(CombatantView owner, Sprite sprite, int stackCount, bool canStack, StatusEffectInfo info)
     {
         _owner = owner;
         _image.sprite = sprite;
 
-        if (stackCount != 0)
+        if (canStack)
             _stackCountText.text = stackCount.ToString();
         else
             _stackCountText.text = "";
 
         _stackCount = stackCount;
 
-        _statusEffectType = statusEffectType;
+        Info = info;
+
+        Info = info;
 
         if (!_started)
         {
-            StatusEffectInfo info = StatusEffectSystem.Instance.GetStatusEffectInfo(statusEffectType);
-
-            foreach (StatusEffectReaction reaction in info.Reactions)
+            foreach (StatusEffectReaction reaction in Info.Reactions)
             {
                 reaction.SubscribeCondition(this, HandleReaction);
+            }
+            
+            foreach (ConditionalModifierPair modifier in Info.Modifiers)
+            {
+                modifier.Subscribe(this);
             }
 
             _started = true;
@@ -49,19 +55,24 @@ public class StatusEffectUI : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     private void OnDisable()
     {
-        StatusEffectInfo info = StatusEffectSystem.Instance?.GetStatusEffectInfo(_statusEffectType);
-
-        if (info != null)
-            foreach (StatusEffectReaction reaction in info.Reactions)
+        if (Info != null)
+        {
+            foreach (StatusEffectReaction reaction in Info.Reactions)
             {
                 reaction.UnsubscribeCondition(this, HandleReaction);
             }
+            
+            foreach (ConditionalModifierPair modifier in Info.Modifiers)
+            {
+                modifier.Unsubscribe(this);
+            }
+        }
     }
 
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        _helpBoxUI.SetUpFromStatusEffect(_statusEffectType, _stackCount);
+        _helpBoxUI.SetUpFromStatusEffect(Info, _stackCount);
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -71,15 +82,13 @@ public class StatusEffectUI : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     private void HandleReaction(GameAction gameAction)
     {
-        StatusEffectInfo info = StatusEffectSystem.Instance.GetStatusEffectInfo(_statusEffectType);
-
-        foreach (StatusEffectReaction reaction in info.Reactions)
+        foreach (StatusEffectReaction reaction in Info.Reactions)
         {
             int count = reaction.SubConditionIsMet(_owner, gameAction);
 
             EffectContext context = new(_owner);
 
-            context.AddData("stacks",_stackCount);
+            context.SetData("stacks",_stackCount);
             reaction.SaveTargetData(context, gameAction);
 
             for (int i = 0; i < count; i++)

@@ -33,4 +33,9 @@ public class RepeatEffectsEffect : NoTargetEffect
         MultipleEffectsGA multipleEffectsGA = new(context, effects);
         return multipleEffectsGA;
     }
+
+    public override AutoTargetEffect[] GetNestedEffects()
+    {
+        return _autoTargetEffects;
+    }
 }

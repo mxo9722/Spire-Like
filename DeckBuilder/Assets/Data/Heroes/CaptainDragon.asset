@@ -18,18 +18,17 @@ MonoBehaviour:
   <StartingDeck>k__BackingField:
   - {fileID: 11400000, guid: 9b170048756697247b90db3e3e81d739, type: 2}
   - {fileID: 11400000, guid: 637a882dceefb134c8204a03c43e2de4, type: 2}
-  - {fileID: 11400000, guid: c3589d9f857f04f46877befe398f5cf8, type: 2}
+  - {fileID: 11400000, guid: 5543831e8ffc1144f9b3c8c1fc718188, type: 2}
   <StartingPerk>k__BackingField: {fileID: 11400000, guid: 63c765e5b9c1cde48b905695b665f8f9, type: 2}
   <Color>k__BackingField: {r: 1, g: 0.6194968, b: 0.6194968, a: 1}
   _allCards:
-  - {fileID: 11400000, guid: fc5370e69fac9e44680b09879fc0e5f5, type: 2}
-  - {fileID: 11400000, guid: f4dfc432249586a47a0cbd1f3568f020, type: 2}
-  - {fileID: 11400000, guid: cd2e01e1086e04f4b82741cb9cc1760b, type: 2}
-  - {fileID: 11400000, guid: cc50c00b1e6833c4f95cbbe9574e751b, type: 2}
-  - {fileID: 11400000, guid: 8220b4cce994b0a4aba5dbbe93c0c2f5, type: 2}
-  - {fileID: 11400000, guid: fc28d5a5f5d130d48b1c7bdfeaffc920, type: 2}
-  - {fileID: 11400000, guid: 38fc92e12a67eae438b947d869f2bdd2, type: 2}
-  - {fileID: 11400000, guid: d512ff62c0bb0024eb6e15665889c354, type: 2}
-  - {fileID: 11400000, guid: 7c67ca1fb9508b7448ab52bcc6712537, type: 2}
-  - {fileID: 11400000, guid: 612fcaeda816148469c38ee4da334b53, type: 2}
+  - {fileID: 11400000, guid: e1a2c053e74671d47a009e3243ed0159, type: 2}
+  - {fileID: 11400000, guid: f0ae5280ab0039642a0530cc9b4276aa, type: 2}
+  - {fileID: 11400000, guid: a47dc9d7e4105c64499ff51808c2e548, type: 2}
+  - {fileID: 11400000, guid: 4d3a7f8f43d180f44a55fea45537f20a, type: 2}
+  - {fileID: 11400000, guid: cf2a187e4a734654b8f21f300b89e5ae, type: 2}
+  - {fileID: 11400000, guid: 4cbae0dbecb409c4d995f9416b5e7752, type: 2}
+  - {fileID: 11400000, guid: 95e88bb6c46ca614092c78857805ba56, type: 2}
+  - {fileID: 11400000, guid: b715761c95bb5bf4caba58e10c090071, type: 2}
+  - {fileID: 11400000, guid: 5543831e8ffc1144f9b3c8c1fc718188, type: 2}
   _perks: []

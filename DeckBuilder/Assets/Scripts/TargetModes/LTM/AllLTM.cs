@@ -11,7 +11,7 @@ public class AllLTM : LaneTargetMode
         List<LaneView> lanes = BoardSystem.Instance.GetAllLanes();
         
         if(_filters.Count > 0)
-            lanes = new(lanes.ApplyFilters(_filters));
+            lanes = new(lanes.ApplyFilters(_filters, context));
         
         return lanes;
     }

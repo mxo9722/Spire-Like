@@ -22,21 +22,26 @@ public class SpotlightSystem : Singleton<SpotlightSystem>
 
     private IEnumerator SpotlightCardPerformer(SpotlightCardGA spotlightCardViewGA)
     {
+        yield return SpotlightCard(spotlightCardViewGA.Target);
+    }
+
+    public IEnumerator SpotlightCard(CardView cardView)
+    {
         Vector3 center = Vector3.zero;
         center.x = Camera.main.transform.position.x;
         center.y = Camera.main.transform.position.y;
 
-        int prevID = spotlightCardViewGA.Target.SortingGroup.sortingLayerID;
-        spotlightCardViewGA.Target.SortingGroup.sortingLayerID = SortingLayer.layers.Last().id;
+        int prevID = cardView.SortingGroup.sortingLayerID;
+        cardView.SortingGroup.sortingLayerID = SortingLayer.layers.Last().id;
 
-        spotlightCardViewGA.Target.transform.DOKill();
-        spotlightCardViewGA.Target.transform.DOMove(center, 0.15f);
-        spotlightCardViewGA.Target.transform.DORotate(Vector3.zero, 0.15f);
+        cardView.transform.DOKill();
+        cardView.transform.DOMove(center, 0.15f);
+        cardView.transform.DORotate(Vector3.zero, 0.15f);
 
         yield return new WaitForSeconds(0.3f);
 
-        spotlightCardViewGA.Target.SortingGroup.sortingLayerID = prevID;
-        SpotlightCardViews.Add(spotlightCardViewGA.Target);
+        cardView.SortingGroup.sortingLayerID = prevID;
+        SpotlightCardViews.Add(cardView);
     }
 
     public void RemoveSpotlightCardView(CardView cardView)

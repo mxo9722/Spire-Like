@@ -43,14 +43,14 @@ public class DealDamageGA : GameAction, IHaveCaster
     {
         UnblockedDamage = amount;
         if (!string.IsNullOrWhiteSpace(UnblockedKey))
-            Context.AddData(UnblockedKey, amount);
+            Context.SetData(UnblockedKey, amount);
     }
     
     public void SetOverkill(int amount)
     {
         Overkill = amount;
         if (!string.IsNullOrWhiteSpace(OverkillKey))
-            Context.AddData(OverkillKey, amount);
+            Context.SetData(OverkillKey, amount);
     }
 
     public void SetUnblockedKey(string key)

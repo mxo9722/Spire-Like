@@ -1,7 +1,11 @@
 using UnityEngine;
 
 public enum StatusEffect
-{
+{   [InspectorName("Unique")]
+    UNIQUE = -1000,
+
+
+
     [InspectorName("Basic/Block")]
     BLOCK = 0,
     [InspectorName("Basic/Burn")]
@@ -18,8 +22,10 @@ public enum StatusEffect
     WEAK,
     [InspectorName("Basic/Anchored")]
     ANCHORED,
-    [InspectorName("Basic/Hamstrung")]
-    HAMSTRUNG,
+    [InspectorName("Basic/Pinned")]
+    PINNED,
+    [InspectorName("Basic/Bruised")]
+    BRUISED,
 
 
 
@@ -31,6 +37,8 @@ public enum StatusEffect
     TAUNT,
     [InspectorName("Enemy/Guard")]
     GUARD,
+    [InspectorName("Enemy/On Base")]
+    ON_BASE,
     
         
     [InspectorName("CaptainDragon/Chaos")]

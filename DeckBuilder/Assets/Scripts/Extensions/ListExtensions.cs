@@ -49,4 +49,16 @@ public static class ListExtensions
             context = new();
         return list.Where(i => filters.TrueForAll(f => f.TestTarget(context, i)));
     }
+    
+    public static IEnumerable<Card> ApplyFilters(this List<Card> list,List<CardFilter> filters, EffectContext context = null)
+    {
+        if (context == null)
+            context = new();
+        return list.Where(i => filters.TrueForAll(f => f.TestTarget(context, i)));
+    }
+
+    public static bool TargetIsValid<F,T>(this IEnumerable<F> filters, T target, EffectContext context = null) where F : TargetFilter<T>
+    {
+        return filters.All(f => f.TestTarget(context, target));
+    }
 }

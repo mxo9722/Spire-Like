@@ -18,7 +18,6 @@ MonoBehaviour:
   <StartingDeck>k__BackingField:
   - {fileID: 11400000, guid: 8c36a7a8f97c2ba458fd0f64ff86c66b, type: 2}
   - {fileID: 11400000, guid: 4b701118d5ddf3847a330749aca6baba, type: 2}
-  - {fileID: 11400000, guid: c3589d9f857f04f46877befe398f5cf8, type: 2}
   <StartingPerk>k__BackingField: {fileID: 0}
   <Color>k__BackingField: {r: 0.7019608, g: 0.7882353, b: 1, a: 1}
   _allCards:

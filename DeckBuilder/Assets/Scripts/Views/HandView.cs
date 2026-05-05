@@ -91,7 +91,7 @@ public class HandView : MonoBehaviour
     {
         foreach(CardView card in _cards)
         {
-            card.UpdateDynamicDescription(new(card.Card.GetOwnerView()));
+            card.UpdateDynamicDescription(new(card.Card.GetOwnerView(), playedCard: card.Card));
 
             card.UpdateGlow();
         }

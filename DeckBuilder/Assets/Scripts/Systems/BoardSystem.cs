@@ -1,4 +1,5 @@
 using AYellowpaper.SerializedCollections;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -54,12 +55,16 @@ public class BoardSystem : Singleton<BoardSystem>
         return null;
     }
 
+    public void SetUp() => BoardView.SetUp();
     public LaneView GetCurrentLaneView(HeroView heroView) => BoardView.GetCurrentLaneView(heroView);
     public LaneView GetCurrentLaneView(NPCView enemyView) => BoardView.GetCurrentLaneView(enemyView);
     public List<NPCView> GetAllEnemies() => BoardView.GetAllEnemies();
     public List<CombatantView> GetAllCombatants() => BoardView.GetAllCombatants();
     public List<CombatantView> GetAllFoes(CombatantView caster) => BoardView.GetAllFoes(caster);
+    public List<CombatantView> GetAllAllies(CombatantView caster) => BoardView.GetAllAllies(caster);
+    public List<CombatantView> GetAllHeroes() => BoardView.GetAllHeroes();
     public List<LaneView> GetAllLanes() => BoardView.GetAllLanes();
+    public int GetLaneDistance(LaneView laneA, LaneView laneB) => BoardView.GetLaneDistance(laneA, laneB);
 
     public LaneView GetLaneFromDirection(LaneView laneView, MovementDirection direction, int count = 1, bool loopAround = false)
     {
@@ -99,4 +104,6 @@ public class BoardSystem : Singleton<BoardSystem>
         return new();
 
     }
+
+    public void UpdateView() => BoardView?.UpdateView();
 }

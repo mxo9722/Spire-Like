@@ -14,7 +14,7 @@ public class StatusEffectGainedByOwnerSER : StatusEffectReaction
     {
         if(gameAction is AddStatusEffectGA addStatusEffectGA)
         {
-            bool success = addStatusEffectGA.StatusEffectType == _targetType && addStatusEffectGA.StackCount > 0 && addStatusEffectGA.Targets.Contains(owner);
+            bool success = addStatusEffectGA.StatusEffectInfo.EnumKey == _targetType && addStatusEffectGA.StackCount > 0 && addStatusEffectGA.Targets.Contains(owner);
 
             if (_combatantFilters.Count > 0)
                 success = success && _combatantFilters.TrueForAll(f => f.TestTarget( new(addStatusEffectGA.Caster), owner));

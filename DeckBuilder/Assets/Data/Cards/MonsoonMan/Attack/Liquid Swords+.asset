@@ -29,8 +29,8 @@ MonoBehaviour:
   <ExhuastOnUse>k__BackingField: 0
   <ManualTargetType>k__BackingField: 0
   <CombatantFilters>k__BackingField:
-  - rid: 262421164024660116
-  - rid: 262421164024660117
+  - rid: 1464363174695272627
+  - rid: 1464363174695272628
   <LaneFilters>k__BackingField: []
   <ManualTargetEffect>k__BackingField:
     rid: 262421164024660061
@@ -96,16 +96,11 @@ MonoBehaviour:
       type: {class: SetSoakEffect, ns: , asm: Assembly-CSharp}
       data:
         _setSoaked: 0
-    - rid: 262421164024660116
-      type: {class: TargIsEvilFilter, ns: , asm: Assembly-CSharp}
+    - rid: 1464363174695272627
+      type: {class: AlignedFilter, ns: , asm: Assembly-CSharp}
       data:
         _invert: 0
-    - rid: 262421164024660117
-      type: {class: TargIsInLaneFilter, ns: , asm: Assembly-CSharp}
+    - rid: 1464363174695272628
+      type: {class: FoeFilter, ns: , asm: Assembly-CSharp}
       data:
         _invert: 0
-        _lane:
-          rid: 262421164024660118
-    - rid: 262421164024660118
-      type: {class: CurrentLTM, ns: , asm: Assembly-CSharp}
-      data: 

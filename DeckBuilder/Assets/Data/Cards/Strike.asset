@@ -24,16 +24,24 @@ MonoBehaviour:
   <ExhuastOnUse>k__BackingField: 0
   <ManualTargetType>k__BackingField: 0
   <CombatantFilters>k__BackingField:
-  - rid: 4055348011206443443
-  - rid: 4055348043236245586
+  - rid: 1464363174695272621
+  - rid: 1464363174695272622
   <LaneFilters>k__BackingField: []
   <ManualTargetEffect>k__BackingField:
     rid: 3796151383156588620
   <OtherEffects>k__BackingField: []
-  <TurnEndEffects>k__BackingField: []
+  <InHandReactions>k__BackingField: []
   references:
     version: 2
     RefIds:
+    - rid: 1464363174695272621
+      type: {class: AlignedFilter, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
+    - rid: 1464363174695272622
+      type: {class: FoeFilter, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
     - rid: 3796151383156588620
       type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
       data:
@@ -43,16 +51,3 @@ MonoBehaviour:
       type: {class: SetQ, ns: , asm: Assembly-CSharp}
       data:
         _set: 6
-    - rid: 4055348011206443443
-      type: {class: TargIsInLaneFilter, ns: , asm: Assembly-CSharp}
-      data:
-        _invert: 0
-        _lane:
-          rid: 4055348011206443444
-    - rid: 4055348011206443444
-      type: {class: CurrentLTM, ns: , asm: Assembly-CSharp}
-      data: 
-    - rid: 4055348043236245586
-      type: {class: TargIsEvilFilter, ns: , asm: Assembly-CSharp}
-      data:
-        _invert: 0

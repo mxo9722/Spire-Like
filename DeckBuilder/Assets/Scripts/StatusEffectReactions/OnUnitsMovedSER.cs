@@ -50,7 +50,7 @@ public class OnUnitsMovedSER : StatusEffectReaction
             int count = validCombatants.Count();
 
             if (count > 0 && !string.IsNullOrWhiteSpace(_relevantCombatantsKey))
-                context.AddData(_relevantCombatantsKey, validCombatants.ToList());
+                context.SetData(_relevantCombatantsKey, validCombatants.ToList());
         }
     }
 

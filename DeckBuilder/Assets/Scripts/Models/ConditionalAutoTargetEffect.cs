@@ -18,8 +18,6 @@ public class ConditionalAutoTargetEffect : AutoTargetEffect
 
     public override Effect[] Effects => _successEffects.SelectMany(e => e.Effects).ToArray();
 
-    public override List<StatusEffect> GetAllStatusEffects() => _successEffects.SelectMany(e => e.GetAllStatusEffects()).ToList();
-
     public override GameAction GetGameAction(EffectContext context)
     {
         if (AllConditionsMet(context))

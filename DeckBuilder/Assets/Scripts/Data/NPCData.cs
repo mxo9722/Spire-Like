@@ -6,6 +6,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NPCData", menuName = "Data/NPC")]
 public class NPCData : ScriptableObject
 {
+    [field: SerializeField] public bool TheDeterminer { get; private set; } = true;
     [field:SerializeField] public Sprite Image { get; private set; }
     [field:SerializeField] public int Health { get; private set; }
     [field:SerializeField, Min(0)] public int RandomHealthMod { get; private set; }

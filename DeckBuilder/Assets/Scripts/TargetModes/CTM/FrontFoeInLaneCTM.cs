@@ -33,4 +33,9 @@ public class FrontFoeInLaneCTM : CombatantTargetMode
     {
         return NPCTargetTypes.FRONT_FOE;
     }
+
+    public override bool LaneRelevant(EffectContext context, LaneView lane)
+    {
+        return context.Caster.Lane == lane;
+    }
 }

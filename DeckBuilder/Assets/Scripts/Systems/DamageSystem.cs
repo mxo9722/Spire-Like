@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class DamageSystem : Singleton<DamageSystem>
@@ -43,13 +44,16 @@ public class DamageSystem : Singleton<DamageSystem>
 
         foreach (CombatantView target in dealDamageGA.Targets)
         {
-            int individualDamage = baseDamage;
+            int individualDamage = dealDamageGA.Amount;
 
+            if (dealDamageGA.IsAttack)
+                individualDamage = GetDamageFromAttack(dealDamageGA.Amount, dealDamageGA.Context, new() { target });
+            
             if (target.CurrentHealth == 0)
                 continue;
 
-            if (target.GetStatusEffectStacks(StatusEffect.VULNERABLE) > 0)
-                individualDamage = Mathf.FloorToInt(individualDamage * VULNERABLE_MULITPLIER);
+            //if (target.GetStatusEffectStacks(StatusEffect.VULNERABLE) > 0)
+            //    individualDamage = Mathf.FloorToInt(individualDamage * VULNERABLE_MULITPLIER);
 
             (int UnblockedDamage, int Overkill) result = target.Damage(individualDamage);
 
@@ -96,9 +100,9 @@ public class DamageSystem : Singleton<DamageSystem>
         return baseDamage.ToString();
     }
     
-    public static string EnemyDamageTextFromAttack(int baseDamage, EffectContext context, List<CombatantView> targets)
+    public static string EnemyDamageTextFromAttack(int baseDamage, EffectContext context, List<CombatantView> targets, bool applyIndirect)
     {
-        int damage = GetDamageFromAttack(baseDamage, context, targets);
+        int damage = GetDamageFromAttack(baseDamage, context, targets, applyIndirect);
 
         if(targets.Count > 0)
         {
@@ -108,23 +112,46 @@ public class DamageSystem : Singleton<DamageSystem>
         return damage.ToString();
     }
 
-    public static int GetDamageFromAttack(int damage, EffectContext context, List<CombatantView> targets = null)
+    public static int GetDamageFromAttack(int damage, EffectContext context, List<CombatantView> targets = null, bool applyIndirect = true)
     {
-        if (context.Caster == null && context.PlayedCard != null)
-            context.SetCaster(context.PlayedCard.GetOwnerView(context));
-        if (context.Caster == null)
-            return damage;
-
-        damage = Mathf.Max(0, damage + context.Caster.GetStatusEffectStacks(StatusEffect.STRENGTH));
-
         float multiplier = 1.0f;
 
-        if (context.Caster.GetStatusEffectStacks(StatusEffect.WEAK) > 0)
-            multiplier *= WEAK_MULITPLIER;
+        if (context.PlayedCard != null)
+        {
+            ExtraAttackDamageCM extraAttackDamageCM = context.PlayedCard.GetCardModifier<ExtraAttackDamageCM>();
 
-        if (targets != null && targets.TrueForAll(e => e.GetStatusEffectStacks(StatusEffect.VULNERABLE) > 0) && targets.Count > 0)
-            multiplier *= VULNERABLE_MULITPLIER;
+            if (extraAttackDamageCM != null)
+                damage += extraAttackDamageCM.DamageBonus;
+        }
 
-        return Mathf.FloorToInt(damage * multiplier);
+        if (context.Caster == null && context.PlayedCard != null)
+            context.SetCaster(context.PlayedCard.GetOwnerView(context));
+
+        if (context.Caster != null)
+        {
+            damage += context.Caster.GetStatusEffectStacks(StatusEffect.STRENGTH);
+
+            if (context.Caster.GetStatusEffectStacks(StatusEffect.WEAK) > 0)
+                multiplier *= WEAK_MULITPLIER;
+        }
+
+        if (targets != null)
+        {
+            if (targets.TrueForAll(e => e.GetStatusEffectStacks(StatusEffect.BRUISED) > 0) && targets.Count > 0)
+                damage += targets.Min(t => t.GetStatusEffectStacks(StatusEffect.BRUISED));
+            
+            if (targets.TrueForAll(e => e.GetStatusEffectStacks(StatusEffect.VULNERABLE) > 0) && targets.Count > 0)
+                multiplier *= VULNERABLE_MULITPLIER;
+        }
+
+        if (applyIndirect && context.Caster != null && targets != null) 
+        {
+            if(context.Caster is NPCView && targets.All(t => t.GetLaneDistance(context.Caster) > 0))
+                multiplier *= EnemySystem.Instance.IndirectReduction;
+        }
+
+        damage = Mathf.FloorToInt(damage * multiplier);
+
+        return Mathf.Max(damage, 0);
     }
 }

@@ -22,7 +22,7 @@ public class EffectDataSystem : Singleton<EffectDataSystem>
     {
         IHoldData dataHolder = IHoldData.GetDataHolder(saveDataGA.Context, saveDataGA.DataLevel);
 
-        dataHolder.AddData(saveDataGA.Key, saveDataGA.Data);
+        dataHolder.SetData(saveDataGA.Key, saveDataGA.Data);
 
         CardSystem.Instance.UpdateCardViews();
         yield return null;
@@ -32,7 +32,7 @@ public class EffectDataSystem : Singleton<EffectDataSystem>
     {
         foreach (CombatantView target in saveDataToUnitsGA.Targets)
         {
-            target.AddData(saveDataToUnitsGA.Key, saveDataToUnitsGA.Value);
+            target.SetData(saveDataToUnitsGA.Key, saveDataToUnitsGA.Value);
         }
 
         yield return null;

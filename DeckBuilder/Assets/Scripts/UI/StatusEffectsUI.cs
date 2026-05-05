@@ -5,9 +5,9 @@ public class StatusEffectsUI : MonoBehaviour
 {
     [SerializeField] private Canvas _canvas;
     [SerializeField] private StatusEffectUI _statusEffectUIPrefab;
-    [SerializeField] private StatusEffectsData _statusEffectsData;
+    [SerializeField] private StatusEffectsDictionary _statusEffectsData;
 
-    private Dictionary<StatusEffect, StatusEffectUI> _statusEffectUIs = new();
+    private List<StatusEffectUI> _statusEffectUIs = new();
 
     private CombatantView _owner;
     private Transform _blockPosition;
@@ -23,42 +23,47 @@ public class StatusEffectsUI : MonoBehaviour
         _canvas.worldCamera = Camera.main;
     }
 
-    public void UpdateStatusEffectsUI(StatusEffect statusEffectType, int stackCount)
+    public void UpdateStatusEffectsUI(StatusEffectInfo info, int stackCount)
     {
-        if (stackCount == 0)
+
+        StatusEffectUI ui = GetExistingUI(info);
+
+        if (stackCount == 0 && info.RemoveAtZero)
         {
-            if (_statusEffectUIs.ContainsKey(statusEffectType))
+            if (ui != null)
             {
-                StatusEffectUI statusEffectUI = _statusEffectUIs[statusEffectType];
-                _statusEffectUIs.Remove(statusEffectType);
-                Destroy(statusEffectUI.gameObject);
+                _statusEffectUIs.Remove(ui);
+                Destroy(ui.gameObject);
             }
         }
         else
         {
-            if (!_statusEffectUIs.ContainsKey(statusEffectType))
-            {
-                StatusEffectUI statusEffectUI = Instantiate(_statusEffectUIPrefab, transform);
-                _statusEffectUIs.Add(statusEffectType, statusEffectUI);
 
-                switch (statusEffectType)
+            if (ui == null)
+            {
+                ui = Instantiate(_statusEffectUIPrefab, transform);
+                _statusEffectUIs.Add(ui);
+
+                switch (info.EnumKey)
                 {
                     case StatusEffect.BLOCK:
-                        statusEffectUI.SetPositionOverride(_blockPosition.position);
+                        ui.SetPositionOverride(_blockPosition.position);
                         break;
                 }
             }
 
-            Sprite sprite = GetSpriteByType(statusEffectType);
+            Sprite sprite = info.Sprite;
 
-            int displayStackCount = _statusEffectsData.Map[statusEffectType].Stackable ? stackCount : 0;
+            bool stackable = info.Stackable;
 
-            _statusEffectUIs[statusEffectType].Set(_owner, sprite, displayStackCount, statusEffectType);
+            int displayStackCount = stackable ? stackCount : 0;
+
+            ui.Set(_owner, sprite, displayStackCount, stackable, info);
         }
     }
 
-    private Sprite GetSpriteByType(StatusEffect statusEffectType)
+    private StatusEffectUI GetExistingUI(StatusEffectInfo info)
     {
-        return _statusEffectsData.Map[statusEffectType].Sprite;
+        return _statusEffectUIs.Find(se => se.Info.Equals(info));
     }
 }

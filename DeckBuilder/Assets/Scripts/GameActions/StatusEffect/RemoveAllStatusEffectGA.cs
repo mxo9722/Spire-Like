@@ -3,12 +3,13 @@ using UnityEngine;
 
 public class RemoveAllStatusEffectGA : GameAction
 {
-    public StatusEffect StatusEffectType { get; private set; }
+
+    public StatusEffectInfo StatusEffectInfo { get; private set; }
     public List<CombatantView> Targets { get; private set; }
 
-    public RemoveAllStatusEffectGA(StatusEffect type, List<CombatantView> targets)
+    public RemoveAllStatusEffectGA(StatusEffectInfo statusEffectInfo, List<CombatantView> targets)
     {
-        StatusEffectType = type;
+        StatusEffectInfo = statusEffectInfo;
         Targets = targets;
     }
 }

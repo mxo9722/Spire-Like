@@ -10,10 +10,11 @@ public class RestoreHealthEA : HeroTargettedEventAction
 
     protected override IEnumerator Invoke(EffectContext context,List<Hero> targets)
     {
-        foreach (var target in targets)
+        foreach (Hero target in targets)
         {
             int health = target.CurrentHealth;
             health += _amount.GetStaticAmount();
+            health = Mathf.Min(target.MaxHealth, health);
             target.SetCurrentHealth(health);
             TopBarUI.Instance.UpdateHealth();
         }

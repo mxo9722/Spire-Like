@@ -1,0 +1,144 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62bf69310631aa94896652d3f8be392c, type: 3}
+  m_Name: Pyrotechnics
+  m_EditorClassIdentifier: 
+  <Rarity>k__BackingField: 0
+  <Upgrade>k__BackingField: {fileID: 11400000, guid: e8fe96bf159b2de4789bd665538f7742, type: 2}
+  <Unplayable>k__BackingField: 0
+  <Mana>k__BackingField: 2
+  <Type>k__BackingField: 0
+  <Image>k__BackingField: {fileID: 21300000, guid: 2d9cc5c4c729de74296c9e6df949fde2, type: 3}
+  <Description>k__BackingField: Deal {v0} damage and apply {v1} burn to a random
+    foe in each lane you're not in. Gain {v2} heat.
+  <RequiredConditions>k__BackingField: []
+  <HighlightConditions>k__BackingField: []
+  <ExhuastOnUse>k__BackingField: 0
+  <ManualTargetType>k__BackingField: 2
+  <CombatantFilters>k__BackingField: []
+  <LaneFilters>k__BackingField: []
+  <ManualTargetEffect>k__BackingField:
+    rid: -2
+  <OtherEffects>k__BackingField:
+  - rid: 1464363246444085353
+  - rid: 1464363246444085360
+  - rid: 1464363246444085364
+  - rid: 1464363246444085368
+  <InHandReactions>k__BackingField: []
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 1464363246444085353
+      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 1464363246444085355
+        _combatantEffect:
+          rid: 1464363246444085354
+    - rid: 1464363246444085354
+      type: {class: SaveCombatantsAsDataEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _dataKey: TargetUnits
+        _saveDataLevel: 0
+    - rid: 1464363246444085355
+      type: {class: RandomUnitsPerLanesCTM, ns: , asm: Assembly-CSharp}
+      data:
+        _lanesTargetMode:
+          rid: 1464363246444085357
+        _combatantFilters:
+        - rid: 1464363246444085359
+        _countPerLane:
+          rid: 1464363246444085356
+    - rid: 1464363246444085356
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 1
+    - rid: 1464363246444085357
+      type: {class: AllLTM, ns: , asm: Assembly-CSharp}
+      data:
+        _filters:
+        - rid: 1464363246444085358
+    - rid: 1464363246444085358
+      type: {class: CasterInLaneFilter, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 1
+    - rid: 1464363246444085359
+      type: {class: FoeFilter, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
+    - rid: 1464363246444085360
+      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 1464363246444085361
+        _combatantEffect:
+          rid: 1464363246444085362
+    - rid: 1464363246444085361
+      type: {class: SavedDataCTM, ns: , asm: Assembly-CSharp}
+      data:
+        _dataKey: TargetUnits
+        _dataLevel: 0
+    - rid: 1464363246444085362
+      type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _damage:
+          rid: 1464363246444085363
+    - rid: 1464363246444085363
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 8
+    - rid: 1464363246444085364
+      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 1464363246444085365
+        _combatantEffect:
+          rid: 1464363246444085366
+    - rid: 1464363246444085365
+      type: {class: SavedDataCTM, ns: , asm: Assembly-CSharp}
+      data:
+        _dataKey: TargetUnits
+        _dataLevel: 0
+    - rid: 1464363246444085366
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _statusEffectType: 1
+        _stackCount:
+          rid: 1464363246444085367
+        _skipAnimation: 0
+    - rid: 1464363246444085367
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 5
+    - rid: 1464363246444085368
+      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 1464363246444085369
+        _combatantEffect:
+          rid: 1464363246444085370
+    - rid: 1464363246444085369
+      type: {class: CasterCTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1464363246444085370
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _statusEffectType: 2003
+        _stackCount:
+          rid: 1464363246444085371
+        _skipAnimation: 0
+    - rid: 1464363246444085371
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 7

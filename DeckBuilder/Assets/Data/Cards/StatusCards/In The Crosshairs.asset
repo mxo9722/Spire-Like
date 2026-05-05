@@ -47,6 +47,7 @@ MonoBehaviour:
           rid: 262421115933556814
         _effects:
         - rid: 262421115933556819
+        - rid: 6673085980873589030
     - rid: 262421115933556814
       type: {class: LingerCRC, ns: , asm: Assembly-CSharp}
       data:
@@ -66,19 +67,25 @@ MonoBehaviour:
       type: {class: MakeAnotherUnitAttackFoeEffect, ns: , asm: Assembly-CSharp}
       data:
         _targetMode:
-          rid: 262421115933556822
+          rid: 6673086252972769360
         _effect:
           <Damage>k__BackingField: 10
           _unblockedKey: 
           _overkillKey: 
           _onHit: 
-    - rid: 262421115933556822
-      type: {class: RandomCTM, ns: , asm: Assembly-CSharp}
+    - rid: 6673085980873589030
+      type: {class: AutoCardTargetEffect, ns: , asm: Assembly-CSharp}
       data:
-        _targetCount: 1
-        <Filters>k__BackingField:
-        - rid: 262421115933556823
-    - rid: 262421115933556823
-      type: {class: TargIsHeroFilter, ns: , asm: Assembly-CSharp}
-      data:
-        _invert: 0
+        <TargetMode>k__BackingField:
+          rid: 6673085980873589031
+        _cardEffect:
+          rid: 6673085980873589032
+    - rid: 6673085980873589031
+      type: {class: PlayedCardCaTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 6673085980873589032
+      type: {class: ExhaustCardsEffect, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 6673086252972769360
+      type: {class: CasterCTM, ns: , asm: Assembly-CSharp}
+      data: 

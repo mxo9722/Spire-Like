@@ -66,7 +66,7 @@ public class RunData : IHoldData
         UsedPerks.Add(perkData);
     }
 
-    public void AddData(string key, object data)
+    public void SetData(string key, object data)
     {
         if (_data == null)
             _data = new();

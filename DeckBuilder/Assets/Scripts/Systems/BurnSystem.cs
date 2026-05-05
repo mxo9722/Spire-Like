@@ -32,7 +32,7 @@ public class BurnSystem : Singleton<BurnSystem>
             int burnStacks = target.GetStatusEffectStacks(StatusEffect.BURN);
 
             target.Damage(burnStacks, true);
-            target.AddStatusEffect(StatusEffect.BURN, -1);
+            target.AddStatusEffect(StatusEffectSystem.GetDictionaryEntry(StatusEffect.BURN), -1);
         }
 
         yield return new WaitForSeconds(1f);
@@ -45,13 +45,14 @@ public class BurnSystem : Singleton<BurnSystem>
         foreach (CombatantView target in transferHeatGA.Targets)
         {
             int stacks = target.GetStatusEffectStacks(StatusEffect.HEAT);
-            gameActions.Add(new AddStatusEffectGA(StatusEffect.BURN, stacks, new() { target }));
-            gameActions.Add(new RemoveAllStatusEffectGA(StatusEffect.HEAT, new() { target }));
+            gameActions.Add(new AddStatusEffectGA(StatusEffectSystem.GetDictionaryEntry(StatusEffect.BURN), stacks, new() { target }));
+            gameActions.Add(new RemoveAllStatusEffectGA(StatusEffectSystem.GetDictionaryEntry(StatusEffect.HEAT), new() { target }));
         }
 
 
         MultipleGameActionsGA multipleGameActionsGA = new(gameActions);
         ActionSystem.Instance.AddReaction(multipleGameActionsGA);
+        DynamicViewsSystem.Instance.UpdateDynamicValues();
 
         yield return null;
     }

@@ -24,9 +24,9 @@ public class Card : IHoldData
     public bool ExhuastOnUse => CardData.ExhuastOnUse;
     public Rarity Rarity => CardData.Rarity;
 
-    public int Mana { get; private set; }
+    public int BaseMana { get; private set; }
     public HeroData Owner { get; private set; } = null;
-
+    public List<CardModifier> Modifiers { get; private set; } = new();
 
     public readonly CardData CardData;
 
@@ -38,10 +38,13 @@ public class Card : IHoldData
     public Card(Card card)
     {
         CardData = card.CardData;
-        Mana = card.Mana;
+        BaseMana = card.BaseMana;
         Owner = card.Owner;
 
         _data = new(card._data);
+
+        foreach (CardModifier mod in card.Modifiers)
+            Modifiers.Add((CardModifier)mod.Clone());
 
         SetUp();
     }
@@ -49,7 +52,7 @@ public class Card : IHoldData
     public Card(CardData cardData, HeroData owner)
     {
         CardData = cardData;
-        Mana = cardData.Mana;
+        BaseMana = cardData.Mana;
         Owner = owner;
 
         SetUp();
@@ -58,7 +61,7 @@ public class Card : IHoldData
     public Card(CardData cardData)
     {
         CardData = cardData;
-        Mana = cardData.Mana;
+        BaseMana = cardData.Mana;
 
         RunData runData = RunSystem.Instance.RunData;
 
@@ -304,7 +307,7 @@ public class Card : IHoldData
             caster = GetOwnerView();
         }
 
-        if (!ManaSystem.Instance.HasEnoughMana(Mana))
+        if (!ManaSystem.Instance.HasEnoughMana(BaseMana))
             return false;
 
         EffectContext context = new EffectContext(caster);
@@ -530,7 +533,7 @@ public class Card : IHoldData
         return CardData.name;
     }
 
-    public void AddData(string key, object data)
+    public void SetData(string key, object data)
     {
         if (!_data.ContainsKey(key))
             _data.Add(key, data);
@@ -549,5 +552,47 @@ public class Card : IHoldData
     public bool ContainsKey(string key)
     {
         return _data.ContainsKey(key);
+    }
+
+    public void AddCardModifier(CardModifier cardModifier)
+    {
+        cardModifier = (CardModifier)cardModifier.Clone();
+
+        if (!cardModifier.CanApply(this))
+            return;
+
+        foreach(CardModifier mod in Modifiers)
+        {
+            bool combined = mod.TryToCombine(cardModifier);
+            if (combined)
+                return;
+        }
+
+        Modifiers.Add(cardModifier);
+    }
+
+    public T GetCardModifier<T>() where T : CardModifier
+    {
+        foreach(var modifier in Modifiers)
+        {
+            if (modifier is T t)
+                return t;
+        }
+        
+        return null;
+    }
+
+    public int GetDynamicManaValue(EffectContext context)
+    {
+        int value = BaseMana;
+
+        value = ConditionalModifierSystem.Instance.ModifyValue(value, new ManaModKey(context));
+
+        return value;
+    }
+
+    public int GetStaticManaValue()
+    {
+        return BaseMana;
     }
 }

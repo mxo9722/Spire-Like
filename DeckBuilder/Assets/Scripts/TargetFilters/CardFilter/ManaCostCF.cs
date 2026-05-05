@@ -7,14 +7,16 @@ public class ManaCostCF : CardFilter
 
     protected override bool TargetIsValid(EffectContext context, Card target)
     {
+        int manaValue = target.GetDynamicManaValue(context);
+
         switch (_manaIs)
         {
             case NumberCompare.LESS_THAN:
-                return target.Mana < _value;
+                return manaValue < _value;
             case NumberCompare.EQUAL_TO:
-                return target.Mana == _value;
+                return manaValue == _value;
             case NumberCompare.GREATER_THAN:
-                return target.Mana > _value;
+                return manaValue > _value;
         }
 
         return false;

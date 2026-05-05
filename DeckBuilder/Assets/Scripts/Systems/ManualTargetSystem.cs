@@ -35,13 +35,23 @@ public class ManualTargetSystem : Singleton<ManualTargetSystem>
         switch (card.ManualTargetType)
         {
             case ManualTargetType.COMBATANT:
-                TargetPreviewSystem.Instance.SetTargetPreviewsManual<CombatantView, CombatantFilter>(card.CombatantFilters, highlightConditionals, card.GetOwnerView());
+                TargetPreviewSystem.Instance.SetTargetPreviewsManual<CombatantView, CombatantFilter>(card.CombatantFilters, highlightConditionals, new(card.GetOwnerView()));
                 break;
 
             case ManualTargetType.LANE:
-                TargetPreviewSystem.Instance.SetTargetPreviewsManual<LaneView, LaneFilter>(card.LaneFilters, highlightConditionals, card.GetOwnerView());
+                TargetPreviewSystem.Instance.SetTargetPreviewsManual<LaneView, LaneFilter>(card.LaneFilters, highlightConditionals, new(card.GetOwnerView()));
                 break;
         }
+    }
+
+    public void HighlightTargets(List<CombatantFilter> filters, EffectContext context)
+    {
+        TargetPreviewSystem.Instance.SetTargetPreviewsManual<CombatantView, CombatantFilter>(filters, new List<ConditionalAutoTargetEffect>(), context);
+    }
+    
+    public void HighlightTargets(List<LaneFilter> filters, EffectContext context)
+    {
+        TargetPreviewSystem.Instance.SetTargetPreviewsManual<LaneView, LaneFilter>(filters, new List<ConditionalAutoTargetEffect>(), context);
     }
 
     public CombatantView EndEnemyTargeting(Vector3 endPosition)
@@ -133,11 +143,7 @@ public class ManualTargetSystem : Singleton<ManualTargetSystem>
             if (!target.IsSelectable())
                 return false;
 
-            foreach (CombatantFilter filter in filters)
-            {
-                if (!filter.TestTarget(context, target))
-                    return false;
-            }
+            return filters.TargetIsValid(target, context);
         }
 
         return true;

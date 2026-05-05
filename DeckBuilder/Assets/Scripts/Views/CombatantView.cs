@@ -24,7 +24,7 @@ public abstract class CombatantView : MonoBehaviour, ITargetPreviewable, IHoldDa
 
     public bool TargetPreviewActive => Slot.TargetPreviewActive;
 
-    private Dictionary<StatusEffect, int> _statusEffects = new();
+    private Dictionary<StatusEffectInfo, int> _statusEffects = new(new SEEqualityComparer());
 
     public Action<int> OnHealthChanged;
     public Action<int> OnMaxHealthChanged;
@@ -32,6 +32,8 @@ public abstract class CombatantView : MonoBehaviour, ITargetPreviewable, IHoldDa
     public bool MovedThisRound { get; private set; } = false;
 
     private Dictionary<string, object> _data = null;
+
+    private bool _isDragged = false;
 
     protected void SetupBase(int health, Sprite sprite, SlotView slotView)
     {
@@ -43,6 +45,7 @@ public abstract class CombatantView : MonoBehaviour, ITargetPreviewable, IHoldDa
         Vector2 size = _spriteRenderer.size;
         _spriteRenderer.sprite = sprite;
         _spriteRenderer.size = size;
+
         _statusEffectsUI.SetUp(this, _blockPosition);
 
         UpdateHealthText();
@@ -73,11 +76,50 @@ public abstract class CombatantView : MonoBehaviour, ITargetPreviewable, IHoldDa
         _helpBoxesUI.Hide();
     }
 
+    private void OnMouseDown()
+    {
+        if (!DragUnitSystem.Instance.CanDragUnits) return;
+        if (DragUnitSystem.Instance.CombatantFilters.Any(f => !f.TestTarget(DragUnitSystem.Instance.EffectContext, this))) return;
+        if (GetStatusEffectStacks(StatusEffect.PINNED) > 0) return;
+        
+        transform.DOKill(true);
+        _isDragged = true;
+
+        DragUnitSystem.Instance.HighlightValidLanes(this);
+    }
+
+    private void OnMouseDrag()
+    {
+        if (!_isDragged) return;
+        transform.position = MouseUtil.GetMousePositionInWorldSpace(transform.position.z);
+    }
+
+    private void OnMouseUp()
+    {
+        if (!_isDragged) return;
+
+        LaneView laneView = ManualTargetSystem.Instance.EndLaneTargeting(MouseUtil.GetMousePositionInWorldSpace(-1));
+
+        bool laneIsValid = DragUnitSystem.Instance.LaneFilters.TrueForAll(f => f.TestTarget(DragUnitSystem.Instance.EffectContext, laneView));
+
+        if (laneView != null && laneView.HeroView != this && laneIsValid)
+        {
+            StartCoroutine(DragUnitSystem.Instance.EndDrag(this, laneView));
+        }
+        else
+        {
+            transform.DOLocalMove(Vector3.zero, 0.3f);
+            DragUnitSystem.Instance.HighlightValidUnits();
+        }
+
+        _isDragged = false;
+    }
+
     protected virtual void LoadHelpBoxes(HelpBoxesUI helpBoxesUI)
     {
-        List<StatusEffect> allStatusEffects = GetAllActiveStatusEffects();
+        List<StatusEffectInfo> allStatusEffects = GetAllActiveStatusEffects();
 
-        foreach (StatusEffect statusEffect in allStatusEffects)
+        foreach (StatusEffectInfo statusEffect in allStatusEffects)
         {
             _helpBoxesUI.AddHelpBoxFromStatusEffect(statusEffect, _statusEffects[statusEffect]);
         }
@@ -103,12 +145,12 @@ public abstract class CombatantView : MonoBehaviour, ITargetPreviewable, IHoldDa
         {
             if (currentArmor >= remainingDamage)
             {
-                RemoveStatusEffect(StatusEffect.BLOCK, remainingDamage);
+                RemoveStatusEffect(StatusEffectSystem.GetDictionaryEntry(StatusEffect.BLOCK), remainingDamage);
                 remainingDamage = 0;
             }
             else if (currentArmor > 0)
             {
-                RemoveStatusEffect(StatusEffect.BLOCK, currentArmor);
+                RemoveStatusEffect(StatusEffectSystem.GetDictionaryEntry(StatusEffect.BLOCK), currentArmor);
                 remainingDamage -= currentArmor;
             }
         }
@@ -169,43 +211,51 @@ public abstract class CombatantView : MonoBehaviour, ITargetPreviewable, IHoldDa
         return false;
     }
 
-    public void AddStatusEffect(StatusEffect type, int stackCount)
+    public void AddStatusEffect(StatusEffectInfo info, int stackCount)
     {
-        if (_statusEffects.ContainsKey(type))
+        if (_statusEffects.ContainsKey(info))
         {
-            _statusEffects[type] += stackCount;
+            _statusEffects[info] += stackCount;
         }
         else
         {
-            _statusEffects.Add(type, stackCount);
+            _statusEffects.Add(info, stackCount);
         }
 
-        _statusEffectsUI.UpdateStatusEffectsUI(type, _statusEffects[type]);
+        _statusEffectsUI.UpdateStatusEffectsUI(info, _statusEffects[info]);
     }
 
-    public void RemoveStatusEffect(StatusEffect type, int stackCount)
+    public void RemoveStatusEffect(StatusEffectInfo info, int stackCount)
     {
-        if (_statusEffects.ContainsKey(type))
+        if (_statusEffects.ContainsKey(info))
         {
-            _statusEffects[type] -= stackCount;
-            if (_statusEffects[type] < 0)
-                _statusEffects[type] = 0;
+            _statusEffects[info] -= stackCount;
+            if (_statusEffects[info] < 0)
+                _statusEffects[info] = 0;
         }
 
         if (CurrentHealth > 0)
-            _statusEffectsUI.UpdateStatusEffectsUI(type, _statusEffects[type]);
+            _statusEffectsUI.UpdateStatusEffectsUI(info, _statusEffects[info]);
     }
 
-    public List<StatusEffect> GetAllActiveStatusEffects()
+    public List<StatusEffectInfo> GetAllActiveStatusEffects()
     {
-        List<StatusEffect> allTypes = new(_statusEffects.Keys);
+        List<StatusEffectInfo> allTypes = new(_statusEffects.Keys);
 
         return allTypes.FindAll(e => _statusEffects[e] > 0);
     }
 
     public int GetStatusEffectStacks(StatusEffect statusEffectType)
     {
-        if (_statusEffects.ContainsKey(statusEffectType)) return _statusEffects[statusEffectType];
+        StatusEffectInfo info = StatusEffectSystem.GetDictionaryEntry(statusEffectType);
+
+        if (_statusEffects.ContainsKey(info)) return _statusEffects[info];
+        return 0;
+    }
+    
+    public int GetStatusEffectStacks(StatusEffectInfo statusEffectInfo)
+    {
+        if (_statusEffects.ContainsKey(statusEffectInfo)) return _statusEffects[statusEffectInfo];
         return 0;
     }
 
@@ -286,7 +336,7 @@ public abstract class CombatantView : MonoBehaviour, ITargetPreviewable, IHoldDa
         MovedThisRound = true;
     }
 
-    public void AddData(string key, object data)
+    public void SetData(string key, object data)
     {
         if (_data == null)
             _data = new();
@@ -316,12 +366,17 @@ public abstract class CombatantView : MonoBehaviour, ITargetPreviewable, IHoldDa
         return _data.ContainsKey(key);
     }
 
-    public abstract void Die();
-
     public int CompareTo(object obj)
     {
-        CombatantView cv = (CombatantView)obj;
+        CombatantView cv = (CombatantView) obj;
 
         return cv.GetSortValue() - GetSortValue();
     }
+
+    public int GetLaneDistance(CombatantView compare)
+    {
+        return BoardSystem.Instance.GetLaneDistance(Lane, compare.Lane);
+    }
+
+    public abstract void Die();
 }

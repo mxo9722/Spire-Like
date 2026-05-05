@@ -1,0 +1,140 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a61ecd2afb9bcb0469ae465c6809506c, type: 3}
+  m_Name: SE_SHOWN_OFF
+  m_EditorClassIdentifier: 
+  <Info>k__BackingField:
+    <EnumKey>k__BackingField: -1000
+    <Name>k__BackingField: 
+    <Sprite>k__BackingField: {fileID: 21300000, guid: 2ec4ff26c081a6d44875e561fbd880f3, type: 3}
+    <Stackable>k__BackingField: 1
+    <RemoveAtZero>k__BackingField: 1
+    <Type>k__BackingField: 3
+    <PreTurnModification>k__BackingField: 0
+    <PostTurnModification>k__BackingField: 1
+    <Effect>k__BackingField:
+      rid: -2
+    <Modifiers>k__BackingField:
+    - <Condition>k__BackingField:
+        rid: 6120430470274482255
+      <Modifier>k__BackingField:
+        rid: 6120430470274482257
+    <Reactions>k__BackingField:
+    - rid: 6120430470274482261
+    <Description>k__BackingField: The next X attack cards this character plays costs
+      0.
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 6120430470274482255
+      type: {class: ManaCostMC, ns: , asm: Assembly-CSharp}
+      data:
+        _timing: 2
+        _cardFilters:
+        - rid: 6120430470274482256
+        - rid: 6120430470274482259
+    - rid: 6120430470274482256
+      type: {class: IsTypeCF, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
+        _cardType: 0
+    - rid: 6120430470274482257
+      type: {class: SetModifier, ns: , asm: Assembly-CSharp}
+      data:
+        _value:
+          rid: 6120430470274482258
+    - rid: 6120430470274482258
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 0
+    - rid: 6120430470274482259
+      type: {class: OwnedByFilter, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
+        _targetUnits:
+          rid: 6120430470274482260
+        _acceptNoTarget: 0
+    - rid: 6120430470274482260
+      type: {class: CasterCTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 6120430470274482261
+      type: {class: OnCardPlayedSER, ns: , asm: Assembly-CSharp}
+      data:
+        _reactionTiming: 1
+        <Effects>k__BackingField:
+        - rid: 6120430470274482262
+        _filters:
+        - rid: 6120430470274482268
+        - rid: 6120430470274482266
+    - rid: 6120430470274482262
+      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 6120430470274482263
+        _combatantEffect:
+          rid: 6120430470274482271
+    - rid: 6120430470274482263
+      type: {class: CasterCTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 6120430470274482266
+      type: {class: OwnedByFilter, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
+        _targetUnits:
+          rid: 6120430483144179801
+        _acceptNoTarget: 0
+    - rid: 6120430470274482268
+      type: {class: IsTypeCF, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
+        _cardType: 0
+    - rid: 6120430470274482271
+      type: {class: AddCustomSEEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _statusEffect:
+          rid: 6120430470274482285
+        _stackCount:
+          rid: 6120430470274482272
+        _skipAnimation: 0
+    - rid: 6120430470274482272
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: -1
+    - rid: 6120430470274482285
+      type: {class: ScriptableObjectSEI, ns: , asm: Assembly-CSharp}
+      data:
+        _statusEffectData: {fileID: 11400000}
+    - rid: 6120430483144179801
+      type: {class: AllCTM, ns: , asm: Assembly-CSharp}
+      data:
+        _filters:
+        - rid: 6120430483144179804
+    - rid: 6120430483144179804
+      type: {class: TargHasSOStatusEffectFilter, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
+        _statusEffect:
+          rid: 6120430483144179806
+        _is: 2
+        _orEqualTo: 0
+        _b:
+          rid: 6120430483144179805
+    - rid: 6120430483144179805
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 0
+    - rid: 6120430483144179806
+      type: {class: ScriptableObjectSEI, ns: , asm: Assembly-CSharp}
+      data:
+        _statusEffectData: {fileID: 11400000}

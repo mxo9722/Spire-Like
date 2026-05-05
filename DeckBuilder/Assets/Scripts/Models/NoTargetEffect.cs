@@ -9,4 +9,9 @@ public abstract class NoTargetEffect : Effect
     }
 
     protected abstract GameAction GetGameAction(EffectContext context);
+
+    public virtual AutoTargetEffect[] GetNestedEffects()
+    {
+        return new AutoTargetEffect[0];
+    }
 }

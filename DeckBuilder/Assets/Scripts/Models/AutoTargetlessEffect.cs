@@ -1,7 +1,6 @@
 using SerializeReferenceEditor;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
@@ -16,18 +15,23 @@ public class AutoTargetlessEffect : AutoTargetEffect
         return performEffectsGA;
     }
 
-    public override List<StatusEffect> GetAllStatusEffects()
-    {
-        return _noTargetEffect.GetAllStatusEffects();
-    }
-
     public override bool RequiresUserInput()
     {
-        return false;
+        return _noTargetEffect is INeedsUserInput;
     }
 
     public override IEnumerator WaitForUserInput(EffectContext context)
     {
-        yield return null;
+        if(_noTargetEffect is INeedsUserInput needsUserInput)
+        {
+            yield return needsUserInput.WaitForUserInput(context);
+        }
+        else
+            yield return null;
+    }
+
+    public override AutoTargetEffect[] GetNestedEffects()
+    {
+        return _noTargetEffect.GetNestedEffects();
     }
 }

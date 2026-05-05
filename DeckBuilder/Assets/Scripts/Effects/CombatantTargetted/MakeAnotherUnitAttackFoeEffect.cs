@@ -29,10 +29,10 @@ public class MakeAnotherUnitAttackFoeEffect : CombatantTargetEffect, IDynamicEff
 
     public string GetDynamicText(EffectContext context, List<CombatantView> targetCombatants = null, List<LaneView> targetLanes = null)
     {
-        CombatantView caster = targetCombatants.First();    
-
-        if (caster == null)
+        if (targetCombatants == null || targetCombatants.Count == 0)
             return GetStaticText();
+
+        CombatantView caster = targetCombatants.First();
 
         EffectContext newContext = new(context);
         newContext.SetCaster(caster);

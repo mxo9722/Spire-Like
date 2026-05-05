@@ -62,7 +62,7 @@ MonoBehaviour:
       type: {class: RestoreHealthEA, ns: , asm: Assembly-CSharp}
       data:
         TargetMode:
-          rid: -2
+          rid: 6673085980873589033
         _amount:
           rid: 4055347793743315018
     - rid: 4055347793743315018
@@ -76,6 +76,9 @@ MonoBehaviour:
       data:
         TargetMode:
           rid: -2
+    - rid: 6673085980873589033
+      type: {class: AllHTM, ns: , asm: Assembly-CSharp}
+      data: 
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
