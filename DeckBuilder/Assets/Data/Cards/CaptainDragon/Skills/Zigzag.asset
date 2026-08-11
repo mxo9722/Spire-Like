@@ -1,0 +1,90 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62bf69310631aa94896652d3f8be392c, type: 3}
+  m_Name: Zigzag
+  m_EditorClassIdentifier: 
+  <Rarity>k__BackingField: 0
+  <Upgrade>k__BackingField: {fileID: 11400000, guid: 09264dc9cc42ddc40b58c42615d5bbc0, type: 2}
+  <Unplayable>k__BackingField: 0
+  <Retain>k__BackingField: 0
+  <Mana>k__BackingField: 1
+  <Type>k__BackingField: 1
+  <Image>k__BackingField: {fileID: 21300000, guid: d8e130a477f487d4f9a7751c72c3a3f8, type: 3}
+  <CardReference>k__BackingField: {fileID: 0}
+  <Description>k__BackingField: Move to another lane. All incoming attacks count
+    as indirect this round. Exhaust.
+  <RequiredConditions>k__BackingField: []
+  <HighlightConditions>k__BackingField: []
+  <JustHighlightCard>k__BackingField: 0
+  <ExhuastOnUse>k__BackingField: 1
+  <ManualTargetType>k__BackingField: 1
+  <CombatantFilters>k__BackingField: []
+  <LaneFilters>k__BackingField:
+  - rid: 6120430853051121754
+  <ManualTargetEffect>k__BackingField:
+    rid: -2
+  <OtherEffects>k__BackingField:
+  - rid: 6120430853051121756
+  - rid: 6120430853051121760
+  <AnywhereReactions>k__BackingField: []
+  <InHandReactions>k__BackingField: []
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 6120430853051121754
+      type: {class: CasterInLaneFilter, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 1
+    - rid: 6120430853051121756
+      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 6120430853051121757
+        _combatantEffect:
+          rid: 6120430853051121758
+    - rid: 6120430853051121757
+      type: {class: CasterCTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 6120430853051121758
+      type: {class: MoveUnitsToLaneEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _destination:
+          rid: 6120430853051121759
+        _newDestinationPerTarget: 0
+        _animationDuration: 0.15
+        _jumpValue: 0
+    - rid: 6120430853051121759
+      type: {class: ManuallySelectedLTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 6120430853051121760
+      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 6120430853051121761
+        _combatantEffect:
+          rid: 6120430853051121762
+    - rid: 6120430853051121761
+      type: {class: CasterCTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 6120430853051121762
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _statusEffectType: 2006
+        _stackCount:
+          rid: 6120430853051121763
+        _skipAnimation: 0
+    - rid: 6120430853051121763
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 1

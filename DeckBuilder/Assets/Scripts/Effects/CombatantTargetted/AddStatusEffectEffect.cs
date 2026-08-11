@@ -14,7 +14,7 @@ public class AddStatusEffectEffect : CombatantTargetEffect, IDynamicEffectText
 
     protected override GameAction GetGameAction(EffectContext context, List<CombatantView> combatantTargets)
     {
-        return new AddStatusEffectGA(SEInfo, _stackCount.GetAmount(context), combatantTargets, context.Caster, _skipAnimation);
+        return new AddStatusEffectGA(SEInfo, _stackCount.GetAmount(context), combatantTargets, context, _skipAnimation);
     }
 
     public string GetStaticText()

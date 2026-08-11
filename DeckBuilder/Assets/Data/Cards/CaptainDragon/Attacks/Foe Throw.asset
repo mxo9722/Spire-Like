@@ -13,26 +13,28 @@ MonoBehaviour:
   m_Name: Foe Throw
   m_EditorClassIdentifier: 
   <Rarity>k__BackingField: 1
-  <Upgrade>k__BackingField: {fileID: 11400000, guid: 301e79d39c84f144aa3748181f933eee, type: 2}
+  <Upgrade>k__BackingField: {fileID: 11400000, guid: 7b4e88017881a8e449e8964fbb47cb8e, type: 2}
   <Unplayable>k__BackingField: 0
   <Mana>k__BackingField: 1
   <Type>k__BackingField: 0
   <Image>k__BackingField: {fileID: 21300000, guid: 12a6545f52907144b8e1fc4b3a652606, type: 3}
-  <Description>k__BackingField: Move the closest aligned foe to a random lane. Deal
-    {v0} damage to it. Exhaust.
-  <RequiredConditions>k__BackingField: []
+  <Description>k__BackingField: Move the front aligned foe to another lane. The foe
+    and any adjacent allies take {v0} damage.
+  <RequiredConditions>k__BackingField:
+  - rid: 6120430627805724750
   <HighlightConditions>k__BackingField: []
-  <ExhuastOnUse>k__BackingField: 1
+  <JustHighlightCard>k__BackingField: 0
+  <ExhuastOnUse>k__BackingField: 0
   <ManualTargetType>k__BackingField: 2
   <CombatantFilters>k__BackingField: []
   <LaneFilters>k__BackingField: []
   <ManualTargetEffect>k__BackingField:
     rid: -2
   <OtherEffects>k__BackingField:
-  - rid: 4055348055111631053
-  - rid: 4055348011206443468
+  - rid: 6120430624346996822
   - rid: 4055348011206443463
-  <TurnEndEffects>k__BackingField: []
+  <AnywhereReactions>k__BackingField: []
+  <InHandReactions>k__BackingField: []
   references:
     version: 2
     RefIds:
@@ -42,7 +44,7 @@ MonoBehaviour:
       type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
       data:
         <TargetMode>k__BackingField:
-          rid: 4055348055111631058
+          rid: 6120430624346996814
         _combatantEffect:
           rid: 4055348011206443466
     - rid: 4055348011206443466
@@ -50,57 +52,87 @@ MonoBehaviour:
       data:
         _damage:
           rid: 4055348011206443467
+        _unblockedKey: 
     - rid: 4055348011206443467
       type: {class: SetQ, ns: , asm: Assembly-CSharp}
       data:
-        _set: 12
-    - rid: 4055348011206443468
-      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
+        _set: 6
+    - rid: 6120430624346996814
+      type: {class: AdjacentTargetsCTM, ns: , asm: Assembly-CSharp}
       data:
-        <TargetMode>k__BackingField:
-          rid: 4055348055111631057
-        _combatantEffect:
-          rid: 4055348078608908522
-    - rid: 4055348055111631053
-      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
-      data:
-        <TargetMode>k__BackingField:
-          rid: 4055348055111631054
-        _combatantEffect:
-          rid: 4055348055111631056
-    - rid: 4055348055111631054
-      type: {class: FrontFoeInLaneCTM, ns: , asm: Assembly-CSharp}
-      data:
-        _laneTargetMode:
-          rid: 4055348055111631055
-    - rid: 4055348055111631055
-      type: {class: CurrentLTM, ns: , asm: Assembly-CSharp}
-      data: 
-    - rid: 4055348055111631056
-      type: {class: SaveCombatantsAsDataEffect, ns: , asm: Assembly-CSharp}
-      data:
-        _dataKey: TargetUnits
-        _saveDataLevel: 0
-    - rid: 4055348055111631057
+        _baseTargets:
+          rid: 6120430624346996815
+        _includeTargets: 1
+    - rid: 6120430624346996815
       type: {class: SavedDataCTM, ns: , asm: Assembly-CSharp}
       data:
-        _dataKey: TargetUnits
+        _dataKey: unit
         _dataLevel: 0
-    - rid: 4055348055111631058
-      type: {class: SavedDataCTM, ns: , asm: Assembly-CSharp}
+    - rid: 6120430624346996822
+      type: {class: AutoTargetlessEffect, ns: , asm: Assembly-CSharp}
       data:
-        _dataKey: TargetUnits
-        _dataLevel: 0
-    - rid: 4055348078608908522
-      type: {class: MoveUnitsToLaneEffect, ns: , asm: Assembly-CSharp}
+        _noTargetEffect:
+          rid: 6120430624346996823
+    - rid: 6120430624346996823
+      type: {class: DragUnitEffect, ns: , asm: Assembly-CSharp}
       data:
-        _destination:
-          rid: 4055348078608908523
-        _newDestinationPerTarget: 0
-        _animationDuration: 1
-        _jumpValue: 2.5
-    - rid: 4055348078608908523
-      type: {class: RandomLTM, ns: , asm: Assembly-CSharp}
+        _actionText: Drag aligned foe to new lane
+        _unitKey: unit
+        _laneKey: lane
+        CombatantFilters:
+        - rid: 6120430624346996824
+        - rid: 6120430624346996825
+        LaneFilters:
+        - rid: 6120430624346996826
+        - rid: 6120430624346996827
+    - rid: 6120430624346996824
+      type: {class: AlignedFilter, ns: , asm: Assembly-CSharp}
       data:
-        _count: 1
-        <Filters>k__BackingField: []
+        _invert: 0
+    - rid: 6120430624346996825
+      type: {class: FoeFilter, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
+    - rid: 6120430624346996826
+      type: {class: SpaceInFoeLaneFilter, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
+    - rid: 6120430624346996827
+      type: {class: CasterInLaneFilter, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 1
+    - rid: 6120430627805724750
+      type: {class: AnyTargetQualifiesCondition, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
+        _targetMode:
+          rid: 6120430627805724751
+        _filters:
+        - rid: 6120430627805724752
+        - rid: 6120430627805724753
+        - rid: 6120430627805724754
+    - rid: 6120430627805724751
+      type: {class: AllCTM, ns: , asm: Assembly-CSharp}
+      data:
+        _filters: []
+    - rid: 6120430627805724752
+      type: {class: AlignedFilter, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
+    - rid: 6120430627805724753
+      type: {class: FoeFilter, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
+    - rid: 6120430627805724754
+      type: {class: TargHasStatusEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 1
+        _statusEffectType: 7
+        _is: 2
+        _orEqualTo: 0
+        _b:
+          rid: 6120430627805724755
+    - rid: 6120430627805724755
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 0

@@ -15,12 +15,15 @@ MonoBehaviour:
   <Rarity>k__BackingField: 0
   <Upgrade>k__BackingField: {fileID: 0}
   <Unplayable>k__BackingField: 0
+  <Retain>k__BackingField: 0
   <Mana>k__BackingField: 1
   <Type>k__BackingField: 1
   <Image>k__BackingField: {fileID: 21300000, guid: be00bb98c9032f4428318bd616433454, type: 3}
+  <CardReference>k__BackingField: {fileID: 0}
   <Description>k__BackingField: Gain {v0} strength and {v1} heat.
   <RequiredConditions>k__BackingField: []
   <HighlightConditions>k__BackingField: []
+  <JustHighlightCard>k__BackingField: 0
   <ExhuastOnUse>k__BackingField: 0
   <ManualTargetType>k__BackingField: 2
   <CombatantFilters>k__BackingField: []
@@ -30,6 +33,7 @@ MonoBehaviour:
   <OtherEffects>k__BackingField:
   - rid: 6673085688012341419
   - rid: 6673085688012341423
+  <AnywhereReactions>k__BackingField: []
   <InHandReactions>k__BackingField: []
   references:
     version: 2

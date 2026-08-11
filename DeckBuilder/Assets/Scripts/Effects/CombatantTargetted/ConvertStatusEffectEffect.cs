@@ -29,7 +29,7 @@ public class ConvertStatusEffectEffect : CombatantTargetEffect
 
     protected override GameAction GetGameAction(EffectContext context, List<CombatantView> combatantTargets)
     {
-        ConvertStatusEffectGA convertStatusEffectGA = new(combatantTargets, From, To, UpTo.GetAmount(context));
+        ConvertStatusEffectGA convertStatusEffectGA = new(combatantTargets, From, To, context, UpTo.GetAmount(context));
         return convertStatusEffectGA;
     }
 }

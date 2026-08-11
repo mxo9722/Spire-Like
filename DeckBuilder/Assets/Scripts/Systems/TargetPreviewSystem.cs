@@ -32,7 +32,7 @@ public class TargetPreviewSystem : Singleton<TargetPreviewSystem>
 
         foreach (AutoTargetEffect effect in card.OtherEffects)
         {
-            if (effect is ConditionalAutoTargetEffect)
+            if (effect is ConditionalAutoTargetEffect conditional && !conditional.HideHighlight)
                 highlights.AddRange(GetTargets(effect, context, card));
             else
                 targets.AddRange(GetTargets(effect, context, card));
@@ -77,7 +77,7 @@ public class TargetPreviewSystem : Singleton<TargetPreviewSystem>
 
         foreach (AutoTargetEffect effect in card.OtherEffects)
         {
-            if (effect is ConditionalAutoTargetEffect)
+            if (effect is ConditionalAutoTargetEffect conditional && !conditional.HideHighlight)
                 hTargets.AddRange(GetTargets(effect, context, card));
             else
                 targets.AddRange(GetTargets(effect, context, card));
@@ -104,7 +104,7 @@ public class TargetPreviewSystem : Singleton<TargetPreviewSystem>
 
         foreach (AutoTargetEffect effect in card.OtherEffects)
         {
-            if (effect is ConditionalAutoTargetEffect)
+            if (effect is ConditionalAutoTargetEffect conditional && !conditional.HideHighlight)
                 hTargets.AddRange(GetTargets(effect, context, card));
             else
                 targets.AddRange(GetTargets(effect, context, card));
@@ -115,7 +115,7 @@ public class TargetPreviewSystem : Singleton<TargetPreviewSystem>
         targets.ForEach(t => t.SetTargetPreview(_defaultColor));
     }
 
-    public void SetTargetPreviewsManual<T, F>(List<F> filters, List<ConditionalAutoTargetEffect> highlightConditionals, EffectContext context) where T : ITargetPreviewable where F : TargetFilter<T>
+    public void SetTargetPreviewsManual<T, F>(Card card, List<F> filters, List<ConditionalAutoTargetEffect> highlightConditionals, EffectContext context) where T : ITargetPreviewable where F : TargetFilter<T>
     {
         if(context.Caster == null)
         {
@@ -149,7 +149,7 @@ public class TargetPreviewSystem : Singleton<TargetPreviewSystem>
             if (!target.IsSelectable())
                 continue;
 
-            bool highlight = highlightConditionals.Any(h => h.Conditions.TrueForAll(c => c.TestCondition(context)));
+            bool highlight = highlightConditionals.Any(h => h.AllConditionsMet(context) && !h.HideHighlight) || (!card.JustHighlightCard && card.IsHighlighted(context));
 
             if (highlight)
                 target.SetTargetPreview(_highlightColor);
@@ -191,7 +191,7 @@ public class TargetPreviewSystem : Singleton<TargetPreviewSystem>
                 if (!target.IsSelectable())
                     continue;
 
-                bool highlight = highlightConditionals.Any(h => h.Conditions.TrueForAll(c => c.TestCondition(nContext)));
+                bool highlight = highlightConditionals.Any(h => h.AllConditionsMet(context) && !h.HideHighlight);
 
                 if (highlight)
                     target.SetTargetPreview(_highlightColor);
@@ -217,7 +217,7 @@ public class TargetPreviewSystem : Singleton<TargetPreviewSystem>
 
         foreach (AutoTargetEffect effect in action.Effects)
         {
-            if (effect is ConditionalAutoTargetEffect)
+            if (effect is ConditionalAutoTargetEffect conditional && !conditional.HideHighlight)
                 highlights.AddRange(GetTargets(effect, context, null));
             else
                 targets.AddRange(GetTargets(effect, context, null));
@@ -347,9 +347,13 @@ public class TargetPreviewSystem : Singleton<TargetPreviewSystem>
         }
         else if (effect is ConditionalAutoTargetEffect conditional)
         {
-            if (conditional.GetGameAction(context) != null)
+            if (conditional.AllConditionsMet(context) && !conditional.HideHighlight)
             {
                 return GetRandomTargetCoroutines(conditional.SuccessEffect, caster, _highlightColor);
+            }
+            else
+            {
+                return GetRandomTargetCoroutines(conditional.SuccessEffect, caster, color);
             }
         }
 

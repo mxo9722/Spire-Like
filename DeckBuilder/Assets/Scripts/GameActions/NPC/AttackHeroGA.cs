@@ -11,6 +11,7 @@ public class AttackHeroGA : GameAction, IHaveCaster
     public int Damage { get; private set; }
 
     public bool IndirectReduction { get; private set; } = true;
+    public bool FinalAttack { get; private set; } = true;
 
     public string UnblockedKey { get; private set; } = "";
     public string OverkillKey { get; private set; } = "";
@@ -27,5 +28,10 @@ public class AttackHeroGA : GameAction, IHaveCaster
         OverkillKey = overkillKey;
         OnHitKey = onHitKey;
         HitCountKey = hitCountKey;
+    }
+
+    public void SetFinalAttack(bool finalAttack)
+    {
+        FinalAttack = finalAttack;
     }
 }

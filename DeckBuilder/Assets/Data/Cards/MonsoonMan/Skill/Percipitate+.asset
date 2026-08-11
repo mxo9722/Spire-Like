@@ -31,57 +31,54 @@ MonoBehaviour:
   <ManualTargetEffect>k__BackingField:
     rid: -2
   <OtherEffects>k__BackingField: []
+  <AnywhereReactions>k__BackingField: []
   <InHandReactions>k__BackingField:
-  - rid: 6673085778750079065
+  - _reactionCondition:
+      rid: 6120430505476751452
+    _effects:
+    - rid: 6120430505476751453
+    - rid: 6120430505476751456
   references:
     version: 2
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 6673085778750079065
-      type: {class: CardReaction, ns: , asm: Assembly-CSharp}
-      data:
-        _reactionCondition:
-          rid: 6673085778750079066
-        _effects:
-        - rid: 6673085778750079071
-        - rid: 6673085778750079067
-    - rid: 6673085778750079066
-      type: {class: LingerCRC, ns: , asm: Assembly-CSharp}
+    - rid: 6120430505476751452
+      type: {class: OnDiscardCRC, ns: , asm: Assembly-CSharp}
       data:
         reactionTiming: 0
-    - rid: 6673085778750079067
+    - rid: 6120430505476751453
+      type: {class: AutoTargetlessEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _noTargetEffect:
+          rid: 6120430505476751454
+    - rid: 6120430505476751454
+      type: {class: DrawCardsEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _drawAmount:
+          rid: 6120430505476751455
+    - rid: 6120430505476751455
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 2
+    - rid: 6120430505476751456
       type: {class: AutoLaneTargetEffect, ns: , asm: Assembly-CSharp}
       data:
         <TargetMode>k__BackingField:
-          rid: 6673085778750079068
+          rid: 6120430505476751457
         _laneEffect:
-          rid: 6673085778750079070
-    - rid: 6673085778750079068
+          rid: 6120430505476751459
+    - rid: 6120430505476751457
       type: {class: RandomLTM, ns: , asm: Assembly-CSharp}
       data:
         _count: 1
         <Filters>k__BackingField:
-        - rid: 6673085778750079069
-    - rid: 6673085778750079069
+        - rid: 6120430505476751458
+    - rid: 6120430505476751458
       type: {class: LaneSoakedFilter, ns: , asm: Assembly-CSharp}
       data:
         _invert: 1
-    - rid: 6673085778750079070
+    - rid: 6120430505476751459
       type: {class: SetSoakEffect, ns: , asm: Assembly-CSharp}
       data:
         _setSoaked: 1
-    - rid: 6673085778750079071
-      type: {class: AutoTargetlessEffect, ns: , asm: Assembly-CSharp}
-      data:
-        _noTargetEffect:
-          rid: 6673085778750079074
-    - rid: 6673085778750079074
-      type: {class: DrawCardsEffect, ns: , asm: Assembly-CSharp}
-      data:
-        _drawAmount:
-          rid: 6673085778750079075
-    - rid: 6673085778750079075
-      type: {class: SetQ, ns: , asm: Assembly-CSharp}
-      data:
-        _set: 2

@@ -29,9 +29,10 @@ public abstract class CombatantView : MonoBehaviour, ITargetPreviewable, IHoldDa
     public Action<int> OnHealthChanged;
     public Action<int> OnMaxHealthChanged;
 
-    public bool MovedThisRound { get; private set; } = false;
-
     private Dictionary<string, object> _data = null;
+
+    private Dictionary<int, int> _movementTracker = new();
+    private Dictionary<int, int> _attackedTracker = new();
 
     private bool _isDragged = false;
 
@@ -51,15 +52,8 @@ public abstract class CombatantView : MonoBehaviour, ITargetPreviewable, IHoldDa
         UpdateHealthText();
     }
 
-    public void OnEnable()
-    {
-        ActionSystem.SubscribeReaction<BeforePlayerTurnGA>(this, BeforePlayerTurn, ReactionTiming.PRE);
-    }
-
     private void OnDisable()
     {
-        ActionSystem.UnsubscribeReaction<BeforePlayerTurnGA>(this, BeforePlayerTurn, ReactionTiming.PRE);
-
         transform.DOKill();
         _spriteRenderer.DOKill();
         HideTargetPreview();
@@ -109,7 +103,7 @@ public abstract class CombatantView : MonoBehaviour, ITargetPreviewable, IHoldDa
         else
         {
             transform.DOLocalMove(Vector3.zero, 0.3f);
-            DragUnitSystem.Instance.HighlightValidUnits();
+            DragUnitSystem.Instance.HighlightValidUnits(DragUnitSystem.Instance.EffectContext);
         }
 
         _isDragged = false;
@@ -259,6 +253,11 @@ public abstract class CombatantView : MonoBehaviour, ITargetPreviewable, IHoldDa
         return 0;
     }
 
+    public bool HasStatusEffectUI(StatusEffectInfo statusEffectInfo)
+    {
+        return _statusEffectsUI.HasStatusEffectUI(statusEffectInfo);
+    }
+
     public IEnumerator WaitForTweensComplete()
     {
         if (CurrentHealth == 0)
@@ -326,16 +325,6 @@ public abstract class CombatantView : MonoBehaviour, ITargetPreviewable, IHoldDa
         return 0;
     }
 
-    private void BeforePlayerTurn(BeforePlayerTurnGA beforePlayerTurnGA)
-    {
-        MovedThisRound = false;
-    }
-
-    public void SetMoved(bool moved)
-    {
-        MovedThisRound = true;
-    }
-
     public void SetData(string key, object data)
     {
         if (_data == null)
@@ -376,6 +365,54 @@ public abstract class CombatantView : MonoBehaviour, ITargetPreviewable, IHoldDa
     public int GetLaneDistance(CombatantView compare)
     {
         return BoardSystem.Instance.GetLaneDistance(Lane, compare.Lane);
+    }
+
+    public void ReportMovement()
+    {
+        int round = CombatTrackerSystem.Instance.Round;
+
+        if (_movementTracker.ContainsKey(round))
+        {
+            _movementTracker[round] += 1;
+        }
+        else
+            _movementTracker[round] = 1;
+    }
+
+    public void ReportAttacked()
+    {
+        int round = CombatTrackerSystem.Instance.Round;
+
+        if (_attackedTracker.ContainsKey(round))
+        {
+            _attackedTracker[round] += 1;
+        }
+        else
+            _attackedTracker[round] = 1;
+    }
+
+    public int GetCurrentRoundMovement()
+    {
+        int round = CombatTrackerSystem.Instance.Round;
+
+        if (_movementTracker.ContainsKey(round))
+        {
+            return _movementTracker[round];
+        }
+
+        return 0;
+    }
+
+    public int GetCurrentRoundAttacked()
+    {
+        int round = CombatTrackerSystem.Instance.Round;
+
+        if (_attackedTracker.ContainsKey(round))
+        {
+            return _attackedTracker[round];
+        }
+
+        return 0;
     }
 
     public abstract void Die();

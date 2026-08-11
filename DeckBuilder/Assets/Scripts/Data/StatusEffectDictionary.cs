@@ -10,7 +10,7 @@ public class StatusEffectsDictionary : ScriptableObject
 {
     [SerializedDictionary("Status Effect Type", "Properties")]
     [SerializeField] public SerializedDictionary<StatusEffect, StatusEffectData> NewMap = new();
-
+#if UNITY_EDITOR
     [ProButton]
     void ConvertAll()
     {
@@ -21,4 +21,5 @@ public class StatusEffectsDictionary : ScriptableObject
             AssetDatabase.CreateAsset(data, "Assets/TempSavePlace/SE_"+se.ToString()+".asset");
         }
     }
+#endif
 }

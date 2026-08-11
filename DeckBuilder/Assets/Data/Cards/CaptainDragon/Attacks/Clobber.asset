@@ -18,9 +18,10 @@ MonoBehaviour:
   <Mana>k__BackingField: 2
   <Type>k__BackingField: 0
   <Image>k__BackingField: {fileID: 21300000, guid: 1c41f7bb3a6571747918a568581d1b63, type: 3}
-  <Description>k__BackingField: Deal {v0} damage to a random aligned foe 3 times.
+  <Description>k__BackingField: Deal {v1} damage to a random aligned foe {v0} times.
   <RequiredConditions>k__BackingField: []
   <HighlightConditions>k__BackingField: []
+  <JustHighlightCard>k__BackingField: 0
   <ExhuastOnUse>k__BackingField: 0
   <ManualTargetType>k__BackingField: 2
   <CombatantFilters>k__BackingField: []
@@ -29,6 +30,7 @@ MonoBehaviour:
     rid: -2
   <OtherEffects>k__BackingField:
   - rid: 1464363174695272640
+  <AnywhereReactions>k__BackingField: []
   <InHandReactions>k__BackingField: []
   references:
     version: 2
@@ -63,6 +65,7 @@ MonoBehaviour:
       data:
         _damage:
           rid: 1464363174695272646
+        _unblockedKey: 
     - rid: 1464363174695272646
       type: {class: SetQ, ns: , asm: Assembly-CSharp}
       data:

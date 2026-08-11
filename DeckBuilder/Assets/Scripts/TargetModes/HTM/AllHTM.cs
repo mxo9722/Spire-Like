@@ -5,7 +5,7 @@ public class AllHTM : HeroTargetMode
 {
     public override List<Hero> GetTargets(EffectContext context)
     {
-        var runData = RunSystem.Instance.RunData;
+        RunData runData = RunSystem.Instance.RunData;
 
         return new() { runData.Hero1, runData.Hero2 };
     }

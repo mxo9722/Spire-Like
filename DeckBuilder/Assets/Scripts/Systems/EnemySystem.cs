@@ -158,41 +158,12 @@ public class EnemySystem : Singleton<EnemySystem>
             yield return tween.WaitForCompletion();
             tween = attacker.transform.DOMoveX(attacker.transform.position.x + 1.0f, 0.25f);
 
-            int damage = attackHeroGA.Damage;
+            DealDamageGA dealDamageGA = new(attackHeroGA.Damage, attackHeroGA.Targets, attackHeroGA.Context);
+            dealDamageGA.SetUnblockedKey(attackHeroGA.UnblockedKey);
+            dealDamageGA.SetOverkillKey(attackHeroGA.OverkillKey);
 
-            if (attackHeroGA.IndirectReduction)
-            {
-                List<CombatantView> directTargets = attackHeroGA.Targets.FindAll(t => t.GetLaneDistance(attackHeroGA.Caster) == 0);
-                List<CombatantView> indirectTargets = new(attackHeroGA.Targets.Except(directTargets));
-
-                if(directTargets.Count > 0)
-                {
-                    DealDamageGA dealDamageGA = new(damage, directTargets, attackHeroGA.Context);
-                    dealDamageGA.SetUnblockedKey(attackHeroGA.UnblockedKey);
-                    dealDamageGA.SetOverkillKey(attackHeroGA.OverkillKey);
-
-                    ActionSystem.Instance.AddReaction(dealDamageGA);
-                }
-                if (indirectTargets.Count > 0)
-                {
-                    DealDamageGA dealDamageGA = new(damage, indirectTargets, attackHeroGA.Context);
-                    dealDamageGA.SetUnblockedKey(attackHeroGA.UnblockedKey);
-                    dealDamageGA.SetOverkillKey(attackHeroGA.OverkillKey);
-
-                    ActionSystem.Instance.AddReaction(dealDamageGA);
-                }
-
-                yield return tween.WaitForCompletion();
-            }
-            else
-            {
-                DealDamageGA dealDamageGA = new(damage, attackHeroGA.Targets, attackHeroGA.Context);
-                dealDamageGA.SetUnblockedKey(attackHeroGA.UnblockedKey);
-                dealDamageGA.SetOverkillKey(attackHeroGA.OverkillKey);
-
-                ActionSystem.Instance.AddReaction(dealDamageGA);
-                yield return tween.WaitForCompletion();
-            }
+            ActionSystem.Instance.AddReaction(dealDamageGA);
+            yield return tween.WaitForCompletion();
         }
     }
 
@@ -202,9 +173,12 @@ public class EnemySystem : Singleton<EnemySystem>
         {
             AttackHeroGA attackHeroGA = new(arg.Damage, arg.Targets, arg.Context, arg.IndirectReduction, arg.UnblockedKey, arg.OverkillKey, arg.OnHitKey, arg.HitCountKey);
 
+            if (i < arg.AttackTimes - 1)
+                attackHeroGA.SetFinalAttack(false);
+
             if (!string.IsNullOrWhiteSpace(arg.HitCountKey))
                 arg.Context.SetData(arg.HitCountKey, 0);
-            
+
             ActionSystem.Instance.AddReaction(attackHeroGA);
         }
         yield return 0;
@@ -328,15 +302,24 @@ public class EnemySystem : Singleton<EnemySystem>
         return true;
     }
 
-    public int ApplyIndirectModifiers(int damage, CombatantView attacker, CombatantView target)
+    public bool IndirectApplies(CombatantView attacker, CombatantView target)
     {
-        if (attacker == null) return 0;
-        if (target == null) return damage;
+        if (attacker != null && attacker.GetStatusEffectStacks(StatusEffect.FEINT) > 0) return true;
+        if (target != null && attacker.GetStatusEffectStacks(StatusEffect.ZIGZAG) > 0) return true;
+
+        if (target == null || attacker == null) return false;
 
         if (target.GetLaneDistance(attacker) == 0)
-            return damage;
+            return false;
 
-        return ApplyIndirectModifiers(damage);
+        return true;
+    }
+
+    public int ApplyIndirectModifiers(int damage, CombatantView attacker, CombatantView target)
+    {
+        if(IndirectApplies(attacker, target))
+            return ApplyIndirectModifiers(damage);
+        return damage;
     }
 
     public int ApplyIndirectModifiers(int damage)

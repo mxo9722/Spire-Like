@@ -4,6 +4,6 @@ public class CasterMovedThisTurnCondition : Condition
 {
     protected override bool IsConditionMet(EffectContext context)
     {
-        return context.Caster.MovedThisRound;
+        return context.Caster.GetCurrentRoundMovement() > 0;
     }
 }

@@ -1,5 +1,6 @@
 using SerializeReferenceEditor;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [System.Serializable]
@@ -18,12 +19,12 @@ public class CardReaction
 
     public void Subscribe()
     {
-        _reactionCondition.SubscribeCondition(Reaction);
+        _reactionCondition.SubscribeCondition(_owner,Reaction);
     }
 
     public void Unsubscribe()
     {
-        _reactionCondition.UnsubscribeCondition(Reaction);
+        _reactionCondition.UnsubscribeCondition(_owner,Reaction);
     }
 
 
@@ -87,5 +88,14 @@ public class CardReaction
         cardReaction._effects = _effects;
 
         return cardReaction;
+    }
+
+    public List<StatusEffect> GetAllStatusEffects()
+    {
+        List<StatusEffect> statusEffects = new();
+
+        statusEffects.AddRange(_effects.SelectMany(e => e.GetAllStatusEffects()));
+
+        return new(statusEffects.Distinct());
     }
 }

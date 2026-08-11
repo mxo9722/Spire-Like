@@ -1,0 +1,142 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62bf69310631aa94896652d3f8be392c, type: 3}
+  m_Name: Hydra Punch
+  m_EditorClassIdentifier: 
+  <Rarity>k__BackingField: 0
+  <Upgrade>k__BackingField: {fileID: 11400000, guid: edb9c1235904ddf46accb969195ed47b, type: 2}
+  <Unplayable>k__BackingField: 0
+  <Mana>k__BackingField: 2
+  <Type>k__BackingField: 0
+  <Image>k__BackingField: {fileID: 21300000, guid: b608d7a383a528b40b956532138aed04, type: 3}
+  <Description>k__BackingField: 'Deal {v0} damage to an aligned foe. Exhaust.
+
+    On
+    exhaust: add 2 copies of this to your discard pile that cost 1 less.'
+  <RequiredConditions>k__BackingField: []
+  <HighlightConditions>k__BackingField: []
+  <ExhuastOnUse>k__BackingField: 1
+  <ManualTargetType>k__BackingField: 0
+  <CombatantFilters>k__BackingField:
+  - rid: 6120430504523857998
+  - rid: 6120430504523857999
+  <LaneFilters>k__BackingField: []
+  <ManualTargetEffect>k__BackingField:
+    rid: -2
+  <OtherEffects>k__BackingField:
+  - rid: 6120430504523858000
+  <AnywhereReactions>k__BackingField:
+  - _reactionCondition:
+      rid: 6120430505476751446
+    _effects:
+    - rid: 6120430505476751466
+    - rid: 6120430505476751474
+    - rid: 6120430505476751471
+  <InHandReactions>k__BackingField: []
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 6120430504523857998
+      type: {class: AlignedFilter, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
+    - rid: 6120430504523857999
+      type: {class: FoeFilter, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
+    - rid: 6120430504523858000
+      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 6120430504523858001
+        _combatantEffect:
+          rid: 6120430504523858002
+    - rid: 6120430504523858001
+      type: {class: ManualTargetCTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 6120430504523858002
+      type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _damage:
+          rid: 6120430504523858003
+    - rid: 6120430504523858003
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 15
+    - rid: 6120430505476751446
+      type: {class: OnExhaustCRC, ns: , asm: Assembly-CSharp}
+      data:
+        reactionTiming: 1
+    - rid: 6120430505476751466
+      type: {class: AutoCardTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 6120430505476751467
+        _cardEffect:
+          rid: 6120430505476751470
+    - rid: 6120430505476751467
+      type: {class: CopiesCaTM, ns: , asm: Assembly-CSharp}
+      data:
+        _copySource:
+          rid: 6120430505476751468
+        _copyCount:
+          rid: 6120430505476751469
+    - rid: 6120430505476751468
+      type: {class: PlayedCardCaTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 6120430505476751469
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 2
+    - rid: 6120430505476751470
+      type: {class: SaveCardsEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _dataKey: TargetCards
+        _saveDataLevel: 0
+    - rid: 6120430505476751471
+      type: {class: AutoCardTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 6120430505476751472
+        _cardEffect:
+          rid: 6120430505476751473
+    - rid: 6120430505476751472
+      type: {class: SavedDataCaTM, ns: , asm: Assembly-CSharp}
+      data:
+        _dataKey: TargetCards
+        _dataLevel: 0
+    - rid: 6120430505476751473
+      type: {class: AddCardsToDiscardEffect, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 6120430505476751474
+      type: {class: AutoCardTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 6120430505476751475
+        _cardEffect:
+          rid: 6120430505476751476
+    - rid: 6120430505476751475
+      type: {class: SavedDataCaTM, ns: , asm: Assembly-CSharp}
+      data:
+        _dataKey: TargetCards
+        _dataLevel: 0
+    - rid: 6120430505476751476
+      type: {class: ReduceCardsCostEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _costReduction:
+          rid: 6120430505476751477
+    - rid: 6120430505476751477
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 1

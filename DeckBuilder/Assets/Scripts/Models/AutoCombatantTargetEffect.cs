@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-[System.Serializable]
+[Serializable]
 public class AutoCombatantTargetEffect : AutoTargetEffect
 {
 
@@ -58,5 +58,11 @@ public class AutoCombatantTargetEffect : AutoTargetEffect
     public override NPCTargetTypes GetTargetIntent()
     {
         return TargetMode.GetTargetIntent();
+    }
+
+    public override void SimulatedPerform(EffectContext context)
+    {
+        if (GetGameAction(context) is SimulatedGameAction simulatedGameAction)
+            simulatedGameAction.SimulatedPerform(context);
     }
 }

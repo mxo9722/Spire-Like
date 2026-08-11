@@ -19,9 +19,10 @@ MonoBehaviour:
   <Type>k__BackingField: 0
   <Image>k__BackingField: {fileID: 21300000, guid: a717af6e09f3bb84e852491c4c330b20, type: 3}
   <Description>k__BackingField: Exhaust any of the top 3 cards from your deck. Deal
-    {v0} damage to an aligned foe for each card selected.
+    {v1} damage to an aligned foe for each card selected.
   <RequiredConditions>k__BackingField: []
   <HighlightConditions>k__BackingField: []
+  <JustHighlightCard>k__BackingField: 0
   <ExhuastOnUse>k__BackingField: 0
   <ManualTargetType>k__BackingField: 0
   <CombatantFilters>k__BackingField:
@@ -33,6 +34,7 @@ MonoBehaviour:
   <OtherEffects>k__BackingField:
   - rid: 6120430483144179807
   - rid: 6120430483144179824
+  <AnywhereReactions>k__BackingField: []
   <InHandReactions>k__BackingField: []
   references:
     version: 2
@@ -111,6 +113,7 @@ MonoBehaviour:
       data:
         _damage:
           rid: 6120430483144179831
+        _unblockedKey: 
     - rid: 6120430483144179831
       type: {class: SetQ, ns: , asm: Assembly-CSharp}
       data:

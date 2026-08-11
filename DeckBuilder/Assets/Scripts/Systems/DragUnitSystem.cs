@@ -17,8 +17,6 @@ public class DragUnitSystem : Singleton<DragUnitSystem>
     public CombatantView MovedUnit { get; private set; }
     public LaneView DestinationLane { get; private set; }
 
-    private CardView _cardView;
-
     public void BeginDrag(List<CombatantFilter> combatantFilters, List<LaneFilter> laneFilters, EffectContext context, string commandText)
     {
         CombatantFilters = combatantFilters;
@@ -31,7 +29,7 @@ public class DragUnitSystem : Singleton<DragUnitSystem>
         DestinationLane = null;
 
         CanDragUnits = true;
-        HighlightValidUnits();
+        HighlightValidUnits(context);
     }
 
     public IEnumerator EndDrag(CombatantView combatant, LaneView destination)
@@ -47,15 +45,13 @@ public class DragUnitSystem : Singleton<DragUnitSystem>
 
         CanDragUnits = false;
         TargetPreviewSystem.Instance.HideTargetPreviews(false);
-
-        _cardView = null;
         yield return null;
     }
 
-    public void HighlightValidUnits()
+    public void HighlightValidUnits(EffectContext context)
     {
         TargetPreviewSystem.Instance.HideTargetPreviews(false);
-        ManualTargetSystem.Instance.HighlightTargets(CombatantFilters, EffectContext);
+        ManualTargetSystem.Instance.HighlightTargets(context.PlayedCard, CombatantFilters, context);
     }
 
     public void HighlightValidLanes(CombatantView view)
@@ -65,6 +61,6 @@ public class DragUnitSystem : Singleton<DragUnitSystem>
         context.SetManualCombatant(view);
 
         TargetPreviewSystem.Instance.HideTargetPreviews(false);
-        ManualTargetSystem.Instance.HighlightTargets(LaneFilters, context);
+        ManualTargetSystem.Instance.HighlightTargets(context.PlayedCard, LaneFilters, context);
     }
 }

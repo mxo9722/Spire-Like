@@ -29,7 +29,7 @@ public class EffectSystem : Singleton<EffectSystem>
     private IEnumerator MultipleEffectsPerformer(MultipleEffectsGA arg)
     {
         foreach(AutoTargetEffect effect in arg.Effects)
-            ActionSystem.Instance.AddReaction(effect.GetGameAction(arg.Context));
+            ActionSystem.Instance.AddReaction(new AutoTargetEffectGA(arg.Context, effect));
 
         yield return null;
     }

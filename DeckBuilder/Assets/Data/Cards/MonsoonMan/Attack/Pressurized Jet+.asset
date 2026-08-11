@@ -33,11 +33,46 @@ MonoBehaviour:
   <ManualTargetEffect>k__BackingField:
     rid: 6673085688012341453
   <OtherEffects>k__BackingField: []
+  <AnywhereReactions>k__BackingField: []
   <InHandReactions>k__BackingField:
-  - rid: 6673085688012341462
+  - _reactionCondition:
+      rid: 6120430505476751360
+    _effects:
+    - rid: 6120430505476751361
   references:
     version: 2
     RefIds:
+    - rid: 6120430505476751360
+      type: {class: LingerCRC, ns: , asm: Assembly-CSharp}
+      data:
+        reactionTiming: 0
+    - rid: 6120430505476751361
+      type: {class: AutoTargetlessEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _noTargetEffect:
+          rid: 6120430505476751362
+    - rid: 6120430505476751362
+      type: {class: SaveQuantToPlayedCardEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _key: lingerCount
+        _quantity:
+          rid: 6120430505476751364
+    - rid: 6120430505476751364
+      type: {class: AddQ, ns: , asm: Assembly-CSharp}
+      data:
+        _a:
+          rid: 6120430505476751365
+        _b:
+          rid: 6120430505476751367
+    - rid: 6120430505476751365
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 1
+    - rid: 6120430505476751367
+      type: {class: SavedDataQ, ns: , asm: Assembly-CSharp}
+      data:
+        _level: 3
+        _key: lingerCount
     - rid: 6673085688012341450
       type: {class: TargIsEvilFilter, ns: , asm: Assembly-CSharp}
       data:
@@ -79,44 +114,6 @@ MonoBehaviour:
       data:
         _set: 2
     - rid: 6673085688012341461
-      type: {class: SavedDataQ, ns: , asm: Assembly-CSharp}
-      data:
-        _level: 3
-        _key: lingerCount
-    - rid: 6673085688012341462
-      type: {class: CardReaction, ns: , asm: Assembly-CSharp}
-      data:
-        _reactionCondition:
-          rid: 6673085688012341463
-        _effects:
-        - rid: 6673085688012341464
-    - rid: 6673085688012341463
-      type: {class: LingerCRC, ns: , asm: Assembly-CSharp}
-      data:
-        reactionTiming: 0
-    - rid: 6673085688012341464
-      type: {class: AutoTargetlessEffect, ns: , asm: Assembly-CSharp}
-      data:
-        _noTargetEffect:
-          rid: 6673085688012341465
-    - rid: 6673085688012341465
-      type: {class: SaveQuantToPlayedCardEffect, ns: , asm: Assembly-CSharp}
-      data:
-        _key: lingerCount
-        _quantity:
-          rid: 6673085688012341467
-    - rid: 6673085688012341467
-      type: {class: AddQ, ns: , asm: Assembly-CSharp}
-      data:
-        _a:
-          rid: 6673085688012341470
-        _b:
-          rid: 6673085688012341469
-    - rid: 6673085688012341469
-      type: {class: SetQ, ns: , asm: Assembly-CSharp}
-      data:
-        _set: 1
-    - rid: 6673085688012341470
       type: {class: SavedDataQ, ns: , asm: Assembly-CSharp}
       data:
         _level: 3

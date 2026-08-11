@@ -19,7 +19,7 @@ public class CardDisplayView : Singleton<CardDisplayView>
 
             Vector3 position = _splineContainer.Spline.EvaluatePosition(p);
 
-            var cardView = cards[i];
+            CardView cardView = cards[i];
 
             yield return new WaitForSeconds(0.25f);
 

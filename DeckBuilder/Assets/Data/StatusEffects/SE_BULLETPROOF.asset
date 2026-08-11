@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a61ecd2afb9bcb0469ae465c6809506c, type: 3}
+  m_Name: SE_BULLETPROOF
+  m_EditorClassIdentifier: 
+  <Info>k__BackingField:
+    <EnumKey>k__BackingField: -1000
+    <Name>k__BackingField: Bulletproof
+    <Sprite>k__BackingField: {fileID: 21300000, guid: 83ac2e6d8ab59f842aa98b0e01b03671, type: 3}
+    <Stackable>k__BackingField: 1
+    <RemoveAtZero>k__BackingField: 1
+    <Type>k__BackingField: 2
+    <PreTurnModification>k__BackingField: 0
+    <PostTurnModification>k__BackingField: 0
+    <Effect>k__BackingField:
+      rid: -2
+    <Modifiers>k__BackingField:
+    - <Condition>k__BackingField:
+        rid: 3047589151650086992
+      <Modifier>k__BackingField:
+        rid: 3047589151650086990
+    <Reactions>k__BackingField: []
+    <Description>k__BackingField: Descrease indirect attack damage by X.
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 3047589151650086990
+      type: {class: ReduceModifier, ns: , asm: Assembly-CSharp}
+      data:
+        _amount:
+          rid: 3047589170898010252
+    - rid: 3047589151650086992
+      type: {class: IncomingAttackDamageMC, ns: , asm: Assembly-CSharp}
+      data:
+        _timing: 1
+        _indirectOnly: 1
+    - rid: 3047589170898010252
+      type: {class: SEStacksSOQ, ns: , asm: Assembly-CSharp}
+      data:
+        _targetMode:
+          rid: 3047589170898010254
+        _data: {fileID: 11400000}
+    - rid: 3047589170898010254
+      type: {class: SavedDataCTM, ns: , asm: Assembly-CSharp}
+      data:
+        _dataKey: Owner
+        _dataLevel: 0

@@ -1,0 +1,455 @@
+fileFormatVersion: 2
+guid: 11f47e1c2a894524e85155aa18741c02
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 5053471995761620825
+    second: predatorInstinct 1_0
+  - first:
+      213: -3297572902091646066
+    second: predatorInstinct 1_1
+  - first:
+      213: -7356743782702840235
+    second: predatorInstinct 1_2
+  - first:
+      213: -7054763453001179778
+    second: predatorInstinct 1_3
+  - first:
+      213: -1534670195601922320
+    second: predatorInstinct 1_4
+  - first:
+      213: -3367318451454059922
+    second: predatorInstinct 1_5
+  - first:
+      213: 5555526043532596501
+    second: predatorInstinct 1_6
+  - first:
+      213: 498277642798163204
+    second: predatorInstinct 1_7
+  - first:
+      213: -453255335001176955
+    second: predatorInstinct 1_8
+  - first:
+      213: 1739438442034171272
+    second: predatorInstinct 1_9
+  - first:
+      213: 5999930255101504206
+    second: predatorInstinct 1_10
+  - first:
+      213: 3528418198993621831
+    second: predatorInstinct 1_11
+  - first:
+      213: -6422870772266899041
+    second: predatorInstinct 1_12
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: predatorInstinct 1_0
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 407
+        width: 111
+        height: 88
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 95771c5710a812640800000000000000
+      internalID: 5053471995761620825
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: predatorInstinct 1_1
+      rect:
+        serializedVersion: 2
+        x: 352
+        y: 409
+        width: 114
+        height: 88
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e8b9fd5baeaac32d0800000000000000
+      internalID: -3297572902091646066
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: predatorInstinct 1_2
+      rect:
+        serializedVersion: 2
+        x: 29
+        y: 181
+        width: 80
+        height: 155
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5560f60e18897e990800000000000000
+      internalID: -7356743782702840235
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: predatorInstinct 1_3
+      rect:
+        serializedVersion: 2
+        x: 41
+        y: 53
+        width: 69
+        height: 226
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e7dd4796402781e90800000000000000
+      internalID: -7054763453001179778
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: predatorInstinct 1_4
+      rect:
+        serializedVersion: 2
+        x: 99
+        y: 93
+        width: 81
+        height: 204
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0f6a4cf8691c3bae0800000000000000
+      internalID: -1534670195601922320
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: predatorInstinct 1_5
+      rect:
+        serializedVersion: 2
+        x: 111
+        y: 22
+        width: 88
+        height: 226
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e6a567f85b1e441d0800000000000000
+      internalID: -3367318451454059922
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: predatorInstinct 1_6
+      rect:
+        serializedVersion: 2
+        x: 186
+        y: 44
+        width: 67
+        height: 230
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 515113d8081391d40800000000000000
+      internalID: 5555526043532596501
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: predatorInstinct 1_7
+      rect:
+        serializedVersion: 2
+        x: 217
+        y: 17
+        width: 88
+        height: 224
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 405e08a40ec3ae600800000000000000
+      internalID: 498277642798163204
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: predatorInstinct 1_8
+      rect:
+        serializedVersion: 2
+        x: 262
+        y: 59
+        width: 72
+        height: 219
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 58444bc9ca6b5b9f0800000000000000
+      internalID: -453255335001176955
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: predatorInstinct 1_9
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 20
+        width: 70
+        height: 228
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 88d0b1e0c0ab32810800000000000000
+      internalID: 1739438442034171272
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: predatorInstinct 1_10
+      rect:
+        serializedVersion: 2
+        x: 347
+        y: 55
+        width: 74
+        height: 247
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ecaa17c27c8044350800000000000000
+      internalID: 5999930255101504206
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: predatorInstinct 1_11
+      rect:
+        serializedVersion: 2
+        x: 413
+        y: 46
+        width: 66
+        height: 244
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 743d90a58a577f030800000000000000
+      internalID: 3528418198993621831
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: predatorInstinct 1_12
+      rect:
+        serializedVersion: 2
+        x: 419
+        y: 190
+        width: 76
+        height: 152
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f99eaccff016dd6a0800000000000000
+      internalID: -6422870772266899041
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      predatorInstinct 1_0: 5053471995761620825
+      predatorInstinct 1_1: -3297572902091646066
+      predatorInstinct 1_10: 5999930255101504206
+      predatorInstinct 1_11: 3528418198993621831
+      predatorInstinct 1_12: -6422870772266899041
+      predatorInstinct 1_2: -7356743782702840235
+      predatorInstinct 1_3: -7054763453001179778
+      predatorInstinct 1_4: -1534670195601922320
+      predatorInstinct 1_5: -3367318451454059922
+      predatorInstinct 1_6: 5555526043532596501
+      predatorInstinct 1_7: 498277642798163204
+      predatorInstinct 1_8: -453255335001176955
+      predatorInstinct 1_9: 1739438442034171272
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -6,6 +6,7 @@ using UnityEngine;
 public class AdjacentTargetsCTM : CombatantTargetMode
 {
     [SerializeReference, SR] private CombatantTargetMode _baseTargets;
+    [SerializeField] private bool _includeTargets = false;
 
     public override List<CombatantView> GetTargets(EffectContext context)
     {
@@ -14,17 +15,21 @@ public class AdjacentTargetsCTM : CombatantTargetMode
 
         foreach(CombatantView targ in pTargets)
         {
-            adjacent.AddRange(GetAdjacents(targ));
+            adjacent.AddRange(GetAdjacents(targ, false));
+            if (_includeTargets)
+                adjacent.Add(targ);
         }
 
         adjacent.RemoveAll(r => r == null);
         adjacent = new(adjacent.Distinct());
-        adjacent.RemoveAll(r => pTargets.Contains(r));
+
+        if(!_includeTargets)
+            adjacent.RemoveAll(r => pTargets.Contains(r));
 
         return adjacent;
     }
 
-    private List<CombatantView> GetAdjacents(CombatantView pTarget)
+    private List<CombatantView> GetAdjacents(CombatantView pTarget, bool includeUpAndDown)
     {
         if (pTarget == null)
             return new();
@@ -36,14 +41,19 @@ public class AdjacentTargetsCTM : CombatantTargetMode
         CombatantView left = GetCombatantAtIndex(lane, index - 1, isEvil);
         CombatantView right = GetCombatantAtIndex(lane, index + 1, isEvil);
 
-        LaneView upLane = GetLaneAtIndex(lane.Board, lane.Index - 1);
-        LaneView downLane = GetLaneAtIndex(lane.Board, lane.Index + 1);
+        if (includeUpAndDown)
+        {
+            LaneView upLane = GetLaneAtIndex(lane.Board, lane.Index - 1);
+            LaneView downLane = GetLaneAtIndex(lane.Board, lane.Index + 1);
 
 
-        CombatantView up = GetCombatantAtIndex(upLane,index,isEvil);
-        CombatantView down = GetCombatantAtIndex(downLane, index, isEvil);
+            CombatantView up = GetCombatantAtIndex(upLane, index, isEvil);
+            CombatantView down = GetCombatantAtIndex(downLane, index, isEvil);
 
-        return new() { left, right, up, down };
+            return new() { left, right, up, down };
+        }
+
+        return new() { left, right};
     }
 
     private LaneView GetLaneAtIndex(BoardView board, int index)

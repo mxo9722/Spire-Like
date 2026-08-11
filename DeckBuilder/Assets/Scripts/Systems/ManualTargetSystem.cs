@@ -30,28 +30,28 @@ public class ManualTargetSystem : Singleton<ManualTargetSystem>
 
     public void HighlightManualTargets(Card card)
     {
-        List<ConditionalAutoTargetEffect> highlightConditionals = card.OtherEffects.Where(e => e is ConditionalAutoTargetEffect).Select(e => (ConditionalAutoTargetEffect)e).ToList();
+        List<ConditionalAutoTargetEffect> highlightConditionals = card.OtherEffects.Where(e => e is ConditionalAutoTargetEffect conditional && !conditional.HideHighlight).Select(e => (ConditionalAutoTargetEffect)e).ToList();
 
         switch (card.ManualTargetType)
         {
             case ManualTargetType.COMBATANT:
-                TargetPreviewSystem.Instance.SetTargetPreviewsManual<CombatantView, CombatantFilter>(card.CombatantFilters, highlightConditionals, new(card.GetOwnerView()));
+                TargetPreviewSystem.Instance.SetTargetPreviewsManual<CombatantView, CombatantFilter>(card, card.CombatantFilters, highlightConditionals, new(card.GetOwnerView(), playedCard: card));
                 break;
 
             case ManualTargetType.LANE:
-                TargetPreviewSystem.Instance.SetTargetPreviewsManual<LaneView, LaneFilter>(card.LaneFilters, highlightConditionals, new(card.GetOwnerView()));
+                TargetPreviewSystem.Instance.SetTargetPreviewsManual<LaneView, LaneFilter>(card, card.LaneFilters, highlightConditionals, new(card.GetOwnerView(), playedCard: card));
                 break;
         }
     }
 
-    public void HighlightTargets(List<CombatantFilter> filters, EffectContext context)
+    public void HighlightTargets(Card card, List<CombatantFilter> filters, EffectContext context)
     {
-        TargetPreviewSystem.Instance.SetTargetPreviewsManual<CombatantView, CombatantFilter>(filters, new List<ConditionalAutoTargetEffect>(), context);
+        TargetPreviewSystem.Instance.SetTargetPreviewsManual<CombatantView, CombatantFilter>(card, filters, new List<ConditionalAutoTargetEffect>(), context);
     }
     
-    public void HighlightTargets(List<LaneFilter> filters, EffectContext context)
+    public void HighlightTargets(Card card,List<LaneFilter> filters, EffectContext context)
     {
-        TargetPreviewSystem.Instance.SetTargetPreviewsManual<LaneView, LaneFilter>(filters, new List<ConditionalAutoTargetEffect>(), context);
+        TargetPreviewSystem.Instance.SetTargetPreviewsManual<LaneView, LaneFilter>(card, filters, new List<ConditionalAutoTargetEffect>(), context);
     }
 
     public CombatantView EndEnemyTargeting(Vector3 endPosition)

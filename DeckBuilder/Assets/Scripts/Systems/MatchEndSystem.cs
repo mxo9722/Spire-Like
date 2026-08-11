@@ -4,11 +4,11 @@ public class MatchEndSystem : Singleton<MatchEndSystem>
 {
     [SerializeField] private ScenePicker _mapScene;
 
-    public bool GameOver { get; private set; } = false;
+    public bool MatchOver { get; private set; } = false;
 
     public void EndCombat()
     {
-        GameOver = true;
+        MatchOver = true;
         CombatRoom combatRoom = (CombatRoom)RunSystem.Instance.GetRoom();
 
         if (combatRoom == null)

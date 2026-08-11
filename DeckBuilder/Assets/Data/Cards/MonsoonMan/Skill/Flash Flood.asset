@@ -13,17 +13,20 @@ MonoBehaviour:
   m_Name: Flash Flood
   m_EditorClassIdentifier: 
   <Rarity>k__BackingField: 0
-  <Upgrade>k__BackingField: {fileID: 0}
+  <Upgrade>k__BackingField: {fileID: 11400000, guid: 1181849c495ee584e99dd2de4b43eb80, type: 2}
   <Unplayable>k__BackingField: 0
+  <Retain>k__BackingField: 0
   <Mana>k__BackingField: 2
   <Type>k__BackingField: 1
   <Image>k__BackingField: {fileID: 21300000, guid: ebbcbef66d7e3ea44b8728589ed41b70, type: 3}
+  <CardReference>k__BackingField: {fileID: 0}
   <Description>k__BackingField: 'Apply {v0} block to an ally.
 
     If that lane is
     dry then soak it and apply {v1} weak to aligned foes.'
   <RequiredConditions>k__BackingField: []
   <HighlightConditions>k__BackingField: []
+  <JustHighlightCard>k__BackingField: 0
   <ExhuastOnUse>k__BackingField: 0
   <ManualTargetType>k__BackingField: 0
   <CombatantFilters>k__BackingField:
@@ -34,6 +37,7 @@ MonoBehaviour:
   <OtherEffects>k__BackingField:
   - rid: 262421164024660045
   - rid: 262421164024660049
+  <AnywhereReactions>k__BackingField: []
   <InHandReactions>k__BackingField: []
   references:
     version: 2
@@ -67,6 +71,7 @@ MonoBehaviour:
         - rid: 262421164024660053
         - rid: 262421164024660056
         _failEffects: []
+        HideHighlight: 0
     - rid: 262421164024660050
       type: {class: LanesSoakedCondition, ns: , asm: Assembly-CSharp}
       data:

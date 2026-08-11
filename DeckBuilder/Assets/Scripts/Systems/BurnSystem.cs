@@ -15,7 +15,7 @@ public class BurnSystem : Singleton<BurnSystem>
     private void OnDisable()
     {
         ActionSystem.DetachPerformer<InvokeBurnGA>();
-        ActionSystem.AttachPerformer<TransferHeatGA>(TransferHeatPerformer);
+        ActionSystem.DetachPerformer<TransferHeatGA>();
     }
 
     private IEnumerator ApplyBurnPerformer(InvokeBurnGA applyBurnGA)
@@ -44,9 +44,9 @@ public class BurnSystem : Singleton<BurnSystem>
 
         foreach (CombatantView target in transferHeatGA.Targets)
         {
-            int stacks = target.GetStatusEffectStacks(StatusEffect.HEAT);
-            gameActions.Add(new AddStatusEffectGA(StatusEffectSystem.GetDictionaryEntry(StatusEffect.BURN), stacks, new() { target }));
-            gameActions.Add(new RemoveAllStatusEffectGA(StatusEffectSystem.GetDictionaryEntry(StatusEffect.HEAT), new() { target }));
+            int stacks = target.GetStatusEffectStacks(StatusEffect.HEAT) - 9;
+            gameActions.Add(new AddStatusEffectGA(StatusEffectSystem.GetDictionaryEntry(StatusEffect.BURN), stacks, new() { target }, transferHeatGA.Context));
+            gameActions.Add(new AddStatusEffectGA(StatusEffectSystem.GetDictionaryEntry(StatusEffect.HEAT), -stacks, new() { target }, transferHeatGA.Context));
         }
 
 

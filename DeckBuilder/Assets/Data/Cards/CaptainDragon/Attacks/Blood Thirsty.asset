@@ -1,0 +1,161 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62bf69310631aa94896652d3f8be392c, type: 3}
+  m_Name: Blood Thirsty
+  m_EditorClassIdentifier: 
+  <Rarity>k__BackingField: 0
+  <Upgrade>k__BackingField: {fileID: 11400000, guid: ba7c0cdac5b0aa543ba1bbdf78d03693, type: 2}
+  <Unplayable>k__BackingField: 0
+  <Retain>k__BackingField: 0
+  <Mana>k__BackingField: 0
+  <Type>k__BackingField: 0
+  <Image>k__BackingField: {fileID: 21300000, guid: 67649091be145ed43988000a9db02e2f, type: 3}
+  <CardReference>k__BackingField: {fileID: 0}
+  <Description>k__BackingField: Deal {v0} damage to an aligned foe. If it was totally
+    blocked, draw {v1} cards.
+  <RequiredConditions>k__BackingField: []
+  <HighlightConditions>k__BackingField:
+  - rid: 6120430509456883809
+  <JustHighlightCard>k__BackingField: 0
+  <ExhuastOnUse>k__BackingField: 0
+  <ManualTargetType>k__BackingField: 0
+  <CombatantFilters>k__BackingField:
+  - rid: 6120430509456883712
+  - rid: 6120430509456883713
+  <LaneFilters>k__BackingField: []
+  <ManualTargetEffect>k__BackingField:
+    rid: -2
+  <OtherEffects>k__BackingField:
+  - rid: 6120430509456883714
+  - rid: 6120430509456883791
+  <AnywhereReactions>k__BackingField: []
+  <InHandReactions>k__BackingField: []
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 6120430509456883712
+      type: {class: AlignedFilter, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
+    - rid: 6120430509456883713
+      type: {class: FoeFilter, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
+    - rid: 6120430509456883714
+      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 6120430509456883715
+        _combatantEffect:
+          rid: 6120430509456883716
+    - rid: 6120430509456883715
+      type: {class: ManualTargetCTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 6120430509456883716
+      type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _damage:
+          rid: 6120430509456883717
+        _unblockedKey: unblocked
+    - rid: 6120430509456883717
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 4
+    - rid: 6120430509456883791
+      type: {class: ConditionalAutoTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _conditions:
+        - rid: 6120430509456883792
+        _successEffects:
+        - rid: 6120430509456883795
+        _failEffects: []
+        HideHighlight: 0
+    - rid: 6120430509456883792
+      type: {class: QuantityCompareCondition, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
+        _a:
+          rid: 6120430509456883793
+        _is: 1
+        _orEqualTo: 0
+        _b:
+          rid: 6120430509456883794
+    - rid: 6120430509456883793
+      type: {class: SavedDataQ, ns: , asm: Assembly-CSharp}
+      data:
+        _level: 0
+        _key: unblocked
+    - rid: 6120430509456883794
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 0
+    - rid: 6120430509456883795
+      type: {class: AutoTargetlessEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _noTargetEffect:
+          rid: 6120430509456883796
+    - rid: 6120430509456883796
+      type: {class: DrawCardsEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _drawAmount:
+          rid: 6120430509456883797
+    - rid: 6120430509456883797
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 2
+    - rid: 6120430509456883809
+      type: {class: AnyTargetQualifiesCondition, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
+        _targetMode:
+          rid: 6120430509456883810
+        _filters:
+        - rid: 6120430509456883813
+    - rid: 6120430509456883810
+      type: {class: AllCTM, ns: , asm: Assembly-CSharp}
+      data:
+        _filters:
+        - rid: 6120430509456883811
+        - rid: 6120430509456883812
+    - rid: 6120430509456883811
+      type: {class: AlignedFilter, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
+    - rid: 6120430509456883812
+      type: {class: FoeFilter, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
+    - rid: 6120430509456883813
+      type: {class: TargHasStatusEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
+        _statusEffectType: 0
+        _is: 2
+        _orEqualTo: 1
+        _b:
+          rid: 6120430509456883815
+    - rid: 6120430509456883815
+      type: {class: DamageAdjustedToTargetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _combatantTargetMode:
+          rid: 6120430509456883816
+        _baseDamage:
+          rid: 6120430509456883817
+    - rid: 6120430509456883816
+      type: {class: ManualTargetCTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 6120430509456883817
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 4

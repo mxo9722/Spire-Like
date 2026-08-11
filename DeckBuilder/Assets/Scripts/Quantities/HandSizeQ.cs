@@ -4,11 +4,11 @@ public class HandSizeQ : Quantity
 {
     public override int GetAmount(EffectContext effectContext)
     {
-        return GetStaticAmount();
+        return CardSystem.Instance.GetCardCount();
     }
 
     public override int GetStaticAmount()
     {
-        return CardSystem.Instance.GetCardCount();
+        return 0;
     }
 }

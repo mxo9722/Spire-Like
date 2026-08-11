@@ -3,15 +3,10 @@ using UnityEngine;
 
 public class ExhaustCardGA : GameAction
 {
-    public List<Card> Cards { get; private set; }
+    public Card Card { get; private set; }
 
     public ExhaustCardGA(Card card)
     {
-        Cards = new() { card };
-    }
-    
-    public ExhaustCardGA(List<Card> cards)
-    {
-        Cards = cards;
+        Card = card;
     }
 }

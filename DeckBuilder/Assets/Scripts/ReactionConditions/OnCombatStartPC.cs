@@ -8,13 +8,13 @@ public class OnCombatStartPC : ReactionCondition
         return true;
     }
 
-    public override void SubscribeCondition(Action<GameAction> reaction)
+    public override void SubscribeCondition(object subsccriber, Action<GameAction> reaction)
     {
-        ActionSystem.SubscribeReaction<CombatStartGA>(this, reaction, reactionTiming);
+        ActionSystem.SubscribeReaction<CombatStartGA>(subsccriber, reaction, reactionTiming);
     }
 
-    public override void UnsubscribeCondition(Action<GameAction> reaction)
+    public override void UnsubscribeCondition(object subsccriber, Action<GameAction> reaction)
     {
-        ActionSystem.UnsubscribeReaction<CombatStartGA>(this, reaction, reactionTiming);
+        ActionSystem.UnsubscribeReaction<CombatStartGA>(subsccriber, reaction, reactionTiming);
     }
 }

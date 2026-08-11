@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class RepeatEffectsEffect : NoTargetEffect
+public class RepeatEffectsEffect : NoTargetEffect, IDynamicEffectText
 {
     [SerializeReference, SR] private Quantity _repeatCount;
     [SerializeReference, SR] private AutoTargetEffect[] _autoTargetEffects;
 
     public override IDynamicEffectText[] GetDynamicTextEffects()
     {
-        List<IDynamicEffectText> dynamicEffectTexts = new();
+        List<IDynamicEffectText> dynamicEffectTexts = new() { this };
 
         foreach(AutoTargetEffect autoTargetEffect in _autoTargetEffects)
         {
@@ -37,5 +37,15 @@ public class RepeatEffectsEffect : NoTargetEffect
     public override AutoTargetEffect[] GetNestedEffects()
     {
         return _autoTargetEffects;
+    }
+
+    public string GetStaticText()
+    {
+        return _repeatCount.GetStaticAmount().ToString();
+    }
+
+    public string GetDynamicText(EffectContext context, List<CombatantView> targetCombatants = null, List<LaneView> targetLanes = null)
+    {
+        return _repeatCount.GetAmount(context).ToString();
     }
 }

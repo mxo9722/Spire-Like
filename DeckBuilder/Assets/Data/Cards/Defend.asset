@@ -15,12 +15,15 @@ MonoBehaviour:
   <Rarity>k__BackingField: 0
   <Upgrade>k__BackingField: {fileID: 11400000, guid: 892dfdf764ac86d4e975c1c8962c36ef, type: 2}
   <Unplayable>k__BackingField: 0
+  <Retain>k__BackingField: 0
   <Mana>k__BackingField: 1
   <Type>k__BackingField: 1
   <Image>k__BackingField: {fileID: 21300000, guid: e9d68632d6d3e0047a7bcfab3347ea67, type: 3}
+  <CardReference>k__BackingField: {fileID: 0}
   <Description>k__BackingField: Apply {v0} block to a hero.
   <RequiredConditions>k__BackingField: []
   <HighlightConditions>k__BackingField: []
+  <JustHighlightCard>k__BackingField: 0
   <ExhuastOnUse>k__BackingField: 0
   <ManualTargetType>k__BackingField: 0
   <CombatantFilters>k__BackingField:
@@ -30,6 +33,7 @@ MonoBehaviour:
     rid: -2
   <OtherEffects>k__BackingField:
   - rid: 1228494508162810027
+  <AnywhereReactions>k__BackingField: []
   <InHandReactions>k__BackingField: []
   references:
     version: 2

@@ -35,7 +35,7 @@ MonoBehaviour:
     - rid: 3334943346684592209
   - <Name>k__BackingField: Double
     <Symbol>k__BackingField: 0
-    <Symbol2>k__BackingField: 5
+    <Symbol2>k__BackingField: 3
     <Weight>k__BackingField: 1
     <Priority>k__BackingField: 0
     <ConsecutiveMax>k__BackingField: 0
@@ -43,6 +43,7 @@ MonoBehaviour:
     - rid: 6673086252972769377
     <Effects>k__BackingField:
     - rid: 6673086252972769374
+    - rid: 3047589394617991235
   - <Name>k__BackingField: Triple
     <Symbol>k__BackingField: 0
     <Symbol2>k__BackingField: 5
@@ -76,15 +77,6 @@ MonoBehaviour:
     <Effects>k__BackingField:
     - rid: 6673086252972769426
     - rid: 6673086252972769432
-  - <Name>k__BackingField: Bunt
-    <Symbol>k__BackingField: 3
-    <Symbol2>k__BackingField: 5
-    <Weight>k__BackingField: 1
-    <Priority>k__BackingField: 0
-    <ConsecutiveMax>k__BackingField: 0
-    <Conditions>k__BackingField: []
-    <Effects>k__BackingField:
-    - rid: 6673086252972769442
   references:
     version: 2
     RefIds:
@@ -103,6 +95,27 @@ MonoBehaviour:
       type: {class: SetQ, ns: , asm: Assembly-CSharp}
       data:
         _set: 1
+    - rid: 3047589394617991235
+      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 3047589394617991236
+        _combatantEffect:
+          rid: 3047589394617991237
+    - rid: 3047589394617991236
+      type: {class: CasterCTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 3047589394617991237
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _statusEffectType: 0
+        _stackCount:
+          rid: 3047589394617991238
+        _skipAnimation: 0
+    - rid: 3047589394617991238
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 7
     - rid: 3334943346684592206
       type: {class: SetQ, ns: , asm: Assembly-CSharp}
       data:
@@ -372,6 +385,7 @@ MonoBehaviour:
         _successEffects:
         - rid: 6673086252972769435
         _failEffects: []
+        HideHighlight: 0
     - rid: 6673086252972769433
       type: {class: CasterInLaneFilter, ns: , asm: Assembly-CSharp}
       data:
@@ -401,24 +415,3 @@ MonoBehaviour:
       type: {class: SetQ, ns: , asm: Assembly-CSharp}
       data:
         _set: 1
-    - rid: 6673086252972769442
-      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
-      data:
-        <TargetMode>k__BackingField:
-          rid: 6673086252972769443
-        _combatantEffect:
-          rid: 6673086252972769444
-    - rid: 6673086252972769443
-      type: {class: CasterCTM, ns: , asm: Assembly-CSharp}
-      data: 
-    - rid: 6673086252972769444
-      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
-      data:
-        _statusEffectType: 0
-        _stackCount:
-          rid: 6673086252972769445
-        _skipAnimation: 0
-    - rid: 6673086252972769445
-      type: {class: SetQ, ns: , asm: Assembly-CSharp}
-      data:
-        _set: 7

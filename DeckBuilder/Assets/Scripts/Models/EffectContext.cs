@@ -8,14 +8,19 @@ public class EffectContext : IHoldData
     public CombatantView TargetCombatant { get; private set; }
     public Card PlayedCard { get; private set; }
 
+    public int PlayedHandIndex { get; private set; }
+    public int PlayedHandSize { get; private set; }
+
     private Dictionary<string, object> _data = null;
 
-    public EffectContext(CombatantView caster = null, LaneView manualTargetLane = null, CombatantView manualTargetCombatant = null, Card playedCard = null)
+    public EffectContext(CombatantView caster = null, LaneView manualTargetLane = null, CombatantView manualTargetCombatant = null, Card playedCard = null, int playedHandIndex = -1, int playedHandSize = -1)
     {
         Caster = caster;
         TargetLane = manualTargetLane;
         TargetCombatant = manualTargetCombatant;
         PlayedCard = playedCard;
+        PlayedHandIndex = playedHandIndex;
+        PlayedHandSize = playedHandSize;
     }
 
     public EffectContext(EffectContext copySource)
@@ -24,6 +29,8 @@ public class EffectContext : IHoldData
         TargetLane = copySource.TargetLane;
         TargetCombatant = copySource.TargetCombatant;
         PlayedCard = copySource.PlayedCard;
+        PlayedHandIndex = copySource.PlayedHandIndex;
+        PlayedHandSize = copySource.PlayedHandSize;
 
         if (copySource._data != null)
             _data = new(copySource._data);
@@ -42,6 +49,16 @@ public class EffectContext : IHoldData
     public void SetManualLane(LaneView combatant)
     {
         TargetLane = combatant;
+    }
+
+    public void SetPlayIndex(int index)
+    {
+        PlayedHandIndex = index;
+    }
+
+    public void SetPlaySize(int size)
+    {
+        PlayedHandSize = size;
     }
 
     public void SetData(string key, object data)

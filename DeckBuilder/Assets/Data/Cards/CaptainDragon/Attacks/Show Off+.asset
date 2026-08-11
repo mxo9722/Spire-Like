@@ -15,17 +15,20 @@ MonoBehaviour:
   <Rarity>k__BackingField: 0
   <Upgrade>k__BackingField: {fileID: 0}
   <Unplayable>k__BackingField: 0
+  <Retain>k__BackingField: 0
   <Mana>k__BackingField: 2
   <Type>k__BackingField: 0
   <Image>k__BackingField: {fileID: 21300000, guid: 1faab8b0ee4d8a046a1e75ff88cbc39a, type: 3}
+  <CardReference>k__BackingField: {fileID: 0}
   <Description>k__BackingField: Deal {v0} damage to a foe aligned with the other
     hero. Your ally's next attack costs 0 this turn.
   <RequiredConditions>k__BackingField: []
   <HighlightConditions>k__BackingField: []
+  <JustHighlightCard>k__BackingField: 0
   <ExhuastOnUse>k__BackingField: 0
   <ManualTargetType>k__BackingField: 0
   <CombatantFilters>k__BackingField:
-  - rid: 6120430470274482283
+  - rid: 3047589325394936000
   - rid: 6120430470274482284
   <LaneFilters>k__BackingField: []
   <ManualTargetEffect>k__BackingField:
@@ -33,12 +36,22 @@ MonoBehaviour:
   <OtherEffects>k__BackingField:
   - rid: 6120430470274482274
   - rid: 6120430470274482278
+  <AnywhereReactions>k__BackingField: []
   <InHandReactions>k__BackingField: []
   references:
     version: 2
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
+    - rid: 3047589325394936000
+      type: {class: AlignedWithOtherFilter, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
+        _targetMode:
+          rid: 3047589325394936001
+    - rid: 3047589325394936001
+      type: {class: PartnerCTM, ns: , asm: Assembly-CSharp}
+      data: 
     - rid: 6120430470274482274
       type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
       data:
@@ -54,6 +67,7 @@ MonoBehaviour:
       data:
         _damage:
           rid: 6120430470274482277
+        _unblockedKey: 
     - rid: 6120430470274482277
       type: {class: SetQ, ns: , asm: Assembly-CSharp}
       data:
@@ -84,10 +98,6 @@ MonoBehaviour:
       type: {class: ScriptableObjectSEI, ns: , asm: Assembly-CSharp}
       data:
         _statusEffectData: {fileID: 11400000, guid: 8bae1155fc3964e459f2c32e3f44aecd, type: 2}
-    - rid: 6120430470274482283
-      type: {class: AlignedFilter, ns: , asm: Assembly-CSharp}
-      data:
-        _invert: 0
     - rid: 6120430470274482284
       type: {class: FoeFilter, ns: , asm: Assembly-CSharp}
       data:

@@ -6,9 +6,9 @@ public abstract class ReactionCondition
 {
     [SerializeField] protected ReactionTiming reactionTiming;
 
-    public abstract void SubscribeCondition(Action<GameAction> reaction);
+    public abstract void SubscribeCondition(object subscriber, Action<GameAction> reaction);
 
-    public abstract void UnsubscribeCondition(Action<GameAction> reaction);
+    public abstract void UnsubscribeCondition(object subscriber, Action<GameAction> reaction);
 
     public abstract bool SubConditionIsMet(GameAction gameAction);
 

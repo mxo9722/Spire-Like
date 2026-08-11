@@ -1,0 +1,290 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-7104447831380470171
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 262dd8f326c811f49b5f8e3ff5f3b5fd, type: 3}
+  m_Name: Add a card reward
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 8, y: -56}
+  ports:
+    keys:
+    - Prev
+    - Choices
+    values:
+    - _fieldName: Prev
+      _node: {fileID: -7104447831380470171}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: Choices
+        node: {fileID: -3033750964920418693}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Choices
+      _node: {fileID: -7104447831380470171}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: Prev
+        node: {fileID: -3033750964920418693}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  <Text>k__BackingField: You've added a card reward to your deck.
+  <Sprite>k__BackingField: {fileID: 0}
+  Choices: 0
+  OptionText: Add a card reward
+  HideIfUnavailable: 0
+  <Conditions>k__BackingField: []
+  Prev: 0
+  <Actions>k__BackingField:
+  - rid: 3047589325394935980
+  references:
+    version: 2
+    RefIds:
+    - rid: 3047589325394935980
+      type: {class: AddRewardsEA, ns: , asm: Assembly-CSharp}
+      data:
+        <Rewards>k__BackingField:
+        - rid: 3047589325394935982
+        - rid: 3047589372649799758
+        - rid: 3047589372649799759
+        - rid: 3047589372649799760
+        - rid: 3047589372649799761
+    - rid: 3047589325394935982
+      type: {class: RandomCardReward, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 3047589372649799758
+      type: {class: RandomCardReward, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 3047589372649799759
+      type: {class: RandomCardReward, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 3047589372649799760
+      type: {class: RandomCardReward, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 3047589372649799761
+      type: {class: RandomCardReward, ns: , asm: Assembly-CSharp}
+      data: 
+--- !u!114 &-3033750964920418693
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 262dd8f326c811f49b5f8e3ff5f3b5fd, type: 3}
+  m_Name: Next
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 8, y: -616}
+  ports:
+    keys:
+    - Prev
+    - Choices
+    values:
+    - _fieldName: Prev
+      _node: {fileID: -3033750964920418693}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: Choices
+        node: {fileID: 1500143484803989539}
+        reroutePoints: []
+      - fieldName: Choices
+        node: {fileID: -7104447831380470171}
+        reroutePoints: []
+      - fieldName: Choices
+        node: {fileID: 8831126561694166833}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Choices
+      _node: {fileID: -3033750964920418693}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: Prev
+        node: {fileID: -7104447831380470171}
+        reroutePoints: []
+      - fieldName: Prev
+        node: {fileID: 8831126561694166833}
+        reroutePoints: []
+      - fieldName: _prev
+        node: {fileID: -2846781274963403946}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  <Text>k__BackingField: To prep for this playtest you can add a number of random
+    card rewards. If you select that option you will return to this screen. Once
+    you are done you can continue to the next screen.
+  <Sprite>k__BackingField: {fileID: 0}
+  Choices: 0
+  OptionText: Next
+  HideIfUnavailable: 0
+  <Conditions>k__BackingField: []
+  Prev: 0
+  <Actions>k__BackingField: []
+  references:
+    version: 2
+    RefIds: []
+--- !u!114 &-2846781274963403946
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a505528d4195824cad3750931c9a854, type: 3}
+  m_Name: Complete Room
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 1080, y: 200}
+  ports:
+    keys:
+    - _prev
+    values:
+    - _fieldName: _prev
+      _node: {fileID: -2846781274963403946}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: Choices
+        node: {fileID: -3033750964920418693}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  _prev: 0
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5553794d1bf7bff44a066c096a5c5479, type: 3}
+  m_Name: TestSetUp
+  m_EditorClassIdentifier: 
+  nodes:
+  - {fileID: 1500143484803989539}
+  - {fileID: -3033750964920418693}
+  - {fileID: -2846781274963403946}
+  - {fileID: -7104447831380470171}
+  - {fileID: 8831126561694166833}
+  <StartNode>k__BackingField: {fileID: 1500143484803989539}
+--- !u!114 &1500143484803989539
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a52691074406ce1479b5808d138739d3, type: 3}
+  m_Name: Start Event
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: -888, y: 152}
+  ports:
+    keys:
+    - Choices
+    values:
+    - _fieldName: Choices
+      _node: {fileID: 1500143484803989539}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: Prev
+        node: {fileID: -3033750964920418693}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  <Text>k__BackingField: Thanks for helping me play test this game!
+  <Sprite>k__BackingField: {fileID: 0}
+  Choices: 0
+--- !u!114 &8831126561694166833
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 262dd8f326c811f49b5f8e3ff5f3b5fd, type: 3}
+  m_Name: Upgrade a card
+  m_EditorClassIdentifier: 
+  graph: {fileID: 11400000}
+  position: {x: 8, y: 472}
+  ports:
+    keys:
+    - Prev
+    - Choices
+    values:
+    - _fieldName: Prev
+      _node: {fileID: 8831126561694166833}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: Choices
+        node: {fileID: -3033750964920418693}
+        reroutePoints: []
+      _direction: 0
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+    - _fieldName: Choices
+      _node: {fileID: 8831126561694166833}
+      _typeQualifiedName: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
+        PublicKeyToken=b77a5c561934e089
+      connections:
+      - fieldName: Prev
+        node: {fileID: -3033750964920418693}
+        reroutePoints: []
+      _direction: 1
+      _connectionType: 0
+      _typeConstraint: 0
+      _dynamic: 0
+  <Text>k__BackingField: You've upgraded a card reward.
+  <Sprite>k__BackingField: {fileID: 0}
+  Choices: 0
+  OptionText: Upgrade a card
+  HideIfUnavailable: 0
+  <Conditions>k__BackingField: []
+  Prev: 0
+  <Actions>k__BackingField:
+  - rid: 3047589332830912590
+  references:
+    version: 2
+    RefIds:
+    - rid: 3047589332830912590
+      type: {class: UpgradeCardEA, ns: , asm: Assembly-CSharp}
+      data: 

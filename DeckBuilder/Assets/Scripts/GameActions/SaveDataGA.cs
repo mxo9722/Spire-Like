@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SaveDataGA : GameAction
+public class SaveDataGA : SimulatedGameAction
 {
     public EffectContext Context { get; private set; }
     public string Key { get; private set; }
@@ -15,9 +15,9 @@ public class SaveDataGA : GameAction
         DataLevel = dataLevel;
     }
 
-    public void SimulatedPerform()
+    public override void SimulatedPerform(EffectContext context)
     {
-        IHoldData dataHolder = IHoldData.GetDataHolder(Context, DataLevel);
+        IHoldData dataHolder = IHoldData.GetDataHolder(context, DataLevel);
         dataHolder.SetData(Key, Data);
     }
 }

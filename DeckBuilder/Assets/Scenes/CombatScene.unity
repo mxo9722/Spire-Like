@@ -3804,11 +3804,13 @@ MonoBehaviour:
     <IsCompleted>k__BackingField: 0
     <Seed>k__BackingField: 0
     <TopRow>k__BackingField:
-    - {fileID: 11400000, guid: 4a3f60a65e4bebf45a1694453e864f94, type: 2}
+    - {fileID: 11400000, guid: 5b1f435ff139a7946a5019c463f0263a, type: 2}
+    - {fileID: 11400000, guid: 472c2763479924a43b0aca7314c97ca2, type: 2}
     <MiddleRow>k__BackingField:
-    - {fileID: 11400000, guid: 4a3f60a65e4bebf45a1694453e864f94, type: 2}
+    - {fileID: 11400000, guid: 5b1f435ff139a7946a5019c463f0263a, type: 2}
     <BottomRow>k__BackingField:
-    - {fileID: 11400000, guid: 4a3f60a65e4bebf45a1694453e864f94, type: 2}
+    - {fileID: 11400000, guid: 5b1f435ff139a7946a5019c463f0263a, type: 2}
+    - {fileID: 11400000, guid: 472c2763479924a43b0aca7314c97ca2, type: 2}
     <Rewards>k__BackingField: []
   references:
     version: 2
@@ -3993,6 +3995,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <CardViewHover>k__BackingField: {fileID: 794562219}
   _helpBoxesUI: {fileID: 631187331}
+  _cardReferenceUI: {fileID: 1501850408}
 --- !u!1 &1425817194
 GameObject:
   m_ObjectHideFlags: 0
@@ -4428,6 +4431,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 476a92ec825fd024381f5a2c853b2e0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1501850408 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1341337942612225252, guid: 9befcc82246c405428be3596a577f65c, type: 3}
+  m_PrefabInstance: {fileID: 794562217}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b6af6a60e7b45f478dd28c55612d6a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1539628664

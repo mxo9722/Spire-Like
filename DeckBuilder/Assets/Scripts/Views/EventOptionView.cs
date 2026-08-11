@@ -17,6 +17,7 @@ public class EventOptionView : MonoBehaviour
         }
         else
         {
+            gameObject.SetActive(true);
             _text.text = option.Text;
             _node = option.NextNode;
             _available = option.Available;

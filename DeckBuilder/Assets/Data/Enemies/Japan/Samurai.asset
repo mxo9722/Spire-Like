@@ -1,0 +1,215 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4049c0b1badbe8947a15364491cb1ac9, type: 3}
+  m_Name: Samurai
+  m_EditorClassIdentifier: 
+  <TheDeterminer>k__BackingField: 1
+  <Image>k__BackingField: {fileID: 21300000, guid: 9e7662b56b8c9884db1a524664d67bad, type: 3}
+  <Health>k__BackingField: 28
+  <RandomHealthMod>k__BackingField: 4
+  <StatusEffects>k__BackingField:
+    _serializedList:
+    - Key: 1000
+      Value:
+        <Quantity>k__BackingField:
+          rid: 6673085831428440181
+  <ActionPattern>k__BackingField:
+  - <Name>k__BackingField: Front Strike
+    <Symbol>k__BackingField: 0
+    <Symbol2>k__BackingField: 5
+    <Weight>k__BackingField: 3
+    <Priority>k__BackingField: 0
+    <ConsecutiveMax>k__BackingField: 3
+    <Conditions>k__BackingField: []
+    <Effects>k__BackingField:
+    - rid: 6673085831428440184
+  - <Name>k__BackingField: Guard
+    <Symbol>k__BackingField: 3
+    <Symbol2>k__BackingField: 1
+    <Weight>k__BackingField: 1
+    <Priority>k__BackingField: 0
+    <ConsecutiveMax>k__BackingField: 1
+    <Conditions>k__BackingField: []
+    <Effects>k__BackingField:
+    - rid: 6673085831428440188
+    - rid: 6673085866219929668
+  - <Name>k__BackingField: Sword Slash
+    <Symbol>k__BackingField: 0
+    <Symbol2>k__BackingField: 3
+    <Weight>k__BackingField: 1
+    <Priority>k__BackingField: 0
+    <ConsecutiveMax>k__BackingField: 2
+    <Conditions>k__BackingField: []
+    <Effects>k__BackingField:
+    - rid: 6673085831428440196
+    - rid: 6673085831428440197
+  - <Name>k__BackingField: Approach
+    <Symbol>k__BackingField: 4
+    <Symbol2>k__BackingField: 5
+    <Weight>k__BackingField: 1
+    <Priority>k__BackingField: 1
+    <ConsecutiveMax>k__BackingField: 0
+    <Conditions>k__BackingField:
+    - rid: 6673085831428440209
+    <Effects>k__BackingField:
+    - rid: 6673085831428440210
+  references:
+    version: 2
+    RefIds:
+    - rid: 6120430505476751480
+      type: {class: StandardEnemyCTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 6120430505476751481
+      type: {class: StandardEnemyCTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 6673085831428440181
+      type: {class: RandomQ, ns: , asm: Assembly-CSharp}
+      data:
+        _minInclusive:
+          rid: 6673085831428440182
+        _maxExclusive:
+          rid: 6673085831428440183
+    - rid: 6673085831428440182
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 6
+    - rid: 6673085831428440183
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 11
+    - rid: 6673085831428440184
+      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 6120430505476751480
+        _combatantEffect:
+          rid: 6673085831428440187
+    - rid: 6673085831428440187
+      type: {class: AttackHeroEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <Damage>k__BackingField: 7
+        IndirectReduction: 1
+        _unblockedKey: 
+        _overkillKey: 
+        _onHit: 
+    - rid: 6673085831428440188
+      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 6673085831428440189
+        _combatantEffect:
+          rid: 6673085831428440190
+    - rid: 6673085831428440189
+      type: {class: CasterCTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 6673085831428440190
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _statusEffectType: 0
+        _stackCount:
+          rid: 6673085831428440191
+        _skipAnimation: 0
+    - rid: 6673085831428440191
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 5
+    - rid: 6673085831428440196
+      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 6120430505476751481
+        _combatantEffect:
+          rid: 6673085831428440201
+    - rid: 6673085831428440197
+      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 6673085831428440202
+        _combatantEffect:
+          rid: 6673085831428440203
+    - rid: 6673085831428440201
+      type: {class: AttackHeroEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <Damage>k__BackingField: 5
+        IndirectReduction: 1
+        _unblockedKey: 
+        _overkillKey: 
+        _onHit: 
+    - rid: 6673085831428440202
+      type: {class: CasterCTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 6673085831428440203
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _statusEffectType: 0
+        _stackCount:
+          rid: 6673085831428440204
+        _skipAnimation: 0
+    - rid: 6673085831428440204
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 5
+    - rid: 6673085831428440209
+      type: {class: InHeroLaneCondition, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 1
+    - rid: 6673085831428440210
+      type: {class: AutoLaneTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 6673085831428440211
+        _laneEffect:
+          rid: 6673085831428440212
+    - rid: 6673085831428440211
+      type: {class: RandomLTM, ns: , asm: Assembly-CSharp}
+      data:
+        _count: 1
+        <Filters>k__BackingField:
+        - rid: 6673085831428440213
+        - rid: 6673085831428440214
+        - rid: 6673085831428440215
+    - rid: 6673085831428440212
+      type: {class: MoveTowardLaneEffect, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 6673085831428440213
+      type: {class: CasterInLaneFilter, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 1
+    - rid: 6673085831428440214
+      type: {class: HeroInLaneFilter, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
+    - rid: 6673085831428440215
+      type: {class: SpaceInAllyLaneFilter, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
+    - rid: 6673085866219929668
+      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 6673085866219929669
+        _combatantEffect:
+          rid: 6673085866219929670
+    - rid: 6673085866219929669
+      type: {class: CasterCTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 6673085866219929670
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _statusEffectType: 1000
+        _stackCount:
+          rid: 6673085866219929671
+        _skipAnimation: 0
+    - rid: 6673085866219929671
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 1

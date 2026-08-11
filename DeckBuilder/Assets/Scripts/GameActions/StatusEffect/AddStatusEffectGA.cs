@@ -2,52 +2,27 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class AddStatusEffectGA : CombinableGameAction<AddStatusEffectGA>, IHaveCaster
+public class AddStatusEffectGA : GameAction, IHaveCaster
 {
     public StatusEffectInfo StatusEffectInfo { get; private set; }
     public int StackCount { get; private set; }
     public List<CombatantView> Targets { get; private set; }
-    public CombatantView Caster { get; private set; }
+    public EffectContext Context { get; private set; }
+    public CombatantView Caster { get => Context.Caster; }
 
     public bool SkipAnimation { get; private set; } = false;
 
-    public AddStatusEffectGA(StatusEffectInfo statusEffectInfo, int stackCount, List<CombatantView> targets, CombatantView caster = null, bool skipAnimation = false)
+    public AddStatusEffectGA(StatusEffectInfo statusEffectInfo, int stackCount, List<CombatantView> targets, EffectContext context, bool skipAnimation = false)
     {
         StatusEffectInfo = statusEffectInfo;
         StackCount = stackCount;
         Targets = targets.Where(t => t != null && t.CurrentHealth > 0).ToList();
-        Caster = caster;
+        Context = context;
         SkipAnimation = skipAnimation;
     }
 
     public void SetStackCount(int stackCount)
     {
         StackCount = stackCount;
-    }
-
-    public override bool TryCombine(GameAction other)
-    {
-        if(other is AddStatusEffectGA addStatusEffectGA)
-        {
-            if (addStatusEffectGA.StatusEffectInfo != StatusEffectInfo) return false;
-
-            if (!addStatusEffectGA.Targets.Any(t => Targets.Contains(t)) && addStatusEffectGA.StackCount == StackCount) 
-            {
-                Combine(addStatusEffectGA);
-                return true;
-            }
-            else if (addStatusEffectGA.Targets.Except(Targets).Count() == 0 && Targets.Except(addStatusEffectGA.Targets).Count() == 0)
-            {
-                StackCount += addStatusEffectGA.StackCount;
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public override void Combine(AddStatusEffectGA other)
-    {
-        Targets.AddRange(other.Targets);
     }
 }

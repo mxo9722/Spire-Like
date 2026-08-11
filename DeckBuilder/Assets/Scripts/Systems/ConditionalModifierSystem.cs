@@ -72,8 +72,13 @@ public class ConditionalModifierSystem : Singleton<ConditionalModifierSystem>
             return oValue;
         }
 
-        foreach(ModifierDelegate modDelegate in _subDictionary[type].Values)
+        foreach(object key in _subDictionary[type].Keys)
         {
+            ModifierDelegate modDelegate = _subDictionary[type][key];
+
+            if (key is StatusEffectUI statusEffectUI)
+                modKey.Context.SetData("Owner", new List<CombatantView>() { statusEffectUI.Owner });
+
             oValue = modDelegate(oValue, modKey);
         }
 

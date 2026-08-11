@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class PerformEffectsGA : GameAction, IHaveCaster
+public class PerformEffectsGA : SimulatedGameAction, IHaveCaster
 {
     public Effect Effect { get; set; }
     public List<CombatantView> CombatantTargets { get; set; } = new();
@@ -66,5 +66,11 @@ public class PerformEffectsGA : GameAction, IHaveCaster
     public GameAction GetGameAction(EffectContext context)
     {
         return Effect.GetGameAction(context, CombatantTargets, LaneTargets, CardTargets);
+    }
+
+    public override void SimulatedPerform(EffectContext context)
+    {
+        if (GetGameAction(context) is SimulatedGameAction simulatedGameAction)
+            simulatedGameAction.SimulatedPerform(context);
     }
 }

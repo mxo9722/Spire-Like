@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class StatusEffectsUI : MonoBehaviour
@@ -9,12 +10,12 @@ public class StatusEffectsUI : MonoBehaviour
 
     private List<StatusEffectUI> _statusEffectUIs = new();
 
-    private CombatantView _owner;
+    public CombatantView Owner { get; private set; }
     private Transform _blockPosition;
 
     public void SetUp(CombatantView owner, Transform blockPosition)
     {
-        _owner = owner;
+        Owner = owner;
         _blockPosition = blockPosition;
     }
 
@@ -58,12 +59,17 @@ public class StatusEffectsUI : MonoBehaviour
 
             int displayStackCount = stackable ? stackCount : 0;
 
-            ui.Set(_owner, sprite, displayStackCount, stackable, info);
+            ui.Set(Owner, sprite, displayStackCount, stackable, info);
         }
     }
 
     private StatusEffectUI GetExistingUI(StatusEffectInfo info)
     {
         return _statusEffectUIs.Find(se => se.Info.Equals(info));
+    }
+
+    public bool HasStatusEffectUI(StatusEffectInfo statusEffectInfo)
+    {
+        return _statusEffectUIs.Any(ui => ui.Info == statusEffectInfo);
     }
 }

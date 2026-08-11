@@ -1,0 +1,133 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4049c0b1badbe8947a15364491cb1ac9, type: 3}
+  m_Name: Brute
+  m_EditorClassIdentifier: 
+  <TheDeterminer>k__BackingField: 1
+  <Image>k__BackingField: {fileID: 21300000, guid: c33409c94c14b3b418006459f5b207fa, type: 3}
+  <Health>k__BackingField: 17
+  <RandomHealthMod>k__BackingField: 4
+  <StatusEffects>k__BackingField:
+    _serializedList:
+    - Key: 1006
+      Value:
+        <Quantity>k__BackingField:
+          rid: 1953144383652757582
+    - Key: 0
+      Value:
+        <Quantity>k__BackingField:
+          rid: 1953144383652757587
+  <ActionPattern>k__BackingField:
+  - <Name>k__BackingField: Rough Up
+    <Symbol>k__BackingField: 0
+    <Symbol2>k__BackingField: 5
+    <Weight>k__BackingField: 1
+    <Priority>k__BackingField: 0
+    <ConsecutiveMax>k__BackingField: 0
+    <Conditions>k__BackingField: []
+    <Effects>k__BackingField:
+    - rid: 1953144383652757583
+  - <Name>k__BackingField: Second Wind
+    <Symbol>k__BackingField: 3
+    <Symbol2>k__BackingField: 1
+    <Weight>k__BackingField: 1
+    <Priority>k__BackingField: 1
+    <ConsecutiveMax>k__BackingField: 0
+    <Conditions>k__BackingField:
+    - rid: 1953144383652757588
+    <Effects>k__BackingField:
+    - rid: 1953144383652757586
+    - rid: 1953144383652757593
+  references:
+    version: 2
+    RefIds:
+    - rid: 1953144383652757582
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 1
+    - rid: 1953144383652757583
+      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 1953144383652757584
+        _combatantEffect:
+          rid: 1953144383652757585
+    - rid: 1953144383652757584
+      type: {class: StandardEnemyCTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1953144383652757585
+      type: {class: AttackHeroEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <Damage>k__BackingField: 8
+        IndirectReduction: 1
+        _unblockedKey: 
+        _overkillKey: 
+        _onHit: 
+    - rid: 1953144383652757586
+      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 1953144383652757590
+        _combatantEffect:
+          rid: 1953144383652757591
+    - rid: 1953144383652757587
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 9
+    - rid: 1953144383652757588
+      type: {class: CasterHasStatusEffectCondition, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
+        _statusEffectType: 0
+        _is: 1
+        _orEqualTo: 0
+        _b:
+          rid: 1953144383652757589
+    - rid: 1953144383652757589
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 0
+    - rid: 1953144383652757590
+      type: {class: CasterCTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1953144383652757591
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _statusEffectType: 0
+        _stackCount:
+          rid: 1953144383652757592
+        _skipAnimation: 0
+    - rid: 1953144383652757592
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 9
+    - rid: 1953144383652757593
+      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 1953144383652757594
+        _combatantEffect:
+          rid: 1953144383652757595
+    - rid: 1953144383652757594
+      type: {class: CasterCTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1953144383652757595
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _statusEffectType: 4
+        _stackCount:
+          rid: 1953144383652757596
+        _skipAnimation: 0
+    - rid: 1953144383652757596
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 2

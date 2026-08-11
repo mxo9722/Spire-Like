@@ -38,13 +38,13 @@ public class StatusEffectAppliedPC : ReactionCondition
         return false;
     }
 
-    public override void SubscribeCondition(Action<GameAction> reaction)
+    public override void SubscribeCondition(object subscriber, Action<GameAction> reaction)
     {
-        ActionSystem.SubscribeReaction<AddStatusEffectGA>(this, reaction, reactionTiming);
+        ActionSystem.SubscribeReaction<AddStatusEffectGA>(subscriber, reaction, reactionTiming);
     }
 
-    public override void UnsubscribeCondition(Action<GameAction> reaction)
+    public override void UnsubscribeCondition(object subscriber, Action<GameAction> reaction)
     {
-        ActionSystem.UnsubscribeReaction<AddStatusEffectGA>(this, reaction, reactionTiming);
+        ActionSystem.UnsubscribeReaction<AddStatusEffectGA>(subscriber, reaction, reactionTiming);
     }
 }

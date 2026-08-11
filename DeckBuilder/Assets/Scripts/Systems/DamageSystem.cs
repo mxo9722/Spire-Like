@@ -26,21 +26,6 @@ public class DamageSystem : Singleton<DamageSystem>
 
     private IEnumerator DealDamagePerformer(DealDamageGA dealDamageGA) 
     {
-        int baseDamage = dealDamageGA.Amount;
-
-        if (dealDamageGA.Caster != null && dealDamageGA.IsAttack)
-        {
-            baseDamage = Mathf.Max(dealDamageGA.Amount + dealDamageGA.Caster.GetStatusEffectStacks(StatusEffect.STRENGTH), 0);
-
-            float multiplier = 1;
-
-            if (dealDamageGA.Caster != null && dealDamageGA.Caster.GetStatusEffectStacks(StatusEffect.WEAK) > 0)
-            {
-                multiplier *= WEAK_MULITPLIER;
-            }
-
-            baseDamage = Mathf.FloorToInt(multiplier * baseDamage);
-        }
 
         foreach (CombatantView target in dealDamageGA.Targets)
         {
@@ -56,6 +41,9 @@ public class DamageSystem : Singleton<DamageSystem>
             //    individualDamage = Mathf.FloorToInt(individualDamage * VULNERABLE_MULITPLIER);
 
             (int UnblockedDamage, int Overkill) result = target.Damage(individualDamage);
+
+            if(dealDamageGA.IsAttack)
+                target.ReportAttacked();
 
             dealDamageGA.SetUnblockedDamage(result.UnblockedDamage);
             dealDamageGA.SetOverkill(result.Overkill);
@@ -86,7 +74,7 @@ public class DamageSystem : Singleton<DamageSystem>
 
     public static string CardDamageTextFromAttack(int baseDamage, EffectContext context, List<CombatantView> targets = null)
     {
-        int damage = GetDamageFromAttack(baseDamage, context, targets);
+        int damage = GetDamageFromAttack(baseDamage, context, targets, false);
 
         if(baseDamage > damage)
         {
@@ -102,12 +90,7 @@ public class DamageSystem : Singleton<DamageSystem>
     
     public static string EnemyDamageTextFromAttack(int baseDamage, EffectContext context, List<CombatantView> targets, bool applyIndirect)
     {
-        int damage = GetDamageFromAttack(baseDamage, context, targets, applyIndirect);
-
-        if(targets.Count > 0)
-        {
-            return "<color=\"yellow\">" + damage.ToString() + "</color>";
-        }
+        int damage = GetDamageFromAttack(baseDamage, context, new(), false);
 
         return damage.ToString();
     }
@@ -115,6 +98,11 @@ public class DamageSystem : Singleton<DamageSystem>
     public static int GetDamageFromAttack(int damage, EffectContext context, List<CombatantView> targets = null, bool applyIndirect = true)
     {
         float multiplier = 1.0f;
+
+        AttackDamageModKey modKey = new(context.Caster, null, context);
+
+        if (targets != null && targets.Count == 1)
+            modKey = new(context.Caster, targets[0], context);
 
         if (context.PlayedCard != null)
         {
@@ -130,6 +118,7 @@ public class DamageSystem : Singleton<DamageSystem>
         if (context.Caster != null)
         {
             damage += context.Caster.GetStatusEffectStacks(StatusEffect.STRENGTH);
+            damage += context.Caster.GetStatusEffectStacks(StatusEffect.BOLD);
 
             if (context.Caster.GetStatusEffectStacks(StatusEffect.WEAK) > 0)
                 multiplier *= WEAK_MULITPLIER;
@@ -144,13 +133,33 @@ public class DamageSystem : Singleton<DamageSystem>
                 multiplier *= VULNERABLE_MULITPLIER;
         }
 
+
+        bool indirect = false;
+
         if (applyIndirect && context.Caster != null && targets != null) 
         {
-            if(context.Caster is NPCView && targets.All(t => t.GetLaneDistance(context.Caster) > 0))
+
+            if (context.Caster is NPCView && targets.All(t => t.GetLaneDistance(context.Caster) > 0))
+                indirect = true;
+            else if (context.Caster.GetStatusEffectStacks(StatusEffect.FEINT) > 0)
+                indirect = true;
+            else if (targets.All(t => t.GetStatusEffectStacks(StatusEffect.ZIGZAG) > 0))
+                indirect = true;
+
+            if (indirect)
                 multiplier *= EnemySystem.Instance.IndirectReduction;
+
         }
 
         damage = Mathf.FloorToInt(damage * multiplier);
+
+        damage = ConditionalModifierSystem.Instance.ModifyValue(damage, modKey);
+
+        if (indirect)
+        {
+            IndirectAttackModKey indirectAttackModKey = new(modKey.Attacker, modKey.Target, context);
+            damage = ConditionalModifierSystem.Instance.ModifyValue(damage, indirectAttackModKey);
+        }
 
         return Mathf.Max(damage, 0);
     }

@@ -12,15 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62bf69310631aa94896652d3f8be392c, type: 3}
   m_Name: Make Cover+
   m_EditorClassIdentifier: 
+  <Rarity>k__BackingField: 0
   <Upgrade>k__BackingField: {fileID: 0}
   <Unplayable>k__BackingField: 0
+  <Retain>k__BackingField: 0
   <Mana>k__BackingField: 1
   <Type>k__BackingField: 1
   <Image>k__BackingField: {fileID: 21300000, guid: 263eadaa3935d3c4e9490d04f6df687f, type: 3}
+  <CardReference>k__BackingField: {fileID: 0}
   <Description>k__BackingField: Gain block equal to 7 + twice the number of exhausted
     cards this combat. ({v0} block total)
   <RequiredConditions>k__BackingField: []
   <HighlightConditions>k__BackingField: []
+  <JustHighlightCard>k__BackingField: 0
   <ExhuastOnUse>k__BackingField: 0
   <ManualTargetType>k__BackingField: 2
   <CombatantFilters>k__BackingField: []
@@ -29,7 +33,8 @@ MonoBehaviour:
     rid: -2
   <OtherEffects>k__BackingField:
   - rid: 4055348011206443420
-  <TurnEndEffects>k__BackingField: []
+  <AnywhereReactions>k__BackingField: []
+  <InHandReactions>k__BackingField: []
   references:
     version: 2
     RefIds:

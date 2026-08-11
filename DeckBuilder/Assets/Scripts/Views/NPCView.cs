@@ -47,7 +47,7 @@ public class NPCView : CombatantView
                 {
                     int value = se.Value.Quantity.GetAmount(context);
 
-                    AddStatusEffectGA addStatusEffectGA = new(StatusEffectSystem.GetDictionaryEntry(se.Key), value, new() { this });
+                    AddStatusEffectGA addStatusEffectGA = new(StatusEffectSystem.GetDictionaryEntry(se.Key), value, new() { this }, new());
                     ActionSystem.Instance.AddReaction(addStatusEffectGA);
                 }
             }
@@ -122,8 +122,8 @@ public class NPCView : CombatantView
             {
                 GameAction ga = performEffectsGA.GetGameAction(context);
 
-                if(ga is SaveDataGA saveDataGA)
-                    saveDataGA.SimulatedPerform();
+                if(ga is SimulatedGameAction saveDataGA)
+                    saveDataGA.SimulatedPerform(context);
             }
 
             NPCTargetTypes intent = effect.GetTargetIntent();
@@ -133,8 +133,6 @@ public class NPCView : CombatantView
 
             if (effect is AutoCombatantTargetEffect combatantTargetEffect)
             {
-                
-
                 if (combatantTargetEffect.Effect is AttackHeroEffect attackHeroEffect)
                 {
                     List<CombatantView> targets = combatantTargetEffect.TargetMode.GetTargets(context);
@@ -149,7 +147,7 @@ public class NPCView : CombatantView
                 {
                     List<CombatantView> targets = combatantTargetEffect.TargetMode.GetTargets(context);
 
-                    string attackText = DamageSystem.EnemyDamageTextFromAttack(multiAttackFoeEffect.Damage.GetAmount(context), context, targets, false);
+                    string attackText = DamageSystem.EnemyDamageTextFromAttack(multiAttackFoeEffect.Damage.GetAmount(context), context, targets,false);
                     int attackCount = multiAttackFoeEffect.AttackCount.GetAmount(context);
 
                     if(attackCount != 1)
@@ -297,7 +295,7 @@ public class NPCView : CombatantView
                         return true;
                     case MultiAttackFoeEffect:
                         return true;
-                    case AddStatusEffectEffect:
+                    case SetStatusEffectEffect:
                         if (autoCombatantTargetEffect.TargetMode.HostileTargetting(context) && includeDebuff)
                             return true;
                         break;

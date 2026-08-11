@@ -11,7 +11,7 @@ public class CombatantsWithFilterCTM : CombatantTargetMode
 
     public override List<CombatantView> GetTargets(EffectContext context)
     {
-        var allCombatants = BoardSystem.Instance.GetAllCombatants();
+        List<CombatantView> allCombatants = BoardSystem.Instance.GetAllCombatants();
 
         allCombatants.RemoveAll(c => !_filters.TrueForAll(f => f.TestTarget(context, c)));
 

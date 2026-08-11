@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 [System.Serializable]
 public abstract class AutoTargetEffect
@@ -47,6 +48,17 @@ public abstract class AutoTargetEffect
         return new AutoTargetEffect[0];
     }
 
+    public List<StatusEffect> GetAllStatusEffects()
+    {
+        List<StatusEffect> effects = new();
+
+        effects.AddRange(Effects.SelectMany(e => e.GetAllStatusEffects()));
+
+        return new(effects.Distinct());
+    }
+
     public abstract bool RequiresUserInput();
     public abstract IEnumerator WaitForUserInput(EffectContext context);
+
+    public abstract void SimulatedPerform(EffectContext context);
 }

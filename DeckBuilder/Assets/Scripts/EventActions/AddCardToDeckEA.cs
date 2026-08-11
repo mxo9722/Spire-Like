@@ -1,5 +1,6 @@
 using AYellowpaper.SerializedCollections;
 using DG.Tweening;
+using DG.Tweening.Core;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,12 +32,12 @@ public class AddCardToDeckEA : EventAction
         foreach(CardView cardView in cardViews)
         {
             DOTween.TweensByTarget(cardView.transform)?.ForEach(t => t.Complete());
-            var moveTween = cardView.transform.DOMove(TopBarUI.Instance.DeckUIPos, 0.5f);
-            var scaleTween = cardView.transform.DOScale(Vector3.zero, 0.5f);
+            TweenerCore<Vector3, Vector3, DG.Tweening.Plugins.Options.VectorOptions> moveTween = cardView.transform.DOMove(TopBarUI.Instance.DeckUIPos, 0.5f);
+            TweenerCore<Vector3, Vector3, DG.Tweening.Plugins.Options.VectorOptions> scaleTween = cardView.transform.DOScale(Vector3.zero, 0.5f);
             tweeners.Add(moveTween);
         }
 
-        foreach(var tween in tweeners)
+        foreach(Tweener tween in tweeners)
         {
             yield return tween.WaitForCompletion();
         }

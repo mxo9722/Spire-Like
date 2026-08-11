@@ -1,7 +1,6 @@
 using DG.Tweening;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -19,8 +18,9 @@ public class CardView : MonoBehaviour
     [SerializeField] private Transform _maskTransform;
     [SerializeField] private Transform _bottomOfCardTransform;
     [SerializeField] private HelpBoxesUI _helpBoxesUI;
+    [SerializeField] private CardUI _cardReferenceUI;
     [SerializeField] private ParticleSystem _burnVFX;
-    [SerializeField] private ParticleSystem _heatWarning;
+    [SerializeField] private Transform _heatWarning;
 
     [field: SerializeField] public SortingGroup SortingGroup { get; private set; }
 
@@ -74,6 +74,13 @@ public class CardView : MonoBehaviour
         _imageSR.sprite = card.Image;
         _imageSR.size = prevSize;
 
+        if (card.CardReference != null)
+        {
+            _cardReferenceUI.SetUp(new(card.CardReference, card.Owner));
+        }
+        _cardReferenceUI.gameObject.SetActive(false);
+        
+
         _heatWarning.gameObject.SetActive(false);
         UpdateGlow();
     }
@@ -86,7 +93,7 @@ public class CardView : MonoBehaviour
 
     private void OnEnable()
     {
-        _heatWarning.Play();
+        //_heatWarning.Play();
     }
 
     private void OnDisable()
@@ -97,7 +104,7 @@ public class CardView : MonoBehaviour
         _maskTransform.DOKill();
         _burnVFX.transform.DOKill();
 
-        _heatWarning.Stop();
+        //_heatWarning.Stop();
     }
 
     private void OnMouseEnter()
@@ -118,6 +125,9 @@ public class CardView : MonoBehaviour
         {
             if(_showTips)
                 _helpBoxesUI.Populate(Card);
+
+            if (Card.CardReference != null)
+                _cardReferenceUI.gameObject.SetActive(true);
         }
     }
 
@@ -138,6 +148,7 @@ public class CardView : MonoBehaviour
         else
         {
             _helpBoxesUI.Hide();
+            _cardReferenceUI.gameObject.SetActive(false);
         }
     }
 

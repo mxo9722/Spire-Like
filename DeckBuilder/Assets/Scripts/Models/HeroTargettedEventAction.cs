@@ -9,7 +9,7 @@ public abstract class HeroTargettedEventAction : EventAction
 
     public override IEnumerator Invoke(EffectContext context)
     {
-        var heroes = TargetMode.GetTargets(context);
+        List<Hero> heroes = TargetMode.GetTargets(context);
         yield return Invoke(context, heroes);
     }
 

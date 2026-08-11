@@ -8,12 +8,12 @@ public class ConditionalModifierPair
     [field: SerializeReference, SR] public ModifierCondition Condition { get; private set; }
     [field: SerializeReference, SR] public Modifier Modifier { get; private set; }
 
-    public void Subscribe(object subscriber)
+    public void Subscribe(object subscriber, ConditionalModifierSystem.ModifierDelegate HandleModifier)
     {
         Condition.Subscribe(TestCondition, subscriber);
     }
     
-    public void Unsubscribe(object subscriber)
+    public void Unsubscribe(object subscriber, ConditionalModifierSystem.ModifierDelegate HandleModifier)
     {
         Condition.Unsubscribe(subscriber);
     }

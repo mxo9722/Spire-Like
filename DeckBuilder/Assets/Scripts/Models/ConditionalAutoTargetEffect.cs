@@ -12,9 +12,9 @@ public class ConditionalAutoTargetEffect : AutoTargetEffect
     //[SerializeReference, SR] private AutoTargetEffect _successATEffect;
 
     public AutoTargetEffect SuccessEffect { get; }
-
-
     public List<Condition> Conditions { get => _conditions; }
+
+    [field: SerializeField] public bool HideHighlight = false;
 
     public override Effect[] Effects => _successEffects.SelectMany(e => e.Effects).ToArray();
 
@@ -71,5 +71,11 @@ public class ConditionalAutoTargetEffect : AutoTargetEffect
         }
 
         return textEffects.ToArray();
+    }
+
+    public override void SimulatedPerform(EffectContext context)
+    {
+        if (GetGameAction(context) is SimulatedGameAction simulatedGameAction)
+            simulatedGameAction.SimulatedPerform(context);
     }
 }

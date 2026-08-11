@@ -8,12 +8,16 @@ public class ChooseFromDeckCaTM : CardTargetMode, INeedsUserInput
     [Tooltip("Leave min amount to null if min should be the same amount as the max")]
     [SerializeReference, SR] private Quantity _minAmount = null;
     [SerializeReference, SR] private Quantity _amount = new SetQ(1);
+    [SerializeField] private string _cardCountKey = "";
 
     private List<Card> _selected = new();
 
     public override List<Card> GetTargets(EffectContext targetModeContext)
     {
-       return _selected;
+        if(!string.IsNullOrEmpty(_cardCountKey))
+            targetModeContext.SetData(_cardCountKey, _selected.Count);
+        
+        return _selected;
     }
 
     public IEnumerator WaitForUserInput(EffectContext context)

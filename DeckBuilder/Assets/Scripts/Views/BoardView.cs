@@ -90,9 +90,10 @@ public class BoardView : MonoBehaviour
 
         foreach (LaneView laneView in _laneViews)
         {
-            allCombatants.AddRange(laneView.EnemyViews);
-            if(laneView.HeroView != null)
+
+            if (laneView.HeroView != null)
                 allCombatants.Add(laneView.HeroView);
+            allCombatants.AddRange(laneView.EnemyViews);
         }
 
         return allCombatants;
@@ -208,7 +209,7 @@ public class BoardView : MonoBehaviour
             bool moved = MoveCombatant(move.Key, move.Value, moveEnemyGA.Caster);
 
             if (moved)
-                move.Key.SetMoved(true);
+                move.Key.ReportMovement();
             else
                 moveEnemyGA.RemoveMove(move.Key);
 
@@ -234,6 +235,7 @@ public class BoardView : MonoBehaviour
             {
                 target.transform.DOLocalMove(Vector3.zero, duration);
             }
+
         }
 
         if (tween != null)

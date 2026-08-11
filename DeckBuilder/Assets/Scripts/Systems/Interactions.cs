@@ -5,7 +5,7 @@ public class Interactions : Singleton<Interactions>
     public bool playerIsDragging { get; set; } = false;
     public bool PlayerCanInteract()
     {
-        if (!ActionSystem.Instance.IsPerforming && !CardCollectionSystem.Instance.Opened && !MatchEndSystem.Instance.GameOver) return true;
+        if (!ActionSystem.Instance.IsPerforming && !CardCollectionSystem.Instance.Opened && !MatchEndSystem.Instance.MatchOver) return true;
         else return false;
     }
     public bool PlayerCanHover()
@@ -15,7 +15,7 @@ public class Interactions : Singleton<Interactions>
         if(CardCollectionSystem.Instance != null)
             canHover = canHover && !CardCollectionSystem.Instance.Opened;
         if(MatchEndSystem.Instance != null)
-            canHover = canHover && !MatchEndSystem.Instance.GameOver;
+            canHover = canHover && !MatchEndSystem.Instance.MatchOver;
 
         if (playerIsDragging || !canHover) return false;
         else return true;

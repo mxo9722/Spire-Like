@@ -11,7 +11,7 @@ public class AddSENextTurnEffect : CombatantTargetEffect
     {
         NextTurnSEInfo nextTurnSEInfo = new(_statusEffect);
 
-        AddStatusEffectGA addStatusEffectGA = new(nextTurnSEInfo, _amount.GetAmount(context), combatantTargets, context.Caster);
+        AddStatusEffectGA addStatusEffectGA = new(nextTurnSEInfo, _amount.GetAmount(context), combatantTargets, context);
 
         return addStatusEffectGA;
     }

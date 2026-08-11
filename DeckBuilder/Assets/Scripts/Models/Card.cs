@@ -12,16 +12,19 @@ public class Card : IHoldData
     public bool Unplayable => CardData.Unplayable;
     public CardType Type => CardData.Type;
     public Sprite Image => CardData.Image;
+    public CardData CardReference => CardData.CardReference;
     public string Description => CardData.Description;
     public List<Condition> RequiredConditions => CardData.RequiredConditions;
     public List<Condition> HighlightConditions => CardData.HighlightConditions;
+    public bool JustHighlightCard => CardData.JustHighlightCard;
+    public bool ExhuastOnUse => CardData.ExhuastOnUse;
+    public bool BaseHasRetain => CardData.Retain;
 
     public ManualTargetType ManualTargetType => CardData.ManualTargetType;
     public Effect ManualTargetEffect => CardData.ManualTargetEffect;
     public List<AutoTargetEffect> OtherEffects => CardData.OtherEffects;
     public List<CombatantFilter> CombatantFilters => CardData.CombatantFilters;
     public List<LaneFilter> LaneFilters => CardData.LaneFilters;
-    public bool ExhuastOnUse => CardData.ExhuastOnUse;
     public Rarity Rarity => CardData.Rarity;
 
     public int BaseMana { get; private set; }
@@ -30,6 +33,7 @@ public class Card : IHoldData
 
     public readonly CardData CardData;
 
+    private List<CardReaction> _anywhereReactions = new();
     private List<CardReaction> _inHandReactions = new();
     private List<string> _allKeyWords = null;
 
@@ -77,6 +81,13 @@ public class Card : IHoldData
         if (_data == null)
             _data = new();
 
+        foreach (CardReaction cardReaction in CardData.AnywhereReactions)
+        {
+            CardReaction reaction = cardReaction.Clone();
+            _anywhereReactions.Add(reaction);
+            reaction.SetUp(this);
+        }
+        
         foreach (CardReaction cardReaction in CardData.InHandReactions)
         {
             CardReaction reaction = cardReaction.Clone();
@@ -103,6 +114,11 @@ public class Card : IHoldData
 
         description = RemoveParentheses(description);
 
+        foreach (CardModifier modifier in Modifiers)
+        {
+            description = modifier.ModifyDescription(description);
+        }
+
         List<IDynamicEffectText> dynamicTextEffects = new();
 
         if (ManualTargetEffect != null)
@@ -115,6 +131,11 @@ public class Card : IHoldData
             dynamicTextEffects.AddRange(effect.GetDynamicTextEffects());
         }
 
+        foreach (CardReaction reaction in _anywhereReactions)
+        {
+            dynamicTextEffects.AddRange(reaction.GetDynamicTextEffects());
+        }
+        
         foreach (CardReaction reaction in _inHandReactions)
         {
             dynamicTextEffects.AddRange(reaction.GetDynamicTextEffects());
@@ -122,7 +143,7 @@ public class Card : IHoldData
 
         for (int i = 0; i < dynamicTextEffects.Count; i++)
         {
-            string value = dynamicTextEffects[i].GetDynamicText( new(null, playedCard: this));
+            string value = dynamicTextEffects[i].GetStaticText();
             description = description.Replace("{v" + i.ToString() + "}", value);
         }
 
@@ -137,6 +158,10 @@ public class Card : IHoldData
 
         int index = 0;
 
+        foreach (CardModifier modifier in Modifiers)
+        {
+            description = modifier.ModifyDescription(description);
+        }
 
         if (ManualTargetEffect != null)
         {
@@ -171,6 +196,17 @@ public class Card : IHoldData
             }
         }
 
+        foreach (CardReaction reaction in _anywhereReactions)
+        {
+            IDynamicEffectText[] dtes = reaction.GetDynamicTextEffects();
+
+            if (dtes.Length > 0)
+            {
+                description = reaction.ApplyDynamicTextEffect(description, index, context, this);
+                index += dtes.Length;
+            }
+        }
+        
         foreach (CardReaction reaction in _inHandReactions)
         {
             IDynamicEffectText[] dtes = reaction.GetDynamicTextEffects();
@@ -307,10 +343,10 @@ public class Card : IHoldData
             caster = GetOwnerView();
         }
 
-        if (!ManaSystem.Instance.HasEnoughMana(BaseMana))
-            return false;
-
         EffectContext context = new EffectContext(caster);
+
+        if (!ManaSystem.Instance.HasEnoughMana(GetDynamicManaValue(context)))
+            return false;
 
         if (ManualTargetType != ManualTargetType.NONE)
         {
@@ -322,7 +358,7 @@ public class Card : IHoldData
 
                     List<CombatantView> allCombatants = BoardSystem.Instance.GetAllCombatants();
 
-                    if (!allCombatants.Any(c => c.IsValid(context, CombatantFilters)))
+                    if (!allCombatants.Any(c => c.IsValid(context, CombatantFilters) && c.IsSelectable()))
                         return false;
                     break;
                 case ManualTargetType.LANE:
@@ -449,6 +485,7 @@ public class Card : IHoldData
 
     public void UnsubscribeAllReactions()
     {
+        UnsubscribeReactions(_anywhereReactions);
         UnsubscribeReactions(_inHandReactions);
     }
 
@@ -457,6 +494,14 @@ public class Card : IHoldData
         foreach (CardReaction reaction in reactions)
         {
             reaction.Unsubscribe();
+        }
+    }
+
+    public void SubscribeAnywhereReactions()
+    {
+        foreach (CardReaction reaction in _anywhereReactions)
+        {
+            reaction.Subscribe();
         }
     }
 
@@ -573,7 +618,7 @@ public class Card : IHoldData
 
     public T GetCardModifier<T>() where T : CardModifier
     {
-        foreach(var modifier in Modifiers)
+        foreach(CardModifier modifier in Modifiers)
         {
             if (modifier is T t)
                 return t;
@@ -581,12 +626,25 @@ public class Card : IHoldData
         
         return null;
     }
+    
+    public bool GetCardModifier<T>(out T modifier) where T : CardModifier
+    {
+        modifier = GetCardModifier<T>();
+        
+        return modifier != null;
+    }
 
     public int GetDynamicManaValue(EffectContext context)
     {
         int value = BaseMana;
 
+        ReduceCostCM reduceCostCM = GetCardModifier<ReduceCostCM>();
+        if(reduceCostCM != null)
+            value = Math.Max(0, value - reduceCostCM.Reduction);
+
         value = ConditionalModifierSystem.Instance.ModifyValue(value, new ManaModKey(context));
+
+        value = Math.Max(value, 0);
 
         return value;
     }
@@ -594,5 +652,29 @@ public class Card : IHoldData
     public int GetStaticManaValue()
     {
         return BaseMana;
+    }
+
+    public List<StatusEffect> GetAllStatusEffects()
+    {
+        List<StatusEffect> statusEffects = new();
+
+        if(ManualTargetEffect != null)
+            statusEffects.AddRange(ManualTargetEffect.GetAllStatusEffects());
+        
+        statusEffects.AddRange(OtherEffects.SelectMany(e => e.GetAllStatusEffects()));
+        statusEffects.AddRange(_anywhereReactions.SelectMany(r => r.GetAllStatusEffects()));
+        statusEffects.AddRange(_inHandReactions.SelectMany(r => r.GetAllStatusEffects()));
+
+        return statusEffects.Distinct().ToList();
+    }
+
+    public bool GetRetain()
+    {
+        if(GetCardModifier(out RetainCM retainCM))
+        {
+            return retainCM.AddRetain;
+        }
+
+        return BaseHasRetain;
     }
 }

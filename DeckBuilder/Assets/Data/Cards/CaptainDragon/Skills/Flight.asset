@@ -12,15 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62bf69310631aa94896652d3f8be392c, type: 3}
   m_Name: Flight
   m_EditorClassIdentifier: 
+  <Rarity>k__BackingField: 0
   <Upgrade>k__BackingField: {fileID: 0}
   <Unplayable>k__BackingField: 0
+  <Retain>k__BackingField: 0
   <Mana>k__BackingField: 0
-  <Type>k__BackingField: 0
+  <Type>k__BackingField: 1
   <Image>k__BackingField: {fileID: 21300000, guid: 8afa01b71dd611c4887551a8b2e3003c, type: 3}
+  <CardReference>k__BackingField: {fileID: 0}
   <Description>k__BackingField: Move to a lane. Gain {v0} block. Add another "Flight"
     card from your deck to your hand.
   <RequiredConditions>k__BackingField: []
   <HighlightConditions>k__BackingField: []
+  <JustHighlightCard>k__BackingField: 0
   <ExhuastOnUse>k__BackingField: 0
   <ManualTargetType>k__BackingField: 1
   <CombatantFilters>k__BackingField: []
@@ -31,7 +35,8 @@ MonoBehaviour:
   - rid: 262420551506591841
   - rid: 262420551506591844
   - rid: 262420551506591848
-  <TurnEndEffects>k__BackingField: []
+  <AnywhereReactions>k__BackingField: []
+  <InHandReactions>k__BackingField: []
   references:
     version: 2
     RefIds:

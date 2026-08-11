@@ -17,12 +17,12 @@ public class OnDiscardCRC : CardReactionCondition
         return false;
     }
 
-    public override void SubscribeCondition(Action<GameAction> reaction)
+    protected override void SubscribeCondition(Action<GameAction> reaction)
     {
         ActionSystem.SubscribeReaction<DiscardCardGA>(_owner, reaction, reactionTiming);
     }
 
-    public override void UnsubscribeCondition(Action<GameAction> reaction)
+    protected override void UnsubscribeCondition(Action<GameAction> reaction)
     {
         ActionSystem.UnsubscribeReaction<DiscardCardGA>(_owner, reaction, reactionTiming);
     }

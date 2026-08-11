@@ -1,0 +1,96 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a61ecd2afb9bcb0469ae465c6809506c, type: 3}
+  m_Name: SE_VICE_GRIP
+  m_EditorClassIdentifier: 
+  <Info>k__BackingField:
+    <EnumKey>k__BackingField: -1000
+    <Name>k__BackingField: Vice Grip
+    <Sprite>k__BackingField: {fileID: 21300000, guid: d8d92a1f3ac3a1b4c889d83af0e053c1, type: 3}
+    <Stackable>k__BackingField: 1
+    <RemoveAtZero>k__BackingField: 1
+    <Type>k__BackingField: 0
+    <PreTurnModification>k__BackingField: 0
+    <PostTurnModification>k__BackingField: 0
+    <Effect>k__BackingField:
+      rid: -2
+    <Modifiers>k__BackingField:
+    - <Condition>k__BackingField:
+        rid: 6120431006446780516
+      <Modifier>k__BackingField:
+        rid: 6120431006446780518
+    <Reactions>k__BackingField:
+    - rid: 6120431006446780524
+    <Description>k__BackingField: Reduce the cost of the next X "Hoard" cards played
+      by 1.
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 6120431006446780516
+      type: {class: ManaCostMC, ns: , asm: Assembly-CSharp}
+      data:
+        _timing: 1
+        _cardFilters:
+        - rid: 6120431006446780517
+    - rid: 6120431006446780517
+      type: {class: HasRetainFilter, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
+    - rid: 6120431006446780518
+      type: {class: ReduceModifier, ns: , asm: Assembly-CSharp}
+      data:
+        _amount:
+          rid: 6120431006446780847
+    - rid: 6120431006446780524
+      type: {class: OnCardPlayedSER, ns: , asm: Assembly-CSharp}
+      data:
+        _reactionTiming: 1
+        <Effects>k__BackingField:
+        - rid: 6120431006446780525
+        _filters:
+        - rid: 6120431006446780529
+    - rid: 6120431006446780525
+      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 6120431006446780845
+        _combatantEffect:
+          rid: 6120431006446780850
+    - rid: 6120431006446780529
+      type: {class: HasRetainFilter, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
+    - rid: 6120431006446780845
+      type: {class: CasterCTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 6120431006446780847
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 1
+    - rid: 6120431006446780850
+      type: {class: AddCustomSEEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _statusEffect:
+          rid: 6120431006446780852
+        _stackCount:
+          rid: 6120431006446780851
+        _skipAnimation: 0
+    - rid: 6120431006446780851
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: -1
+    - rid: 6120431006446780852
+      type: {class: ScriptableObjectSEI, ns: , asm: Assembly-CSharp}
+      data:
+        _statusEffectData: {fileID: 11400000}

@@ -9,12 +9,12 @@ public class DrawCardsEffect : NoTargetEffect, IDynamicEffectText
 
     public string GetDynamicText(EffectContext context, List<CombatantView> targetCombatants = null, List<LaneView> targetLanes = null)
     {
-        return _drawAmount.ToString();
+        return _drawAmount.GetAmount(context).ToString();
     }
 
     public string GetStaticText()
     {
-        return _drawAmount.ToString();
+        return _drawAmount.GetStaticAmount().ToString();
     }
 
     protected override GameAction GetGameAction(EffectContext context)

@@ -8,7 +8,7 @@ public class AddCardsToHandGA : GameAction
     public AddCardsToHandGA(List<Card> cards)
     {
         Cards = new();
-        foreach (var card in cards)
+        foreach (Card card in cards)
         {
             Cards.Add(card, -1);
         }

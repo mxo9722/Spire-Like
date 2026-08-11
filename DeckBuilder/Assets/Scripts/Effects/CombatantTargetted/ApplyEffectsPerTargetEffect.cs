@@ -1,11 +1,12 @@
 using SerializeReferenceEditor;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+[Serializable]
 public class ApplyEffectsPerTargetEffect : CombatantTargetEffect
 {
-    [SerializeReference, SR] private List<CombatantTargetEffect> _ctEffects;
-
+    [SerializeReference, SR] private List<CombatantTargetEffect> _ctes;
 
     protected override GameAction GetGameAction(EffectContext context, List<CombatantView> combatantTargets)
     {
@@ -13,7 +14,7 @@ public class ApplyEffectsPerTargetEffect : CombatantTargetEffect
 
         foreach(CombatantView unit in combatantTargets)
         {
-            foreach(CombatantTargetEffect ctEffect in _ctEffects)
+            foreach(CombatantTargetEffect ctEffect in _ctes)
             {
                 actEffects.Add(new AutoCombatantTargetEffect(new SpecificCTM(unit),ctEffect));
             }
@@ -29,11 +30,12 @@ public class ApplyEffectsPerTargetEffect : CombatantTargetEffect
     {
         List<IDynamicEffectText> textEffect = new();
 
-        foreach (CombatantTargetEffect effect in _ctEffects)
+        foreach (CombatantTargetEffect effect in _ctes)
         {
             textEffect.AddRange(effect.GetDynamicTextEffects());
         }
 
         return textEffect.ToArray();
     }
+
 }

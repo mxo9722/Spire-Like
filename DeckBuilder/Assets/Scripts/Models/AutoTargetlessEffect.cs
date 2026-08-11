@@ -34,4 +34,10 @@ public class AutoTargetlessEffect : AutoTargetEffect
     {
         return _noTargetEffect.GetNestedEffects();
     }
+
+    public override void SimulatedPerform(EffectContext context)
+    {
+        if (GetGameAction(context) is SimulatedGameAction simulatedGameAction)
+            simulatedGameAction.SimulatedPerform(context);
+    }
 }

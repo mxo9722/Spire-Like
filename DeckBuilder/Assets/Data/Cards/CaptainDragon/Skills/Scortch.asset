@@ -1,0 +1,78 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62bf69310631aa94896652d3f8be392c, type: 3}
+  m_Name: Scortch
+  m_EditorClassIdentifier: 
+  <Rarity>k__BackingField: 0
+  <Upgrade>k__BackingField: {fileID: 0}
+  <Unplayable>k__BackingField: 0
+  <Retain>k__BackingField: 0
+  <Mana>k__BackingField: 0
+  <Type>k__BackingField: 1
+  <Image>k__BackingField: {fileID: 21300000, guid: b7e5c794ed69626448c8d968a8dd2762, type: 3}
+  <CardReference>k__BackingField: {fileID: 0}
+  <Description>k__BackingField: Trigger the burn of an aligned foe immediately.
+  <RequiredConditions>k__BackingField: []
+  <HighlightConditions>k__BackingField: []
+  <JustHighlightCard>k__BackingField: 0
+  <ExhuastOnUse>k__BackingField: 0
+  <ManualTargetType>k__BackingField: 0
+  <CombatantFilters>k__BackingField:
+  - rid: 6120430808469340253
+  - rid: 6120430808469340254
+  - rid: 6120430808469340258
+  <LaneFilters>k__BackingField: []
+  <ManualTargetEffect>k__BackingField:
+    rid: -2
+  <OtherEffects>k__BackingField:
+  - rid: 6120430808469340255
+  <AnywhereReactions>k__BackingField: []
+  <InHandReactions>k__BackingField: []
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 6120430808469340253
+      type: {class: AlignedFilter, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
+    - rid: 6120430808469340254
+      type: {class: FoeFilter, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
+    - rid: 6120430808469340255
+      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 6120430808469340256
+        _combatantEffect:
+          rid: 6120430808469340257
+    - rid: 6120430808469340256
+      type: {class: ManualTargetCTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 6120430808469340257
+      type: {class: InvokeBurnEffect, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 6120430808469340258
+      type: {class: TargHasStatusEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
+        _statusEffectType: 1
+        _is: 2
+        _orEqualTo: 0
+        _b:
+          rid: 6120430808469340259
+    - rid: 6120430808469340259
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 0

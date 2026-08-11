@@ -38,19 +38,19 @@ public class CardSystem : Singleton<CardSystem>
         ActionSystem.AttachPerformer<AddCardsToDiscardGA>(AddCardsToDiscardPerformer);
         ActionSystem.AttachPerformer<AutoTargetEffectGA>(AutoTargetEffectPerformer);
         ActionSystem.AttachPerformer<CycleGA>(CyclePerformer);
-
         ActionSystem.AttachPerformer<DrawCardGA>(DrawCardPerformer);
         ActionSystem.AttachPerformer<DrawCardsGA>(DrawCardsPerformer);
         ActionSystem.AttachPerformer<DiscardAllCardsGA>(DiscardAllCardsPerformer);
         ActionSystem.AttachPerformer<DiscardCardsGA>(DiscardCardsPerformer);
         ActionSystem.AttachPerformer<DiscardCardGA>(DiscardCardPerformer);
         ActionSystem.AttachPerformer<ExhaustCardGA>(ExhaustCardPerformer);
+        ActionSystem.AttachPerformer<ExhaustCardsGA>(ExhaustCardsPerformer);
         ActionSystem.AttachPerformer<HandCardThrobGA>(HandCardThrobPerformer);
         ActionSystem.AttachPerformer<PlayCardGA>(PlayCardPerformer);
+        ActionSystem.AttachPerformer<RetainGA>(RetainPerformer);
         ActionSystem.AttachPerformer<ShuffleGA>(ShufflePerformer);
         ActionSystem.AttachPerformer<UnspotlightCardGA>(UnspotlightCardPerformer);
     }
-
 
     void OnDisable()
     {
@@ -64,7 +64,9 @@ public class CardSystem : Singleton<CardSystem>
         ActionSystem.DetachPerformer<DiscardCardsGA>();
         ActionSystem.DetachPerformer<DiscardCardGA>();
         ActionSystem.DetachPerformer<ExhaustCardGA>();
+        ActionSystem.DetachPerformer<ExhaustCardsGA>();
         ActionSystem.DetachPerformer<PlayCardGA>();
+        ActionSystem.DetachPerformer<RetainGA>();
         ActionSystem.DetachPerformer<ShuffleGA>();
         ActionSystem.DetachPerformer<UnspotlightCardGA>();
     }
@@ -100,6 +102,7 @@ public class CardSystem : Singleton<CardSystem>
             yield return _handView.AddCard(cardView, addCardsToHandGA.Cards[card]);
 
             cardView.SortingGroup.sortingOrder--;
+            DynamicViewsSystem.Instance.UpdateDynamicValues();
         }
     }
 
@@ -194,6 +197,7 @@ public class CardSystem : Singleton<CardSystem>
 
             ShuffleGA shuffleGA = new();
             ActionSystem.Instance.AddReaction(shuffleGA);
+            DynamicViewsSystem.Instance.UpdateDynamicValues();
         }
     }
 
@@ -211,8 +215,15 @@ public class CardSystem : Singleton<CardSystem>
     {
         foreach (Card card in discardCardsGA.Targets)
         {
-            DiscardCardGA discardCardGA = new(card, discardCardsGA.ForEndOfTurn);
-            ActionSystem.Instance.AddReaction(discardCardGA);
+            if (!discardCardsGA.ForEndOfTurn || !card.GetRetain())
+            {
+                DiscardCardGA discardCardGA = new(card, discardCardsGA.ForEndOfTurn);
+                ActionSystem.Instance.AddReaction(discardCardGA);
+            }
+            else if(card.GetRetain())
+            {
+                
+            }
         }
 
         yield return null;
@@ -235,7 +246,7 @@ public class CardSystem : Singleton<CardSystem>
                 }
                 else if (_cardsInPlay.Contains(discardCardGA.Target))
                 {
-                    cardView = GetInPlayCardView(discardCardGA.Target,true);
+                    cardView = GetInPlayCardView(discardCardGA.Target, true);
                     _cardsInPlay.Remove(discardCardGA.Target);
                 }
             }
@@ -250,11 +261,14 @@ public class CardSystem : Singleton<CardSystem>
     {
         CardView cardView = GetCardView(playCardGA.card);
 
-        var context = playCardGA.GetEffectContext();
-        int manaCost = playCardGA.card.GetDynamicManaValue(context);
-        Debug.Log("ManaCost: "+manaCost);
-        SpendManaGA spendManaGA = new(manaCost);
-        ActionSystem.Instance.AddReaction(spendManaGA);
+        EffectContext context = playCardGA.GetEffectContext();
+
+        if (playCardGA.PayCost)
+        {
+            int manaCost = playCardGA.card.GetDynamicManaValue(context);
+            SpendManaGA spendManaGA = new(manaCost);
+            ActionSystem.Instance.AddReaction(spendManaGA);
+        }
 
         _viewsInPlay.Add(cardView);
         _cardsInPlay.Add(playCardGA.card);
@@ -263,8 +277,6 @@ public class CardSystem : Singleton<CardSystem>
         cardView.transform.DOKill();
         cardView.transform.DOMove(PlayCardPosition.position, 0.15f);
         yield return cardView.transform.DORotate(Vector3.zero, 0.15f).WaitForCompletion();
-
-        HeroView heroView = playCardGA.card.GetOwnerView(context);
 
         if (playCardGA.card.ManualTargetEffect != null)
         {
@@ -304,28 +316,41 @@ public class CardSystem : Singleton<CardSystem>
 
     private IEnumerator ExhaustCardPerformer(ExhaustCardGA exhaustCardGA)
     {
-        foreach (Card card in exhaustCardGA.Cards)
+        CardView cardView = GetCardViewForEffect(exhaustCardGA.Card, 0.15f);
+
+        Tweener moveCardTweener = cardView.transform.DOMove(Vector3.zero, 0.15f);
+        cardView.transform.DORotate(Vector3.zero, 0.15f);
+
+        yield return moveCardTweener.WaitForCompletion();
+
+        yield return cardView.ActivateExhaustVFX();
+
+        _cardsInPlay.Remove(cardView.Card);
+        _exhaustPile.Add(cardView.Card);
+
+        SetCardReactions(exhaustCardGA.Card);
+        UpdateUI();
+    }
+
+    private IEnumerator ExhaustCardsPerformer(ExhaustCardsGA exhaustCardsGA)
+    {
+        foreach (Card card in exhaustCardsGA.Cards)
         {
-            CardView cardView = GetCardViewForEffect(card, 0.15f);
-
-            Tweener moveCardTweener = cardView.transform.DOMove(Vector3.zero, 0.15f);
-            cardView.transform.DORotate(Vector3.zero, 0.15f);
-
-            yield return moveCardTweener.WaitForCompletion();
-
-            yield return cardView.ActivateExhaustVFX();
-
-            _cardsInPlay.Remove(cardView.Card);
-            _exhaustPile.Add(cardView.Card);
-
-            SetCardReactions(card);
-            UpdateUI();
+            ExhaustCardGA exhaustCardGA = new(card);
+            ActionSystem.Instance.AddReaction(exhaustCardGA);
         }
+
+        yield return null;
     }
 
     private IEnumerator HandCardThrobPerformer(HandCardThrobGA handCardThrobGA)
     {
         yield return HandCardThrob(handCardThrobGA.Card);
+    }
+
+    private IEnumerator RetainPerformer(RetainGA retainGA)
+    {
+        yield break;
     }
 
     private IEnumerator ShufflePerformer(ShuffleGA shuffleGA)
@@ -348,14 +373,14 @@ public class CardSystem : Singleton<CardSystem>
     private IEnumerator DrawCard(DrawCardGA drawCardGA)
     {
         Card card = _drawPile.Draw();
-        
-        if(card == null)
+
+        if (card == null)
         {
             SpeechBubbleGA speechBubbleGA = new("No more cards left to draw!", new() { HeroSystem.Instance.HeroViews[0] }, 5, 0);
             ActionSystem.Instance.AddReaction(speechBubbleGA);
             yield break;
         }
-        
+
         UpdateUI();
 
         _hand.Add(card);
@@ -602,6 +627,9 @@ public class CardSystem : Singleton<CardSystem>
     private void SetCardReactions(Card card)
     {
         card.UnsubscribeAllReactions();
+
+        card.SubscribeAnywhereReactions();
+
         if (_hand.Contains(card))
         {
             card.SubscribeInHand();

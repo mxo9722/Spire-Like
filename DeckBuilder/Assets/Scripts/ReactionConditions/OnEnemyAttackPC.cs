@@ -9,14 +9,14 @@ public class OnEnemyAttackPC : ReactionCondition
         return gameAction is AttackHeroGA attackHeroGA && attackHeroGA.Targets.Any(t => t is HeroView);
     }
 
-    public override void SubscribeCondition(Action<GameAction> reaction)
+    public override void SubscribeCondition(object subsccriber, Action<GameAction> reaction)
     {
-        ActionSystem.SubscribeReaction<AttackHeroGA>(this, reaction, reactionTiming);
+        ActionSystem.SubscribeReaction<AttackHeroGA>(subsccriber, reaction, reactionTiming);
     }
 
-    public override void UnsubscribeCondition(Action<GameAction> reaction)
+    public override void UnsubscribeCondition(object subsccriber, Action<GameAction> reaction)
     {
-        ActionSystem.UnsubscribeReaction<AttackHeroGA>(this,reaction, reactionTiming);
+        ActionSystem.UnsubscribeReaction<AttackHeroGA>(subsccriber, reaction, reactionTiming);
 
     }
 }

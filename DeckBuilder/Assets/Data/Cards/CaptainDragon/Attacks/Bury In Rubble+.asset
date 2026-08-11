@@ -1,0 +1,104 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62bf69310631aa94896652d3f8be392c, type: 3}
+  m_Name: Bury In Rubble+
+  m_EditorClassIdentifier: 
+  <Rarity>k__BackingField: 0
+  <Upgrade>k__BackingField: {fileID: 0}
+  <Unplayable>k__BackingField: 0
+  <Mana>k__BackingField: 2
+  <Type>k__BackingField: 0
+  <Image>k__BackingField: {fileID: 21300000, guid: e077dc8137a15534fbf8fb57e9f7539f, type: 3}
+  <Description>k__BackingField: Deal {v0} damage to aligned foes. Apply block to
+    them equal to the unblocked damage. Draw {v2} cards.
+  <RequiredConditions>k__BackingField: []
+  <HighlightConditions>k__BackingField: []
+  <JustHighlightCard>k__BackingField: 0
+  <ExhuastOnUse>k__BackingField: 0
+  <ManualTargetType>k__BackingField: 2
+  <CombatantFilters>k__BackingField: []
+  <LaneFilters>k__BackingField: []
+  <ManualTargetEffect>k__BackingField:
+    rid: -2
+  <OtherEffects>k__BackingField:
+  - rid: 6120430616153948261
+  - rid: 6120430616153948271
+  <AnywhereReactions>k__BackingField: []
+  <InHandReactions>k__BackingField: []
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 6120430616153948261
+      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 6120430616153948262
+        _combatantEffect:
+          rid: 6120430616153948265
+    - rid: 6120430616153948262
+      type: {class: AllCTM, ns: , asm: Assembly-CSharp}
+      data:
+        _filters:
+        - rid: 6120430616153948263
+        - rid: 6120430616153948264
+    - rid: 6120430616153948263
+      type: {class: AlignedFilter, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
+    - rid: 6120430616153948264
+      type: {class: FoeFilter, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
+    - rid: 6120430616153948265
+      type: {class: ApplyEffectsPerTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _ctes:
+        - rid: 6120430616153948266
+        - rid: 6120430616153948268
+    - rid: 6120430616153948266
+      type: {class: DealDamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _damage:
+          rid: 6120430616153948267
+        _unblockedKey: unblocked
+    - rid: 6120430616153948267
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 11
+    - rid: 6120430616153948268
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _statusEffectType: 0
+        _stackCount:
+          rid: 6120430616153948270
+        _skipAnimation: 0
+    - rid: 6120430616153948270
+      type: {class: SavedDataQ, ns: , asm: Assembly-CSharp}
+      data:
+        _level: 0
+        _key: unblocked
+    - rid: 6120430616153948271
+      type: {class: AutoTargetlessEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _noTargetEffect:
+          rid: 6120430616153948272
+    - rid: 6120430616153948272
+      type: {class: DrawCardsEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _drawAmount:
+          rid: 6120430616153948273
+    - rid: 6120430616153948273
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 2

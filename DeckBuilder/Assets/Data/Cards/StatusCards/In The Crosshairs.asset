@@ -33,59 +33,43 @@ MonoBehaviour:
   <ManualTargetEffect>k__BackingField:
     rid: -2
   <OtherEffects>k__BackingField: []
+  <AnywhereReactions>k__BackingField: []
   <InHandReactions>k__BackingField:
-  - rid: 262421115933556813
+  - _reactionCondition:
+      rid: 6120430505476751460
+    _effects:
+    - rid: 6120430505476751461
   references:
     version: 2
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 262421115933556813
-      type: {class: CardReaction, ns: , asm: Assembly-CSharp}
-      data:
-        _reactionCondition:
-          rid: 262421115933556814
-        _effects:
-        - rid: 262421115933556819
-        - rid: 6673085980873589030
-    - rid: 262421115933556814
+    - rid: 6120430505476751460
       type: {class: LingerCRC, ns: , asm: Assembly-CSharp}
       data:
         reactionTiming: 0
-    - rid: 262421115933556819
+    - rid: 6120430505476751461
       type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
       data:
         <TargetMode>k__BackingField:
-          rid: 262421115933556820
+          rid: 6120430505476751464
         _combatantEffect:
-          rid: 262421115933556821
-    - rid: 262421115933556820
-      type: {class: AllNPCsOfTypeCTM, ns: , asm: Assembly-CSharp}
-      data:
-        _npcType: {fileID: 11400000, guid: 18c20b7f2e695444f8d991478c856d87, type: 2}
-    - rid: 262421115933556821
+          rid: 6120430505476751462
+    - rid: 6120430505476751462
       type: {class: MakeAnotherUnitAttackFoeEffect, ns: , asm: Assembly-CSharp}
       data:
         _targetMode:
-          rid: 6673086252972769360
+          rid: 6120430505476751463
         _effect:
           <Damage>k__BackingField: 10
+          IndirectReduction: 1
           _unblockedKey: 
           _overkillKey: 
           _onHit: 
-    - rid: 6673085980873589030
-      type: {class: AutoCardTargetEffect, ns: , asm: Assembly-CSharp}
-      data:
-        <TargetMode>k__BackingField:
-          rid: 6673085980873589031
-        _cardEffect:
-          rid: 6673085980873589032
-    - rid: 6673085980873589031
-      type: {class: PlayedCardCaTM, ns: , asm: Assembly-CSharp}
-      data: 
-    - rid: 6673085980873589032
-      type: {class: ExhaustCardsEffect, ns: , asm: Assembly-CSharp}
-      data: 
-    - rid: 6673086252972769360
+    - rid: 6120430505476751463
       type: {class: CasterCTM, ns: , asm: Assembly-CSharp}
       data: 
+    - rid: 6120430505476751464
+      type: {class: AllNPCsOfTypeCTM, ns: , asm: Assembly-CSharp}
+      data:
+        _npcType: {fileID: 11400000, guid: 18c20b7f2e695444f8d991478c856d87, type: 2}

@@ -28,12 +28,11 @@ public class NPCAction
 
                 foreach (Effect effect in autoTargetEffect.Effects)
                 {
-                    if (effect is SaveCombatantsAsDataEffect saveCombatantsAsData)
-                    {
-                        SaveDataGA saveDataGA = (SaveDataGA)saveCombatantsAsData.GetGameAction(context, targets);
+                    GameAction ga = effect.GetGameAction(context, targets);
 
-                        if(saveDataGA != null && saveDataGA.DataLevel == SaveDataLevel.CONTEXT)
-                            saveDataGA.SimulatedPerform();
+                    if (ga is SimulatedGameAction simulatedGA)
+                    {
+                        simulatedGA.SimulatedPerform(context);
                     }
 
                     else if (effect is AttackHeroEffect attackHeroEffect)

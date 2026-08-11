@@ -18,8 +18,8 @@ public class FrontFoeInLaneCTM : CombatantTargetMode
 
             if (context.Caster is NPCView npc && npc.IsEvil)
             {
-                var select = laneViews.Select(l => l.HeroView);
-                var where = select.Where(e => e != null);
+                IEnumerable<CombatantView> select = laneViews.Select(l => l.HeroView);
+                IEnumerable<CombatantView> where = select.Where(e => e != null);
                 return where.ToList();
             }
 

@@ -15,13 +15,16 @@ MonoBehaviour:
   <Rarity>k__BackingField: 1
   <Upgrade>k__BackingField: {fileID: 0}
   <Unplayable>k__BackingField: 0
+  <Retain>k__BackingField: 0
   <Mana>k__BackingField: 1
-  <Type>k__BackingField: 0
+  <Type>k__BackingField: 1
   <Image>k__BackingField: {fileID: 21300000, guid: b1e4ae071871c6449a358dea73a8fcb9, type: 3}
+  <CardReference>k__BackingField: {fileID: 0}
   <Description>k__BackingField: Gain {v0} block. If you moved this turn draw {v1}
     cards.
   <RequiredConditions>k__BackingField: []
   <HighlightConditions>k__BackingField: []
+  <JustHighlightCard>k__BackingField: 0
   <ExhuastOnUse>k__BackingField: 0
   <ManualTargetType>k__BackingField: 2
   <CombatantFilters>k__BackingField: []
@@ -31,6 +34,7 @@ MonoBehaviour:
   <OtherEffects>k__BackingField:
   - rid: 4055348078608908524
   - rid: 4055348078608908528
+  <AnywhereReactions>k__BackingField: []
   <InHandReactions>k__BackingField: []
   references:
     version: 2
@@ -71,6 +75,7 @@ MonoBehaviour:
         _successEffects:
         - rid: 262420840209711235
         _failEffects: []
+        HideHighlight: 0
     - rid: 4055348078608908530
       type: {class: CasterMovedThisTurnCondition, ns: , asm: Assembly-CSharp}
       data:

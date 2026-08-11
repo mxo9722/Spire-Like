@@ -1,0 +1,128 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a61ecd2afb9bcb0469ae465c6809506c, type: 3}
+  m_Name: SE_COWARDLY
+  m_EditorClassIdentifier: 
+  <Info>k__BackingField:
+    <EnumKey>k__BackingField: -1000
+    <Name>k__BackingField: Cowardly
+    <Sprite>k__BackingField: {fileID: 21300000, guid: 9a303a0f28240a84a975d9e73b1a90bd, type: 3}
+    <Stackable>k__BackingField: 1
+    <RemoveAtZero>k__BackingField: 0
+    <Type>k__BackingField: 0
+    <PreTurnModification>k__BackingField: 0
+    <PostTurnModification>k__BackingField: 0
+    <Effect>k__BackingField:
+      rid: -2
+    <Modifiers>k__BackingField: []
+    <Reactions>k__BackingField:
+    - rid: 3047589643689656423
+    - rid: 3047589643689656466
+    <Description>k__BackingField: The first time attacked each round, move to an
+      adjacent lane.
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 3047589643689656423
+      type: {class: OnFirstAttackedEachRoundSER, ns: , asm: Assembly-CSharp}
+      data:
+        _reactionTiming: 1
+        <Effects>k__BackingField:
+        - rid: 3047589643689656424
+        - rid: 3047589643689656458
+    - rid: 3047589643689656424
+      type: {class: AutoLaneTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 3047589643689656425
+        _laneEffect:
+          rid: 3047589643689656431
+    - rid: 3047589643689656425
+      type: {class: RandomLTM, ns: , asm: Assembly-CSharp}
+      data:
+        _count: 1
+        <Filters>k__BackingField:
+        - rid: 3047589643689656426
+        - rid: 3047589643689656427
+        - rid: 3047589643689656428
+    - rid: 3047589643689656426
+      type: {class: SpaceInAllyLaneFilter, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
+    - rid: 3047589643689656427
+      type: {class: CasterInLaneFilter, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 1
+    - rid: 3047589643689656428
+      type: {class: DistanceFromCasterLaneFilter, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
+        _is: 1
+        _value:
+          rid: 3047589643689656429
+    - rid: 3047589643689656429
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 1
+    - rid: 3047589643689656431
+      type: {class: MoveTowardLaneEffect, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 3047589643689656458
+      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 3047589643689656459
+        _combatantEffect:
+          rid: 3047589643689656460
+    - rid: 3047589643689656459
+      type: {class: CasterCTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 3047589643689656460
+      type: {class: AddStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _statusEffectType: 1005
+        _stackCount:
+          rid: 3047589643689656461
+        _skipAnimation: 0
+    - rid: 3047589643689656461
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: -1
+    - rid: 3047589643689656466
+      type: {class: OnTurnEndSER, ns: , asm: Assembly-CSharp}
+      data:
+        _reactionTiming: 1
+        <Effects>k__BackingField:
+        - rid: 3047589643689656467
+    - rid: 3047589643689656467
+      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 3047589643689656468
+        _combatantEffect:
+          rid: 3047589643689656469
+    - rid: 3047589643689656468
+      type: {class: CasterCTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 3047589643689656469
+      type: {class: SetStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _statusEffectType: 1005
+        _stackCount:
+          rid: 3047589643689656470
+        _skipAnimation: 0
+    - rid: 3047589643689656470
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 1

@@ -12,7 +12,7 @@ public class StatusEffectUI : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     [SerializeField] private HelpBoxUI _helpBoxUI;
     [SerializeField] private LayoutElement _layoutElement;
 
-    private CombatantView _owner;
+    public CombatantView Owner { get; private set; }
     private int _stackCount = 0;
     public StatusEffectInfo Info { get; private set; }
     public StatusEffect StatusEffectType { get => Info.EnumKey; }
@@ -21,7 +21,7 @@ public class StatusEffectUI : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     public void Set(CombatantView owner, Sprite sprite, int stackCount, bool canStack, StatusEffectInfo info)
     {
-        _owner = owner;
+        Owner = owner;
         _image.sprite = sprite;
 
         if (canStack)
@@ -33,18 +33,13 @@ public class StatusEffectUI : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
         Info = info;
 
-        Info = info;
-
         if (!_started)
         {
-            foreach (StatusEffectReaction reaction in Info.Reactions)
-            {
-                reaction.SubscribeCondition(this, HandleReaction);
-            }
+            StatusEffectSystem.Instance.TrySubscribeSEReactions(info);
             
             foreach (ConditionalModifierPair modifier in Info.Modifiers)
             {
-                modifier.Subscribe(this);
+                modifier.Subscribe(this, HandleModifier);
             }
 
             _started = true;
@@ -57,14 +52,11 @@ public class StatusEffectUI : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     {
         if (Info != null)
         {
-            foreach (StatusEffectReaction reaction in Info.Reactions)
-            {
-                reaction.UnsubscribeCondition(this, HandleReaction);
-            }
-            
+            StatusEffectSystem.Instance.TryUnsubscribeSEReactions(Info, Owner);
+
             foreach (ConditionalModifierPair modifier in Info.Modifiers)
             {
-                modifier.Unsubscribe(this);
+                modifier.Unsubscribe(this, HandleModifier);
             }
         }
     }
@@ -80,22 +72,18 @@ public class StatusEffectUI : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         _helpBoxUI.Hide();
     }
 
-    private void HandleReaction(GameAction gameAction)
+    private int HandleModifier(int oValue, ModifierKey modKey)
     {
-        foreach (StatusEffectReaction reaction in Info.Reactions)
+        modKey.Context.SetData("seOwner", Owner);
+        modKey.Context.SetData("stacks", _stackCount);
+
+        foreach (ConditionalModifierPair modifier in Info.Modifiers)
         {
-            int count = reaction.SubConditionIsMet(_owner, gameAction);
 
-            EffectContext context = new(_owner);
-
-            context.SetData("stacks",_stackCount);
-            reaction.SaveTargetData(context, gameAction);
-
-            for (int i = 0; i < count; i++)
-            {
-                reaction.InvokeEffects(context);
-            }
+            oValue = modifier.TestCondition(oValue, modKey);
         }
+
+        return oValue;
     }
 
     public void SetPositionOverride(Vector3 position)

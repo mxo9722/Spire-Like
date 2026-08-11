@@ -15,15 +15,18 @@ MonoBehaviour:
   <Rarity>k__BackingField: 1
   <Upgrade>k__BackingField: {fileID: 0}
   <Unplayable>k__BackingField: 0
+  <Retain>k__BackingField: 0
   <Mana>k__BackingField: 2
-  <Type>k__BackingField: 3
+  <Type>k__BackingField: 1
   <Image>k__BackingField: {fileID: 21300000, guid: 74f4be165f3aef54da9cf81ba3d74c1b, type: 3}
+  <CardReference>k__BackingField: {fileID: 0}
   <Description>k__BackingField: 'Summon <b>Debris</b> with Guard in an open lane.
 
     (HP:
     10, Action: Gain 5 Block)'
   <RequiredConditions>k__BackingField: []
   <HighlightConditions>k__BackingField: []
+  <JustHighlightCard>k__BackingField: 0
   <ExhuastOnUse>k__BackingField: 0
   <ManualTargetType>k__BackingField: 1
   <CombatantFilters>k__BackingField: []
@@ -32,7 +35,8 @@ MonoBehaviour:
   <ManualTargetEffect>k__BackingField:
     rid: 4055347851348148309
   <OtherEffects>k__BackingField: []
-  <TurnEndEffects>k__BackingField: []
+  <AnywhereReactions>k__BackingField: []
+  <InHandReactions>k__BackingField: []
   references:
     version: 2
     RefIds:

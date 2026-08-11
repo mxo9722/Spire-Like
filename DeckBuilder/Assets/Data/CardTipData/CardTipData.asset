@@ -46,7 +46,7 @@ MonoBehaviour:
     - Key: CHAOS
       Value: Randomizes a number of targetted attack card effects.
     - Key: ADJACENT
-      Value: Units to the immediate left, right, above or below are considered adjacent.
+      Value: Units to the immediate left and right are considered adjacent.
     - Key: ANCHORED
       Value: Target is immune to movement from other units for a number of turns.
     - Key: PINNED
@@ -56,6 +56,12 @@ MonoBehaviour:
     - Key: GAURD
       Value: Unit remains in the front of the lane potentially blocking enemy attacks.
     - Key: HEAT
-      Value: At 10+ stacks converts to burn. Reduces by 1 when a card is played.
+      Value: Any heat above 9 becomes Burn. Reduces by 1 when a card is played.
     - Key: CYCLE X
       Value: Discard up to X cards from your hand then draw that many cards.
+    - Key: HOARD
+      Value: Doesn't discard at the end of the turn.
+    - Key: BOLD
+      Value: Target deals more damage on their next attack.
+    - Key: BRUISED
+      Value: Target takes more damage from incoming attacks.

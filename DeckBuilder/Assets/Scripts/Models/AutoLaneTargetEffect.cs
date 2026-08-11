@@ -51,4 +51,10 @@ public class AutoLaneTargetEffect : AutoTargetEffect
     {
         return TargetMode.GetTargetIntent();
     }
+
+    public override void SimulatedPerform(EffectContext context)
+    {
+        if (GetGameAction(context) is SimulatedGameAction simulatedGameAction)
+            simulatedGameAction.SimulatedPerform(context);
+    }
 }

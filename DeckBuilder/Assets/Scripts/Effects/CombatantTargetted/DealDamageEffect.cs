@@ -5,10 +5,15 @@ using UnityEngine;
 public class DealDamageEffect : CombatantTargetEffect, IDynamicEffectText
 {
     [field: SerializeReference, SR] private Quantity _damage = new SetQ();
+    [SerializeField] private string _unblockedKey = "";
 
     protected override GameAction GetGameAction(EffectContext context, List<CombatantView> combatantTargets)
     {
         DealDamageGA dealDamageGA = new DealDamageGA(_damage.GetAmount(context), combatantTargets, context);
+
+        if (!string.IsNullOrEmpty(_unblockedKey))
+            dealDamageGA.SetUnblockedKey(_unblockedKey);
+
         return dealDamageGA;
     }
 

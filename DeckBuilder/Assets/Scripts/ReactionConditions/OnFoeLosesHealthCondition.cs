@@ -18,14 +18,14 @@ public class OnFoeLosesHealthGA : ReactionCondition
         return false;
     }
 
-    public override void SubscribeCondition(Action<GameAction> reaction)
+    public override void SubscribeCondition(object subscriber, Action<GameAction> reaction)
     {
-        ActionSystem.SubscribeReaction<DealDamageGA>(this, reaction, ReactionTiming.POST);
+        ActionSystem.SubscribeReaction<DealDamageGA>(subscriber, reaction, ReactionTiming.POST);
     }
 
-    public override void UnsubscribeCondition(Action<GameAction> reaction)
+    public override void UnsubscribeCondition(object subscriber, Action<GameAction> reaction)
     {
-        ActionSystem.UnsubscribeReaction<DealDamageGA>(this, reaction, ReactionTiming.POST);
+        ActionSystem.UnsubscribeReaction<DealDamageGA>(subscriber, reaction, ReactionTiming.POST);
     }
 
     public override void SaveTargetData(EffectContext context, GameAction gameAction)

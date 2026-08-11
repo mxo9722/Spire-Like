@@ -5,6 +5,6 @@ public class TransferHeatEffect : CombatantTargetEffect
 {
     protected override GameAction GetGameAction(EffectContext context, List<CombatantView> combatantTargets)
     {
-        return new TransferHeatGA(combatantTargets);
+        return new TransferHeatGA(combatantTargets, context);
     }
 }

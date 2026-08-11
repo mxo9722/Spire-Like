@@ -15,15 +15,18 @@ MonoBehaviour:
   <Rarity>k__BackingField: 2
   <Upgrade>k__BackingField: {fileID: 11400000, guid: aa8550760449fc54d8d7c3527ef58ff1, type: 2}
   <Unplayable>k__BackingField: 0
+  <Retain>k__BackingField: 0
   <Mana>k__BackingField: 1
   <Type>k__BackingField: 1
   <Image>k__BackingField: {fileID: 21300000, guid: 99fdadaf3228d624dba5dc2242584449, type: 3}
+  <CardReference>k__BackingField: {fileID: 0}
   <Description>k__BackingField: 'Chaotic: Double your mana and your chaos.
 
     Exhaust.'
   <RequiredConditions>k__BackingField:
   - rid: 4055348103697924343
   <HighlightConditions>k__BackingField: []
+  <JustHighlightCard>k__BackingField: 0
   <ExhuastOnUse>k__BackingField: 1
   <ManualTargetType>k__BackingField: 2
   <CombatantFilters>k__BackingField: []
@@ -33,7 +36,8 @@ MonoBehaviour:
   <OtherEffects>k__BackingField:
   - rid: 4055348103697924334
   - rid: 4055348103697924337
-  <TurnEndEffects>k__BackingField: []
+  <AnywhereReactions>k__BackingField: []
+  <InHandReactions>k__BackingField: []
   references:
     version: 2
     RefIds:
@@ -80,6 +84,14 @@ MonoBehaviour:
       data:
         _invert: 0
         _statusEffectType: 2000
+        _is: 2
+        _orEqualTo: 0
+        _b:
+          rid: 6120431006446780508
     - rid: 4055348103697924344
       type: {class: ManaQ, ns: , asm: Assembly-CSharp}
       data: 
+    - rid: 6120431006446780508
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 0

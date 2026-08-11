@@ -22,9 +22,6 @@ public enum StatusEffectModification
 [Serializable]
 public abstract class StatusEffectInfo
 {
-    private static List<StatusEffectInfo> _allStatusEffects = new();
-
-
     public abstract StatusEffect EnumKey { get; protected set; }
     public abstract string Name { get; protected set; }
     public abstract Sprite Sprite { get; protected set; }

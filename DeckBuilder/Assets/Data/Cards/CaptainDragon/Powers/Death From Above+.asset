@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62bf69310631aa94896652d3f8be392c, type: 3}
+  m_Name: Death From Above+
+  m_EditorClassIdentifier: 
+  <Rarity>k__BackingField: 0
+  <Upgrade>k__BackingField: {fileID: 0}
+  <Unplayable>k__BackingField: 0
+  <Retain>k__BackingField: 0
+  <Mana>k__BackingField: 2
+  <Type>k__BackingField: 2
+  <Image>k__BackingField: {fileID: 21300000, guid: 573edf3356ffc3b489f11bcf431cdf66, type: 3}
+  <CardReference>k__BackingField: {fileID: 0}
+  <Description>k__BackingField: When you move gain {v0} bold.
+  <RequiredConditions>k__BackingField: []
+  <HighlightConditions>k__BackingField: []
+  <JustHighlightCard>k__BackingField: 0
+  <ExhuastOnUse>k__BackingField: 1
+  <ManualTargetType>k__BackingField: 2
+  <CombatantFilters>k__BackingField: []
+  <LaneFilters>k__BackingField: []
+  <ManualTargetEffect>k__BackingField:
+    rid: -2
+  <OtherEffects>k__BackingField:
+  - rid: 3047589309165863010
+  <AnywhereReactions>k__BackingField: []
+  <InHandReactions>k__BackingField: []
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 3047589309165863010
+      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 3047589309165863011
+        _combatantEffect:
+          rid: 3047589309165863012
+    - rid: 3047589309165863011
+      type: {class: CasterCTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 3047589309165863012
+      type: {class: AddCustomSEEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _statusEffect:
+          rid: 3047589309165863015
+        _stackCount:
+          rid: 3047589309165863013
+        _skipAnimation: 0
+    - rid: 3047589309165863013
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 3
+    - rid: 3047589309165863015
+      type: {class: ScriptableObjectSEI, ns: , asm: Assembly-CSharp}
+      data:
+        _statusEffectData: {fileID: 11400000, guid: a88c673979d9f4c43805c11e84dc2e7a, type: 2}

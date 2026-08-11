@@ -8,7 +8,7 @@ public class ContainsWordCF : CardFilter
 
     protected override bool TargetIsValid(EffectContext context, Card target)
     {
-        var pattern = @"\b" + _word.ToLower() + @"\b";
+        string pattern = @"\b" + _word.ToLower() + @"\b";
 
         if (Regex.IsMatch(target.Title.ToLower(), pattern))
             return true;

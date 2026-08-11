@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DealDamageGA : GameAction, IHaveCaster
+public class DealDamageGA : SimulatedGameAction, IHaveCaster
 {
     public int Amount { get; private set; }
     public List<CombatantView> Targets { get; private set; }
@@ -61,5 +61,35 @@ public class DealDamageGA : GameAction, IHaveCaster
     public void SetOverkillKey(string key)
     {
         OverkillKey = key;
+    }
+
+    public override void SimulatedPerform(EffectContext context)
+    {
+        foreach(CombatantView target in Targets)
+        {
+            if (!string.IsNullOrWhiteSpace(UnblockedKey))
+            {
+                int unblockedDamage = Amount;
+
+                if (IsAttack)
+                    unblockedDamage = DamageSystem.GetDamageFromAttack(Amount, context, new() { target });
+
+                unblockedDamage = target.GetStatusEffectStacks(StatusEffect.BLOCK) - unblockedDamage;
+
+                Context.SetData(UnblockedKey, unblockedDamage);
+            }
+
+            if (!string.IsNullOrWhiteSpace(OverkillKey))
+            {
+                int overkill = Amount;
+
+                if (IsAttack)
+                    overkill = DamageSystem.GetDamageFromAttack(Amount, context, new() { target });
+
+                overkill = target.GetStatusEffectStacks(StatusEffect.BLOCK) + target.CurrentHealth - overkill;
+
+                Context.SetData(OverkillKey, overkill);
+            }
+        }
     }
 }

@@ -19,14 +19,63 @@ MonoBehaviour:
     <Stackable>k__BackingField: 1
     <RemoveAtZero>k__BackingField: 1
     <Type>k__BackingField: 0
-    <PreTurnModification>k__BackingField: 1
+    <PreTurnModification>k__BackingField: 0
     <PostTurnModification>k__BackingField: 0
     <Effect>k__BackingField:
       rid: -2
-    <Reactions>k__BackingField: []
+    <Modifiers>k__BackingField: []
+    <Reactions>k__BackingField:
+    - rid: 1953144383652757597
     <Description>k__BackingField: Reduce incoming damage by X this turn.
   references:
     version: 2
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
+    - rid: 1953144383652757597
+      type: {class: OnTurnBeginSER, ns: , asm: Assembly-CSharp}
+      data:
+        _reactionTiming: 0
+        <Effects>k__BackingField:
+        - rid: 1953144383652757599
+    - rid: 1953144383652757599
+      type: {class: ConditionalAutoTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _conditions:
+        - rid: 1953144383652757600
+        _successEffects:
+        - rid: 1953144383652757602
+        _failEffects: []
+        HideHighlight: 0
+    - rid: 1953144383652757600
+      type: {class: CasterHasStatusEffectCondition, ns: , asm: Assembly-CSharp}
+      data:
+        _invert: 0
+        _statusEffectType: 1006
+        _is: 1
+        _orEqualTo: 0
+        _b:
+          rid: 1953144383652757601
+    - rid: 1953144383652757601
+      type: {class: SetQ, ns: , asm: Assembly-CSharp}
+      data:
+        _set: 0
+    - rid: 1953144383652757602
+      type: {class: AutoCombatantTargetEffect, ns: , asm: Assembly-CSharp}
+      data:
+        <TargetMode>k__BackingField:
+          rid: 1953144383652757603
+        _combatantEffect:
+          rid: 1953144383652757604
+    - rid: 1953144383652757603
+      type: {class: CasterCTM, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 1953144383652757604
+      type: {class: ClearStatusEffectEffect, ns: , asm: Assembly-CSharp}
+      data:
+        _identifier:
+          rid: 1953144383652757605
+    - rid: 1953144383652757605
+      type: {class: DictionaryEntrySEI, ns: , asm: Assembly-CSharp}
+      data:
+        _key: 0

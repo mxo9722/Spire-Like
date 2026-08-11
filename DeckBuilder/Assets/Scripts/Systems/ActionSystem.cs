@@ -21,7 +21,7 @@ public class ActionSystem : Singleton<ActionSystem>
 
     public void Perform(GameAction action, Action OnPerformFinished = null)
     {
-        if (IsPerforming || MatchEndSystem.Instance.GameOver)
+        if (IsPerforming || MatchEndSystem.Instance.MatchOver)
         {
             Debug.Log("action attempted while performing ");
             return;
@@ -85,7 +85,7 @@ public class ActionSystem : Singleton<ActionSystem>
 
     private IEnumerator PerformPerformer(GameAction action)
     {
-        if (MatchEndSystem.Instance.GameOver && !action.PerformAfterGameOver)
+        if (MatchEndSystem.Instance.MatchOver && !action.PerformAfterGameOver)
             yield break;
 
         Func<GameAction, IEnumerator> performer = performers[action.GetType()];

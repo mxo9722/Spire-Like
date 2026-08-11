@@ -5,6 +5,7 @@ using UnityEngine;
 public abstract class CardModifier : ICloneable
 {
     protected virtual void ApplyVisualEffects(CardView card) {}
+    public virtual string ModifyDescription(string baseDescription) => baseDescription;
 
     public abstract bool CanApply(Card card);
     public abstract bool TryToCombine(CardModifier cardModifier);

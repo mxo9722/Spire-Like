@@ -6,6 +6,7 @@ public class CardViewHoverSystem : Singleton<CardViewHoverSystem>
 {
     [field: SerializeField] public CardView CardViewHover { get; private set; }
     [SerializeField] private HelpBoxesUI _helpBoxesUI;
+    [SerializeField] private CardUI _cardReferenceUI;
 
     public void Show(Card card, Vector3 pos)
     {
@@ -22,6 +23,12 @@ public class CardViewHoverSystem : Singleton<CardViewHoverSystem>
             tween.Kill(false);
 
         CardViewHover.transform.position = pos;
+
+        if (card.CardReference != null)
+        {
+            _cardReferenceUI.gameObject.SetActive(true);
+            _cardReferenceUI.BeginFadeIn();
+        }
     }
 
     public void TweenToPosition(Vector3 pos)

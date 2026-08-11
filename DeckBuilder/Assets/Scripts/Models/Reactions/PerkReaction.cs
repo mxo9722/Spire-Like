@@ -18,13 +18,13 @@ public class PerkReaction
     public void SubscribeCondition(Action<PerkReaction, GameAction> reaction)
     {
         _reaction = reaction;
-        PerkCondition.SubscribeCondition(Reaction);
+        PerkCondition.SubscribeCondition(this, Reaction);
     }
 
     public void UnsubscribeCondition()
     {
         _reaction = null;
-        PerkCondition.UnsubscribeCondition(Reaction);
+        PerkCondition.UnsubscribeCondition(this,Reaction);
     }
 
     private void Reaction(GameAction gameAction)

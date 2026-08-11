@@ -13,15 +13,18 @@ MonoBehaviour:
   m_Name: Updraft
   m_EditorClassIdentifier: 
   <Rarity>k__BackingField: 0
-  <Upgrade>k__BackingField: {fileID: 11400000, guid: 377c7487cdff30b4ea17526c3216f471, type: 2}
+  <Upgrade>k__BackingField: {fileID: 11400000, guid: 7db13471b6449d84c93cecd1c6f23749, type: 2}
   <Unplayable>k__BackingField: 0
+  <Retain>k__BackingField: 0
   <Mana>k__BackingField: 1
   <Type>k__BackingField: 1
   <Image>k__BackingField: {fileID: 21300000, guid: 4a537e4fee657c448b43354a37dd7261, type: 3}
+  <CardReference>k__BackingField: {fileID: 11400000, guid: 637a882dceefb134c8204a03c43e2de4, type: 2}
   <Description>k__BackingField: Move any unit up a lane. Add a copy of Downdraft
     to your deck. Exhaust.
   <RequiredConditions>k__BackingField: []
   <HighlightConditions>k__BackingField: []
+  <JustHighlightCard>k__BackingField: 0
   <ExhuastOnUse>k__BackingField: 1
   <ManualTargetType>k__BackingField: 0
   <CombatantFilters>k__BackingField:
@@ -31,6 +34,7 @@ MonoBehaviour:
     rid: 4055348011206443285
   <OtherEffects>k__BackingField:
   - rid: 4055347990049325142
+  <AnywhereReactions>k__BackingField: []
   <InHandReactions>k__BackingField: []
   references:
     version: 2
